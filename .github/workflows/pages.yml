@@ -1,0 +1,51 @@
+name: Deploy to GitHub Pages
+
+# There is no build step. The repository root is the site, so publishing is a
+# copy — which also means a broken deploy can only be a Pages configuration
+# problem, never a toolchain one.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Every local asset the page references must exist
+        run: |
+          set -euo pipefail
+          missing=0
+          refs=$(grep -oE '(href|src)="assets/[^"]+"' index.html | sed -E 's/.*"(.*)"/\1/')
+          refs="$refs $(grep -oE "url\('fonts/[^']+'\)" assets/fonts.css | sed -E "s/url\('(.*)'\)/assets\/\1/")"
+          refs="$refs $(grep -oE "load\('assets/[^']+'" assets/site.js | sed -E "s/load\('(.*)'/\1/")"
+          for f in $refs; do
+            if [ ! -f "$f" ]; then echo "missing: $f"; missing=1; fi
+          done
+          exit $missing
+
+  deploy:
+    needs: check
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
