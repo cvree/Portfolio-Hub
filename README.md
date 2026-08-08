@@ -25,6 +25,12 @@ HealthJournal, Manifester, Remy Dee), a paired section for Phlebotomy Exam Prep
 and TwoDo, a constellation of the smaller and private repositories, a method
 section, and a closing invitation.
 
+Three of the projects carry a small instrument rather than a screenshot: an
+insertion-angle gauge that settles from too-steep into Tiny Vials' graded
+window, Manifester's breathing guide running its 4-in / 6-out pattern (and only
+while it is on screen), and a term builder that demonstrates Remy Dee's premise
+in one button — two parts you know, one term you do not.
+
 **Every claim on the page comes from the repository it describes** — its README,
 its test counts, its stated limits. Where a repository is empty or private, the
 page says so instead of inventing a description for it. Facts were read in

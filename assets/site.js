@@ -40,7 +40,8 @@
   // Everything that should fade up. Marked in CSS only while `.anim` is set.
   var revealTargets = $$('.reveal, .proj-head, .sec-head, .atlas__row, .stat-strip, .limits, ' +
     '.mode, .leaves, .pull, .spec, .loop__beat, .card, .node, .principles li, ' +
-    '.capabilities > div, .pipeline figcaption, .proj-links, .end__lede, .end__cta, .end__links, .ticker');
+    '.capabilities > div, .pipeline figcaption, .proj-links, .end__lede, .end__cta, .end__links, ' +
+    '.ticker, .gauge, .breather, .builder');
 
   revealTargets.forEach(function (n) { n.setAttribute('data-reveal', ''); });
 
@@ -118,6 +119,91 @@
       g.style.opacity = 1;
     });
   }, { threshold: 0.3 });
+
+  /* --- 4b. the three project instruments ---------------------------------- */
+
+  // Tiny Vials: the needle settles from too-steep into the graded window as the
+  // section arrives. The numbers are the ones the game's own README states.
+  (function gauge() {
+    var fig = $('[data-gauge]');
+    if (!fig) return;
+    var needle = $('[data-needle]', fig);
+    var read = $('[data-angle-read]', fig);
+    var verdict = $('[data-angle-verdict]', fig);
+    if (!needle) return;
+
+    function set(a) {
+      needle.setAttribute('transform', 'rotate(' + a + ' 300 150)');
+      if (read) read.textContent = Math.round(a) + '°';
+      if (verdict) {
+        verdict.textContent = a > 30
+          ? 'Entry angle: ' + Math.round(a) + '° — too steep, straight through the vein.'
+          : 'Entry angle: ' + Math.round(a) + '° — inside the window.';
+      }
+    }
+
+    if (!allowMotion) { set(22); return; }
+    set(44);
+    observe([fig], function () {
+      var t0 = null, from = 44, to = 22, dur = 1400;
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var p = clamp((ts - t0) / dur, 0, 1);
+        var eased = 1 - Math.pow(1 - p, 4);
+        set(from + (to - from) * eased);
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }, { threshold: 0.45 });
+  })();
+
+  // Manifester: the breathing guide runs only while it is on screen. An
+  // animation nobody is looking at is just a battery bill.
+  (function breather() {
+    var fig = $('[data-breather]');
+    if (!fig || !allowMotion || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      fig.classList.toggle('is-breathing', entries[0].isIntersecting);
+    }, { threshold: 0.25 });
+    io.observe(fig);
+  })();
+
+  // Remy Dee: the premise, playable in one button. Two parts you know, one term
+  // you do not.
+  (function builder() {
+    var box = $('[data-builder]');
+    if (!box) return;
+    var btn = $('[data-build-next]', box);
+    var status = $('[data-build-status]', box);
+    var parts = $$('[data-part]', box);
+    var built = $('[data-built]', box);
+    if (!btn || parts.length < 2 || !built) return;
+
+    var TERMS = [
+      [['brady-', 'slow'], ['-cardia', 'heart condition'], ['bradycardia', 'a slow heart rate']],
+      [['hepat/o', 'liver'], ['-itis', 'inflammation'], ['hepatitis', 'inflammation of the liver']],
+      [['tachy-', 'fast'], ['-pnea', 'breathing'], ['tachypnea', 'abnormally fast breathing']],
+      [['leuk/o', 'white'], ['-cyte', 'cell'], ['leukocyte', 'a white blood cell']]
+    ];
+    var i = 0;
+
+    function paint(t) {
+      parts[0].innerHTML = '<b>' + t[0][0] + '</b><i>' + t[0][1] + '</i>';
+      parts[1].innerHTML = '<b>' + t[1][0] + '</b><i>' + t[1][1] + '</i>';
+      built.innerHTML = '<b>' + t[2][0] + '</b><i>' + t[2][1] + '</i>';
+      if (status) status.textContent = t[0][0] + ' plus ' + t[1][0] + ' gives ' + t[2][0] + ', ' + t[2][1] + '.';
+    }
+
+    btn.addEventListener('click', function () {
+      i = (i + 1) % TERMS.length;
+      if (!allowMotion) { paint(TERMS[i]); return; }
+      box.classList.add('is-swapping');
+      setTimeout(function () {
+        paint(TERMS[i]);
+        box.classList.remove('is-swapping');
+      }, 260);
+    });
+  })();
 
   /* --- 5. section marker, accent + progress hairline ---------------------- */
   var sections = $$('.sec');

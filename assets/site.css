@@ -413,6 +413,68 @@ code{font-family:var(--mono);font-size:.88em;background:var(--ink-14);padding:.0
 }
 .chips li:nth-child(3n+1){border-color:var(--accent);color:var(--fg)}
 
+/* Tiny Vials — insertion-angle gauge */
+.gauge{
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:var(--gut);
+  align-items:center;margin-top:clamp(38px,4.6vw,74px);
+  border-top:var(--line) solid var(--rule);padding-top:clamp(24px,3vw,44px);
+}
+.gauge svg{width:100%;height:auto}
+.g-skin{stroke:var(--fg);stroke-width:2}
+.g-guide{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 5}
+.g-vein{fill:var(--accent);opacity:.85}
+.g-window{fill:var(--accent);opacity:.16}
+.g-needle line{stroke:var(--fg);stroke-width:3}
+.g-needle polygon{fill:var(--fg)}
+.g-label{fill:var(--muted)}
+.g-read{fill:var(--accent);font-weight:500}
+.g-note{fill:var(--muted)}
+.gauge figcaption p{color:var(--muted);max-width:52ch;margin-bottom:.9em}
+@media (max-width:900px){.gauge{grid-template-columns:1fr}}
+
+/* Manifester — the breathing guide, at rest */
+.breather{
+  display:grid;grid-template-columns:220px minmax(0,1fr);gap:var(--gut);align-items:center;
+  margin-top:clamp(38px,4.6vw,74px);border-top:var(--line) solid var(--rule);
+  padding-top:clamp(24px,3vw,44px);
+}
+.breather__art{position:relative;width:200px;height:200px;display:grid;place-items:center}
+.breather__ring,.breather__core{position:absolute;border-radius:50%;display:block}
+.breather__ring{width:200px;height:200px;border:var(--line-strong) solid var(--accent);opacity:.5}
+.breather__ring--2{width:132px;height:132px;opacity:.8}
+.breather__core{width:56px;height:56px;background:var(--accent)}
+.breather figcaption p:first-child{color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+.breather figcaption p:last-child{color:var(--muted);max-width:56ch}
+.breather.is-breathing .breather__ring{animation:breathe 10s cubic-bezier(.42,0,.58,1) infinite}
+.breather.is-breathing .breather__ring--2{animation-delay:.35s}
+.breather.is-breathing .breather__core{animation:breathe-core 10s cubic-bezier(.42,0,.58,1) infinite}
+@keyframes breathe{0%{transform:scale(.62)}40%{transform:scale(1)}100%{transform:scale(.62)}}
+@keyframes breathe-core{0%{transform:scale(.8);opacity:.7}40%{transform:scale(1.15);opacity:1}100%{transform:scale(.8);opacity:.7}}
+@media (max-width:760px){.breather{grid-template-columns:1fr}}
+
+/* Remy Dee — the term builder */
+.builder{
+  margin:clamp(30px,3.6vw,56px) 0 0;padding:clamp(22px,2.6vw,38px);
+  border:var(--line-strong) solid var(--fg);
+}
+.builder__row{display:flex;flex-wrap:wrap;align-items:center;gap:14px 16px;margin:1.2em 0 1.4em}
+.part,.built{
+  display:grid;gap:2px;padding:14px 18px;border:var(--line) solid var(--rule);
+  transition:transform .45s var(--ease),opacity .45s var(--ease);
+}
+.part b,.built b{font-size:clamp(1.15rem,2vw,1.75rem);font-weight:700;letter-spacing:-.03em;line-height:1}
+.part i,.built i{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.built{border-color:var(--accent);border-width:var(--line-strong)}
+.built b{color:var(--accent)}
+.builder__op{font-family:var(--mono);color:var(--muted);font-size:18px}
+.builder__foot{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
+.builder__foot .mono{max-width:58ch}
+.builder.is-swapping .part,.builder.is-swapping .built{opacity:0;transform:translateY(8px)}
+.visually-hidden{
+  position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0;
+}
+
 .mode-cards{
   display:grid;grid-template-columns:repeat(3,1fr);gap:0;
   margin-top:clamp(40px,5vw,80px);

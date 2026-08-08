@@ -318,6 +318,37 @@
       </aside>
     </div>
 
+    <figure class="gauge" data-gauge aria-labelledby="gauge-cap">
+      <div class="gauge__art">
+        <svg viewBox="0 0 520 260" role="img" aria-label="Cross-section of an arm. A needle enters the skin at 22 degrees, inside the 15 to 30 degree window, and its tip reaches the vein below.">
+          <!-- the graded window, as a wedge between 15° and 30° -->
+          <path class="g-window" d="M300 150 L72 89 A236 236 0 0 1 96 32 Z" />
+          <!-- skin -->
+          <line class="g-skin" x1="20" y1="150" x2="500" y2="150" />
+          <line class="g-guide" x1="300" y1="150" x2="150" y2="150" />
+          <!-- the vein under it -->
+          <ellipse class="g-vein" cx="356" cy="172" rx="48" ry="15" />
+          <!-- needle: shaft up-left, tip into the tissue. Rotated by the script. -->
+          <g class="g-needle" data-needle transform="rotate(22 300 150)">
+            <line x1="300" y1="150" x2="66" y2="150" />
+            <polygon points="300,146 300,154 368,150" />
+          </g>
+          <text class="g-label" x="104" y="26" font-family="IBM Plex Mono, monospace" font-size="13">15–30° window</text>
+          <text class="g-read" data-angle-read x="286" y="200" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="16">22°</text>
+          <text class="g-note" x="24" y="142" font-family="IBM Plex Mono, monospace" font-size="11">skin</text>
+          <text class="g-note" x="420" y="204" font-family="IBM Plex Mono, monospace" font-size="11">vein</text>
+        </svg>
+      </div>
+      <figcaption id="gauge-cap">
+        <h3 class="h-sub">Graded in real units</h3>
+        <p>Fifteen to thirty degrees through the skin, and five to fifteen for a hand vein — because
+        there are two millimetres of tissue over it and bone underneath. Too shallow skates over the
+        vein; too steep goes straight through it. The number the rubric grades is the number your
+        hand produced.</p>
+        <p class="mono small dim" data-angle-verdict>Entry angle: 22° — inside the window.</p>
+      </figcaption>
+    </figure>
+
     <div class="mode-cards">
       <div class="mode">
         <p class="mono small">Mode 01</p>
@@ -472,6 +503,21 @@
       </div>
     </div>
 
+    <figure class="breather" data-breather>
+      <div class="breather__art" aria-hidden="true">
+        <span class="breather__ring"></span>
+        <span class="breather__ring breather__ring--2"></span>
+        <span class="breather__core"></span>
+      </div>
+      <figcaption>
+        <p class="mono small">Calm · 4 in / 6 out</p>
+        <h3 class="h-sub">One of ten patterns, six visual forms, five breath voices.</h3>
+        <p>The guide runs while a session does, pauses when the session pauses, and every phase
+        length is yours to change. This is the shape of one of them — and like everything else on
+        this page, it stops entirely if your system asks for reduced motion.</p>
+      </figcaption>
+    </figure>
+
     <div class="spec-table">
       <div class="spec"><span class="mono small">Breathing patterns</span><b data-count="10">10</b></div>
       <div class="spec"><span class="mono small">Visual forms</span><b data-count="6">6</b></div>
@@ -514,6 +560,22 @@
       <div class="loop__beat"><p class="mono small">Reward</p><h4>Rune&nbsp;Gates</h4><p>Map meaning to form under time pressure; unlock the next blueprint.</p><span class="mono dim">transfer</span></div>
       <figcaption id="loop-cap" class="mono small">Four beats, one vocabulary, four cognitive modes. The design doc's rule: the systems must never let the player skip a mode.</figcaption>
     </figure>
+
+    <section class="builder" data-builder aria-label="Term builder demonstration">
+      <p class="eyebrow"><span>The idea, in one term</span></p>
+      <div class="builder__row">
+        <span class="part" data-part="0"><b>brady-</b><i>slow</i></span>
+        <span class="builder__op" aria-hidden="true">+</span>
+        <span class="part" data-part="1"><b>-cardia</b><i>heart condition</i></span>
+        <span class="builder__op" aria-hidden="true">=</span>
+        <span class="built" data-built><b>bradycardia</b><i>a slow heart rate</i></span>
+      </div>
+      <p class="builder__foot">
+        <button class="btn btn--sm" type="button" data-build-next data-magnetic data-cursor-text="Again">Build another →</button>
+        <span class="mono small dim">Two parts you already know, one term you have never seen. That is the whole promise, and the game turns it into a road you can only walk by knowing them.</span>
+      </p>
+      <p class="visually-hidden" role="status" data-build-status></p>
+    </section>
 
     <div class="proj-cols">
       <div class="proj-col">
