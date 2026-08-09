@@ -7,6 +7,7 @@ one HTML file, one stylesheet, one script, and no build step.
 index.html          the whole page, semantic and complete on its own
 assets/site.css     the design system: tokens, grid, type scale, motion states
 assets/site.js      progressive enhancement, in four layers
+assets/projects/    real screenshots of the four flagship projects (WebP + PNG)
 assets/fonts/       self-hosted latin subsets (OFL)
 assets/vendor/      Lenis, GSAP + ScrollTrigger, three.js, Vanta NET
 ```
@@ -19,22 +20,48 @@ python3 -m http.server 8000     # then open http://localhost:8000/
 
 ## What is on the page
 
-Eleven sections read as one composition: a masthead, an index of all thirteen
-repositories, five large project sections (OWCSComp.Tracker, Tiny Vials,
-HealthJournal, Manifester, Remy Dee), a paired section for Phlebotomy Exam Prep
-and TwoDo, a constellation of the smaller and private repositories, a method
-section, and a closing invitation.
+The page is organised around **hierarchy, not inventory**. A masthead
+introduces the kinds of products rather than a repository count, then:
 
-Three of the projects carry a small instrument rather than a screenshot: an
-insertion-angle gauge that settles from too-steep into Tiny Vials' graded
-window, Manifester's breathing guide running its 4-in / 6-out pattern (and only
-while it is on screen), and a term builder that demonstrates Remy Dee's premise
-in one button — two parts you know, one term you do not.
+1. **Featured Work** — an index that visibly separates four flagship projects
+   from everything else.
+2. Four large case studies, in this order: **SpellBomb**, **Health Journal**,
+   **OWCS Comp Tracker**, **Manifester**. Each opens with a real screenshot of
+   the running application, captioned with exactly what moment it shows.
+3. **More Projects** — Tiny Vials, Remy Dee, Phlebotomy Exam Prep and TwoDo, as
+   medium editorial cards.
+4. **Experiments** — four repositories that are a name and a date, plus this
+   one as a closing note.
+5. A method section and a closing invitation.
+
+Two of the secondary projects still carry a small instrument rather than a
+screenshot: an insertion-angle gauge that settles from too-steep into Tiny
+Vials' graded window, and a term builder that demonstrates Remy Dee's premise in
+one button — two parts you know, one term you do not.
 
 **Every claim on the page comes from the repository it describes** — its README,
-its test counts, its stated limits. Where a repository is empty or private, the
-page says so instead of inventing a description for it. Facts were read in
-August 2026; if a project moves on, the copy should move with it.
+its test counts, its stated limits. Where a repository is private or empty, the
+page says so instead of inventing a description or a dead link. Facts were read
+in August 2026; if a project moves on, the copy should move with it.
+
+## The screenshots
+
+`assets/projects/` holds one hero image per flagship project plus one supporting
+still, served as WebP with the lossless PNG kept beside each hero. None of them
+is a mockup, a logo, a landing page or an empty state — every one was captured
+from the application actually running:
+
+| Project | Hero | How it was captured |
+| --- | --- | --- |
+| SpellBomb | `hero-spellbomb-game.webp` | A real six-player match against a running `server.js`: six independent browser contexts join one room over Socket.IO and play, driven by Playwright. |
+| Health Journal | `hero-health-journal-dashboard.webp` | The production build with the app's own "Load example data" set (~34 days) plus a real check-in completed for the day, at the phone width the app is designed for. |
+| OWCS Comp Tracker | `hero-owcs-review.webp` | The Review screen served from the repository, on the committed Al Qadsiah vs Twisted Minds Nepal dataset. |
+| Manifester | `hero-manifester-player.webp` | The expanded player, eight passes into a live ten-minute session built in the app's own editor. |
+
+Wide 16:10 captures scroll inside their own frame below 700px rather than
+shrinking their UI text to nothing — the same treatment the pipeline diagram
+already used. The tall Health Journal captures are left at their natural width,
+because a single narrow column is what that app's layout actually is.
 
 ## How the motion works
 
@@ -53,6 +80,10 @@ with it:
    on a fine-pointer device at least 1000px wide, with at least 4 GB of reported
    memory, without Save-Data, and never under reduced motion.
 
+The custom cursor replaces the system pointer rather than doubling it: the
+script adds `has-cursor` to `<html>` only once the ring is actually running, so
+a no-JS visit, a touch device or reduced motion always keeps the real cursor.
+
 `prefers-reduced-motion: reduce` disables Lenis, the custom cursor, Vanta, every
 transition and the marquee; the page becomes fully static with no content
 withheld. Turning the preference on mid-visit is handled too.
@@ -62,6 +93,9 @@ withheld. Turning the preference on mid-visit is handled too.
 - Skip link, one `main` landmark, semantic headings in order.
 - Every interactive element is a real link or button; focus rings are visible
   and drawn in the section's own accent.
+- Every screenshot carries descriptive `alt` text naming what is on screen, and
+  declares its intrinsic `width`/`height` so nothing shifts as it loads. Only
+  the first flagship hero loads eagerly; the rest are lazy.
 - Body and annotation text is checked against WCAG AA on both the paper and ink
   surfaces; accent colours are used for large display type, borders and marks
   rather than small text.

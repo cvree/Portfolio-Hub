@@ -1,5 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-# Fonts are binary; never normalise them.
+# Fonts and screenshots are binary; never normalise them.
 *.woff2 binary
+*.webp binary
+*.png binary

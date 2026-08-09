@@ -38,10 +38,10 @@
 
   /* --- 1. reveals --------------------------------------------------------- */
   // Everything that should fade up. Marked in CSS only while `.anim` is set.
-  var revealTargets = $$('.reveal, .proj-head, .sec-head, .atlas__row, .stat-strip, .limits, ' +
-    '.mode, .leaves, .pull, .spec, .loop__beat, .card, .node, .principles li, ' +
+  var revealTargets = $$('.reveal, .proj-head, .sec-head, .atlas__row, .atlas-label, .stat-strip, ' +
+    '.limits, .leaves, .pull, .spec, .work, .node, .principles li, ' +
     '.capabilities > div, .pipeline figcaption, .proj-links, .end__lede, .end__cta, .end__links, ' +
-    '.ticker, .gauge, .breather, .builder');
+    '.ticker, .shot, .gauge, .builder');
 
   revealTargets.forEach(function (n) { n.setAttribute('data-reveal', ''); });
 
@@ -157,17 +157,6 @@
     }, { threshold: 0.45 });
   })();
 
-  // Manifester: the breathing guide runs only while it is on screen. An
-  // animation nobody is looking at is just a battery bill.
-  (function breather() {
-    var fig = $('[data-breather]');
-    if (!fig || !allowMotion || !('IntersectionObserver' in window)) return;
-    var io = new IntersectionObserver(function (entries) {
-      fig.classList.toggle('is-breathing', entries[0].isIntersecting);
-    }, { threshold: 0.25 });
-    io.observe(fig);
-  })();
-
   // Remy Dee: the premise, playable in one button. Two parts you know, one term
   // you do not.
   (function builder() {
@@ -247,6 +236,10 @@
     var cur = $('[data-cursor]');
     var curLabel = $('[data-cursor-label]');
     var cx = window.innerWidth / 2, cy = window.innerHeight / 2, tx = cx, ty = cy;
+
+    // Hide the system pointer only now that the ring is definitely running —
+    // two cursors on screen is worse than either one alone.
+    if (cur) root.classList.add('has-cursor');
 
     window.addEventListener('pointermove', function (e) {
       tx = e.clientX; ty = e.clientY;
@@ -429,6 +422,7 @@
     reduced.addEventListener('change', function (e) {
       if (e.matches) {
         root.classList.remove('anim');
+        root.classList.remove('has-cursor');
         revealTargets.forEach(function (n) { n.classList.add('is-in'); });
       }
     });

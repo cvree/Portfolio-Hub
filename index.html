@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>cvree — Index of Works</title>
-<meta name="description" content="Thirteen repositories in five weeks. Computer vision, local-first health tools, 3D clinical simulation, generative audio, and word games — built by cvree." />
+<title>cvree</title>
+<meta name="description" content="Four flagship products by cvree: SpellBomb, a real-time multiplayer party game; Health Journal, a local-first health tracker; OWCS Comp Tracker, a computer-vision evidence pipeline; and Manifester, a browser that generates its own ambient sound." />
 <meta name="theme-color" content="#0d0d0f" />
 <meta name="color-scheme" content="light" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="cvree — Index of Works" />
-<meta property="og:description" content="An independent builder's index: computer vision pipelines, local-first health tools, clinical simulation, generative audio, word games." />
+<meta property="og:title" content="cvree" />
+<meta property="og:description" content="Multiplayer games, health tools, computer-vision pipelines, and audio built in the browser. Four flagship products, shown running." />
 <meta property="og:url" content="https://github.com/cvree" />
 <meta name="twitter:card" content="summary" />
 
@@ -27,7 +27,7 @@
 </head>
 <body>
 
-<a class="skip" href="#index">Skip to the index of works</a>
+<a class="skip" href="#featured">Skip to the featured work</a>
 
 <!-- fixed chrome ------------------------------------------------------------->
 <div class="hairline" aria-hidden="true"><i data-progress></i></div>
@@ -45,14 +45,14 @@
 <main id="top">
 
 <!-- 00 · MASTHEAD ------------------------------------------------------------>
-<section class="sec sec--masthead" data-sec="00" data-label="Masthead" data-accent="#ff4d00">
+<section class="sec sec--masthead" data-sec="00" data-label="Masthead" data-accent="#ff2e63">
   <div class="grid-lines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
 
   <header class="masthead">
     <p class="eyebrow eyebrow--top">
       <span data-scramble>Independent builder</span>
       <span class="rule" aria-hidden="true"></span>
-      <span>Est. index, July 2026</span>
+      <span>Index of works, August 2026</span>
     </p>
 
     <h1 class="wordmark" aria-label="cvree">
@@ -63,26 +63,26 @@
 
     <div class="masthead__body">
       <p class="lede reveal">
-        I build things that have to be <em>right</em> — a computer-vision pipeline that
-        refuses to guess a hero it cannot prove, a health journal that makes no network
-        requests at all, a phlebotomy simulator that grades the angle of your needle in
-        degrees.
+        I build <em>finished products</em> in domains that do not usually share a shelf —
+        a real-time multiplayer party game, a health journal that never touches a network,
+        a computer-vision pipeline that reads an esports broadcast, and a browser that
+        synthesises its own ambient sound.
       </p>
       <p class="sub reveal">
-        Different domains, one habit: learn a hard system deeply enough to build something
-        that works, then be honest in public about where it stops working.
+        Four of them are below at full length, each one photographed running, with real data
+        in it. Everything claimed here comes from the repository it describes.
       </p>
       <p class="cta-row reveal">
-        <a class="btn btn--solid" href="#work" data-magnetic data-cursor-text="Descend">Enter the index</a>
+        <a class="btn btn--solid" href="#featured" data-magnetic data-cursor-text="Look">See the featured work</a>
         <a class="btn" href="https://github.com/cvree?tab=repositories" data-magnetic data-cursor-text="GitHub">github.com/cvree ↗</a>
       </p>
     </div>
 
-    <dl class="ticker" aria-label="Summary statistics">
-      <div><dt>Repositories</dt><dd><b data-count="13">13</b></dd></div>
-      <div><dt>Weeks of work</dt><dd><b data-count="5">5</b></dd></div>
-      <div><dt>First repository</dt><dd><b>05 Jul 2026</b></dd></div>
-      <div><dt>Latest push</dt><dd><b>08 Aug 2026</b></dd></div>
+    <dl class="ticker" aria-label="What I build">
+      <div><dt>Multiplayer games</dt><dd><b>SpellBomb</b></dd></div>
+      <div><dt>Health tools</dt><dd><b>Health Journal</b></dd></div>
+      <div><dt>Computer vision</dt><dd><b>OWCS Comp Tracker</b></dd></div>
+      <div><dt>Audio in the browser</dt><dd><b>Manifester</b></dd></div>
     </dl>
   </header>
 
@@ -90,131 +90,364 @@
 </section>
 
 <!-- 01 · THE INDEX ----------------------------------------------------------->
-<section class="sec sec--index invert" id="index" data-sec="01" data-label="The Index" data-accent="#c8f024">
+<section class="sec sec--index invert" id="featured" data-sec="01" data-label="Featured work" data-accent="#c8f024">
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow"><span data-scramble>01 — Contents</span></p>
-      <h2 class="h-display">Thirteen<br />repositories,<br /><span class="outline">five weeks.</span></h2>
+      <h2 class="h-display">Four projects,<br />then <span class="outline">everything else.</span></h2>
       <div class="sec-head__aside">
-        <p>Everything below is public unless it says otherwise, and everything claimed here is
-        taken from the repository itself — its README, its tests, its commits. Nothing on this
-        page is aspirational.</p>
-        <p class="mono small">Sorted by weight, not by date.</p>
+        <p>Not sorted by date, size, or which one has the longest write-up. Sorted by what I
+        would want you to look at if you only had thirty seconds.</p>
+        <p class="mono small">Every fact below is taken from the repository itself — its README, its tests, its commits.</p>
       </div>
     </div>
 
-    <ol class="atlas" id="work">
-      <li class="atlas__row" data-atlas="owcs">
-        <span class="atlas__n mono">001</span>
-        <a class="atlas__name" href="#p-owcs" data-magnetic data-cursor-text="Jump">OWCSComp.Tracker</a>
-        <span class="atlas__dom mono">Computer vision · evidence pipeline</span>
-        <span class="atlas__lang mono">Python · OpenCV · SQLite</span>
-        <span class="atlas__state mono" data-state="live">Milestone verified</span>
+    <p class="atlas-label mono"><span>Featured work</span><i aria-hidden="true"></i></p>
+    <ol class="atlas atlas--featured">
+      <li class="atlas__row">
+        <span class="atlas__n mono">01</span>
+        <a class="atlas__name" href="#p-spellbomb" data-magnetic data-cursor-text="Jump">SpellBomb</a>
+        <span class="atlas__dom mono">Real-time multiplayer party game</span>
+        <span class="atlas__lang mono">Node · Socket.IO · Postgres</span>
+        <span class="atlas__state mono" data-state="wip">Private repository</span>
       </li>
-      <li class="atlas__row" data-atlas="vials">
-        <span class="atlas__n mono">002</span>
-        <a class="atlas__name" href="#p-vials" data-magnetic data-cursor-text="Jump">Tiny Vials</a>
-        <span class="atlas__dom mono">3D clinical simulation</span>
-        <span class="atlas__lang mono">JavaScript · three.js · Vite</span>
-        <span class="atlas__state mono" data-state="live">Playable</span>
-      </li>
-      <li class="atlas__row" data-atlas="health">
-        <span class="atlas__n mono">003</span>
-        <a class="atlas__name" href="#p-health" data-magnetic data-cursor-text="Jump">HealthJournal</a>
+      <li class="atlas__row">
+        <span class="atlas__n mono">02</span>
+        <a class="atlas__name" href="#p-health" data-magnetic data-cursor-text="Jump">Health Journal</a>
         <span class="atlas__dom mono">Local-first health tracking</span>
         <span class="atlas__lang mono">TypeScript · React · PWA</span>
         <span class="atlas__state mono" data-state="build">Deploy wired</span>
       </li>
-      <li class="atlas__row" data-atlas="manifester">
-        <span class="atlas__n mono">004</span>
+      <li class="atlas__row">
+        <span class="atlas__n mono">03</span>
+        <a class="atlas__name" href="#p-owcs" data-magnetic data-cursor-text="Jump">OWCS Comp Tracker</a>
+        <span class="atlas__dom mono">Computer vision · evidence pipeline</span>
+        <span class="atlas__lang mono">Python · OpenCV · SQLite</span>
+        <span class="atlas__state mono" data-state="live">Milestone verified</span>
+      </li>
+      <li class="atlas__row">
+        <span class="atlas__n mono">04</span>
         <a class="atlas__name" href="#p-manifester" data-magnetic data-cursor-text="Jump">Manifester</a>
         <span class="atlas__dom mono">Generative audio · speech</span>
-        <span class="atlas__lang mono">TypeScript · React 19 · Web Audio</span>
+        <span class="atlas__lang mono">React 19 · Web Audio · MIT</span>
         <span class="atlas__state mono" data-state="live">Live</span>
       </li>
-      <li class="atlas__row" data-atlas="remy">
-        <span class="atlas__n mono">005</span>
+    </ol>
+
+    <p class="atlas-label mono atlas-label--minor"><span>More projects</span><i aria-hidden="true"></i></p>
+    <ol class="atlas atlas--more" start="5">
+      <li class="atlas__row atlas__row--sm">
+        <span class="atlas__n mono">05</span>
+        <a class="atlas__name" href="#p-vials" data-magnetic data-cursor-text="Jump">Tiny Vials</a>
+        <span class="atlas__dom mono">3D clinical simulation</span>
+        <span class="atlas__lang mono">three.js · 600+ tests</span>
+        <span class="atlas__state mono" data-state="live">Playable</span>
+      </li>
+      <li class="atlas__row atlas__row--sm">
+        <span class="atlas__n mono">06</span>
         <a class="atlas__name" href="#p-remy" data-magnetic data-cursor-text="Jump">Remy Dee: The Lost Lexicon</a>
         <span class="atlas__dom mono">Learning game · one HTML file</span>
         <span class="atlas__lang mono">Vanilla JS · Canvas</span>
         <span class="atlas__state mono" data-state="build">In development</span>
       </li>
-      <li class="atlas__row" data-atlas="prep">
-        <span class="atlas__n mono">006</span>
+      <li class="atlas__row atlas__row--sm">
+        <span class="atlas__n mono">07</span>
         <a class="atlas__name" href="#p-prep" data-magnetic data-cursor-text="Jump">Phlebotomy Exam Prep</a>
         <span class="atlas__dom mono">Study engine · assessment</span>
         <span class="atlas__lang mono">TypeScript · Next.js static</span>
         <span class="atlas__state mono" data-state="build">Content in review</span>
       </li>
-      <li class="atlas__row" data-atlas="twodo">
-        <span class="atlas__n mono">007</span>
+      <li class="atlas__row atlas__row--sm">
+        <span class="atlas__n mono">08</span>
         <a class="atlas__name" href="#p-twodo" data-magnetic data-cursor-text="Jump">TwoDo</a>
         <span class="atlas__dom mono">Two-person decisions · privacy</span>
         <span class="atlas__lang mono">TypeScript · Postgres RLS</span>
         <span class="atlas__state mono" data-state="live">Live demo mode</span>
       </li>
-      <li class="atlas__row atlas__row--minor" data-atlas="rest">
-        <span class="atlas__n mono">008&ndash;013</span>
-        <a class="atlas__name" href="#constellation" data-magnetic data-cursor-text="Jump">Experiments &amp; ground staked out</a>
-        <span class="atlas__dom mono">Games · mapping · medical terminology</span>
-        <span class="atlas__lang mono">Mixed · two private</span>
+      <li class="atlas__row atlas__row--sm atlas__row--minor">
+        <span class="atlas__n mono">09&ndash;12</span>
+        <a class="atlas__name" href="#experiments" data-magnetic data-cursor-text="Jump">Experiments &amp; ground staked out</a>
+        <span class="atlas__dom mono">Medical terminology · mapping · mini games</span>
+        <span class="atlas__lang mono">Named, not yet built</span>
         <span class="atlas__state mono" data-state="wip">Various</span>
+      </li>
+      <li class="atlas__row atlas__row--sm atlas__row--minor">
+        <span class="atlas__n mono">13</span>
+        <a class="atlas__name" href="#p-hub" data-magnetic data-cursor-text="Jump">Portfolio-Hub</a>
+        <span class="atlas__dom mono">This page</span>
+        <span class="atlas__lang mono">One HTML file · no build step</span>
+        <span class="atlas__state mono" data-state="live">You are here</span>
       </li>
     </ol>
   </div>
 </section>
 
-<!-- 02 · OWCS ---------------------------------------------------------------->
-<article class="sec sec--project" id="p-owcs" data-sec="02" data-label="OWCSComp.Tracker" data-accent="#ff4d00">
-  <span class="numeral" aria-hidden="true">001</span>
+<!-- 02 · SPELLBOMB ----------------------------------------------------------->
+<article class="sec sec--project sec--flagship" id="p-spellbomb" data-sec="02" data-label="SpellBomb" data-accent="#ff2e63">
+  <span class="numeral" aria-hidden="true">01</span>
 
   <div class="wrap">
     <header class="proj-head">
-      <p class="eyebrow"><span data-scramble>001 — Computer vision</span> <span class="rule"></span> <span>Python · OpenCV · SQLite</span></p>
-      <h2 class="h-display h-display--tight">A broadcast<br />goes in.<br /><span class="accent">Evidence</span><br />comes out.</h2>
+      <p class="eyebrow"><span data-scramble>01 — Real-time multiplayer</span> <span class="rule"></span> <span>Node · Express · Socket.IO · Postgres</span></p>
+      <h2 class="h-display h-display--tight">Six phones,<br />one bomb,<br />one <span class="accent">server</span><br />telling the truth.</h2>
       <p class="proj-lede">
-        An esports broadcast is a video of a game, not a record of one. OWCSComp.Tracker turns
-        a full OWCS VOD into an auditable hero-composition timeline — and every fact it
-        publishes can be clicked back to the exact frame it was read from.
+        A live party spelling game. One person hosts a room; everyone else joins from their own
+        phone or laptop with a link or a four-letter code. The bomb says a word, you type it
+        before the fuse burns out, and the bomb moves one seat clockwise whether you spelled it
+        or blew it.
       </p>
     </header>
 
-    <div class="proj-cols">
+    <figure class="shot shot--hero">
+      <div class="shot__frame">
+        <img src="assets/projects/spellbomb/hero-spellbomb-game.webp"
+             width="2400" height="1500" decoding="async" fetchpriority="high"
+             alt="SpellBomb mid-round. Six players — kit, maya, sam, dev, ollie and juno — sit around a dark arena, each card showing their remaining hearts. A lit bomb hangs in the centre with a glowing arrow pointing at the player named sam, whose card is highlighted YOU. Below the arena, a row of letter tiles spells I-N-A-L-I-E-N of an eleven-letter word, with the typed text in an input box and a green GO button. The header reads round 18, difficulty Hard, timer 2:09." />
+      </div>
+      <figcaption class="mono small">
+        A real six-player round, mid-turn. The bomb has landed on <b>sam</b>, five other players
+        are watching their own hearts, and an eleven-letter word is being spelled a letter at a
+        time. Captured against a running <code>server.js</code> with six independent browser
+        clients — the same code path a real game night takes.
+      </figcaption>
+    </figure>
+
+    <div class="proj-cols proj-cols--3">
       <div class="proj-col">
-        <h3 class="h-sub">The interesting part isn't the detection.</h3>
+        <h3 class="h-sub">What it is</h3>
         <p>
-          Matching a 35×35 pixel portrait against a template set is the easy half. The hard half
-          is knowing when you are wrong. The detector returns a ranked candidate, its runner-up,
-          and the margin between them — and returns <code>UNKNOWN</code> rather than a guess when
-          that margin is thin. HUD geometry is found computationally (HSV chip rows, a RANSAC grid
-          fit, pixel-evidence verification) and the calibrator <em>refuses</em> below a confidence
-          floor, with reasons, instead of producing a layout nobody should trust.
-        </p>
-        <p>
-          Replays, killcams and scoreboards look exactly like gameplay to a template matcher, so a
-          structural filter classifies every frame before it is allowed to create a composition.
-          Hero swaps are not read from single frames but from a temporal consensus model with
-          hysteresis — persistence plus displacement — which is why the Nepal map produced two
-          confirmed swaps with before/after evidence crops and rejected seven lookalikes.
+          Rooms of up to eight, hearts from one to five, four difficulty tiers with a growth
+          curve, sixteen word categories over a 6,196-word bank, a seeded daily challenge, and
+          three bots to fill a quiet room. Two turn styles: <em>Passed Bomb</em>, where the bomb
+          walks the seat order, and <em>Everyone Spells</em>, where the whole room races the
+          same word.
         </p>
       </div>
       <div class="proj-col">
-        <h3 class="h-sub">Where a language model is allowed to speak.</h3>
+        <h3 class="h-sub">What was hard</h3>
         <p>
-          Two jobs in this pipeline are language problems wearing computer-vision clothing: an
-          OCR'd nameplate reading <code>TW1STED M1NDS</code>, and a calibration refusal like
-          <em>"b3 portrait box has almost no detail (texture 31)"</em> — precise, correct, useless
-          to a human. An optional advisor handles those two and nothing else.
+          Keeping six devices on six networks agreeing about one fuse. The server owns rounds,
+          hearts, the timer, word selection, grading, placements and every reward; clients send
+          intents and render what they are told. A disconnected player's seat, hearts and streak
+          survive a reconnect, and a heartbeat of state resync means a phone that slept mid-round
+          rejoins the round already in progress rather than a stale copy of it.
+        </p>
+      </div>
+      <div class="proj-col">
+        <h3 class="h-sub">Two decisions worth defending</h3>
+        <p>
+          <b>No dark patterns.</b> No timers, chest slots, expiry, forced openings, paid currency,
+          fake scarcity or hidden odds. The odds table the shop renders is literally the same
+          object the server rolls against, and the whole economy lives in one file so nothing
+          else can invent a number.
         </p>
         <p>
-          Its suggestions are closed-vocabulary (it may only return an id from a list it was
-          handed), it runs only when the deterministic path has already failed, every return value
-          is marked <code>binding: false</code>, and an assertion raises if one ever reaches a
-          persistence path. It contributes nothing to any published number. Seventy-four offline
-          checks exercise it against a fake provider; most of them test the refusals.
+          <b>The README corrects itself.</b> An earlier version claimed the word was sent only to
+          whoever's turn it was. That was not true — speech synthesis needs the text, so every
+          listening client has it. The mode-by-mode consequences are now written down, including
+          the one where it is exploitable.
         </p>
       </div>
     </div>
+
+    <div class="stat-strip" role="list" aria-label="SpellBomb by the numbers">
+      <div role="listitem"><b data-count="6196">6,196</b><span>words, 16 categories</span></div>
+      <div role="listitem"><b data-count="254">254</b><span>shop cosmetics</span></div>
+      <div role="listitem"><b data-count="98">98</b><span>earn-only prizes</span></div>
+      <div role="listitem"><b data-count="114">114</b><span>achievements</span></div>
+      <div role="listitem"><b data-count="29">29</b><span>test suites in CI</span></div>
+      <div role="listitem"><b data-count="0">0</b><span>cookies, asserted by a test</span></div>
+    </div>
+
+    <figure class="shot shot--aside shot--right">
+      <div class="shot__frame">
+        <img src="assets/projects/spellbomb/spellbomb-fuse.webp"
+             width="1600" height="1000" loading="lazy" decoding="async"
+             alt="The same arena a few rounds later. The fuse bar under the bomb has burned down to a thin red sliver, a taunt above the bomb reads WHY ARE YOU STILL HOLDING IT, and the pass arrow is swinging toward the player named ollie." />
+      </div>
+      <figcaption class="mono small">
+        The last three seconds of a turn. The server guarantees a fresh holder at least three
+        seconds before the bomb can go off — <code>MIN_TURN_MS</code> — so nobody catches a
+        bomb that immediately explodes.
+      </figcaption>
+    </figure>
+
+    <p class="proj-links">
+      <span class="tag mono">Private repository</span>
+      <span class="mono small">Node 18+, Express and Socket.IO, with Postgres for persistence and an automatic JSON-file fallback. Twenty-nine test suites, a Playwright shop and mobile pass, an economy simulator, and a load-test script. Screenshots on this page were taken from the app running locally from source.</span>
+    </p>
+  </div>
+</article>
+
+<!-- 03 · HEALTH JOURNAL ------------------------------------------------------>
+<article class="sec sec--project sec--flagship sec--tint" id="p-health" data-sec="03" data-label="Health Journal" data-accent="#00805a">
+  <span class="numeral" aria-hidden="true">02</span>
+
+  <div class="wrap">
+    <header class="proj-head">
+      <p class="eyebrow"><span data-scramble>02 — Local-first health tracking</span> <span class="rule"></span> <span>TypeScript · React · PWA</span></p>
+      <h2 class="h-display h-display--tight">A month of<br />your own data,<br /><span class="accent">and no server</span><br />to hand it to.</h2>
+      <p class="proj-lede">
+        You build a daily check-in around your own situation — skin, gut, migraine, POTS,
+        fatigue, a diet experiment — answer it in about a minute, and watch the trends come out
+        over weeks. There is no account and no server, because there is nothing to upload it to.
+      </p>
+    </header>
+
+    <figure class="shot shot--duo">
+      <div class="shot__frame shot__frame--tall">
+        <img src="assets/projects/health-journal/hero-health-journal-dashboard.webp"
+             width="920" height="2480" loading="lazy" decoding="async"
+             alt="The Health Journal dashboard with a month of data loaded. A Today card shows an overall skin severity of 5 logged today, an eleven-day streak, and seven- and thirty-day averages. Below it, a Quick Add grid of Check-in, Food, Bowel and Photo tiles; Today's Logs listing a 1:11 pm daily check-in with fourteen answers; and a Trends section whose thirty-day chart plots four metrics — overall skin severity, itch, sleep quality and stress — as four coloured lines across dated gridlines." />
+      </div>
+      <div class="shot__frame shot__frame--tall shot__frame--drop">
+        <img src="assets/projects/health-journal/health-journal-patterns.webp"
+             width="920" height="2480" loading="lazy" decoding="async"
+             alt="Further down the same dashboard. A Possible patterns card labelled Calculated on this device reads: itch may move with sleep quality — on days when sleep quality was higher, itch averaged 5.3 versus 6.4 on lower days, across twenty-nine logged days. Beneath it an AI observations card marked Optional explains that the feature is off, and a Reports section offers a ready weekly and monthly report." />
+      </div>
+      <div class="shot__aside">
+        <figcaption class="mono small">
+          Left: the dashboard with the app's own example dataset loaded and a check-in completed
+          for today. Right: the same screen further down — a pattern the on-device maths found,
+          and the optional AI panel in its default state, which is off.
+        </figcaption>
+        <ul class="leaf-list">
+          <li>No account, no server, no tracking</li>
+          <li>Zero network requests once loaded</li>
+          <li>Patterns computed on the device</li>
+          <li>AI is opt-in, previewed, and confirmable</li>
+          <li>CSV, XLSX, JSON and a full backup out</li>
+        </ul>
+      </div>
+    </figure>
+
+    <div class="proj-cols">
+      <div class="proj-col">
+        <h3 class="h-sub">Longitudinal, not diagnostic</h3>
+        <p>
+          Twelve question packs — eczema, carnivore, POTS, IBS, migraine, MCAS, fatigue,
+          autoimmune, thyroid, joint pain, general wellness, wearable — can be mixed, switched
+          off individually, reordered and extended with your own questions, each with independent
+          visibility across five surfaces. Possible-pattern cards need at least six paired days
+          before they will say anything, and they never claim a cause.
+        </p>
+        <p class="mono small dim">
+          Not medical advice. The app surfaces possible patterns in your own logs and says so on
+          the card itself.
+        </p>
+      </div>
+      <div class="proj-col">
+        <h3 class="h-sub">The one exception, drawn to scale</h3>
+        <div class="leaves">
+          <div class="leaves__col">
+            <p class="mono small">Never leaves the device</p>
+            <ul><li>written notes</li><li>photos</li><li>your name</li><li>anything identifying</li><li>excluded questions</li></ul>
+          </div>
+          <div class="leaves__col leaves__col--out">
+            <p class="mono small">Sent, only after you confirm a preview</p>
+            <ul><li>the labels of metrics you track</li><li>one row per logged day of numeric answers, days numbered from the start of the window rather than dated</li></ul>
+          </div>
+        </div>
+        <p class="mono small dim">Optional AI observations are off by default, use a key you bring, and a test asserts each of those exclusions. A locally stored key is not encrypted — Settings says so, rather than implying a vault.</p>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div><b data-count="217">217</b><span>tests, 14 suites</span></div>
+      <div><b data-count="12">12</b><span>question packs</span></div>
+      <div><b>AA</b><span>contrast gate in CI</span></div>
+      <div><b>CSV · XLSX · JSON</b><span>your data, out</span></div>
+    </div>
+
+    <p class="pull">
+      “Nobody can recover it for you.” <span>The flip side of local-only is stated plainly rather
+      than glossed. So the app nudges you toward a real backup file, explains that installed apps
+      are exempt from browsers' idle-eviction rules, asks for persistent storage on your behalf —
+      and then shows you whether the browser actually granted it.</span>
+    </p>
+
+    <p class="proj-links">
+      <a class="btn" href="https://github.com/cvree/HealthJournal" data-magnetic data-cursor-text="Read">Repository ↗</a>
+      <span class="mono small">GitHub Pages deploy is wired and waiting on a one-time Settings switch, which the README documents rather than hides. Ships a read-only viewer for handing a backup to a clinician, plus a Capacitor iOS wrapper and a WidgetKit starter.</span>
+    </p>
+  </div>
+</article>
+
+<!-- 04 · OWCS COMP TRACKER --------------------------------------------------->
+<article class="sec sec--project sec--flagship invert" id="p-owcs" data-sec="04" data-label="OWCS Comp Tracker" data-accent="#c8f024">
+  <span class="numeral" aria-hidden="true">03</span>
+
+  <div class="wrap">
+    <header class="proj-head">
+      <p class="eyebrow"><span data-scramble>03 — Computer vision</span> <span class="rule"></span> <span>Python · OpenCV · SQLite · static site</span></p>
+      <h2 class="h-display h-display--tight">A broadcast<br />goes in.<br /><span class="accent">Evidence</span><br />comes out.</h2>
+      <p class="proj-lede">
+        An esports broadcast is a video of a game, not a record of one. This turns a full OWCS
+        VOD into an auditable hero-composition timeline — and every fact it publishes can be
+        clicked back to the exact frame it was read from.
+      </p>
+    </header>
+
+    <figure class="shot shot--hero">
+      <div class="shot__frame">
+        <img src="assets/projects/owcs/hero-owcs-review.webp"
+             width="2400" height="1500" loading="lazy" decoding="async"
+             alt="The Review screen of OWCS Comp Tracker, the human gate in the pipeline. A queue on the left lists two games awaiting review. The main panel covers Al Qadsiah versus Twisted Minds on Nepal: three round boundaries with start and end timecodes and 85 percent confidence bars, then the Al Qadsiah line-up as a row of broadcast crops, then one row per detection — Shion 95 percent, Symmetra 90, Mauga 92, Kiriko 86, Kiriko 88, Juno 96 — each with the actual broadcast crop it was read from, a hero portrait, a slot number, a timecode range, a frame-agreement count, and Approve, Correct and Flag buttons." />
+      </div>
+      <figcaption class="mono small">
+        The Review screen, on the verified Al Qadsiah vs Twisted Minds Nepal dataset. Every
+        detection sits beside the actual broadcast crop it was read from, with its confidence and
+        how many frames agreed. Nothing reaches the public pages until a person presses Approve.
+      </figcaption>
+    </figure>
+
+    <div class="proj-cols proj-cols--3">
+      <div class="proj-col">
+        <h3 class="h-sub">Knowing when you are wrong</h3>
+        <p>
+          Matching a 35&times;35 pixel portrait against a template set is the easy half. The
+          detector returns a ranked candidate, its runner-up, and the margin between them — and
+          returns <code>UNKNOWN</code> rather than a guess when that margin is thin. HUD geometry
+          is found computationally (HSV chip rows, a RANSAC grid fit, pixel-evidence
+          verification) and the calibrator <em>refuses</em> below a confidence floor, with
+          reasons, instead of producing a layout nobody should trust.
+        </p>
+      </div>
+      <div class="proj-col">
+        <h3 class="h-sub">Swaps are temporal, not per-frame</h3>
+        <p>
+          Replays, killcams and scoreboards look exactly like gameplay to a template matcher, so
+          a structural filter classifies every frame before it is allowed to create a
+          composition. Hero swaps come from a consensus model with hysteresis — persistence plus
+          displacement — which is why the Nepal map produced two confirmed swaps with
+          before/after evidence crops and rejected seven lookalikes.
+        </p>
+      </div>
+      <div class="proj-col">
+        <h3 class="h-sub">Where a model may speak</h3>
+        <p>
+          Two jobs here are language problems in computer-vision clothing: an OCR'd nameplate
+          reading <code>TW1STED M1NDS</code>, and a calibration refusal like <em>"b3 portrait box
+          has almost no detail (texture 31)"</em>. An optional advisor handles those two and
+          nothing else — closed vocabulary, only after the deterministic path fails, every return
+          marked <code>binding: false</code>, and an assertion that raises if one ever reaches a
+          persistence path.
+        </p>
+      </div>
+    </div>
+
+    <figure class="shot shot--aside">
+      <div class="shot__frame">
+        <img src="assets/projects/owcs/owcs-swaps.webp"
+             width="1600" height="1000" loading="lazy" decoding="async"
+             alt="The change-point section of the same Review screen. Five candidate hero swaps are listed with before and after evidence crops and a plain-language verdict each: Kiriko to Shion rejected because the candidate was seen once then Kiriko returned; Symmetra to Sojourn rejected the same way; Lúcio to Sojourn rejected; and Juno to Lúcio at 39:54 confirmed at 82 percent because Lúcio persisted across three observations while Juno was no longer detected. Each row carries Confirm and Not a swap buttons." />
+      </div>
+      <figcaption class="mono small">
+        The same screen, further down: every candidate change point with its before and after
+        crops, the reason the consensus model accepted or threw it out, and two buttons for the
+        human who decides.
+      </figcaption>
+    </figure>
 
     <figure class="pipeline" aria-labelledby="pipe-cap">
       <svg viewBox="0 0 1200 190" role="img" aria-label="Pipeline diagram: VOD to sparse remote frames, calibration, detection, temporal consensus, human review, publication.">
@@ -248,226 +481,50 @@
 
     <div class="limits">
       <h3 class="h-sub">And here is what it cannot do.</h3>
-      <p class="mono small">Quoted from the project's own README, which keeps this list at the top rather than the bottom.</p>
+      <p class="mono small">Quoted from the project's own README, which keeps this list near the top rather than the bottom.</p>
       <ul>
-        <li><b>Hero coverage is 8 of 52</b> on the best template package — the other 44 have never appeared in a broadcast this pipeline has processed, so no amount of reprocessing covers them.</li>
-        <li><b><code>juno</code> and <code>kiriko</code> are confusable</b> at 35×35 in grayscale. A colour veto was built, measured against real crops, and <em>removed</em> because it blocked none of the actual leaks.</li>
-        <li><b>Thresholds are fitted to one broadcast.</b> Re-measure when a second is harvested.</li>
-        <li><b>One map, one match.</b> Series-level scores are not recorded; the map winner is operator-supplied, not OCR'd.</li>
+        <li><b>Hero coverage is 8 of 52</b> on the best template package. The other 44 have never appeared in a broadcast this pipeline has processed, so no amount of reprocessing covers them.</li>
+        <li><b><code>juno</code> and <code>kiriko</code> are confusable</b> at 35&times;35 in grayscale. A colour veto was built, measured against real crops, and <em>removed</em> because it blocked none of the actual leaks.</li>
+        <li><b>One map, one match.</b> Thresholds are fitted to a single broadcast, and the map winner is operator-supplied rather than OCR'd.</li>
       </ul>
     </div>
 
     <p class="proj-links">
       <a class="btn" href="https://github.com/cvree/OWCSComp.Tracker" data-magnetic data-cursor-text="Read">Repository ↗</a>
-      <span class="mono small">101 test suites · a committed SQLite milestone · a Windows installer · independent fan project, unaffiliated with Blizzard or FACEIT</span>
-    </p>
-  </div>
-</article>
-
-<!-- 03 · TINY VIALS ---------------------------------------------------------->
-<article class="sec sec--project invert" id="p-vials" data-sec="03" data-label="Tiny Vials" data-accent="#ff2e63">
-  <span class="numeral" aria-hidden="true">002</span>
-
-  <div class="wrap">
-    <header class="proj-head">
-      <p class="eyebrow"><span data-scramble>002 — Simulation</span> <span class="rule"></span> <span>JavaScript · three.js · 600+ tests</span></p>
-      <h2 class="h-display h-display--tight">Seventeen<br />real<br /><span class="accent">interactions.</span></h2>
-      <p class="proj-lede">
-        A 3D phlebotomy practice game where nothing is a multiple-choice question. You run a small
-        draw room, and everything the game grades is something you physically did — measured in
-        real units.
-      </p>
-    </header>
-
-    <div class="proj-cols proj-cols--3-2">
-      <div class="proj-col">
-        <p>
-          The angle you entered at. The seconds the tourniquet was on. The millilitres in each tube.
-          The grams of pressure you held, and for how long. Screw the needle into its holder and the
-          bevel ends up pointing wherever your turning stopped — the next step inherits exactly that.
-          Choose a butterfly set on the back of the hand and it is a genuinely different procedure:
-          23G, a different entry window, tubing that transmits every tug to the tip.
-        </p>
-        <p>
-          The body under your hands can go wrong, caused by what you did, and it announces itself the
-          way it would at the chair — a lump rising, flow stopping, a face going damp and quiet. You
-          get one answer. Stopping the draw is often the right one, and it really does stop the draw:
-          the report is built from the tubes you actually collected. Then the laboratory looks at what
-          you sent, and a rejection names the tests the patient has to be drawn again for.
-        </p>
-        <p class="mono small dim">
-          Clicking through cannot out-earn technique. That is arithmetic, not policy — the reward
-          function reads the same 0–100 measurement the rubric grades from, so payout and assessment
-          can never disagree.
-        </p>
-      </div>
-
-      <aside class="proj-col">
-        <h3 class="h-sub">Palpation, as code</h3>
-        <ul class="feel-list">
-          <li><b>A vein</b> bounces.</li>
-          <li><b>A tendon</b> is a hard cord.</li>
-          <li><b>An artery</b> pulses.</li>
-          <li><b>A compliant vein</b> rolls away from the pressure — you can feel it move.</li>
-        </ul>
-        <h3 class="h-sub">Eight ways it fails</h3>
-        <ul class="chips" aria-label="Complications">
-          <li>hematoma</li><li>blown vein</li><li>dry stick</li><li>vein collapse</li>
-          <li>nerve contact</li><li>arterial puncture</li><li>flinch</li><li>vasovagal</li>
-        </ul>
-      </aside>
-    </div>
-
-    <figure class="gauge" data-gauge aria-labelledby="gauge-cap">
-      <div class="gauge__art">
-        <svg viewBox="0 0 520 260" role="img" aria-label="Cross-section of an arm. A needle enters the skin at 22 degrees, inside the 15 to 30 degree window, and its tip reaches the vein below.">
-          <!-- the graded window, as a wedge between 15° and 30° -->
-          <path class="g-window" d="M300 150 L72 89 A236 236 0 0 1 96 32 Z" />
-          <!-- skin -->
-          <line class="g-skin" x1="20" y1="150" x2="500" y2="150" />
-          <line class="g-guide" x1="300" y1="150" x2="150" y2="150" />
-          <!-- the vein under it -->
-          <ellipse class="g-vein" cx="356" cy="172" rx="48" ry="15" />
-          <!-- needle: shaft up-left, tip into the tissue. Rotated by the script. -->
-          <g class="g-needle" data-needle transform="rotate(22 300 150)">
-            <line x1="300" y1="150" x2="66" y2="150" />
-            <polygon points="300,146 300,154 368,150" />
-          </g>
-          <text class="g-label" x="104" y="26" font-family="IBM Plex Mono, monospace" font-size="13">15–30° window</text>
-          <text class="g-read" data-angle-read x="286" y="200" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="16">22°</text>
-          <text class="g-note" x="24" y="142" font-family="IBM Plex Mono, monospace" font-size="11">skin</text>
-          <text class="g-note" x="420" y="204" font-family="IBM Plex Mono, monospace" font-size="11">vein</text>
-        </svg>
-      </div>
-      <figcaption id="gauge-cap">
-        <h3 class="h-sub">Graded in real units</h3>
-        <p>Fifteen to thirty degrees through the skin, and five to fifteen for a hand vein — because
-        there are two millimetres of tissue over it and bone underneath. Too shallow skates over the
-        vein; too steep goes straight through it. The number the rubric grades is the number your
-        hand produced.</p>
-        <p class="mono small dim" data-angle-verdict>Entry angle: 22° — inside the window.</p>
-      </figcaption>
-    </figure>
-
-    <div class="mode-cards">
-      <div class="mode">
-        <p class="mono small">Mode 01</p>
-        <h4>Learn</h4>
-        <p>Full teaching. Names the specific error, states the correct next action, and will not let you continue until the step is right.</p>
-      </div>
-      <div class="mode">
-        <p class="mono small">Mode 02</p>
-        <h4>Practice</h4>
-        <p>A standing reminder of what each step is <em>for</em>, and nothing about what is currently wrong with it. Measurements arrive at the end of a section.</p>
-      </div>
-      <div class="mode">
-        <p class="mono small">Mode 03</p>
-        <h4>Final Practical</h4>
-        <p>Silence, then a rubric report: 0–4 per row, automatic-failure events, and a replay built from the steps' own logs.</p>
-      </div>
-    </div>
-    <p class="mono small dim center">Bests are tracked per mode, because 26/28 with the coach talking is not the same achievement as one scored in silence.</p>
-
-    <p class="proj-links">
-      <a class="btn btn--solid" href="https://cvree.github.io/PhlebLearn/" data-magnetic data-cursor-text="Play">Play it ↗</a>
-      <a class="btn" href="https://github.com/cvree/PhlebLearn" data-magnetic data-cursor-text="Read">Repository ↗</a>
-      <span class="mono small">600+ unit tests, no browser needed · Playwright against the production build · CLSI order of draw · grading thresholds are documented defaults a programme can replace</span>
-    </p>
-  </div>
-</article>
-
-<!-- transition --------------------------------------------------------------->
-<div class="marquee" aria-hidden="true" data-marquee>
-  <div class="marquee__track">
-    <span>computer vision</span><i>◆</i><span>local-first</span><i>◆</i><span>generative audio</span><i>◆</i><span>clinical simulation</span><i>◆</i><span>learning systems</span><i>◆</i><span>evidence chains</span><i>◆</i>
-    <span>computer vision</span><i>◆</i><span>local-first</span><i>◆</i><span>generative audio</span><i>◆</i><span>clinical simulation</span><i>◆</i><span>learning systems</span><i>◆</i><span>evidence chains</span><i>◆</i>
-  </div>
-</div>
-
-<!-- 04 · HEALTHJOURNAL ------------------------------------------------------->
-<article class="sec sec--project" id="p-health" data-sec="04" data-label="HealthJournal" data-accent="#00805a">
-  <span class="numeral" aria-hidden="true">003</span>
-
-  <div class="wrap">
-    <header class="proj-head">
-      <p class="eyebrow"><span data-scramble>003 — Local-first</span> <span class="rule"></span> <span>TypeScript · React · PWA</span></p>
-      <h2 class="h-display h-display--tight">Zero<br />network<br /><span class="accent">requests.</span></h2>
-      <p class="proj-lede">
-        A daily health journal that lives on your device. You build a check-in around your own
-        situation — skin, gut, migraine, POTS, fatigue, a diet experiment — answer it in about a
-        minute, and watch the trends come out over weeks. When you have an appointment, you print
-        a summary and take it with you.
-      </p>
-    </header>
-
-    <div class="proj-cols">
-      <div class="proj-col">
-        <p>
-          Out of the box, after the app has loaded once, it makes no network requests at all. There
-          is no account and no server, because there is nothing to upload it to. Twelve question
-          packs can be mixed, switched off individually, reordered, and extended with your own
-          questions — each with independent visibility across five surfaces.
-        </p>
-        <p>
-          The flip side of local-only is stated plainly rather than glossed: <em>nobody can recover
-          it for you</em>. So the app nudges you toward a real backup file, explains that installed
-          apps are exempt from browsers' idle-eviction rules, and asks for persistent storage on
-          your behalf — then shows you whether the browser actually granted it.
-        </p>
-      </div>
-      <div class="proj-col">
-        <h3 class="h-sub">The one exception, drawn to scale</h3>
-        <div class="leaves">
-          <div class="leaves__col">
-            <p class="mono small">Never leaves the device</p>
-            <ul><li>written notes</li><li>photos</li><li>your name</li><li>anything identifying</li><li>excluded questions</li><li>entries outside the window</li></ul>
-          </div>
-          <div class="leaves__col leaves__col--out">
-            <p class="mono small">Sent, only after you confirm a preview</p>
-            <ul><li>the labels of metrics you track</li><li>one row per logged day of numeric answers, days numbered from the start of the window rather than dated</li></ul>
-          </div>
-        </div>
-        <p class="mono small dim">Optional AI observations are off by default, use a key you bring, and a test asserts each of those exclusions. A locally stored key is not encrypted — Settings says so, rather than implying a vault.</p>
-      </div>
-    </div>
-
-    <div class="stat-strip">
-      <div><b data-count="217">217</b><span>tests, 14 suites</span></div>
-      <div><b data-count="12">12</b><span>question packs</span></div>
-      <div><b>AA</b><span>contrast gate in CI</span></div>
-      <div><b>CSV · XLSX · JSON</b><span>your data, out</span></div>
-    </div>
-
-    <p class="pull">
-      “No model ID is load-bearing.” <span>The first version hard-coded a model name. Google
-      retired it for new keys months ahead of the published date, and every new user got a 404
-      from a build that had worked the week before. Now setup asks the key what it can reach,
-      scores the results, and a model that disappears re-resolves itself — exactly once, because
-      a broken provider shouldn't become a loop.</span>
-    </p>
-
-    <p class="proj-links">
-      <a class="btn" href="https://github.com/cvree/HealthJournal" data-magnetic data-cursor-text="Read">Repository ↗</a>
-      <span class="mono small">Not medical advice — the app surfaces possible patterns in your own logs and never claims a cause. Ships a read-only viewer for handing a backup to a clinician, plus a Capacitor iOS wrapper and a WidgetKit starter.</span>
+      <span class="mono small">105 Python test modules · a committed SQLite milestone · a Windows installer · independent fan project, unaffiliated with Blizzard or FACEIT</span>
     </p>
   </div>
 </article>
 
 <!-- 05 · MANIFESTER ---------------------------------------------------------->
-<article class="sec sec--project sec--tint" id="p-manifester" data-sec="05" data-label="Manifester" data-accent="#6c4dff">
-  <span class="numeral" aria-hidden="true">004</span>
+<article class="sec sec--project sec--flagship" id="p-manifester" data-sec="05" data-label="Manifester" data-accent="#8f4a63">
+  <span class="numeral" aria-hidden="true">04</span>
 
   <div class="wrap">
     <header class="proj-head">
-      <p class="eyebrow"><span data-scramble>004 — Generative audio</span> <span class="rule"></span> <span>React 19 · Web Audio · PWA · MIT</span></p>
-      <h2 class="h-display h-display--tight">This app<br />contains no<br /><span class="accent">audio files.</span></h2>
+      <p class="eyebrow"><span data-scramble>04 — Generative audio</span> <span class="rule"></span> <span>React 19 · Web Audio · PWA · MIT</span></p>
+      <h2 class="h-display h-display--tight">Every sound<br />in this app is<br /><span class="accent">made at runtime.</span></h2>
       <p class="proj-lede">
-        A tiny calm garden for your intentions: write the words you want to hear, choose a voice,
-        and let them loop over ambient sound. Every sound in it is synthesised in the browser at
-        runtime — so the download stays small, it works offline forever with no cache to miss, and
-        the repository ships no samples at all.
+        Write the words you want to hear, choose a voice, and let them loop over ambient sound
+        for as long as you like. The repository ships no audio samples at all — every ambience
+        is synthesised in the browser — so the download stays small and it works offline forever
+        with no cache to miss.
       </p>
     </header>
+
+    <figure class="shot shot--hero shot--soft">
+      <div class="shot__frame">
+        <img src="assets/projects/manifester/hero-manifester-player.webp"
+             width="2400" height="1500" loading="lazy" decoding="async"
+             alt="Manifester's expanded player filling the screen in a pale rose and sage gradient. A large breathing visualisation sits in the centre — concentric soft rings with a progress arc around them — reading Breathe in with a countdown of 2. Above it, the session title Evening steadiness and a status line reading RESTING · 2S. Below it, the affirmation currently being spoken: I trust myself to handle what comes. A single round pause button sits under that, with 9:38 remaining · Pass 8, an End session button, and a footer reading Next pass in 2s and Moon Garden." />
+      </div>
+      <figcaption class="mono small">
+        The expanded player, eight passes into a ten-minute session. The breathing guide, the
+        line currently being spoken, and one control — the header, the navigation and the
+        settings column have all stepped back. Everything you can hear here is being generated
+        by the page as it plays.
+      </figcaption>
+    </figure>
 
     <div class="proj-cols">
       <div class="proj-col">
@@ -475,9 +532,9 @@
         <p>
           The test suite runs against a real Web Audio implementation in Node. It builds the same
           graph a browser builds, renders it, and measures the result: every brainwave preset's
-          modulation rate must land within <b>0.05 Hz</b> of its target over a 30-second render,
-          and each binaural channel's pitch is measured separately — which only agrees with the
-          intended pair if the channels really are hard-split.
+          modulation rate must land within <b>0.05&nbsp;Hz</b> of its target over a 30-second
+          render, and each binaural channel's pitch is measured separately — which only agrees
+          with the intended pair if the channels really are hard-split.
         </p>
         <p>
           Transitions are tested by interrupting a render partway through and calling the
@@ -487,34 +544,32 @@
         </p>
       </div>
       <div class="proj-col">
-        <h3 class="h-sub">Exporting an hour of audio without 635 MB of RAM</h3>
+        <h3 class="h-sub">An hour of audio without 635 MB of RAM</h3>
         <p>
           Rendering a full session in one offline context would need roughly 635 MB. Instead the
-          export renders in chunks through <code>OfflineAudioContext</code> — many times faster than
-          real time — and stitches them into a real MP3 you can put on any player.
+          export renders in chunks through <code>OfflineAudioContext</code> — many times faster
+          than real time, in a Web Worker so the app stays usable — and stitches them into a real
+          MP3 you can put on any player.
         </p>
         <p>
-          The speech itself uses the device's own engine through the Web Speech API: no cloud
-          service, no key, no cost. Every available voice is scored for quality and labelled
-          honestly — <em>Neural</em>, <em>Enhanced</em>, <em>Standard</em>, or
-          <em>Basic — robotic, worth avoiding</em> — and when the best one on the device is poor,
-          the app names the exact settings path to download a free neural voice.
+          The speech uses the device's own engine through the Web Speech API: no cloud service,
+          no key, no cost. Every available voice is scored and labelled honestly — <em>Neural</em>,
+          <em>Enhanced</em>, <em>Standard</em>, or <em>Basic — robotic, worth avoiding</em> — and
+          when the best one on the device is poor, the app names the exact settings path to
+          download a free neural voice.
         </p>
       </div>
     </div>
 
-    <figure class="breather" data-breather>
-      <div class="breather__art" aria-hidden="true">
-        <span class="breather__ring"></span>
-        <span class="breather__ring breather__ring--2"></span>
-        <span class="breather__core"></span>
+    <figure class="shot shot--aside shot--right shot--soft">
+      <div class="shot__frame">
+        <img src="assets/projects/manifester/manifester-builder.webp"
+             width="1600" height="1000" loading="lazy" decoding="async"
+             alt="Manifester's Create screen. On the left, a form headed Create a calming loop with a title field reading Evening steadiness and a five-line text area of affirmations, a word and line count, suggested starting phrases, and Add to my words and Improve my words buttons. On the right, a live preview card headed YOUR RITUAL showing the same title, a breathing visualisation already animating, the first line of the ritual, a Hear a line button, and five shortcut tiles reading Voice, Sound, Length, Delay and Rhythm with their current values." />
       </div>
-      <figcaption>
-        <p class="mono small">Calm · 4 in / 6 out</p>
-        <h3 class="h-sub">One of ten patterns, six visual forms, five breath voices.</h3>
-        <p>The guide runs while a session does, pauses when the session pauses, and every phase
-        length is yours to change. This is the shape of one of them — and like everything else on
-        this page, it stops entirely if your system asks for reduced motion.</p>
+      <figcaption class="mono small">
+        The ritual builder. Every tile in that live preview is a shortcut rather than a readout —
+        tapping Voice, Sound, Delay or Rhythm opens the setting it reports.
       </figcaption>
     </figure>
 
@@ -525,7 +580,7 @@
       <div class="spec"><span class="mono small">Session length</span><b>5 min → 8 hrs</b></div>
       <div class="spec"><span class="mono small">Vanta</span><b>declined</b></div>
     </div>
-    <p class="mono small dim center">Declined on purpose: Vanta needs three.js, which would roughly double the download of an app whose whole argument is that it is small and works offline. The same page documents why React Bits was used as a <em>reference</em> rather than a dependency.</p>
+    <p class="mono small dim center">Declined on purpose: Vanta needs three.js, which would roughly double the download of an app whose whole argument is that it is small and works offline.</p>
 
     <p class="proj-links">
       <a class="btn btn--solid" href="https://cvree.github.io/Manifester/" data-magnetic data-cursor-text="Open">Live site ↗</a>
@@ -535,113 +590,136 @@
   </div>
 </article>
 
-<!-- 06 · REMY DEE ------------------------------------------------------------>
-<article class="sec sec--project invert sec--remy" id="p-remy" data-sec="06" data-label="Remy Dee" data-accent="#e0a43a">
-  <span class="numeral" aria-hidden="true">005</span>
-
-  <div class="wrap">
-    <header class="proj-head">
-      <p class="eyebrow"><span data-scramble>005 — Learning game</span> <span class="rule"></span> <span>One HTML file · 1.08 MB · 69 commits</span></p>
-      <h2 class="h-display h-display--tight">You learn<br />medical terms<br />by <span class="accent">building</span><br />them.</h2>
-      <p class="proj-lede">
-        <em>Remy Dee: The Lost Lexicon.</em> A player who finishes it can look at a term they have
-        never seen, break it into prefix / root / suffix, and make a confident, correct guess at
-        what it means — without having felt like they were studying.
-      </p>
-    </header>
-
-    <figure class="loop" aria-labelledby="loop-cap">
-      <div class="loop__beat"><p class="mono small">Learn</p><h4>Term&nbsp;Builder</h4><p>Assemble a term for a traveller who needs it.</p><span class="mono dim">construction</span></div>
-      <div class="loop__arrow" aria-hidden="true">→</div>
-      <div class="loop__beat"><p class="mono small">Prepare</p><h4>Forge / Decode</h4><p>Identify a part's meaning under stakes to earn good materials.</p><span class="mono dim">recall</span></div>
-      <div class="loop__arrow" aria-hidden="true">→</div>
-      <div class="loop__beat"><p class="mono small">Prove</p><h4>The&nbsp;Road</h4><p>Recognise parts at speed and chain them into real terms.</p><span class="mono dim">automaticity</span></div>
-      <div class="loop__arrow" aria-hidden="true">→</div>
-      <div class="loop__beat"><p class="mono small">Reward</p><h4>Rune&nbsp;Gates</h4><p>Map meaning to form under time pressure; unlock the next blueprint.</p><span class="mono dim">transfer</span></div>
-      <figcaption id="loop-cap" class="mono small">Four beats, one vocabulary, four cognitive modes. The design doc's rule: the systems must never let the player skip a mode.</figcaption>
-    </figure>
-
-    <section class="builder" data-builder aria-label="Term builder demonstration">
-      <p class="eyebrow"><span>The idea, in one term</span></p>
-      <div class="builder__row">
-        <span class="part" data-part="0"><b>brady-</b><i>slow</i></span>
-        <span class="builder__op" aria-hidden="true">+</span>
-        <span class="part" data-part="1"><b>-cardia</b><i>heart condition</i></span>
-        <span class="builder__op" aria-hidden="true">=</span>
-        <span class="built" data-built><b>bradycardia</b><i>a slow heart rate</i></span>
-      </div>
-      <p class="builder__foot">
-        <button class="btn btn--sm" type="button" data-build-next data-magnetic data-cursor-text="Again">Build another →</button>
-        <span class="mono small dim">Two parts you already know, one term you have never seen. That is the whole promise, and the game turns it into a road you can only walk by knowing them.</span>
-      </p>
-      <p class="visually-hidden" role="status" data-build-status></p>
-    </section>
-
-    <div class="proj-cols">
-      <div class="proj-col">
-        <h3 class="h-sub">Knowledge is power, literally</h3>
-        <p>
-          Every mechanical advantage traces back to a word the player understood. Momentum comes
-          from chaining real terms; good materials come from a correct decode; gate answers open the
-          fast lane. There is no stat you can buy that replaces knowing a root. The stated
-          anti-goal is blunt: <em>if a player can win by ignoring the vocabulary, the game has
-          failed.</em>
-        </p>
-      </div>
-      <div class="proj-col">
-        <h3 class="h-sub">The whole game is one file</h3>
-        <p>
-          No build step, no bundler, no install — a single HTML document you can open. GSAP, three.js,
-          Vanta and Lenis are loaded from a CDN and the effects layer feature-detects each one, so
-          the game is fully playable if any or all of them fail. The font stylesheet was moved off
-          the critical path after a measurement on a network that couldn't reach the CDN: the title
-          screen used to take 12.9 seconds to appear. And the operating system's reduced-motion
-          setting is authoritative unless the player explicitly opts back in.
-        </p>
-      </div>
-    </div>
-
-    <p class="proj-links">
-      <a class="btn" href="https://github.com/cvree/RemyDee" data-magnetic data-cursor-text="Read">Repository ↗</a>
-      <span class="mono small">Design docs in the open: NORTH_STAR, GAME_PLAN, DEPTH_PLAN, and four dated review passes.</span>
-    </p>
+<!-- transition --------------------------------------------------------------->
+<div class="marquee" aria-hidden="true" data-marquee>
+  <div class="marquee__track">
+    <span>multiplayer</span><i>◆</i><span>local-first</span><i>◆</i><span>computer vision</span><i>◆</i><span>generative audio</span><i>◆</i><span>clinical simulation</span><i>◆</i><span>learning systems</span><i>◆</i>
+    <span>multiplayer</span><i>◆</i><span>local-first</span><i>◆</i><span>computer vision</span><i>◆</i><span>generative audio</span><i>◆</i><span>clinical simulation</span><i>◆</i><span>learning systems</span><i>◆</i>
   </div>
-</article>
+</div>
 
-<!-- 07 · PAIR ---------------------------------------------------------------->
-<section class="sec sec--pair" data-sec="07" data-label="Two more" data-accent="#1f4bff">
+<!-- 06 · MORE PROJECTS ------------------------------------------------------->
+<section class="sec sec--more" id="more" data-sec="06" data-label="More projects" data-accent="#1f4bff">
   <div class="wrap">
     <div class="sec-head sec-head--compact">
-      <p class="eyebrow"><span data-scramble>006 &amp; 007 — Also shipped</span></p>
-      <h2 class="h-display h-display--sm">Two products<br />built around<br /><span class="outline">a refusal.</span></h2>
-      <p class="sec-head__aside">One refuses to tell a student it knows more than it does. The other refuses to
-      call a booking confirmed until a provider confirms it. The pattern repeats because it is
-      the point.</p>
+      <p class="eyebrow"><span data-scramble>05–08 — More projects</span></p>
+      <h2 class="h-display h-display--sm">Four more<br />that actually<br /><span class="outline">shipped.</span></h2>
+      <p class="sec-head__aside">Smaller sections, not smaller work. Each of these is a real product with a real
+      loop in it — they sit here because the four above are the ones I would put my name on first.</p>
     </div>
 
-    <div class="pair">
-      <article class="card" id="p-prep">
-        <p class="eyebrow mono">006 · Phlebotomy Exam Prep <span class="dot"></span></p>
+    <div class="works">
+      <article class="work" id="p-vials">
+        <p class="eyebrow mono">05 · Tiny Vials <span class="dot"></span> <span>three.js · 600+ tests</span></p>
+        <h3 class="h-mid">Seventeen real interactions,<br />graded in real units.</h3>
+        <p>
+          A 3D phlebotomy practice game where nothing is a multiple-choice question. The angle you
+          entered at. The seconds the tourniquet was on. The millilitres in each tube. The grams of
+          pressure you held, and for how long. Screw the needle into its holder and the bevel ends
+          up pointing wherever your turning stopped — the next step inherits exactly that.
+        </p>
+        <p>
+          The body under your hands can go wrong, caused by what you did, and it announces itself
+          the way it would at the chair. Stopping the draw is often the right answer, and it really
+          does stop the draw: the report is built from the tubes you actually collected.
+        </p>
+
+        <figure class="gauge" data-gauge aria-labelledby="gauge-cap">
+          <div class="gauge__art">
+            <svg viewBox="0 0 520 260" role="img" aria-label="Cross-section of an arm. A needle enters the skin at 22 degrees, inside the 15 to 30 degree window, and its tip reaches the vein below.">
+              <path class="g-window" d="M300 150 L72 89 A236 236 0 0 1 96 32 Z" />
+              <line class="g-skin" x1="20" y1="150" x2="500" y2="150" />
+              <line class="g-guide" x1="300" y1="150" x2="150" y2="150" />
+              <ellipse class="g-vein" cx="356" cy="172" rx="48" ry="15" />
+              <g class="g-needle" data-needle transform="rotate(22 300 150)">
+                <line x1="300" y1="150" x2="66" y2="150" />
+                <polygon points="300,146 300,154 368,150" />
+              </g>
+              <text class="g-label" x="104" y="26" font-family="IBM Plex Mono, monospace" font-size="13">15–30° window</text>
+              <text class="g-read" data-angle-read x="286" y="200" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="16">22°</text>
+              <text class="g-note" x="24" y="142" font-family="IBM Plex Mono, monospace" font-size="11">skin</text>
+              <text class="g-note" x="420" y="204" font-family="IBM Plex Mono, monospace" font-size="11">vein</text>
+            </svg>
+          </div>
+          <figcaption id="gauge-cap">
+            <p class="mono small">Fifteen to thirty degrees through the skin, five to fifteen for a hand vein.
+            Too shallow skates over the vein; too steep goes straight through it. The number the
+            rubric grades is the number your hand produced.</p>
+            <p class="mono small dim" data-angle-verdict>Entry angle: 22° — inside the window.</p>
+          </figcaption>
+        </figure>
+
+        <ul class="kv mono small">
+          <li><span>Modes</span><b>Learn · Practice · Final</b></li>
+          <li><span>Complications</span><b>8, all caused</b></li>
+          <li><span>Tests</span><b>600+, no browser</b></li>
+          <li><span>Order of draw</span><b>CLSI</b></li>
+        </ul>
+        <p class="proj-links">
+          <a class="btn btn--sm btn--solid" href="https://cvree.github.io/PhlebLearn/" data-magnetic data-cursor-text="Play">Play it ↗</a>
+          <a class="btn btn--sm" href="https://github.com/cvree/PhlebLearn" data-magnetic data-cursor-text="Read">Repository ↗</a>
+        </p>
+      </article>
+
+      <article class="work" id="p-remy">
+        <p class="eyebrow mono">06 · Remy Dee: The Lost Lexicon <span class="dot"></span> <span>one HTML file · 1.08 MB</span></p>
+        <h3 class="h-mid">You learn medical terms<br />by building them.</h3>
+        <p>
+          A player who finishes it can look at a term they have never seen, break it into prefix /
+          root / suffix, and make a confident, correct guess at what it means — without having felt
+          like they were studying. Four beats, one vocabulary, four cognitive modes: construction,
+          recall, automaticity, transfer. The design doc's rule is that the systems must never let
+          the player skip a mode.
+        </p>
+
+        <section class="builder" data-builder aria-label="Term builder demonstration">
+          <p class="eyebrow"><span>The idea, in one term</span></p>
+          <div class="builder__row">
+            <span class="part" data-part="0"><b>brady-</b><i>slow</i></span>
+            <span class="builder__op" aria-hidden="true">+</span>
+            <span class="part" data-part="1"><b>-cardia</b><i>heart condition</i></span>
+            <span class="builder__op" aria-hidden="true">=</span>
+            <span class="built" data-built><b>bradycardia</b><i>a slow heart rate</i></span>
+          </div>
+          <p class="builder__foot">
+            <button class="btn btn--sm" type="button" data-build-next data-magnetic data-cursor-text="Again">Build another →</button>
+            <span class="mono small dim">Two parts you already know, one term you have never seen.</span>
+          </p>
+          <p class="visually-hidden" role="status" data-build-status></p>
+        </section>
+
+        <p>
+          Every mechanical advantage traces back to a word the player understood. The stated
+          anti-goal is blunt: <em>if a player can win by ignoring the vocabulary, the game has
+          failed.</em> The whole thing is a single HTML document with no build step, and the
+          effects layer feature-detects each library so it stays playable if all of them fail.
+        </p>
+        <p class="proj-links">
+          <a class="btn btn--sm" href="https://github.com/cvree/RemyDee" data-magnetic data-cursor-text="Read">Repository ↗</a>
+          <span class="mono small">Design docs in the open: NORTH_STAR, GAME_PLAN, DEPTH_PLAN, and four dated review passes.</span>
+        </p>
+      </article>
+
+      <article class="work" id="p-prep">
+        <p class="eyebrow mono">07 · Phlebotomy Exam Prep <span class="dot"></span> <span>TypeScript · static export</span></p>
         <h3 class="h-mid">Know what to study<br />before the exam.</h3>
         <p>
           A certification study platform built around one loop: learn → practise → get feedback →
-          find the weak area → drill it → test. The results screen leads with the weak-area insight,
-          not the score. Mastery per area is weighted toward recent answers, gated on exposure, and
-          shows its reasoning in plain language.
+          find the weak area → drill it → test. The results screen leads with the weak-area
+          insight, not the score. Mastery per area is weighted toward recent answers, gated on
+          exposure, and shows its reasoning in plain language.
         </p>
         <p>
-          The Order of Draw drill offers three interchangeable interactions — drag, tap-to-swap, and
-          move up/down buttons on every row — so the knowledge being tested is never gated behind a
-          pointer gesture.
+          The Order of Draw drill offers three interchangeable interactions — drag, tap-to-swap,
+          and move up/down buttons on every row — so the knowledge being tested is never gated
+          behind a pointer gesture.
         </p>
         <div class="honest">
           <p class="mono small">Stated on every question, in the product:</p>
           <p>All 94 questions currently sit at <code>needs-review</code>. They were written from
           material phlebotomy programmes teach consistently, but no qualified reviewer has checked
           them against the cited references — and a test fails the build if anything is promoted
-          without that work happening. The NHA exam's structure is <code>undefined</code> in the
-          data rather than guessed at, and the mock exam is labelled as <em>ours</em> everywhere it
-          appears.</p>
+          without that work happening.</p>
         </div>
         <ul class="kv mono small">
           <li><span>Questions</span><b>94, original</b></li>
@@ -652,9 +730,9 @@
         <p class="proj-links"><a class="btn btn--sm" href="https://github.com/cvree/Phlebotomy-Exam-Prep" data-magnetic data-cursor-text="Read">Repository ↗</a></p>
       </article>
 
-      <article class="card" id="p-twodo">
-        <p class="eyebrow mono">007 · TwoDo <span class="dot"></span></p>
-        <h3 class="h-mid">Privacy proven<br />in SQL, not in a<br />component.</h3>
+      <article class="work" id="p-twodo">
+        <p class="eyebrow mono">08 · TwoDo <span class="dot"></span> <span>TypeScript · Postgres RLS</span></p>
+        <h3 class="h-mid">Privacy proven in SQL,<br />not in a component.</h3>
         <p>
           The action layer for couples: discover something that works for both of you, agree
           privately, decide together, turn it into a real plan, and learn from what happened.
@@ -663,16 +741,15 @@
         </p>
         <p>
           Neither partner sees the other's vote until both have responded — enforced by row-level
-          security in Postgres. CI runs an authorization suite against a real PostGIS container that
-          proves, in SQL, that one partner cannot read the other's private gift ideas, cannot see a
-          claim on their own wishlist, and cannot read a vote before casting their own.
+          security in Postgres. CI runs an authorization suite against a real PostGIS container
+          that proves, in SQL, that one partner cannot read the other's private gift ideas, cannot
+          see a claim on their own wishlist, and cannot read a vote before casting their own.
         </p>
         <div class="honest">
           <p class="mono small">Two refusals worth copying:</p>
           <p>TwoDo never says a venue is allergy safe — the strongest claim it will make is
-          <em>possible fit, confirm with the venue</em>, and an unverified allergy pushes a result
-          <b>down</b>. A booking is only “confirmed” when a provider confirms it; otherwise the
-          state is <code>deep-link-opened</code>, and it says so.</p>
+          <em>possible fit, confirm with the venue</em>. A booking is only “confirmed” when a
+          provider confirms it; otherwise the state is <code>deep-link-opened</code>, and it says so.</p>
         </div>
         <ul class="kv mono small">
           <li><span>Regions</span><b>4 · SoCal</b></li>
@@ -689,67 +766,61 @@
   </div>
 </section>
 
-<!-- 08 · CONSTELLATION ------------------------------------------------------->
-<section class="sec sec--constellation" id="constellation" data-sec="08" data-label="Constellation" data-accent="#0d0d0f">
+<!-- 07 · EXPERIMENTS --------------------------------------------------------->
+<section class="sec sec--constellation" id="experiments" data-sec="07" data-label="Experiments" data-accent="#0d0d0f">
   <div class="wrap">
     <div class="sec-head sec-head--compact">
-      <p class="eyebrow"><span data-scramble>008–013 — The rest of the shelf</span></p>
-      <h2 class="h-display h-display--sm">Experiments,<br />and ground<br />staked out.</h2>
-      <p class="sec-head__aside">Some of these are running code that isn't public. Some are a repository name and a
-      date, which is what a decision looks like before it becomes a project. Both are listed as
-      what they are.</p>
+      <p class="eyebrow"><span data-scramble>09–13 — Experiments, and ground staked out</span></p>
+      <h2 class="h-display h-display--sm">Named,<br />not yet<br />built.</h2>
+      <p class="sec-head__aside">A repository name and a date is what a decision looks like before it becomes a
+      project. These are listed as exactly that, rather than dressed up as products.</p>
     </div>
 
     <ul class="constellation">
       <li class="node">
-        <p class="node__n mono">008</p>
-        <h3>SpellBomb</h3>
-        <p class="node__meta mono small">JavaScript · private · ~20 MB</p>
-        <p>A spelling game, and the largest of the private repositories — actively pushed to the same week as everything else here. Nothing further is claimed for it publicly, because nothing further is public.</p>
+        <p class="node__n mono">09</p>
+        <h3>MedicalTerminology-Trainer</h3>
+        <p class="node__meta mono small">Empty · 08 Aug 2026</p>
+        <p>A third front on the problem Remy Dee and the exam prep attack from different angles: making clinical vocabulary stick.</p>
       </li>
       <li class="node">
-        <p class="node__n mono">009</p>
+        <p class="node__n mono">10</p>
+        <h3>EpiMap</h3>
+        <p class="node__meta mono small">Empty · 03 Aug 2026</p>
+        <p>Epidemiology and mapping. An intention with a name, not a product.</p>
+      </li>
+      <li class="node">
+        <p class="node__n mono">11</p>
+        <h3>Steady</h3>
+        <p class="node__meta mono small">Empty · 08 Aug 2026</p>
+        <p>Named the same day as MedicalTerminology-Trainer. Two repositories created in one afternoon is what the start of a working week looks like here.</p>
+      </li>
+      <li class="node">
+        <p class="node__n mono">12</p>
         <h3>ManyMini</h3>
         <p class="node__meta mono small">Private · empty · 20 Jul 2026</p>
-        <p>Private and, at the time of writing, empty. The name reserves a shape rather than describing a product: a collection of mini games.</p>
+        <p>The name reserves a shape rather than describing a product: a collection of mini games.</p>
       </li>
-      <li class="node">
-        <p class="node__n mono">010</p>
-        <h3>MedicalTerminology-Trainer</h3>
-        <p class="node__meta mono small">Staked out · 08 Aug 2026</p>
-        <p>The third front on the same problem Remy Dee and the exam prep attack from different angles: making clinical vocabulary stick.</p>
-      </li>
-      <li class="node">
-        <p class="node__n mono">011</p>
-        <h3>EpiMap</h3>
-        <p class="node__meta mono small">Staked out · 03 Aug 2026</p>
-        <p>Epidemiology and mapping. Empty at time of writing — an intention with a name, not a product.</p>
-      </li>
-      <li class="node">
-        <p class="node__n mono">012</p>
-        <h3>Steady</h3>
-        <p class="node__meta mono small">Staked out · 08 Aug 2026</p>
-        <p>Named the same day as the two above. Three repositories created in one afternoon is what the start of a working week looks like here.</p>
-      </li>
-      <li class="node node--self">
-        <p class="node__n mono">013</p>
+      <li class="node node--self" id="p-hub">
+        <p class="node__n mono">13</p>
         <h3>Portfolio-Hub</h3>
         <p class="node__meta mono small">This page · no build step</p>
-        <p>One HTML file, one stylesheet, one script. Lenis and GSAP enhance it; nothing here breaks if they fail to load, and everything stops if you ask your system for reduced motion.</p>
+        <p>One HTML file, one stylesheet, one script, and the screenshots above. Lenis and GSAP enhance it; nothing here breaks if they fail to load, and everything stops if you ask your system for reduced motion.</p>
       </li>
     </ul>
   </div>
 </section>
 
-<!-- 09 · METHOD -------------------------------------------------------------->
-<section class="sec sec--method invert" data-sec="09" data-label="Method" data-accent="#c8f024">
+<!-- 08 · METHOD -------------------------------------------------------------->
+<section class="sec sec--method invert" data-sec="08" data-label="Method" data-accent="#c8f024">
   <div class="wrap">
     <div class="sec-head">
-      <p class="eyebrow"><span data-scramble>09 — Method</span></p>
+      <p class="eyebrow"><span data-scramble>08 — Method</span></p>
       <h2 class="h-display">The connecting<br />theme is not<br /><span class="outline">a stack.</span></h2>
       <div class="sec-head__aside">
-        <p>Six domains in five weeks looks scattered until you read the code, at which point the same
-        five decisions keep reappearing. They are the actual portfolio.</p>
+        <p>A multiplayer game, a health journal, a vision pipeline and an audio engine look
+        scattered until you read the code, at which point the same five decisions keep
+        reappearing. They are the actual portfolio.</p>
       </div>
     </div>
 
@@ -763,51 +834,50 @@
       </li>
       <li>
         <span class="principles__n mono">ii</span>
-        <h3>A claim is worth what its evidence chain is worth.</h3>
-        <p>Every published composition links comp → run → frames → crops → review status; if the
-        chain is missing, the page shows nothing rather than a number. Every question carries a
-        review status. Every audio claim is measured from a real render.</p>
+        <h3>One authority per fact.</h3>
+        <p>SpellBomb's server owns every outcome and the client may only ask; its whole economy —
+        odds, prices, pity, duplicates — lives in one file that the shop renders from and the
+        server rolls against. A number with two sources is a bug waiting for a release.</p>
       </li>
       <li>
         <span class="principles__n mono">iii</span>
         <h3>The honest limits go at the top of the README.</h3>
-        <p>“Hero coverage is 8 of 52.” “All 94 questions sit at needs-review.” “The partner switcher
-        is a demonstration device, not a security boundary.” Written by the person who would most
-        like them to be untrue.</p>
+        <p>“Hero coverage is 8 of 52.” “All 94 questions sit at needs-review.” “Everyone Spells is
+        exploitable and here is why.” Written by the person who would most like them to be untrue.</p>
       </li>
       <li>
         <span class="principles__n mono">iv</span>
         <h3>Correctness lives in pure functions.</h3>
-        <p>Wheel selection, couple-fit scoring, mastery calculation, rubric grading, reward
-        arithmetic — all pure, all tested without a DOM, a clock, or a network. The UI is allowed to
-        be messy; the thing that must be right is not.</p>
+        <p>Wheel selection, couple-fit scoring, mastery calculation, rubric grading, chest odds,
+        breathing timings — all pure, all tested without a DOM, a clock, or a network. The UI is
+        allowed to be messy; the thing that must be right is not.</p>
       </li>
       <li>
         <span class="principles__n mono">v</span>
         <h3>Motion serves the content or it gets deleted.</h3>
-        <p>The WebGL ambience layer in the tracker was removed because it cost more than the rest of
-        the page combined and made targets move away from the pointer. Manifester declined Vanta on
-        payload grounds. Reduced motion is honoured from the operating system, not just an in-app
-        toggle.</p>
+        <p>The WebGL ambience layer in the tracker was removed because it cost more than the rest
+        of the page combined and made targets move away from the pointer. Manifester declined Vanta
+        on payload grounds. Reduced motion is honoured from the operating system, not just an
+        in-app toggle.</p>
       </li>
     </ol>
 
     <div class="capabilities">
+      <div><p class="mono small">Real-time systems</p><p>Authoritative server state over Socket.IO, reconnection and seat recovery, per-IP connection caps, graceful shutdown, Postgres with a file fallback, load testing.</p></div>
       <div><p class="mono small">Vision &amp; pipelines</p><p>OpenCV template matching, RANSAC geometry fitting, temporal consensus models, staged SQLite ingestion, evidence archives, reproducibility gates.</p></div>
       <div><p class="mono small">Local-first products</p><p>IndexedDB, PWAs, offline-first sync-free architectures, persistent-storage negotiation, versioned schema migrations that never throw.</p></div>
       <div><p class="mono small">Real-time media</p><p>Web Audio graph synthesis, binaural rendering, OfflineAudioContext export, Web Speech, three.js scenes, physical interaction modelling.</p></div>
       <div><p class="mono small">Learning systems</p><p>Mastery estimation, weak-area detection, deterministic recommendation, rubric design, question-bank integrity testing.</p></div>
-      <div><p class="mono small">Data &amp; authorization</p><p>Postgres row-level security proven by SQL test suites in CI, typed provider adapters, privacy filters as pure functions.</p></div>
       <div><p class="mono small">Craft</p><p>Design tokens with contrast audits in CI, keyboard-complete interfaces, reduced-motion parity, and a preference for no build step where one isn't earned.</p></div>
     </div>
   </div>
 </section>
 
-<!-- 10 · INVITATION ---------------------------------------------------------->
-<section class="sec sec--end" data-sec="10" data-label="Invitation" data-accent="#ff4d00">
+<!-- 09 · INVITATION ---------------------------------------------------------->
+<section class="sec sec--end" data-sec="09" data-label="Invitation" data-accent="#ff2e63">
   <div class="vanta-mount" data-vanta aria-hidden="true"></div>
   <div class="wrap end">
-    <p class="eyebrow"><span data-scramble>10 — Open invitation</span></p>
+    <p class="eyebrow"><span data-scramble>09 — Open invitation</span></p>
     <h2 class="h-end">
       <span class="reveal-line">Go read</span>
       <span class="reveal-line">the source.</span>
@@ -822,10 +892,11 @@
       <a class="btn btn--big btn--solid" href="https://github.com/cvree?tab=repositories" data-magnetic data-cursor-text="Open">github.com/cvree ↗</a>
     </p>
     <ul class="end__links mono">
-      <li><a href="https://github.com/cvree/OWCSComp.Tracker">OWCSComp.Tracker</a></li>
-      <li><a href="https://cvree.github.io/PhlebLearn/">Tiny Vials</a></li>
-      <li><a href="https://github.com/cvree/HealthJournal">HealthJournal</a></li>
+      <li><a href="#p-spellbomb">SpellBomb</a></li>
+      <li><a href="https://github.com/cvree/HealthJournal">Health Journal</a></li>
+      <li><a href="https://github.com/cvree/OWCSComp.Tracker">OWCS Comp Tracker</a></li>
       <li><a href="https://cvree.github.io/Manifester/">Manifester</a></li>
+      <li><a href="https://cvree.github.io/PhlebLearn/">Tiny Vials</a></li>
       <li><a href="https://github.com/cvree/RemyDee">Remy Dee</a></li>
       <li><a href="https://github.com/cvree/Phlebotomy-Exam-Prep">Exam Prep</a></li>
       <li><a href="https://cvree.github.io/TwoDO/">TwoDo</a></li>
@@ -833,9 +904,9 @@
   </div>
 
   <footer class="foot mono small">
-    <span>cvree — index of works</span>
-    <span>Built as one HTML file, one stylesheet, one script.</span>
-    <span>Facts drawn from each repository's own README, August 2026.</span>
+    <span>cvree</span>
+    <span>One HTML file, one stylesheet, one script.</span>
+    <span>Facts and screenshots drawn from each repository, August 2026.</span>
     <a href="#top" data-magnetic data-cursor-text="Top">Back to top ↑</a>
   </footer>
 </section>
