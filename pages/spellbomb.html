@@ -1,0 +1,326 @@
+<!--meta
+path: spellbomb.html
+title: SpellBomb — Connor Eppolito
+ogtitle: SpellBomb — a real-time multiplayer spelling game
+nav: work
+surface: ink
+accent: spellbomb
+ogtype: article
+image: assets/projects/spellbomb/hero-spellbomb-game.webp
+desc: A real-time multiplayer party spelling game. One authoritative Node server owns the fuse, the hearts and the word; two modes share one set of rooms; and the whole thing runs inside a Discord voice channel without becoming a second game.
+-->
+
+<section class="case-hero" aria-labelledby="page-h">
+  <div class="shell">
+    <p class="case-hero__top" data-rise>
+      <span class="chip chip--dev"><span class="led" aria-hidden="true"></span>In development</span>
+      <span class="chip">Live multiplayer</span>
+      <span class="chip">v9.3.0</span>
+      <span class="chip">Private repository</span>
+    </p>
+
+    <h1 class="h1" id="page-h" data-rise style="--d:60ms">SpellBomb</h1>
+    <p class="case-hero__sub" data-rise style="--d:110ms">The bomb is on you. Spell it, or it goes off.</p>
+
+    <p class="case-hero__lede" data-rise style="--d:160ms">
+      One person hosts a room; everyone else joins from their own phone with a
+      link or a four-letter code. A Node server owns the fuse, the hearts, the
+      word and every outcome — the browsers only ever send intent. Two game modes
+      share those rooms, that economy and that leaderboard, and the whole thing
+      runs as a Discord Activity in a voice channel without becoming a second
+      game.
+    </p>
+  </div>
+</section>
+
+<!-- the interaction, first -->
+<section style="padding-top:0;border:0" aria-label="The running game">
+  <div class="shell">
+    <figure class="shot shotframe" data-motion="unfold">
+      <img src="assets/projects/spellbomb/hero-spellbomb-game.webp"
+           width="2400" height="1500" loading="eager" decoding="async"
+           alt="A live six-player SpellBomb round. The lit bomb hangs in the centre of the arena with a dashed arrow pointing at the player named sam, who has two hearts left; kit, maya, dev, ollie and juno are ringed around the arena with one heart each. Below, an eleven-letter word tray shows I, N, A, L, I, E, N filled and four slots empty, with the answer box reading inalien and a green GO button beside it." />
+      <figcaption class="shotframe__cap">
+        A real six-player match against a running <code>server.js</code>: six
+        independent browser contexts joined one room over Socket.IO and played it
+        out. The bomb has just been passed to <b>sam</b>; the fuse bar under it is
+        the server&rsquo;s clock, not the browser&rsquo;s.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section style="padding-top:clamp(2rem,4vw,3rem)">
+  <div class="shell">
+    <div class="case-body">
+
+      <!-- 1 -->
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">01</span><h2>What it is</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            A real-time party spelling game for a room full of people on their own
+            devices. The host opens a room, everybody else joins with a four-letter
+            code, and from then on one server keeps every bomb, every heart and
+            every timer in step.
+          </p>
+          <p>Two modes share the same rooms, the same players and everything around them:</p>
+          <ul class="bullets">
+            <li><b>Spell Bomb</b> — a word, a fuse, and a bomb that gets passed. Play it as <i>Passed Bomb</i>, one player at a time, or <i>Everyone Spells</i>, where the whole room answers the same word in secret and it is revealed at once.</li>
+            <li><b>Word Rush</b> — sixty seconds, one seven-letter honeycomb, everybody racing at the same time. Three rounds, cumulative scores, and a shared word wall at the end showing what everyone found and what the whole room walked past.</li>
+          </ul>
+          <dl class="facts">
+            <div><dt>Runtime</dt><dd>Node 18+, Express, Socket.IO</dd></div>
+            <div><dt>Persistence</dt><dd>Postgres, with a JSON-file fallback</dd></div>
+            <div><dt>Rush puzzles</dt><dd>260 pre-built honeycombs</dd></div>
+            <div><dt>Version</dt><dd>9.3.0</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- 2 -->
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">02</span><h2>Why I built it</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            Running a campus esports club means running <em>events</em>, and the
+            games that fill a room are almost never the competitive ones. They are
+            the games where the person who has never played can win the first
+            round. I wanted one that worked on whatever device somebody already had
+            in their pocket, needed no install, no account and no explanation, and
+            still had a moment in it worth shouting about.
+          </p>
+          <p>
+            The technical reason was the other half. A turn-based game with a timer
+            is the smallest honest version of a real-time system: shared state,
+            hostile latency, reconnects, and a strict requirement that everyone sees
+            the same thing at the same time. I wanted to build one properly rather
+            than read about it.
+          </p>
+        </div>
+      </article>
+
+      <!-- 3 -->
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">03</span><h2>The most interesting interaction</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            <strong>The pass.</strong> When the bomb lands on you, three things
+            happen in a specific order and each one is a decision.
+          </p>
+          <p>
+            First, the server guarantees you at least <b>three seconds</b> before it
+            can possibly explode — <code>MIN_TURN_MS</code>. Nothing ruined an early
+            match faster than receiving the bomb and having it go off in your hands,
+            so a grace period is now a rule of the game rather than a hope about
+            timing.
+          </p>
+          <p>
+            Second, the gap between turns is deliberately two different lengths.
+            A pass is a <em>beat</em>: 700&nbsp;ms, short enough that the bomb moves
+            and the next word starts before the table notices the seam. A boom is a
+            <em>moment</em>: 2,600&nbsp;ms, because the client is putting the correct
+            spelling on screen next to what you actually typed, and the room has to
+            hold still long enough to read it. The integration test pins both ends
+            of that range so neither drifts.
+          </p>
+          <p>
+            Third, the bomb always moves <b>one seat clockwise</b> — never at random.
+            Seats are the room&rsquo;s player order, which is the order the arena
+            draws them in, so the path you see on screen is the path the server
+            walked. Eliminated and disconnected seats are skipped. Only the very
+            first holder of a match is chosen at random, and after that the game is
+            legible: you can see it coming.
+          </p>
+        </div>
+      </article>
+
+      <!-- supporting shot -->
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">&mdash;</span><h2>Waiting for the bomb</h2></div>
+        <div class="chapter__body">
+          <figure class="shot shotframe shotframe--wide">
+            <img src="assets/projects/spellbomb/spellbomb-fuse.webp"
+                 width="1600" height="1000" loading="lazy" decoding="async"
+                 alt="The same arena from another player's seat. The bomb is held by ollie, the fuse bar beneath it has burned down to red, a taunt reading WHY ARE YOU STILL HOLDING IT sits above it, and this player's own answer box is greyed out and reads wait for your turn." />
+            <figcaption class="shotframe__cap">
+              The same room, one seat over. The answer box is disabled and says so
+              in words; the fuse bar has burned down to red; the taunt is the
+              room&rsquo;s, not the game&rsquo;s. Waiting is a state the interface
+              is designed for, not a gap in it.
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <!-- 4 -->
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">04</span><h2>The problem being solved</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            Six people, six devices, six different networks, and one shared object
+            that must be in exactly one place at any instant. The obvious failure
+            is disagreement: two players each believing they hold the bomb, or a
+            timer that ran differently on a slow phone.
+          </p>
+          <p>
+            The answer is that <code>server.js</code> is authoritative and the
+            clients are not clever. Rounds, hearts, the fuse timer, word selection,
+            grading, placements, gold, ladder points, inventory and every reward
+            are decided server-side. A client sends intents — join, start, type a
+            guess, ask for the word again — and renders whatever comes back. It
+            cannot claim an outcome.
+          </p>
+          <p>
+            <strong>And there is one hole in it, which the README states plainly.</strong>
+            The current word is sent to every client that is meant to hear it,
+            because pronunciation happens in each browser through
+            <code>speechSynthesis</code>, which takes text. A device that speaks the
+            word necessarily has the word. In Passed Bomb that costs nothing —
+            non-holders get a different word on their own turn. In Everyone Spells,
+            where everyone is graded on that exact string, it is genuinely
+            exploitable. So the competitive surface, the all-time ladder, is fed by
+            Passed Bomb placement only, and is additionally gated behind a minimum
+            match duration and turn count so it cannot be farmed by a scripted loop.
+            The proper fix is rendering the dictation server-side and shipping audio
+            instead of text. It is not done, and the documentation says it is not
+            done.
+          </p>
+        </div>
+      </article>
+
+      <!-- 5 -->
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">05</span><h2>Current capabilities</h2></div>
+        <div class="chapter__body prose">
+          <ul class="bullets">
+            <li><b>Two modes over one world.</b> Passed Bomb, Everyone Spells and Word Rush share rooms, players, reconnects, spectators, cosmetics, chests and the leaderboard. There is no second economy.</li>
+            <li><b>Word Rush, in full.</b> Seven letters with a required centre letter, a four-letter minimum, a pangram worth a flat +150, and a HEAT multiplier up to ×3 that decays on the clock but never on a wrong guess — so typing fast and missing costs you nothing but time.</li>
+            <li><b>260 generated honeycombs</b> built from SCOWL word lists unioned with the game&rsquo;s own bank, each carrying its complete answer list, each clearing a stated quality bar. The generator is deterministic: the same inputs reproduce the same book.</li>
+            <li><b>A live typing readout.</b> Every room update carries words-per-minute and accuracy per player, computed from the same per-match counters the achievements already keep. Both are <code>null</code> until there is enough evidence to state one, and the client draws a dash rather than inventing a zero.</li>
+            <li><b>Discord Activity.</b> Start it in a voice channel and everybody in that channel lands in the same lobby with no name to type. It is the same client, the same protocol and the same rooms — a Discord lobby has an ordinary four-letter code, so a friend who is not on Discord at all can join it from the website.</li>
+            <li><b>Progression that cannot be forged.</b> Chest tables, drop odds, prices, pity thresholds and anti-farm guards all live in one file, and the odds table the shop renders is literally the object the server rolls against. Prize cosmetics can only be earned, never bought or rolled.</li>
+            <li><b>Persistence that degrades honestly.</b> With a database URL set, profiles live in Postgres; without one, they fall back to a JSON file; with a broken one, the server logs a warning and falls back rather than crashing.</li>
+            <li><b>No cookies at all.</b> Not one — there is a test that checks. The privacy and terms pages are self-contained files with no stylesheet, script or font, so they render on a dead connection.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 6 -->
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">06</span><h2>Design &amp; technical decisions</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            <strong>The rules engine cannot reach a socket.</strong> Word Rush&rsquo;s
+            scoring, heat, announcer, awards and word wall live in a pure module
+            with no network access at all. That is why &ldquo;who won&rdquo; is a
+            unit test rather than an argument.
+          </p>
+          <p>
+            <strong>Discord support is plumbing, not a fork.</strong> Discord serves
+            an Activity from its own domain and proxies requests through a
+            <code>/.proxy</code> path prefix. Rather than teaching every route about
+            it, the server strips that prefix off each incoming request before
+            anything else sees it — done by wrapping the HTTP server&rsquo;s
+            <code>emit</code>, not with middleware, because Socket.IO matches its
+            own path on the raw request including the WebSocket upgrade, which never
+            reaches Express. No route, no cache rule and no test has to know Discord
+            exists.
+          </p>
+          <p>
+            <strong>A public identifier is not a credential.</strong> A Discord user
+            ID is public, so a Discord-backed profile is only ever handed to a socket
+            that has presented an identity token this server signed. Guessing
+            somebody&rsquo;s snowflake gets you nothing.
+          </p>
+          <p>
+            <strong>A client backup restores cosmetics and nothing else.</strong> The
+            browser keeps a snapshot so a player survives a server wipe, but gold,
+            ladder points, wins and lifetime stats are never taken from it — an
+            unsigned client blob is indistinguishable from a forged one.
+          </p>
+          <p>
+            <strong>Behind a load balancer, trust the right hop.</strong> The server
+            caps concurrent sockets per client IP. Without proxy trust configured it
+            reads the raw socket address, which behind a balancer is the
+            <em>balancer</em> for every player alive — turning a per-player cap into
+            a server-wide ceiling that silently disconnects player 41 with no
+            message. The deployment blueprint sets that flag and explains why in a
+            comment longer than the setting.
+          </p>
+          <p>
+            <strong>Update notes are written for players.</strong> &ldquo;The bomb
+            now moves in a circle&rdquo;, not &ldquo;refactored
+            <code>explodeBomb()</code>&rdquo;. Each release also gets a
+            hand-drawn SVG in a deliberately crude MS-Paint idiom — no
+            anti-aliasing, square caps, flat fills from the default sixteen-colour
+            palette — and a test refuses any shipped version that does not have one.
+          </p>
+        </div>
+      </article>
+
+      <!-- 7 -->
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">07</span><h2>What changed across iterations</h2></div>
+        <div class="chapter__body">
+          <p class="prose quiet">
+            Taken from the game&rsquo;s own in-product update log, which is written
+            for the person playing rather than the person reading the diff.
+          </p>
+          <div class="iterations">
+            <div class="iteration"><p class="when">v8.0</p><p class="what"><b>Honest arrows, one-press sounds, a host who can steer.</b> The point at which the arena stopped lying about where the bomb was going.</p></div>
+            <div class="iteration"><p class="when">v8.1</p><p class="what"><b>The bomb goes round the table.</b> Random passing replaced with one seat clockwise — the change that made the game readable.</p></div>
+            <div class="iteration"><p class="when">v8.2</p><p class="what"><b>You can see what you&rsquo;re typing.</b> The letter tray, and the reveal card that shows the correct spelling beside what you actually wrote.</p></div>
+            <div class="iteration"><p class="when">v8.5</p><p class="what"><b>Every word, reconsidered.</b> A full pass over the word bank and its difficulty model.</p></div>
+            <div class="iteration"><p class="when">v8.6</p><p class="what"><b>Your data, and the button that deletes it.</b> Published privacy and terms pages, and a real delete path.</p></div>
+            <div class="iteration"><p class="when">v8.7</p><p class="what"><b>A clock that actually moves.</b> The fuse became the server&rsquo;s clock rendered, rather than each browser&rsquo;s guess at it.</p></div>
+            <div class="iteration"><p class="when">v8.8</p><p class="what"><b>The arena finally uses the screen you gave it.</b> Layout that adapts to the device instead of shrinking one design.</p></div>
+            <div class="iteration"><p class="when">v9.0</p><p class="what"><b>SpellBomb is a Discord Activity now</b> — the same client, the same rooms, one shared world.</p></div>
+            <div class="iteration"><p class="when">v9.1</p><p class="what"><b>Word Rush</b> — sixty seconds, seven letters, everybody at once. A second mode built entirely on the first one&rsquo;s foundations.</p></div>
+            <div class="iteration"><p class="when">v9.2</p><p class="what"><b>The shop gets a display case, and Word Rush stops arguing with you.</b> Cosmetics you can actually see, and rules disputes resolved in the engine.</p></div>
+            <div class="iteration"><p class="when">v9.3</p><p class="what"><b>The lobby answers back, and you can see how fast you spell.</b> Live words-per-minute and accuracy, measured locally for responsiveness and authoritatively on the server.</p></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 8 -->
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">08</span><h2>What comes next</h2></div>
+        <div class="chapter__body prose">
+          <ul class="bullets">
+            <li><b>Close the Everyone Spells hole properly.</b> Render the dictation server-side and ship audio bytes rather than text. Until that is done, that mode stays labelled as a party mode among people who trust each other, not a competitive one.</li>
+            <li><b>A stable public deployment.</b> The Render blueprint and the Postgres path are both written and tested; the missing piece is a permanent host and the environment variables that go with it.</li>
+            <li><b>More of the room&rsquo;s own voice.</b> Word Rush&rsquo;s announcer and awards are the most-liked part of a match, and the same treatment has not yet reached Passed Bomb.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 9 -->
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">09</span><h2>Where to find it</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            SpellBomb is the one project here whose repository is <b>private</b>, and
+            it is not publicly deployed today — so rather than point at a link that
+            will not open for you, this page says so. If you would like to see it
+            running, or a walkthrough of the server, ask me and I will arrange it.
+          </p>
+          <div class="btn-row mt-3">
+            <a class="btn btn--primary" href="mailto:connor.eppolito803@myci.csuci.edu?subject=SpellBomb">Ask for a walkthrough</a>
+            <a class="btn" href="work.html">Back to all work <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section aria-label="Continue">
+  <div class="shell">
+    <div class="nextup">
+      <a href="work.html"><span class="k">Index</span><span class="v">All work</span></a>
+      <a href="health-journal.html"><span class="k">Next case study</span><span class="v">Health Journal</span></a>
+    </div>
+  </div>
+</section>

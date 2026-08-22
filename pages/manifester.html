@@ -1,0 +1,324 @@
+<!--meta
+path: manifester.html
+title: Manifester — Connor Eppolito
+ogtitle: Manifester — your words, read back over a room that breathes
+nav: work
+surface: ink
+accent: manifester
+ogtype: article
+image: assets/projects/manifester/hero-manifester-player.webp
+desc: Write the words you want to hear, choose a voice, and let them loop over layered ambient sound. Two studio voices that sound the same on every device, six breathing rooms, live sound changes that never restart the session, and an MP3 export rendered entirely on your device.
+-->
+
+<section class="case-hero" aria-labelledby="page-h">
+  <div class="shell">
+    <p class="case-hero__top" data-rise>
+      <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+      <span class="chip">Guided audio</span>
+      <span class="chip">React · Vite · PWA</span>
+      <span class="chip">Kokoro-82M voices</span>
+    </p>
+
+    <h1 class="h1" id="page-h" data-rise style="--d:60ms">Manifester</h1>
+    <p class="case-hero__sub" data-rise style="--d:110ms">A tiny calm garden for your intentions.</p>
+
+    <p class="case-hero__lede" data-rise style="--d:160ms">
+      Write or paste the words you want to hear, choose a voice, and let them loop
+      over gentle ambient sound for as long as you like. It speaks in its own
+      voice — the same one on every device — keeps every line it has ever spoken
+      so a loop plays offline, and installs to a phone&rsquo;s home screen like a
+      normal app.
+    </p>
+
+    <div class="btn-row case-hero__actions" data-rise style="--d:210ms">
+      <a class="btn btn--primary" href="https://cvree.github.io/Manifester/" rel="noopener">
+        Open the live app <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="btn" href="https://github.com/cvree/Manifester" rel="noopener">
+        Source on GitHub <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+
+    <p class="quiet small mt-3" data-rise style="max-width:58ch">
+      Nothing on this site autoplays sound, including this page. Manifester only
+      speaks when you press play.
+    </p>
+  </div>
+</section>
+
+<section style="padding-top:0;border:0" aria-label="The running app">
+  <div class="shell">
+    <figure class="shot shotframe" data-motion="breathe">
+      <img src="assets/projects/manifester/hero-manifester-player.webp"
+           width="2400" height="1500" loading="eager" decoding="async"
+           alt="The Manifester player expanded to fill the screen. A session titled Evening steadiness runs above a large breathing orb reading Breathe in with a count of two and a progress ring around it. Below the orb, the line being spoken: I trust myself to handle what comes. A single pause control sits under it, with 9:38 remaining on pass 8, an End session button, and a footer reading next pass in 2s beside the ambience name, Moon Garden." />
+      <figcaption class="shotframe__cap">
+        The expanded player, eight passes into a live ten-minute session built in
+        the app&rsquo;s own editor. The words on screen are the words in your ears
+        — the voice reports back the moment it starts speaking a line, and the
+        player shows exactly that text rather than guessing from a counter.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section style="padding-top:clamp(2rem,4vw,3rem)">
+  <div class="shell">
+    <div class="case-body">
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">01</span><h2>What it is</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            Two halves. <b>Create</b> is a ritual-building workspace: a title, a
+            large text box that takes anything from one line to a twenty-minute
+            script, a session length, and a live preview that breathes with your
+            chosen pattern, cycles your lines the way the loop will read them, and
+            takes its colour from the ambience you picked. <b>Player</b> is the
+            calmest screen in the app and now the whole of it — a breathing guide,
+            the words being spoken, the controls that matter, and nothing else at
+            all.
+          </p>
+          <dl class="facts">
+            <div><dt>Voices</dt><dd>Two studio voices, Ivy and Fen, plus your device&rsquo;s own</dd></div>
+            <div><dt>Rooms</dt><dd>Six visualisers, driven by the breathing guide</dd></div>
+            <div><dt>Sessions</dt><dd>5–30 min, custom up to 8 hours, or &ldquo;until I stop&rdquo;</dd></div>
+            <div><dt>Export</dt><dd>Real MP3, rendered on-device, nothing uploaded</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">02</span><h2>Why I built it</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            I am interested in the unglamorous levers on how a day goes — sleep,
+            sunlight, breathing, what you say to yourself before something hard. The
+            breathing one has the best evidence behind it and the worst software
+            around it: apps that want a subscription before they will say a sentence,
+            that cannot work on a plane, and that read your own words back in a
+            robotic voice that undoes the entire point.
+          </p>
+          <p>
+            I wanted the version where the words are <em>yours</em>, the voice is
+            good, it works with the network off, and nothing about it is a
+            negotiation. It also happens to be the most demanding audio-engineering
+            problem I have taken on: speech, layered ambience, a breathing clock and
+            a session timer that all have to stay in step while the user changes
+            things underneath them.
+          </p>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">03</span><h2>The most interesting interaction</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            <strong>Changing the background sound without stopping the session.</strong>
+            A small control sits in the corner of the stage — including in the
+            expanded view, where it is one of only three things on the screen. It
+            opens one list: silence, every built-in ambience, every sound you have
+            imported, and your playlist if you have one.
+          </p>
+          <p>
+            Pick one and it <em>crossfades under the running loop</em>. The voice
+            keeps going. The clock keeps going. The breath keeps going. The pass
+            count does not reset. Nothing restarts. The same is true from the
+            <i>Adjust</i> sheet and from the Library while a session runs.
+          </p>
+          <p>
+            That sounds small and is the hardest thing in the product. It is the
+            difference between an app that plays audio and an app you can be inside
+            — because the moment a session stops to accommodate a preference, the
+            session is over and you are operating software again.
+          </p>
+          <p>
+            The same rule governs the rest of the player. Voice, speed and pitch
+            change without leaving the screen: the running speech loop is
+            re-optioned rather than restarted, so each change lands on the next line
+            and the loop never breaks step. The delay between loops is counted down
+            on screen — <i>&ldquo;next loop in 6s&rdquo;</i> — and frozen exactly
+            where it was if you pause.
+          </p>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">&mdash;</span><h2>The workspace</h2></div>
+        <div class="chapter__body">
+          <figure class="shot shotframe shotframe--wide">
+            <img src="assets/projects/manifester/manifester-builder.webp"
+                 width="1600" height="1000" loading="lazy" decoding="async"
+                 alt="The Create screen. On the left, a title reading Evening steadiness, a words box holding five typed lines with a 42 words, 5 lines counter, a row of starter phrases, and Add to my words and Improve my words buttons. On the right, a live preview card headed Your ritual with a breathing orb, the first line cycling beneath it, a Hear a line button, and shortcut tiles reporting voice, sound, length, delay and rhythm — closing with the line: about 19 seconds per pass, begins again after 3 seconds." />
+            <figcaption class="shotframe__cap">
+              Every tile in that preview is a shortcut, not a readout: tapping
+              Voice, Sound, Delay or Rhythm opens the setting it reports. The
+              Rhythm tile is shown even when rhythm is off, reading <i>Off</i> —
+              otherwise the one setting you could not reach from the panel would be
+              the one you had not turned on yet.
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">04</span><h2>The problem being solved</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            <strong>A browser&rsquo;s built-in speech is not the same product on two
+            devices.</strong> The same page read by the same code sounds like a
+            different app on a Pixel, an iPhone and a Windows laptop — and on many
+            devices the default voice is a legacy formant synth that makes a
+            calming line sound like a train announcement. A loop you saved has to
+            read the same way wherever you play it, or it is not a thing you own.
+          </p>
+          <p>
+            So Manifester ships <b>two studio voices</b> of its own — Ivy and Fen,
+            Kokoro-82M, running on this project&rsquo;s own service, free, with no
+            account, no API key and no metering. And it caches aggressively: a line
+            you have heard once plays instantly forever after, from that device,
+            with no connection at all, because every clip is keyed by a hash of
+            exactly what it is.
+          </p>
+          <p>
+            <strong>The fallback is designed, not accidental.</strong> Your
+            device&rsquo;s own voices are still there for anyone who prefers one, and
+            they are what reads the words if the studio voice cannot be reached — a
+            session never goes quiet because a network did. Device voices are scored
+            by quality and the best one wins automatically, each labelled honestly:
+            <i>Neural</i>, <i>Enhanced</i>, <i>Standard</i>, or <i>Basic — robotic,
+            worth avoiding</i>. When the best available one is poor, the app shows
+            the exact settings path to download a free neural voice for that
+            platform.
+          </p>
+          <p>
+            <strong>One written line is one spoken line.</strong> The voice is given
+            a line at a time and reports back the moment it starts speaking one, so
+            the player shows exactly that text. Only a line too long to say in one
+            breath is split further — at sentence, then clause, then word
+            boundaries, in that order — which is also what stops browsers cutting a
+            long passage off part-way through.
+          </p>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">05</span><h2>Current capabilities</h2></div>
+        <div class="chapter__body prose">
+          <ul class="bullets">
+            <li><b>A breathing guide</b> in eight forms with ten patterns, five breath voices and custom timing for every phase, reporting phase progress on a thin ring with the phase name and a countdown in the centre. It pauses and resumes with the session.</li>
+            <li><b>Six rooms.</b> The whole screen becomes a space that expands and settles with the guide: <i>Atmosphere</i>, <i>Rings</i>, <i>Waterline</i>, <i>Curtains</i>, <i>Starfield</i> and <i>Stillness</i> — or <i>Drifting</i>, which moves between all six, ninety seconds at a time, crossfading over four. Each is drawn as a circle centred on the orb itself, measured rather than guessed, and nothing with an edge ever crosses it.</li>
+            <li><b>An expanded view</b>, one tap from the corner of the stage: the player grows into the whole screen and the header and navigation step back until nothing is left but the words, the breath and the controls. It is the same player throughout — the session, the clock, the pass count and the audio carry straight on.</li>
+            <li><b>Everything else, one tap away, in one place.</b> <i>Adjust</i> opens a single sheet in the order things are wanted, on a phone and on a desktop alike. Choosing a row closes the sheet and opens the one it is about, rather than stacking a second scrim on the first.</li>
+            <li><b>Download the loop as a real MP3</b> — five minutes to two hours, containing your voice, repeated with your chosen delay, over your background sound, at your volume balance. Rendered on your device in a Web Worker with a WAV fallback, so the app stays usable while it works and nothing is ever uploaded. Available from any saved loop, not just the one in front of you.</li>
+            <li><b>Nothing you play is lost.</b> Starting a session writes it to the library on its way to the player, so words you listened to but never got around to saving are waiting under <i>Recent plays</i>. The last twelve are held; nothing you saved is ever pruned.</li>
+            <li><b>An offline writing helper</b> that reads what you have written, works out what it is reaching for, and appends lines in the same direction — or rewrites what is there into the present tense and the first person, turning an avoided feeling into the thing you actually want. Both are one tap and both are undoable.</li>
+            <li><b>Optional AI, with your own key.</b> One provider, one guided flow that spells out every step and what it costs. Off by default, switchable off in one control in the two places people look, and it falls back to the offline engine whenever the network or the key gives out.</li>
+            <li><b>Backend-free sharing</b>, an optional calendar event, and listening totals kept on the device and shown without streaks or goals.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">06</span><h2>Design &amp; technical decisions</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            <strong>Returning is one step.</strong> The app restores the most
+            recently played saved loop on launch, so the common path is
+            open&nbsp;&rarr;&nbsp;play. Five things stay on the Create screen —
+            title, words, session length, Start and Save — and everything else lives
+            behind <i>Customize your ritual</i>, a list of rows that each state
+            their own value (<i>Moon Garden · 40%</i>, <i>Calm · 4 in / 6 out</i>,
+            <i>3-second delay</i>) and open in a sheet.
+          </p>
+          <p>
+            <strong>The mixing desk had to go.</strong> There used to be a column of
+            settings beside the stage. It made a ritual space look like a control
+            surface, and on a phone it put those controls <em>below</em> a
+            full-height stage, where they were clutter without being reachable.
+            Nothing was removed to fix it — the sliders are the same live ones, the
+            rows open the same sheets — but there is now one control instead of two
+            layouts.
+          </p>
+          <p>
+            <strong>A key is checked by using it, never by looking at it.</strong>
+            <i>Connect</i> spends one very short real request, and the word
+            &ldquo;connected&rdquo; means that request came back. This matters more
+            than it sounds: Manifester used to insist a Google key began with
+            <code>AIza</code>, and when Google moved AI Studio onto keys beginning
+            <code>AQ.</code>, every new key in the world was refused before a request
+            was ever made. Both formats work now, so will the next one, and the
+            prefix is used for at most a friendly note beside the box.
+          </p>
+          <p>
+            <strong>Nine sentences, not one shrug.</strong> A refused key, a key not
+            allowed to use the API, a project with the API switched off, a key locked
+            to other sites, a spent daily allowance, a model this account cannot
+            have, a blocked network, a timeout and an outage are nine different
+            problems with nine different fixes. Where the app can name the fix, it
+            names it.
+          </p>
+          <p>
+            <strong>Nothing you wrote is ever at risk.</strong> The draft is not
+            touched until a reply has come back <em>and</em> passed validation; a
+            reply that is malformed, empty, the wrong shape, or carrying a promise
+            about health or money is dropped rather than spoken. Requests give up
+            after thirty seconds, there is a Stop button the whole time one is in
+            flight, and if you keep typing while it thinks, the newer words win.
+          </p>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">07</span><h2>What changed across iterations</h2></div>
+        <div class="chapter__body">
+          <div class="iterations">
+            <div class="iteration"><p class="when">First</p><p class="what"><b>A text box and the browser&rsquo;s speech engine.</b> It worked, and it sounded different on every device — which turned out to be the whole product problem.</p></div>
+            <div class="iteration"><p class="when">Then</p><p class="what"><b>Studio voices with an offline cache.</b> Two voices of the app&rsquo;s own, keyed by a hash of the exact line, so a loop you have heard plays with the network off.</p></div>
+            <div class="iteration"><p class="when">Then</p><p class="what"><b>The breathing guide, then the rooms.</b> The visualiser stopped being decoration once every room ran on the guide&rsquo;s own clock rather than its own.</p></div>
+            <div class="iteration"><p class="when">Then</p><p class="what"><b>The player lost its settings column</b> and gained an expanded view and one <i>Adjust</i> sheet — the same control on a phone, on a desktop, and full-screen.</p></div>
+            <div class="iteration"><p class="when">Then</p><p class="what"><b>Live sound changes.</b> Crossfading a new ambience under a running loop, from three different places, without restarting anything.</p></div>
+            <div class="iteration"><p class="when">Then</p><p class="what"><b>MP3 export from any saved loop</b>, rendered in a Web Worker, with iOS Share alongside Download because a web app has no downloads folder there.</p></div>
+            <div class="iteration"><p class="when">Latest</p><p class="what"><b>&ldquo;Say the app&rsquo;s name, and stop saying everything else twice.&rdquo;</b> A pass over duplicated copy, and the writing helper made honest about which engine wrote a suggestion.</p></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">08</span><h2>What comes next</h2></div>
+        <div class="chapter__body prose">
+          <ul class="bullets">
+            <li><b>Voices that carry the session&rsquo;s own pacing.</b> Ivy and Fen read a line beautifully and read every line at the same tempo; a guided session wants to slow down as it goes.</li>
+            <li><b>The rooms, on lower-powered phones.</b> They are CSS and canvas rather than WebGL, which was the right call, and there is still a device or two where <i>Stillness</i> is the honest choice and the app should say so.</li>
+            <li><b>Sharing a loop as audio, not just as a link.</b> The MP3 pipeline already exists; what is missing is making the share sheet the obvious end of it.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">09</span><h2>Where to find it</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            Open it, type a line, press play. On iOS it adds to the home screen from
+            Safari&rsquo;s Share menu; on Android and desktop the browser offers an
+            Install button, and so does the app.
+          </p>
+          <div class="btn-row mt-3">
+            <a class="btn btn--primary" href="https://cvree.github.io/Manifester/" rel="noopener">Open the live app <span class="arrow" aria-hidden="true">&rarr;</span></a>
+            <a class="btn" href="https://github.com/cvree/Manifester" rel="noopener">Source on GitHub <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section aria-label="Continue">
+  <div class="shell">
+    <div class="nextup">
+      <a href="phlebotomy-exam-prep.html"><span class="k">Previous</span><span class="v">Phlebotomy Exam Prep</span></a>
+      <a href="owcs-comp-tracker.html"><span class="k">Next case study</span><span class="v">OWCS Comp Tracker</span></a>
+    </div>
+  </div>
+</section>

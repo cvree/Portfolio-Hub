@@ -1,11 +1,18 @@
 name: Deploy to GitHub Pages
 
-# There is no build step. The repository root is the site, so publishing is a
-# copy — which also means a broken deploy can only be a Pages configuration
-# problem, never a toolchain one.
+# There is no build step at deploy time. The committed HTML in the repository
+# root *is* the site, so publishing is a copy — which also means a broken deploy
+# can only ever be a Pages configuration problem, never a toolchain one.
+#
+# The pages are assembled from templates/ + pages/ by tools/build_pages.py, and
+# the check job below fails if what is committed is not what that script would
+# produce. That keeps the shared header, footer and <head> of twelve pages from
+# drifting apart, without putting a build between a visitor and the site.
 
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
@@ -23,20 +30,58 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Every local asset the page references must exist
+
+      - name: The committed pages must match their sources
+        run: python3 tools/build_pages.py --check
+
+      - name: Every local asset every page references must exist
         run: |
           set -euo pipefail
           missing=0
-          refs=$(grep -oE '(href|src)="assets/[^"]+"' index.html | sed -E 's/.*"(.*)"/\1/')
-          refs="$refs $(grep -oE "url\('fonts/[^']+'\)" assets/fonts.css | sed -E "s/url\('(.*)'\)/assets\/\1/")"
-          refs="$refs $(grep -oE "load\('assets/[^']+'" assets/site.js | sed -E "s/load\('(.*)'/\1/")"
-          for f in $refs; do
-            if [ ! -f "$f" ]; then echo "missing: $f"; missing=1; fi
+          for page in *.html; do
+            refs=$(grep -oE '(href|src)="(assets|[a-z0-9-]+\.html)[^"]*"' "$page" \
+                   | sed -E 's/.*"([^"#]*)(#.*)?"/\1/' | sort -u)
+            for f in $refs; do
+              [ -z "$f" ] && continue
+              if [ ! -f "$f" ]; then echo "$page -> missing: $f"; missing=1; fi
+            done
+          done
+          for f in $(grep -oE "url\('fonts/[^']+'\)" assets/fonts.css | sed -E "s/url\('(.*)'\)/assets\/\1/" | sort -u); do
+            if [ ! -f "$f" ]; then echo "fonts.css -> missing: $f"; missing=1; fi
           done
           exit $missing
 
+      - name: Every page must carry a title, a description and one h1
+        run: |
+          set -euo pipefail
+          bad=0
+          for page in *.html; do
+            grep -q '<title>' "$page"                     || { echo "$page: no <title>"; bad=1; }
+            grep -q 'name="description"' "$page"          || { echo "$page: no description"; bad=1; }
+            n=$(grep -c '<h1' "$page" || true)
+            [ "$n" -eq 1 ] || { echo "$page: $n <h1> elements (expected 1)"; bad=1; }
+          done
+          exit $bad
+
+      - name: Every image must declare alt, width and height
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys
+          bad = False
+          for page in sorted(pathlib.Path('.').glob('*.html')):
+              html = page.read_text(encoding='utf-8')
+              for tag in re.findall(r'<img\b[^>]*>', html, re.S):
+                  for attr in ('alt', 'width', 'height'):
+                      if f'{attr}="' not in tag:
+                          src = re.search(r'src="([^"]*)"', tag)
+                          print(f'{page.name}: <img> without {attr}: {src.group(1) if src else tag[:60]}')
+                          bad = True
+          sys.exit(1 if bad else 0)
+          PY
+
   deploy:
     needs: check
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -46,7 +91,7 @@ jobs:
       # `enablement` asks the action to create the Pages site if it does not
       # exist. The workflow token is often not allowed to, in which case this
       # still fails and a repository admin has to set Settings → Pages →
-      # Source → GitHub Actions once, by hand.
+      # Source → GitHub Actions once, by hand. After that, every push deploys.
       - uses: actions/configure-pages@v5
         with:
           enablement: true

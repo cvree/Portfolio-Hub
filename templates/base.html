@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-motion="auto">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESC}}" />
+<meta name="author" content="Connor Eppolito" />
+<meta name="theme-color" content="{{THEME}}" />
+<meta name="color-scheme" content="{{SCHEME}}" />
+<link rel="canonical" href="{{SITE}}{{PATH}}" />
+
+<meta property="og:type" content="{{OGTYPE}}" />
+<meta property="og:site_name" content="Connor Eppolito" />
+<meta property="og:title" content="{{OGTITLE}}" />
+<meta property="og:description" content="{{DESC}}" />
+<meta property="og:url" content="{{SITE}}{{PATH}}" />
+<meta name="twitter:card" content="summary_large_image" />
+{{OGIMAGE}}
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230b0c0e'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='38' fill='%23f4f0e8' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E" />
+
+<!-- Fonts and styles are served from this repository. Nothing in the critical
+     path comes from a CDN, so a blocked third-party host costs this page
+     nothing at all. -->
+<link rel="preload" as="font" type="font/woff2" href="{{REL}}assets/fonts/InstrumentSerif-400.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="{{REL}}assets/fonts/SpaceGrotesk-500.woff2" crossorigin />
+<link rel="stylesheet" href="{{REL}}assets/fonts.css" />
+<link rel="stylesheet" href="{{REL}}assets/site.css" />
+<script>document.documentElement.classList.add('js');</script>
+{{HEADEXTRA}}
+</head>
+
+<body class="{{SURFACE}}"{{ACCENTATTR}}>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="atmos" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"><i data-progress></i></div>
+
+<header class="masthead">
+  <div class="shell masthead__in">
+
+    <a class="wordmark" href="{{REL}}index.html">
+      <span class="dot" aria-hidden="true"></span>
+      <span>Connor Eppolito</span>
+      <span class="role">Health Science · EMT · Builder</span>
+    </a>
+
+    <nav class="nav nav--desk" aria-label="Primary">
+      {{NAVDESK}}
+    </nav>
+
+    <details class="navmob" data-menu>
+      <summary aria-label="Menu">
+        <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>Menu</span>
+      </summary>
+      <div class="navmob__panel">
+        <nav aria-label="Primary, mobile">
+          {{NAVMOB}}
+        </nav>
+        <a class="btn btn--primary" href="mailto:connor.eppolito803@myci.csuci.edu">Email Connor</a>
+      </div>
+    </details>
+
+  </div>
+</header>
+
+<main id="main">
+{{BODY}}
+</main>
+
+<footer class="foot">
+  <div class="shell">
+    <div class="foot__grid">
+      <div>
+        <p class="foot__sig">Health science,<br />built and tested.</p>
+        <p class="quiet small mt-2" style="max-width:34ch">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
+      </div>
+      <div>
+        <h3>Site</h3>
+        <ul>
+          <li><a href="{{REL}}index.html">Home</a></li>
+          <li><a href="{{REL}}work.html">Selected Work</a></li>
+          <li><a href="{{REL}}experience.html">Experience</a></li>
+          <li><a href="{{REL}}about.html">About</a></li>
+          <li><a href="{{REL}}resume.html">Résumé</a></li>
+          <li><a href="{{REL}}contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Work</h3>
+        <ul>
+          <li><a href="{{REL}}spellbomb.html">SpellBomb</a></li>
+          <li><a href="{{REL}}health-journal.html">Health Journal</a></li>
+          <li><a href="{{REL}}phlebotomy-exam-prep.html">Phlebotomy Exam Prep</a></li>
+          <li><a href="{{REL}}manifester.html">Manifester</a></li>
+          <li><a href="{{REL}}owcs-comp-tracker.html">OWCS Comp Tracker</a></li>
+          <li><a href="{{REL}}paper-animator.html">PaperAnimator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Elsewhere</h3>
+        <ul>
+          <li><a href="mailto:connor.eppolito803@myci.csuci.edu">Email</a></li>
+          <li><a href="https://www.linkedin.com/in/connor-eppolito-2aba63310/" rel="me noopener">LinkedIn</a></li>
+          <li><a href="https://github.com/cvree" rel="me noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__base">
+      <p>© 2026 Connor Eppolito</p>
+      <p>Every claim on this site comes from the record it describes. Facts read August 2026.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="{{REL}}assets/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!--meta
+path: phlebotomy-exam-prep.html
+title: Phlebotomy Exam Prep — Connor Eppolito
+ogtitle: Phlebotomy Exam Prep — know what to study
+nav: work
+surface: ink
+accent: phlebotomy
+ogtype: article
+image: assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp
+desc: A certification study platform for phlebotomy students, built while training for the NHA CPT exam. 513 original questions, 181 vocabulary terms, four Order of Draw drill modes, weak-area detection and a readiness score that shows its own working.
+-->
+
+<section class="case-hero" aria-labelledby="page-h">
+  <div class="shell">
+    <p class="case-hero__top" data-rise>
+      <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+      <span class="chip">Certification study</span>
+      <span class="chip">Next.js static export</span>
+      <span class="chip">257 tests</span>
+    </p>
+
+    <h1 class="h1" id="page-h" data-rise style="--d:60ms">Phlebotomy<br />Exam Prep</h1>
+    <p class="case-hero__sub" data-rise style="--d:110ms">Know what to study before the exam, not after it.</p>
+
+    <p class="case-hero__lede" data-rise style="--d:160ms">
+      A focused certification platform built around one loop: learn, practise, get
+      feedback, find the weak area, drill it, test, improve. Every session should
+      leave a student knowing what they know, what they are weak at, and what to
+      do next — not just a percentage. I built it while doing the training myself.
+    </p>
+
+    <div class="btn-row case-hero__actions" data-rise style="--d:210ms">
+      <a class="btn btn--primary" href="https://cvree.github.io/Phlebotomy-Exam-Prep/" rel="noopener">
+        Open the live app <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="btn" href="https://github.com/cvree/Phlebotomy-Exam-Prep" rel="noopener">
+        Source on GitHub <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0;border:0" aria-label="The Order of Draw drill">
+  <div class="shell">
+    <figure class="shot shotframe" data-motion="unfold">
+      <img src="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp"
+           width="2400" height="1629" loading="eager" decoding="async"
+           alt="The Order of Draw drill. Four drill modes run across the top — Arrange, What next, Spot the error, Fill the gaps — with Arrange selected. Below them, six draggable cards, each with an illustration of the tube in its real cap colours and its additive named: EDTA, glycolytic inhibitor, coagulation, blood culture, serum and heparin, each with a drag grip and up and down buttons. A side panel carries the mnemonic Boys Love Ravishing Girls Like Gary, an explanation of this mode, and a note reading read the label, not the cap." />
+      <figcaption class="shotframe__cap">
+        The drill, shuffled and waiting. Three interchangeable interactions do the
+        same job — a pointer drag, tapping two cards to swap them, and the
+        up/down buttons on every row — and the drag is fully operable from the
+        keyboard: space lifts, arrows move, escape restores.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section style="padding-top:clamp(2rem,4vw,3rem)">
+  <div class="shell">
+    <div class="case-body">
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">01</span><h2>What it is</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            A study platform for phlebotomy students preparing for certification.
+            The first certification it targets is the <b>NHA Certified Phlebotomy
+            Technician</b>, but certification configuration is data rather than
+            structure, so ASCP PBT and NCCT can be added without rebuilding the
+            application.
+          </p>
+          <p>
+            It is also built for California candidates specifically. Alongside the
+            national exam material there is a dedicated study area covering the
+            CDPH Laboratory Field Services CPT1/CPT2 state licensing pathway that
+            California layers on top of national certification — the part that is
+            hardest to find written down anywhere.
+          </p>
+          <dl class="facts">
+            <div><dt>Questions</dt><dd>513 original, across ten study areas</dd></div>
+            <div><dt>Vocabulary</dt><dd>181 original term definitions</dd></div>
+            <div><dt>Drills</dt><dd>Order of Draw (4 modes) · Tube mastery (4 directions)</dd></div>
+            <div><dt>Mock papers</dt><dd>25, 50 and 100 questions, timed</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">02</span><h2>Why I built it</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            I am in phlebotomy training. I completed the initial coursework in July
+            2026 and I am preparing for the NHA CPT exam. Every study resource I
+            could find did the same thing: gave me a score, and left the actual
+            work — <em>what do I do about that score?</em> — entirely to me.
+          </p>
+          <p>
+            A score is not a study plan. Seventy-two percent tells you almost
+            nothing: it does not say whether the misses were clustered in one
+            domain, whether they were recall failures or reasoning failures, or
+            whether the eight you got right were luck. So the product promise here
+            is deliberately not &ldquo;pass your exam&rdquo; — it is
+            <strong>know what to study</strong>. That is a promise the software can
+            actually keep.
+          </p>
+          <p>
+            Building it while learning the material had a side effect I did not
+            expect. Writing 513 questions and 181 definitions that survive their own
+            test suite is, itself, the most thorough way to study the material I
+            have found.
+          </p>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">03</span><h2>The most interesting interaction</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            <strong>The Order of Draw drill.</strong> Order of draw is the piece of
+            phlebotomy knowledge that has to be <em>automatic</em>, because getting
+            it wrong contaminates a specimen with additive carried over from the
+            previous tube and nobody downstream can tell. Every student learns a
+            mnemonic. Almost nobody learns the reason.
+          </p>
+          <p>So the drill has four modes, and they test four different things:</p>
+          <ul class="bullets">
+            <li><b>Arrange the sequence</b> — put all six CLSI collection positions in order from scratch.</li>
+            <li><b>What next</b> — continue a draw already under way, which is the version the chairside actually asks.</li>
+            <li><b>Spot the error</b> — find the one tube out of place in an otherwise correct sequence.</li>
+            <li><b>Fill the gaps</b> — complete a part-built sequence.</li>
+          </ul>
+          <p>
+            Every answer names what was misplaced <em>and explains why each position
+            sits where it does</em>. The side panel is explicit about the mnemonic
+            being scaffolding: <i>&ldquo;Once the sequence is automatic, work on the
+            reason behind it — exam questions are more often about carryover than
+            about reciting colors.&rdquo;</i> And beside it, the thing nobody tells
+            students until they are on a floor: <i>read the label, not the cap</i>.
+            Tube colours are a convention that varies by manufacturer.
+          </p>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">&mdash;</span><h2>Graded</h2></div>
+        <div class="chapter__body">
+          <figure class="shot shotframe shotframe--wide">
+            <img src="assets/projects/phlebotomy/phlebotomy-ood-graded.webp"
+                 width="1800" height="1286" loading="lazy" decoding="async"
+                 alt="The drill after checking: all six cards outlined in green and labelled correct position, and below them a panel headed Perfect sequence with a No mistakes badge, the full correct sequence listed one to six in words, and two buttons — Try again, and Practice the questions." />
+            <figcaption class="shotframe__cap">
+              A graded attempt. Even a perfect run restates the sequence in words,
+              and the second button routes straight into the ten practice questions
+              for the same area — the drill is a door into the material, not a
+              scoreboard.
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">04</span><h2>The problem being solved</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            Exam prep fails students in two specific ways, and the app is designed
+            against both.
+          </p>
+          <p>
+            <strong>It reports the wrong number.</strong> A percentage is a summary
+            of the past. What a student needs is a decision about the next hour. So
+            the results screen leads with the weak-area insight rather than the
+            score; mastery per area runs from <i>Not started</i> to <i>Strong</i>,
+            weighted toward recent answers and gated on exposure; and the
+            recommendations are deterministic and explainable — the app can always
+            say <em>why</em> it is suggesting what it is suggesting, in plain
+            language.
+          </p>
+          <p>
+            <strong>It re-serves the same questions.</strong> A mock exam you have
+            already sat is a memory test, not a mock exam. So every paper prefers
+            questions you have not met on your last three exams — and freshness
+            never shortens a paper: once an area&rsquo;s unseen questions run out,
+            seen ones fill it. The bank is deep enough that three consecutive
+            full-length papers share no question at all, and there is a test that
+            fails the build if any area ever becomes too shallow for that to hold.
+          </p>
+          <p>
+            The readiness score is careful about what it is not. It is a measure of
+            how much of the material you have demonstrated recently. The screen says
+            so out loud: <i>&ldquo;It is not a prediction of whether you will pass,
+            and we make no claim that it is.&rdquo;</i>
+          </p>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">&mdash;</span><h2>Weak-area detection</h2></div>
+        <div class="chapter__body">
+          <figure class="shot shotframe shotframe--wide">
+            <img src="assets/projects/phlebotomy/phlebotomy-readiness.webp"
+                 width="1800" height="1414" loading="lazy" decoding="async"
+                 alt="The progress screen after one ten-question session. A What to study next panel recommends practising Anatomy and Physiology, noting it is the lowest score so far though only two attempts, then offers to review nine missed questions and to try the two drills. A Study readiness card reads Learning, four out of one hundred, explains that syllabus coverage is holding it back, and links to a full breakdown. At a glance: ten percent lifetime accuracy, a one-day streak, ten questions seen, nine still missed." />
+            <figcaption class="shotframe__cap">
+              Ten questions in. The recommendation already names its own uncertainty
+              — <i>&ldquo;your lowest score so far, though it&rsquo;s only 2
+              attempts&rdquo;</i> — which is the difference between a study plan and
+              a horoscope.
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">05</span><h2>Current capabilities</h2></div>
+        <div class="chapter__body prose">
+          <ul class="bullets">
+            <li><b>513 original certification-style questions</b> across ten study areas, with immediate inline feedback: the verdict, the correct answer, a full explanation, <em>why the specific distractor you picked was wrong</em>, and a memory tip where one helps.</li>
+            <li><b>Six session modes</b> — Quick 10, all areas, a single area, weak areas, missed questions, and unseen questions. Sessions autosave and resume after a refresh.</li>
+            <li><b>Order of Draw</b>, four modes over the six CLSI collection positions, with three interchangeable interactions and full keyboard operation.</li>
+            <li><b>Tube &amp; additive mastery</b> in four directions — tube to additive, additive to tube, tube to specimen type, tube to common use — explaining the mechanism after every answer. Distractors that are as true as the answer are rejected, so no question has two defensible options.</li>
+            <li><b>181 vocabulary terms</b>, each carrying what it <em>is</em>, what it is <em>part of</em> (EDTA belongs to the lavender tube; the median cubital vein belongs to the antecubital fossa), the word parts it is built from, why it matters at the chairside, a mnemonic where one helps, and the terms it is genuinely confused with.</li>
+            <li><b>Five study modes per set</b> — flashcards, adaptive Learn that promotes recognition to typed recall, Write with near-miss spelling graded &ldquo;close&rdquo; rather than wrong, timed Match, and a no-feedback Test — over thirteen sets, with spaced repetition scheduling every term individually.</li>
+            <li><b>Three timed mock papers</b> with a wall-clock timer that survives a sleeping phone or a closed tab, a question grid with answered and flagged state, submit confirmation, and a domain breakdown afterwards.</li>
+            <li><b>Long-form study guides</b> on order of draw, tube colours and additives, specimen handling, venipuncture complications and California CPT1/CPT2 licensing — each linking directly into the matching practice or drill.</li>
+            <li><b>No account.</b> Progress lives in the browser, exports to JSON, and can be reset.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">06</span><h2>Design &amp; technical decisions</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            <strong>Warm ivory, not clinical white.</strong> Study happens in long
+            sittings, often at night. The surface is a warm off-white with a faint
+            grid, the accent is a deep medical teal, and the question type is set in
+            a serif at a size you can read across a desk. The tube illustrations are
+            drawn in their real cap colours because that is the thing being learned.
+          </p>
+          <p>
+            <strong>Three interactions for one action.</strong> The arrange drill
+            supports a pointer drag, a two-tap swap and per-row buttons — not
+            because drag is unreliable, but because on a phone in a break room,
+            with one hand, a drag is the wrong instrument. Every one of them is
+            keyboard-operable, and each row announces its own position and what
+            moving it would do.
+          </p>
+          <p>
+            <strong>Content mistakes fail CI.</strong> 257 tests cover the places
+            where a bug would quietly mislead a student: scoring, question selection,
+            mock-paper construction and freshness, mastery and readiness calculation,
+            weak-area detection, recommendation rules, storage migrations, streak
+            arithmetic, order-of-draw grading and tube-drill generation. The suite
+            also asserts structural integrity of the question bank itself — so a
+            content mistake fails the build rather than reaching a student.
+          </p>
+          <p>
+            <strong>No server, on purpose.</strong> Progress is a student&rsquo;s own
+            business, and a study app that needs an account is a study app that has a
+            breach risk and a login screen between the student and the material. It
+            builds to a static export and hosts anywhere.
+          </p>
+          <p>
+            <strong>Search covers what people type.</strong> The glossary search
+            matches the term, its abbreviations <em>and</em> its definition, so
+            &ldquo;purple tube&rdquo; finds EDTA.
+          </p>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">07</span><h2>What changed across iterations</h2></div>
+        <div class="chapter__body">
+          <div class="iterations">
+            <div class="iteration"><p class="when">First</p><p class="what"><b>A question bank and a score.</b> The version that proved the score was not the useful part.</p></div>
+            <div class="iteration"><p class="when">Then</p><p class="what"><b>Explanations that name the distractor.</b> Telling a student the right answer teaches them one fact; telling them why the option they chose was wrong teaches them the distinction the exam is testing.</p></div>
+            <div class="iteration"><p class="when">Then</p><p class="what"><b>Mastery, readiness and deterministic recommendations</b> — the point where results stopped being a report and started being a next step, with the reasoning shown in plain language.</p></div>
+            <div class="iteration"><p class="when">Then</p><p class="what"><b>Drills split out from practice.</b> Order of draw and tube mastery are procedural, not propositional; multiple choice was the wrong instrument for both.</p></div>
+            <div class="iteration"><p class="when">Then</p><p class="what"><b>Vocabulary became its own product</b> — thirteen sets, five study modes and spaced repetition — after it became obvious that most wrong answers were vocabulary failures wearing a clinical question&rsquo;s clothes.</p></div>
+            <div class="iteration"><p class="when">Then</p><p class="what"><b>California CPT1/CPT2.</b> The national exam is only half of what a California candidate has to navigate, and the state pathway is genuinely hard to find written plainly.</p></div>
+            <div class="iteration"><p class="when">Latest</p><p class="what"><b>The bank expanded to 513 questions and three mock forms</b> — deep enough that three consecutive full-length papers share no question, with a test that enforces it.</p></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">08</span><h2>What comes next</h2></div>
+        <div class="chapter__body prose">
+          <ul class="bullets">
+            <li><b>Sit the exam.</b> The most useful next iteration is the one written after I have taken the NHA CPT myself and know which of my assumptions about it were wrong.</li>
+            <li><b>Sources and caveats on every content item.</b> The app currently marks its content status as awaiting sources and review, and says so on screen rather than hiding it. Citing each item to CLSI, NHA and CDPH material is the next substantial piece of work.</li>
+            <li><b>A second certification.</b> ASCP PBT is configuration rather than architecture, which was the point of building it that way — but its blueprint differs enough that the area weightings need real research, not a copy.</li>
+            <li><b>Clinical-scenario questions.</b> The bank is strong on recall and application; the hardest exam items are short scenarios with a judgement call in them, and those are the slowest to write well.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">09</span><h2>Where to find it</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            Open it and start a Quick 10 — no account, nothing to install, and
+            progress that stays in your browser.
+          </p>
+          <div class="btn-row mt-3">
+            <a class="btn btn--primary" href="https://cvree.github.io/Phlebotomy-Exam-Prep/" rel="noopener">Open the live app <span class="arrow" aria-hidden="true">&rarr;</span></a>
+            <a class="btn" href="https://github.com/cvree/Phlebotomy-Exam-Prep" rel="noopener">Source on GitHub <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section aria-label="Continue">
+  <div class="shell">
+    <div class="nextup">
+      <a href="health-journal.html"><span class="k">Previous</span><span class="v">Health Journal</span></a>
+      <a href="manifester.html"><span class="k">Next case study</span><span class="v">Manifester</span></a>
+    </div>
+  </div>
+</section>
