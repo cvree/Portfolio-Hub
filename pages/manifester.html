@@ -4,6 +4,7 @@ title: Manifester — Connor Eppolito
 ogtitle: Manifester — your words, read back over a room that breathes
 nav: work
 surface: ink
+physics: breathe
 accent: manifester
 ogtype: article
 image: assets/projects/manifester/hero-manifester-player.webp
@@ -13,13 +14,13 @@ desc: Write the words you want to hear, choose a voice, and let them loop over l
 <section class="case-hero" aria-labelledby="page-h">
   <div class="shell">
     <p class="case-hero__top" data-rise>
-      <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+      <span data-vt="accent-manifester" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
       <span class="chip">Guided audio</span>
       <span class="chip">React · Vite · PWA</span>
       <span class="chip">Kokoro-82M voices</span>
     </p>
 
-    <h1 class="h1" id="page-h" data-rise style="--d:60ms">Manifester</h1>
+    <h1 class="h1" id="page-h" data-vt="title-manifester" data-rise style="--d:60ms">Manifester</h1>
     <p class="case-hero__sub" data-rise style="--d:110ms">A tiny calm garden for your intentions.</p>
 
     <p class="case-hero__lede" data-rise style="--d:160ms">
@@ -39,7 +40,7 @@ desc: Write the words you want to hear, choose a voice, and let them loop over l
       </a>
     </div>
 
-    <p class="quiet small mt-3" data-rise style="max-width:58ch">
+    <p class="quiet small mt-3" data-rise style="max-width:34.8em">
       Nothing on this site autoplays sound, including this page. Manifester only
       speaks when you press play.
     </p>
@@ -49,8 +50,12 @@ desc: Write the words you want to hear, choose a voice, and let them loop over l
 <section style="padding-top:0;border:0" aria-label="The running app">
   <div class="shell">
     <figure class="shot shotframe" data-motion="breathe">
-      <img src="assets/projects/manifester/hero-manifester-player.webp"
-           width="2400" height="1500" loading="eager" decoding="async"
+      <img data-vt="shot-manifester" src="assets/projects/manifester/hero-manifester-player-1280.webp"
+               srcset="assets/projects/manifester/hero-manifester-player-720.webp 720w,
+               assets/projects/manifester/hero-manifester-player-1280.webp 1280w,
+               assets/projects/manifester/hero-manifester-player.webp 2400w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
+           width="2400" height="1500" loading="eager" fetchpriority="high" decoding="async"
            alt="The Manifester player expanded to fill the screen. A session titled Evening steadiness runs above a large breathing orb reading Breathe in with a count of two and a progress ring around it. Below the orb, the line being spoken: I trust myself to handle what comes. A single pause control sits under it, with 9:38 remaining on pass 8, an End session button, and a footer reading next pass in 2s beside the ambience name, Moon Garden." />
       <figcaption class="shotframe__cap">
         The expanded player, eight passes into a live ten-minute session built in
@@ -146,8 +151,12 @@ desc: Write the words you want to hear, choose a voice, and let them loop over l
       <article class="chapter" data-rise>
         <div class="chapter__label"><span class="n">&mdash;</span><h2>The workspace</h2></div>
         <div class="chapter__body">
-          <figure class="shot shotframe shotframe--wide">
-            <img src="assets/projects/manifester/manifester-builder.webp"
+          <figure class="shot shotframe shotframe--wide" tabindex="0" aria-label="Screenshot — scroll sideways to see the full width">
+            <img src="assets/projects/manifester/manifester-builder-1280.webp"
+               srcset="assets/projects/manifester/manifester-builder-720.webp 720w,
+               assets/projects/manifester/manifester-builder-1280.webp 1280w,
+               assets/projects/manifester/manifester-builder.webp 1600w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
                  width="1600" height="1000" loading="lazy" decoding="async"
                  alt="The Create screen. On the left, a title reading Evening steadiness, a words box holding five typed lines with a 42 words, 5 lines counter, a row of starter phrases, and Add to my words and Improve my words buttons. On the right, a live preview card headed Your ritual with a breathing orb, the first line cycling beneath it, a Hear a line button, and shortcut tiles reporting voice, sound, length, delay and rhythm — closing with the line: about 19 seconds per pass, begins again after 3 seconds." />
             <figcaption class="shotframe__cap">

@@ -23,14 +23,119 @@
      path comes from a CDN, so a blocked third-party host costs this page
      nothing at all. -->
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/InstrumentSerif-400.woff2" crossorigin />
-<link rel="preload" as="font" type="font/woff2" href="assets/fonts/SpaceGrotesk-500.woff2" crossorigin />
-<link rel="stylesheet" href="assets/fonts.css" />
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/SpaceGrotesk-var.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/Newsreader-400.woff2" crossorigin />
+<style>@font-face{
+  font-family:'Instrument Serif';
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+  src:url('assets/fonts/InstrumentSerif-400.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Instrument Serif';
+  font-style:italic;
+  font-weight:400;
+  font-display:swap;
+  src:url('assets/fonts/InstrumentSerif-400-italic.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Newsreader';
+  font-style:normal;
+  font-weight:400 700;
+  font-display:swap;
+  src:url('assets/fonts/Newsreader-400.woff2') format('woff2-variations'),
+      url('assets/fonts/Newsreader-400.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Newsreader';
+  font-style:italic;
+  font-weight:400;
+  font-display:swap;
+  src:url('assets/fonts/Newsreader-400-italic.woff2') format('woff2-variations'),
+      url('assets/fonts/Newsreader-400-italic.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Space Grotesk';
+  font-style:normal;
+  font-weight:400 700;
+  font-display:swap;
+  src:url('assets/fonts/SpaceGrotesk-var.woff2') format('woff2-variations'),
+      url('assets/fonts/SpaceGrotesk-var.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'IBM Plex Mono';
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+  src:url('assets/fonts/IBMPlexMono-400.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Instrument Serif fallback';
+  font-style:normal; font-weight:400;
+  src:local('Times New Roman'), local('Liberation Serif'), local('Tinos'), local('Nimbus Roman');
+  size-adjust:84.0%; ascent-override:117.5%; descent-override:36.9%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Instrument Serif fallback';
+  font-style:italic; font-weight:400;
+  src:local('Times New Roman Italic'), local('Liberation Serif Italic'), local('Tinos Italic');
+  size-adjust:88.4%; ascent-override:112.0%; descent-override:35.1%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Newsreader fallback';
+  font-style:normal; font-weight:400 500;
+  src:local('Times New Roman'), local('Liberation Serif'), local('Tinos'), local('Nimbus Roman');
+  size-adjust:100.9%; ascent-override:73.4%; descent-override:26.7%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Newsreader fallback';
+  font-style:normal; font-weight:501 700;
+  src:local('Times New Roman Bold'), local('Liberation Serif Bold'), local('Tinos Bold');
+  size-adjust:96.3%; ascent-override:76.9%; descent-override:28.0%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Newsreader fallback';
+  font-style:italic; font-weight:400 700;
+  src:local('Times New Roman Italic'), local('Liberation Serif Italic'), local('Tinos Italic');
+  size-adjust:93.5%; ascent-override:79.1%; descent-override:28.9%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Space Grotesk fallback';
+  font-style:normal; font-weight:400;
+  src:local('Arial'), local('Liberation Sans'), local('Arimo'), local('Helvetica');
+  size-adjust:109.7%; ascent-override:89.4%; descent-override:26.4%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Space Grotesk fallback';
+  font-style:normal; font-weight:500;
+  src:local('Arial'), local('Liberation Sans'), local('Arimo'), local('Helvetica');
+  size-adjust:109.9%; ascent-override:89.2%; descent-override:26.4%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Space Grotesk fallback';
+  font-style:normal; font-weight:600 700;
+  src:local('Arial Bold'), local('Liberation Sans Bold'), local('Arimo Bold'), local('Helvetica Bold');
+  size-adjust:102.0%; ascent-override:96.1%; descent-override:28.4%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'IBM Plex Mono fallback';
+  font-style:normal; font-weight:400;
+  src:local('Courier New'), local('Liberation Mono'), local('Cousine'), local('Nimbus Mono PS');
+  size-adjust:100.0%; ascent-override:103.0%; descent-override:28.0%; line-gap-override:0%;
+}</style>
 <link rel="stylesheet" href="assets/site.css" />
 <script>document.documentElement.classList.add('js');</script>
 
 </head>
 
-<body class="on-ink" data-accent="paper-animator">
+<body class="on-ink" data-accent="paper-animator" data-physics="unfold">
 
 <a class="skip" href="#main">Skip to content</a>
 
@@ -56,6 +161,14 @@
       <a href="contact.html">Contact</a>
     </nav>
 
+    <!-- The one control that stops every continuous movement on the site. It
+         appears only once a script is running, because with no script there is
+         nothing continuous to stop. -->
+    <button class="motionbtn" type="button" data-motion-toggle aria-pressed="false">
+      <span class="led" aria-hidden="true"></span>
+      <span>Reduce motion</span>
+    </button>
+
     <details class="navmob" data-menu>
       <summary aria-label="Menu">
         <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -71,6 +184,10 @@
           <a href="contact.html">Contact<span class="chev" aria-hidden="true">&rarr;</span></a>
         </nav>
         <a class="btn btn--primary" href="mailto:connor.eppolito803@myci.csuci.edu">Email Connor</a>
+        <button class="motionbtn" type="button" data-motion-toggle aria-pressed="false">
+          <span class="led" aria-hidden="true"></span>
+          <span>Reduce motion</span>
+        </button>
       </div>
     </details>
 
@@ -81,13 +198,13 @@
 <section class="case-hero" aria-labelledby="page-h">
   <div class="shell">
     <p class="case-hero__top" data-rise>
-      <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+      <span data-vt="accent-paper-animator" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
       <span class="chip">Research tooling</span>
       <span class="chip">React 19 · TypeScript</span>
       <span class="chip">Nothing is uploaded</span>
     </p>
 
-    <h1 class="h1" id="page-h" data-rise style="--d:60ms">PaperAnimator</h1>
+    <h1 class="h1" id="page-h" data-vt="title-paper-animator" data-rise style="--d:60ms">PaperAnimator</h1>
     <p class="case-hero__sub" data-rise style="--d:110ms">Read the paper. Mark it up. That is the presentation.</p>
 
     <p class="case-hero__lede" data-rise style="--d:160ms">
@@ -111,8 +228,12 @@
 <section style="padding-top:0;border:0" aria-label="The editor">
   <div class="shell">
     <figure class="shot shotframe" data-motion="unfold">
-      <img src="assets/projects/paperanimator/hero-paperanimator-thread.webp"
-           width="2400" height="1500" loading="eager" decoding="async"
+      <img data-vt="shot-paper-animator" src="assets/projects/paperanimator/hero-paperanimator-thread-1280.webp"
+               srcset="assets/projects/paperanimator/hero-paperanimator-thread-720.webp 720w,
+               assets/projects/paperanimator/hero-paperanimator-thread-1280.webp 1280w,
+               assets/projects/paperanimator/hero-paperanimator-thread.webp 2400w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
+           width="2400" height="1500" loading="eager" fetchpriority="high" decoding="async"
            alt="The PaperAnimator editor. On the left, a research paper rendered as printed — Sleep Duration and Recovery in Endurance Athletes — with one sentence of the abstract selected in blue, an earlier passage washed in mint because a scene already uses it, and a floating instrument bar over the selection offering Big number, statement, pull quote and more. A curved blue thread runs from the selected sentence across to the scene it produced. On the right, the stage plays that scene above a transport reading scene 2 of 2, and a storyboard below holds both scenes." />
       <figcaption class="shotframe__cap">
         Two scenes into a real paper. The mint wash marks a passage a scene
@@ -153,7 +274,7 @@
             <li><b>Spotlight</b> — those exact words marked inside the sentence around them.</li>
             <li><b>Side by side</b> — this passage against one you kept earlier, in two columns.</li>
           </ul>
-          <dl class="facts">
+          <dl class="facts" data-motion="unfold">
             <div><dt>Stack</dt><dd>React 19, TypeScript, Vite, Zustand, pdf.js</dd></div>
             <div><dt>Animations</dt><dd>21 entrances, 6 sustained motions</dd></div>
             <div><dt>Exports</dt><dd>MP4, ZIP, PPTX, PDF, SRT, VTT, TXT, project file</dd></div>
@@ -223,8 +344,12 @@
       <article class="chapter" data-rise>
         <div class="chapter__label"><span class="n">&mdash;</span><h2>Studio</h2></div>
         <div class="chapter__body">
-          <figure class="shot shotframe shotframe--wide">
-            <img src="assets/projects/paperanimator/paperanimator-studio.webp"
+          <figure class="shot shotframe shotframe--wide" tabindex="0" aria-label="Screenshot — scroll sideways to see the full width">
+            <img src="assets/projects/paperanimator/paperanimator-studio-1280.webp"
+               srcset="assets/projects/paperanimator/paperanimator-studio-720.webp 720w,
+               assets/projects/paperanimator/paperanimator-studio-1280.webp 1280w,
+               assets/projects/paperanimator/paperanimator-studio.webp 1800w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
                  width="1800" height="1125" loading="lazy" decoding="async"
                  alt="PaperAnimator in Studio mode. The paper stays on the left; on the right the stage plays the current scene above a transport with a scrubber, an Animate this button and a scene counter, and the panel below switches between a Storyboard tab and an Inspector tab. A source-integrity score of 100 sits in the header beside the Export button." />
             <figcaption class="shotframe__cap">
@@ -393,7 +518,7 @@
     <div class="foot__grid">
       <div>
         <p class="foot__sig">Health science,<br />built and tested.</p>
-        <p class="quiet small mt-2" style="max-width:34ch">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
+        <p class="quiet small mt-2" style="max-width:20.4em">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
       </div>
       <div>
         <h3>Site</h3>

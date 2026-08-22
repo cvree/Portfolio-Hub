@@ -1,0 +1,33 @@
+{
+  "name": "portfolio-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build and verification toolchain for Connor Eppolito's portfolio. Nothing here ships to the browser except the deterministic bundles written into assets/vendor/.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "python3 tools/build_pages.py && node tools/build_vendor.mjs",
+    "build:pages": "python3 tools/build_pages.py",
+    "build:vendor": "node tools/build_vendor.mjs",
+    "build:images": "node tools/build_images.mjs",
+    "build:fonts": "python3 tools/build_fonts.py --write",
+    "calibrate:fallbacks": "node tools/calibrate_fallbacks.mjs --write",
+    "check": "python3 tools/build_pages.py --check && node tools/build_vendor.mjs --check && npx html-validate \"*.html\"",
+    "test": "playwright test",
+    "test:all": "BROWSERS=chromium,firefox,webkit playwright test",
+    "lh:mobile": "lhci autorun --config=lighthouserc.mobile.json",
+    "lh:desktop": "lhci autorun --config=lighthouserc.json",
+    "serve": "python3 -m http.server 8123 --bind 127.0.0.1",
+    "shots": "node tools/shots.mjs artifacts/cinematic-overhaul/final"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@lhci/cli": "0.15.1",
+    "@playwright/test": "1.62.1",
+    "esbuild": "0.28.2",
+    "gsap": "3.15.0",
+    "html-validate": "11.9.0",
+    "ogl": "1.0.11",
+    "sharp": "0.35.3"
+  }
+}

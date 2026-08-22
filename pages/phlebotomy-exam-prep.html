@@ -4,6 +4,7 @@ title: Phlebotomy Exam Prep — Connor Eppolito
 ogtitle: Phlebotomy Exam Prep — know what to study
 nav: work
 surface: ink
+physics: sequence
 accent: phlebotomy
 ogtype: article
 image: assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp
@@ -13,13 +14,13 @@ desc: A certification study platform for phlebotomy students, built while traini
 <section class="case-hero" aria-labelledby="page-h">
   <div class="shell">
     <p class="case-hero__top" data-rise>
-      <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+      <span data-vt="accent-phlebotomy" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
       <span class="chip">Certification study</span>
       <span class="chip">Next.js static export</span>
       <span class="chip">257 tests</span>
     </p>
 
-    <h1 class="h1" id="page-h" data-rise style="--d:60ms">Phlebotomy<br />Exam Prep</h1>
+    <h1 class="h1" id="page-h" data-vt="title-phlebotomy" data-rise style="--d:60ms">Phlebotomy<br />Exam Prep</h1>
     <p class="case-hero__sub" data-rise style="--d:110ms">Know what to study before the exam, not after it.</p>
 
     <p class="case-hero__lede" data-rise style="--d:160ms">
@@ -42,9 +43,13 @@ desc: A certification study platform for phlebotomy students, built while traini
 
 <section style="padding-top:0;border:0" aria-label="The Order of Draw drill">
   <div class="shell">
-    <figure class="shot shotframe" data-motion="unfold">
-      <img src="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp"
-           width="2400" height="1629" loading="eager" decoding="async"
+    <figure class="shot shotframe" data-motion="sequence-in">
+      <img data-vt="shot-phlebotomy" src="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp"
+               srcset="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-720.webp 720w,
+               assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp 1280w,
+               assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp 2400w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
+           width="2400" height="1629" loading="eager" fetchpriority="high" decoding="async"
            alt="The Order of Draw drill. Four drill modes run across the top — Arrange, What next, Spot the error, Fill the gaps — with Arrange selected. Below them, six draggable cards, each with an illustration of the tube in its real cap colours and its additive named: EDTA, glycolytic inhibitor, coagulation, blood culture, serum and heparin, each with a drag grip and up and down buttons. A side panel carries the mnemonic Boys Love Ravishing Girls Like Gary, an explanation of this mode, and a note reading read the label, not the cap." />
       <figcaption class="shotframe__cap">
         The drill, shuffled and waiting. Three interchangeable interactions do the
@@ -77,7 +82,7 @@ desc: A certification study platform for phlebotomy students, built while traini
             California layers on top of national certification — the part that is
             hardest to find written down anywhere.
           </p>
-          <dl class="facts">
+          <dl class="facts" data-motion="sequence">
             <div><dt>Questions</dt><dd>513 original, across ten study areas</dd></div>
             <div><dt>Vocabulary</dt><dd>181 original term definitions</dd></div>
             <div><dt>Drills</dt><dd>Order of Draw (4 modes) · Tube mastery (4 directions)</dd></div>
@@ -145,8 +150,12 @@ desc: A certification study platform for phlebotomy students, built while traini
       <article class="chapter" data-rise>
         <div class="chapter__label"><span class="n">&mdash;</span><h2>Graded</h2></div>
         <div class="chapter__body">
-          <figure class="shot shotframe shotframe--wide">
-            <img src="assets/projects/phlebotomy/phlebotomy-ood-graded.webp"
+          <figure class="shot shotframe shotframe--wide" tabindex="0" aria-label="Screenshot — scroll sideways to see the full width">
+            <img src="assets/projects/phlebotomy/phlebotomy-ood-graded-1280.webp"
+               srcset="assets/projects/phlebotomy/phlebotomy-ood-graded-720.webp 720w,
+               assets/projects/phlebotomy/phlebotomy-ood-graded-1280.webp 1280w,
+               assets/projects/phlebotomy/phlebotomy-ood-graded.webp 1800w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
                  width="1800" height="1286" loading="lazy" decoding="async"
                  alt="The drill after checking: all six cards outlined in green and labelled correct position, and below them a panel headed Perfect sequence with a No mistakes badge, the full correct sequence listed one to six in words, and two buttons — Try again, and Practice the questions." />
             <figcaption class="shotframe__cap">
@@ -197,8 +206,12 @@ desc: A certification study platform for phlebotomy students, built while traini
       <article class="chapter" data-rise>
         <div class="chapter__label"><span class="n">&mdash;</span><h2>Weak-area detection</h2></div>
         <div class="chapter__body">
-          <figure class="shot shotframe shotframe--wide">
-            <img src="assets/projects/phlebotomy/phlebotomy-readiness.webp"
+          <figure class="shot shotframe shotframe--wide" tabindex="0" aria-label="Screenshot — scroll sideways to see the full width">
+            <img src="assets/projects/phlebotomy/phlebotomy-readiness-1280.webp"
+               srcset="assets/projects/phlebotomy/phlebotomy-readiness-720.webp 720w,
+               assets/projects/phlebotomy/phlebotomy-readiness-1280.webp 1280w,
+               assets/projects/phlebotomy/phlebotomy-readiness.webp 1800w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
                  width="1800" height="1414" loading="lazy" decoding="async"
                  alt="The progress screen after one ten-question session. A What to study next panel recommends practising Anatomy and Physiology, noting it is the lowest score so far though only two attempts, then offers to review nine missed questions and to try the two drills. A Study readiness card reads Learning, four out of one hundred, explains that syllabus coverage is holding it back, and links to a full breakdown. At a glance: ten percent lifetime accuracy, a one-day streak, ten questions seen, nine still missed." />
             <figcaption class="shotframe__cap">

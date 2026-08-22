@@ -23,14 +23,119 @@
      path comes from a CDN, so a blocked third-party host costs this page
      nothing at all. -->
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/InstrumentSerif-400.woff2" crossorigin />
-<link rel="preload" as="font" type="font/woff2" href="assets/fonts/SpaceGrotesk-500.woff2" crossorigin />
-<link rel="stylesheet" href="assets/fonts.css" />
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/SpaceGrotesk-var.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/Newsreader-400.woff2" crossorigin />
+<style>@font-face{
+  font-family:'Instrument Serif';
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+  src:url('assets/fonts/InstrumentSerif-400.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Instrument Serif';
+  font-style:italic;
+  font-weight:400;
+  font-display:swap;
+  src:url('assets/fonts/InstrumentSerif-400-italic.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Newsreader';
+  font-style:normal;
+  font-weight:400 700;
+  font-display:swap;
+  src:url('assets/fonts/Newsreader-400.woff2') format('woff2-variations'),
+      url('assets/fonts/Newsreader-400.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Newsreader';
+  font-style:italic;
+  font-weight:400;
+  font-display:swap;
+  src:url('assets/fonts/Newsreader-400-italic.woff2') format('woff2-variations'),
+      url('assets/fonts/Newsreader-400-italic.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Space Grotesk';
+  font-style:normal;
+  font-weight:400 700;
+  font-display:swap;
+  src:url('assets/fonts/SpaceGrotesk-var.woff2') format('woff2-variations'),
+      url('assets/fonts/SpaceGrotesk-var.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'IBM Plex Mono';
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+  src:url('assets/fonts/IBMPlexMono-400.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Instrument Serif fallback';
+  font-style:normal; font-weight:400;
+  src:local('Times New Roman'), local('Liberation Serif'), local('Tinos'), local('Nimbus Roman');
+  size-adjust:84.0%; ascent-override:117.5%; descent-override:36.9%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Instrument Serif fallback';
+  font-style:italic; font-weight:400;
+  src:local('Times New Roman Italic'), local('Liberation Serif Italic'), local('Tinos Italic');
+  size-adjust:88.4%; ascent-override:112.0%; descent-override:35.1%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Newsreader fallback';
+  font-style:normal; font-weight:400 500;
+  src:local('Times New Roman'), local('Liberation Serif'), local('Tinos'), local('Nimbus Roman');
+  size-adjust:100.9%; ascent-override:73.4%; descent-override:26.7%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Newsreader fallback';
+  font-style:normal; font-weight:501 700;
+  src:local('Times New Roman Bold'), local('Liberation Serif Bold'), local('Tinos Bold');
+  size-adjust:96.3%; ascent-override:76.9%; descent-override:28.0%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Newsreader fallback';
+  font-style:italic; font-weight:400 700;
+  src:local('Times New Roman Italic'), local('Liberation Serif Italic'), local('Tinos Italic');
+  size-adjust:93.5%; ascent-override:79.1%; descent-override:28.9%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Space Grotesk fallback';
+  font-style:normal; font-weight:400;
+  src:local('Arial'), local('Liberation Sans'), local('Arimo'), local('Helvetica');
+  size-adjust:109.7%; ascent-override:89.4%; descent-override:26.4%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Space Grotesk fallback';
+  font-style:normal; font-weight:500;
+  src:local('Arial'), local('Liberation Sans'), local('Arimo'), local('Helvetica');
+  size-adjust:109.9%; ascent-override:89.2%; descent-override:26.4%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Space Grotesk fallback';
+  font-style:normal; font-weight:600 700;
+  src:local('Arial Bold'), local('Liberation Sans Bold'), local('Arimo Bold'), local('Helvetica Bold');
+  size-adjust:102.0%; ascent-override:96.1%; descent-override:28.4%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'IBM Plex Mono fallback';
+  font-style:normal; font-weight:400;
+  src:local('Courier New'), local('Liberation Mono'), local('Cousine'), local('Nimbus Mono PS');
+  size-adjust:100.0%; ascent-override:103.0%; descent-override:28.0%; line-gap-override:0%;
+}</style>
 <link rel="stylesheet" href="assets/site.css" />
 <script>document.documentElement.classList.add('js');</script>
 
 </head>
 
-<body class="on-ink" data-accent="manifester">
+<body class="on-ink" data-accent="manifester" data-physics="breathe">
 
 <a class="skip" href="#main">Skip to content</a>
 
@@ -56,6 +161,14 @@
       <a href="contact.html">Contact</a>
     </nav>
 
+    <!-- The one control that stops every continuous movement on the site. It
+         appears only once a script is running, because with no script there is
+         nothing continuous to stop. -->
+    <button class="motionbtn" type="button" data-motion-toggle aria-pressed="false">
+      <span class="led" aria-hidden="true"></span>
+      <span>Reduce motion</span>
+    </button>
+
     <details class="navmob" data-menu>
       <summary aria-label="Menu">
         <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -71,6 +184,10 @@
           <a href="contact.html">Contact<span class="chev" aria-hidden="true">&rarr;</span></a>
         </nav>
         <a class="btn btn--primary" href="mailto:connor.eppolito803@myci.csuci.edu">Email Connor</a>
+        <button class="motionbtn" type="button" data-motion-toggle aria-pressed="false">
+          <span class="led" aria-hidden="true"></span>
+          <span>Reduce motion</span>
+        </button>
       </div>
     </details>
 
@@ -81,13 +198,13 @@
 <section class="case-hero" aria-labelledby="page-h">
   <div class="shell">
     <p class="case-hero__top" data-rise>
-      <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+      <span data-vt="accent-manifester" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
       <span class="chip">Guided audio</span>
       <span class="chip">React · Vite · PWA</span>
       <span class="chip">Kokoro-82M voices</span>
     </p>
 
-    <h1 class="h1" id="page-h" data-rise style="--d:60ms">Manifester</h1>
+    <h1 class="h1" id="page-h" data-vt="title-manifester" data-rise style="--d:60ms">Manifester</h1>
     <p class="case-hero__sub" data-rise style="--d:110ms">A tiny calm garden for your intentions.</p>
 
     <p class="case-hero__lede" data-rise style="--d:160ms">
@@ -107,7 +224,7 @@
       </a>
     </div>
 
-    <p class="quiet small mt-3" data-rise style="max-width:58ch">
+    <p class="quiet small mt-3" data-rise style="max-width:34.8em">
       Nothing on this site autoplays sound, including this page. Manifester only
       speaks when you press play.
     </p>
@@ -117,8 +234,12 @@
 <section style="padding-top:0;border:0" aria-label="The running app">
   <div class="shell">
     <figure class="shot shotframe" data-motion="breathe">
-      <img src="assets/projects/manifester/hero-manifester-player.webp"
-           width="2400" height="1500" loading="eager" decoding="async"
+      <img data-vt="shot-manifester" src="assets/projects/manifester/hero-manifester-player-1280.webp"
+               srcset="assets/projects/manifester/hero-manifester-player-720.webp 720w,
+               assets/projects/manifester/hero-manifester-player-1280.webp 1280w,
+               assets/projects/manifester/hero-manifester-player.webp 2400w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
+           width="2400" height="1500" loading="eager" fetchpriority="high" decoding="async"
            alt="The Manifester player expanded to fill the screen. A session titled Evening steadiness runs above a large breathing orb reading Breathe in with a count of two and a progress ring around it. Below the orb, the line being spoken: I trust myself to handle what comes. A single pause control sits under it, with 9:38 remaining on pass 8, an End session button, and a footer reading next pass in 2s beside the ambience name, Moon Garden." />
       <figcaption class="shotframe__cap">
         The expanded player, eight passes into a live ten-minute session built in
@@ -214,8 +335,12 @@
       <article class="chapter" data-rise>
         <div class="chapter__label"><span class="n">&mdash;</span><h2>The workspace</h2></div>
         <div class="chapter__body">
-          <figure class="shot shotframe shotframe--wide">
-            <img src="assets/projects/manifester/manifester-builder.webp"
+          <figure class="shot shotframe shotframe--wide" tabindex="0" aria-label="Screenshot — scroll sideways to see the full width">
+            <img src="assets/projects/manifester/manifester-builder-1280.webp"
+               srcset="assets/projects/manifester/manifester-builder-720.webp 720w,
+               assets/projects/manifester/manifester-builder-1280.webp 1280w,
+               assets/projects/manifester/manifester-builder.webp 1600w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
                  width="1600" height="1000" loading="lazy" decoding="async"
                  alt="The Create screen. On the left, a title reading Evening steadiness, a words box holding five typed lines with a 42 words, 5 lines counter, a row of starter phrases, and Add to my words and Improve my words buttons. On the right, a live preview card headed Your ritual with a breathing orb, the first line cycling beneath it, a Hear a line button, and shortcut tiles reporting voice, sound, length, delay and rhythm — closing with the line: about 19 seconds per pass, begins again after 3 seconds." />
             <figcaption class="shotframe__cap">
@@ -398,7 +523,7 @@
     <div class="foot__grid">
       <div>
         <p class="foot__sig">Health science,<br />built and tested.</p>
-        <p class="quiet small mt-2" style="max-width:34ch">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
+        <p class="quiet small mt-2" style="max-width:20.4em">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
       </div>
       <div>
         <h3>Site</h3>

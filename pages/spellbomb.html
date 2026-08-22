@@ -4,6 +4,7 @@ title: SpellBomb — Connor Eppolito
 ogtitle: SpellBomb — a real-time multiplayer spelling game
 nav: work
 surface: ink
+physics: fuse
 accent: spellbomb
 ogtype: article
 image: assets/projects/spellbomb/hero-spellbomb-game.webp
@@ -13,13 +14,13 @@ desc: A real-time multiplayer party spelling game. One authoritative Node server
 <section class="case-hero" aria-labelledby="page-h">
   <div class="shell">
     <p class="case-hero__top" data-rise>
-      <span class="chip chip--dev"><span class="led" aria-hidden="true"></span>In development</span>
+      <span data-vt="accent-spellbomb" class="chip chip--dev"><span class="led" aria-hidden="true"></span>In development</span>
       <span class="chip">Live multiplayer</span>
       <span class="chip">v9.3.0</span>
       <span class="chip">Private repository</span>
     </p>
 
-    <h1 class="h1" id="page-h" data-rise style="--d:60ms">SpellBomb</h1>
+    <h1 class="h1" id="page-h" data-vt="title-spellbomb" data-rise style="--d:60ms">SpellBomb</h1>
     <p class="case-hero__sub" data-rise style="--d:110ms">The bomb is on you. Spell it, or it goes off.</p>
 
     <p class="case-hero__lede" data-rise style="--d:160ms">
@@ -36,9 +37,13 @@ desc: A real-time multiplayer party spelling game. One authoritative Node server
 <!-- the interaction, first -->
 <section style="padding-top:0;border:0" aria-label="The running game">
   <div class="shell">
-    <figure class="shot shotframe" data-motion="unfold">
-      <img src="assets/projects/spellbomb/hero-spellbomb-game.webp"
-           width="2400" height="1500" loading="eager" decoding="async"
+    <figure class="shot shotframe" data-motion="impact">
+      <img data-vt="shot-spellbomb" src="assets/projects/spellbomb/hero-spellbomb-game-1280.webp"
+               srcset="assets/projects/spellbomb/hero-spellbomb-game-720.webp 720w,
+               assets/projects/spellbomb/hero-spellbomb-game-1280.webp 1280w,
+               assets/projects/spellbomb/hero-spellbomb-game.webp 2400w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
+           width="2400" height="1500" loading="eager" fetchpriority="high" decoding="async"
            alt="A live six-player SpellBomb round. The lit bomb hangs in the centre of the arena with a dashed arrow pointing at the player named sam, who has two hearts left; kit, maya, dev, ollie and juno are ringed around the arena with one heart each. Below, an eleven-letter word tray shows I, N, A, L, I, E, N filled and four slots empty, with the answer box reading inalien and a green GO button beside it." />
       <figcaption class="shotframe__cap">
         A real six-player match against a running <code>server.js</code>: six
@@ -69,7 +74,7 @@ desc: A real-time multiplayer party spelling game. One authoritative Node server
             <li><b>Spell Bomb</b> — a word, a fuse, and a bomb that gets passed. Play it as <i>Passed Bomb</i>, one player at a time, or <i>Everyone Spells</i>, where the whole room answers the same word in secret and it is revealed at once.</li>
             <li><b>Word Rush</b> — sixty seconds, one seven-letter honeycomb, everybody racing at the same time. Three rounds, cumulative scores, and a shared word wall at the end showing what everyone found and what the whole room walked past.</li>
           </ul>
-          <dl class="facts">
+          <dl class="facts" data-motion="impact">
             <div><dt>Runtime</dt><dd>Node 18+, Express, Socket.IO</dd></div>
             <div><dt>Persistence</dt><dd>Postgres, with a JSON-file fallback</dd></div>
             <div><dt>Rush puzzles</dt><dd>260 pre-built honeycombs</dd></div>
@@ -139,8 +144,12 @@ desc: A real-time multiplayer party spelling game. One authoritative Node server
       <article class="chapter" data-rise>
         <div class="chapter__label"><span class="n">&mdash;</span><h2>Waiting for the bomb</h2></div>
         <div class="chapter__body">
-          <figure class="shot shotframe shotframe--wide">
-            <img src="assets/projects/spellbomb/spellbomb-fuse.webp"
+          <figure class="shot shotframe shotframe--wide" tabindex="0" aria-label="Screenshot — scroll sideways to see the full width">
+            <img src="assets/projects/spellbomb/spellbomb-fuse-1280.webp"
+               srcset="assets/projects/spellbomb/spellbomb-fuse-720.webp 720w,
+               assets/projects/spellbomb/spellbomb-fuse-1280.webp 1280w,
+               assets/projects/spellbomb/spellbomb-fuse.webp 1600w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
                  width="1600" height="1000" loading="lazy" decoding="async"
                  alt="The same arena from another player's seat. The bomb is held by ollie, the fuse bar beneath it has burned down to red, a taunt reading WHY ARE YOU STILL HOLDING IT sits above it, and this player's own answer box is greyed out and reads wait for your turn." />
             <figcaption class="shotframe__cap">

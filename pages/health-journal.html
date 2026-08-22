@@ -4,6 +4,7 @@ title: Health Journal — Connor Eppolito
 ogtitle: Health Journal — a private daily health record
 nav: work
 surface: ink
+physics: grow
 accent: health-journal
 ogtype: article
 image: assets/projects/health-journal/hero-health-journal-dashboard.webp
@@ -13,13 +14,13 @@ desc: A private daily health journal that lives on your device. A living timelin
 <section class="case-hero" aria-labelledby="page-h">
   <div class="shell">
     <p class="case-hero__top" data-rise>
-      <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+      <span data-vt="accent-health-journal" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
       <span class="chip">Health tooling</span>
       <span class="chip">v1.21</span>
       <span class="chip">Local-first PWA</span>
     </p>
 
-    <h1 class="h1" id="page-h" data-rise style="--d:60ms">Health Journal</h1>
+    <h1 class="h1" id="page-h" data-vt="title-health-journal" data-rise style="--d:60ms">Health Journal</h1>
     <p class="case-hero__sub" data-rise style="--d:110ms">A minute a day, and the pattern comes out over weeks.</p>
 
     <p class="case-hero__lede" data-rise style="--d:160ms">
@@ -39,7 +40,7 @@ desc: A private daily health journal that lives on your device. A living timelin
       </a>
     </div>
 
-    <p class="quiet small mt-3" data-rise style="max-width:60ch">
+    <p class="quiet small mt-3" data-rise style="max-width:36em">
       <b>Not medical advice.</b> The app says this too, at the top of its own
       README and inside the product. It is a personal tracking tool; it surfaces
       possible patterns in your own logs and never claims a cause.
@@ -49,11 +50,14 @@ desc: A private daily health journal that lives on your device. A living timelin
 
 <section style="padding-top:0;border:0" aria-label="The running app">
   <div class="shell">
-    <div style="display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))" data-motion="grow">
+    <div style="display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))" data-motion="materialise">
 
       <figure class="shot shotframe">
-        <img src="assets/projects/health-journal/hero-health-journal-dashboard.webp"
-             width="920" height="2480" loading="eager" decoding="async"
+        <img data-vt="shot-health-journal" src="assets/projects/health-journal/hero-health-journal-dashboard-720.webp"
+               srcset="assets/projects/health-journal/hero-health-journal-dashboard-720.webp 720w,
+               assets/projects/health-journal/hero-health-journal-dashboard.webp 920w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
+             width="920" height="2480" loading="eager" fetchpriority="high" decoding="async"
              alt="Health Journal on a phone. Today's overall skin severity is rated 5 with an eleven-day streak and seven- and thirty-day averages beside it. Under it, quick-add tiles for check-in, food, bowel and photo; today's completed check-in listing fourteen answers; and a thirty-day trend chart drawing overall skin severity, itch, sleep quality and stress as four coloured lines." />
         <figcaption class="shotframe__cap">
           The dashboard, on the phone width the app is designed for, with the
@@ -63,7 +67,10 @@ desc: A private daily health journal that lives on your device. A living timelin
       </figure>
 
       <figure class="shot shotframe">
-        <img src="assets/projects/health-journal/health-journal-timeline.webp"
+        <img src="assets/projects/health-journal/health-journal-timeline-720.webp"
+               srcset="assets/projects/health-journal/health-journal-timeline-720.webp 720w,
+               assets/projects/health-journal/health-journal-timeline.webp 920w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
              width="920" height="2480" loading="lazy" decoding="async"
              alt="The Health Journal history timeline: a colour legend running from mild through severe, then a rail of recent days — Friday the 21st rated 4 with routine and a photo, Wednesday the 19th rated 5 with the note scratched in sleep again, Monday the 17th with the note tried the new fragrance-free lotion." />
         <figcaption class="shotframe__cap">
@@ -74,7 +81,10 @@ desc: A private daily health journal that lives on your device. A living timelin
       </figure>
 
       <figure class="shot shotframe">
-        <img src="assets/projects/health-journal/health-journal-trend.webp"
+        <img src="assets/projects/health-journal/health-journal-trend-720.webp"
+               srcset="assets/projects/health-journal/health-journal-trend-720.webp 720w,
+               assets/projects/health-journal/health-journal-trend.webp 920w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
              width="920" height="2480" loading="lazy" decoding="async"
              alt="The Insights screen: a metric selector across the top, a trend chart with a solid daily line and a dashed seven-day average, disclosures explaining how it is drawn and offering a week-by-week view, a Flares card explaining that nothing is detected for you, and a year grid with one row per month." />
         <figcaption class="shotframe__cap">
@@ -109,7 +119,7 @@ desc: A private daily health journal that lives on your device. A living timelin
             AI observations with your own key, encrypted cross-device sync, and
             daily weather context.
           </p>
-          <dl class="facts">
+          <dl class="facts" data-motion="materialise">
             <div><dt>Stack</dt><dd>React, Vite, installable PWA</dd></div>
             <div><dt>Storage</dt><dd>On-device; no account required</dd></div>
             <div><dt>Native</dt><dd>iOS app + Home Screen widget via Capacitor</dd></div>

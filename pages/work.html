@@ -20,7 +20,7 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
       the decisions behind it, what changed across iterations, what is next, and
       where to go and use it.
     </p>
-    <p class="quiet small mt-2" data-rise style="max-width:62ch">
+    <p class="quiet small mt-2" data-rise style="max-width:37.2em">
       Every screenshot on this site was captured from the running application
       with real data in it. Where a repository is private, this site says so
       rather than pointing at a link that will not open.
@@ -76,7 +76,7 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
       <li class="work" data-accent="spellbomb" data-rise>
         <div class="work__body">
           <p class="work__idx">01 / Live multiplayer</p>
-          <h3 class="work__title"><a href="spellbomb.html">SpellBomb</a></h3>
+          <h3 class="work__title" data-vt="title-spellbomb"><a href="spellbomb.html">SpellBomb</a></h3>
           <p class="work__kicker">Real-time party spelling, in a room the server owns.</p>
           <p class="work__blurb">
             Two modes over one set of rooms — a bomb passed clockwise on a fuse,
@@ -85,15 +85,19 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
             and the same rooms as the website.
           </p>
           <p class="work__meta">
-            <span class="chip chip--dev"><span class="led" aria-hidden="true"></span>In development</span>
+            <span data-vt="accent-spellbomb" class="chip chip--dev"><span class="led" aria-hidden="true"></span>In development</span>
             <span class="chip">Node · Socket.IO · Postgres</span>
             <span class="chip">Private repository</span>
           </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
         <div class="work__shot">
-          <img src="assets/projects/spellbomb/hero-spellbomb-game.webp"
-               width="2400" height="1500" loading="eager" decoding="async"
+          <img data-vt="shot-spellbomb" src="assets/projects/spellbomb/hero-spellbomb-game-1280.webp"
+               srcset="assets/projects/spellbomb/hero-spellbomb-game-720.webp 720w,
+               assets/projects/spellbomb/hero-spellbomb-game-1280.webp 1280w,
+               assets/projects/spellbomb/hero-spellbomb-game.webp 2400w"
+               sizes="(max-width: 840px) 92vw, 46vw"
+               width="2400" height="1500" loading="eager" fetchpriority="high" decoding="async"
                alt="A live six-player SpellBomb round: the lit bomb in the middle of the arena with an arrow pointing at the player named sam, five other players ringed around it showing their hearts, and an eleven-letter word tray part-filled." />
         </div>
       </li>
@@ -101,7 +105,7 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
       <li class="work" data-accent="health-journal" data-rise>
         <div class="work__body">
           <p class="work__idx">02 / Health tooling</p>
-          <h3 class="work__title"><a href="health-journal.html">Health Journal</a></h3>
+          <h3 class="work__title" data-vt="title-health-journal"><a href="health-journal.html">Health Journal</a></h3>
           <p class="work__kicker">A private health record that never leaves the phone.</p>
           <p class="work__blurb">
             You design the check-in; it gives you a timeline, sunlight sessions
@@ -110,14 +114,17 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
             their own history with your journal drawn underneath them.
           </p>
           <p class="work__meta">
-            <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+            <span data-vt="accent-health-journal" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">React · Vite · PWA</span>
             <span class="chip">No account, no server</span>
           </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
         <div class="work__shot work__shot--tall">
-          <img src="assets/projects/health-journal/health-journal-timeline.webp"
+          <img data-vt="shot-health-journal" src="assets/projects/health-journal/health-journal-timeline-720.webp"
+               srcset="assets/projects/health-journal/health-journal-timeline-720.webp 720w,
+               assets/projects/health-journal/health-journal-timeline.webp 920w"
+               sizes="(max-width: 840px) 92vw, 46vw"
                width="920" height="2480" loading="lazy" decoding="async"
                alt="The Health Journal history timeline: a colour legend for overall skin severity, then a rail of recent days, each showing its score, its date and what was logged — routine, photo, or a note such as scratched in sleep again." />
         </div>
@@ -126,7 +133,7 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
       <li class="work" data-accent="phlebotomy" data-rise>
         <div class="work__body">
           <p class="work__idx">03 / Certification study</p>
-          <h3 class="work__title"><a href="phlebotomy-exam-prep.html">Phlebotomy Exam Prep</a></h3>
+          <h3 class="work__title" data-vt="title-phlebotomy"><a href="phlebotomy-exam-prep.html">Phlebotomy Exam Prep</a></h3>
           <p class="work__kicker">Built while training for the exam it prepares you for.</p>
           <p class="work__blurb">
             513 original questions, 181 vocabulary terms, four Order of Draw drill
@@ -135,14 +142,18 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
             that shows its own working.
           </p>
           <p class="work__meta">
-            <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+            <span data-vt="accent-phlebotomy" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">Next.js · TypeScript</span>
             <span class="chip">257 tests</span>
           </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
         <div class="work__shot">
-          <img src="assets/projects/phlebotomy/phlebotomy-readiness.webp"
+          <img data-vt="shot-phlebotomy" src="assets/projects/phlebotomy/phlebotomy-readiness-1280.webp"
+               srcset="assets/projects/phlebotomy/phlebotomy-readiness-720.webp 720w,
+               assets/projects/phlebotomy/phlebotomy-readiness-1280.webp 1280w,
+               assets/projects/phlebotomy/phlebotomy-readiness.webp 1800w"
+               sizes="(max-width: 840px) 92vw, 46vw"
                width="1800" height="1414" loading="lazy" decoding="async"
                alt="The Phlebotomy Exam Prep progress screen: a study readiness score reading Learning, four out of one hundred, with a plain-language explanation of what is holding it back, a recommendation to practise the lowest-scoring area, and at-a-glance accuracy, streak and missed-question counts." />
         </div>
@@ -151,7 +162,7 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
       <li class="work" data-accent="manifester" data-rise>
         <div class="work__body">
           <p class="work__idx">04 / Guided audio</p>
-          <h3 class="work__title"><a href="manifester.html">Manifester</a></h3>
+          <h3 class="work__title" data-vt="title-manifester"><a href="manifester.html">Manifester</a></h3>
           <p class="work__kicker">Words you wrote, read back over a room that breathes.</p>
           <p class="work__blurb">
             A ritual builder and a player. Two studio voices that sound the same
@@ -160,14 +171,18 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
             an MP3 export rendered entirely on the device.
           </p>
           <p class="work__meta">
-            <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+            <span data-vt="accent-manifester" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">React · Vite · PWA</span>
             <span class="chip">Kokoro-82M voices</span>
           </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
         <div class="work__shot">
-          <img src="assets/projects/manifester/hero-manifester-player.webp"
+          <img data-vt="shot-manifester" src="assets/projects/manifester/hero-manifester-player-1280.webp"
+               srcset="assets/projects/manifester/hero-manifester-player-720.webp 720w,
+               assets/projects/manifester/hero-manifester-player-1280.webp 1280w,
+               assets/projects/manifester/hero-manifester-player.webp 2400w"
+               sizes="(max-width: 840px) 92vw, 46vw"
                width="2400" height="1500" loading="lazy" decoding="async"
                alt="The Manifester player expanded: a session titled Evening steadiness, a breathing orb reading Breathe in, the spoken line I trust myself to handle what comes, and 9:38 remaining on pass 8 over the Moon Garden ambience." />
         </div>
@@ -176,7 +191,7 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
       <li class="work" data-accent="owcs" data-rise>
         <div class="work__body">
           <p class="work__idx">05 / Computer vision</p>
-          <h3 class="work__title"><a href="owcs-comp-tracker.html">OWCS Comp Tracker</a></h3>
+          <h3 class="work__title" data-vt="title-owcs"><a href="owcs-comp-tracker.html">OWCS Comp Tracker</a></h3>
           <p class="work__kicker">Every detection sits beside the frame it was read from.</p>
           <p class="work__blurb">
             A $0, no-build pipeline: broadcast VOD in, auditable hero-composition
@@ -185,14 +200,18 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
             a human review gate before anything is called a fact.
           </p>
           <p class="work__meta">
-            <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+            <span data-vt="accent-owcs" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">Python · OpenCV · SQLite</span>
             <span class="chip">Independent fan project</span>
           </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
         <div class="work__shot">
-          <img src="assets/projects/owcs/owcs-swaps.webp"
+          <img data-vt="shot-owcs" src="assets/projects/owcs/owcs-swaps-1280.webp"
+               srcset="assets/projects/owcs/owcs-swaps-720.webp 720w,
+               assets/projects/owcs/owcs-swaps-1280.webp 1280w,
+               assets/projects/owcs/owcs-swaps.webp 1600w"
+               sizes="(max-width: 840px) 92vw, 46vw"
                width="1600" height="1000" loading="lazy" decoding="async"
                alt="The OWCS Comp Tracker swap timeline, showing confirmed hero changes with before-and-after evidence crops taken from the broadcast." />
         </div>
@@ -201,7 +220,7 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
       <li class="work" data-accent="paper-animator" data-rise>
         <div class="work__body">
           <p class="work__idx">06 / Research tooling</p>
-          <h3 class="work__title"><a href="paper-animator.html">PaperAnimator</a></h3>
+          <h3 class="work__title" data-vt="title-paper-animator"><a href="paper-animator.html">PaperAnimator</a></h3>
           <p class="work__kicker">The highlight is the citation.</p>
           <p class="work__blurb">
             Open a paper, mark a passage, drop an instrument on it — and a scene
@@ -211,14 +230,18 @@ desc: Six flagship products with full case studies — SpellBomb, Health Journal
             deliver.
           </p>
           <p class="work__meta">
-            <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+            <span data-vt="accent-paper-animator" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">React 19 · TypeScript · WebCodecs</span>
             <span class="chip">Nothing is uploaded</span>
           </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
         <div class="work__shot">
-          <img src="assets/projects/paperanimator/paperanimator-studio.webp"
+          <img data-vt="shot-paper-animator" src="assets/projects/paperanimator/paperanimator-studio-1280.webp"
+               srcset="assets/projects/paperanimator/paperanimator-studio-720.webp 720w,
+               assets/projects/paperanimator/paperanimator-studio-1280.webp 1280w,
+               assets/projects/paperanimator/paperanimator-studio.webp 1800w"
+               sizes="(max-width: 840px) 92vw, 46vw"
                width="1800" height="1125" loading="lazy" decoding="async"
                alt="PaperAnimator in Studio mode: the rendered paper on the left, a scene playing on the stage with a transport and an Animate this button, and the storyboard and inspector tabs on the right." />
         </div>

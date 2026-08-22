@@ -18,6 +18,7 @@ Each fragment in pages/ starts with a small front-matter block:
     nav: work
     surface: ink
     accent: cobalt
+    physics: sort
     desc: ...
     -->
 """
@@ -80,8 +81,27 @@ def nav_html(active: str, rel: str) -> tuple[str, str]:
     return "\n      ".join(desk), "\n          ".join(mob)
 
 
+def font_face_css() -> str:
+    """assets/fonts.css, inlined.
+
+    The @font-face block is small, it is needed before the first paint, and
+    fetching it costs a whole round trip on a slow connection. Inlining it here
+    keeps assets/fonts.css as the one place the faces are defined — the drift
+    check makes sure the copy in the pages cannot fall behind it — while the
+    browser gets the rules in the first response.
+    """
+    css = (ROOT / "assets" / "fonts.css").read_text(encoding="utf-8")
+    # The file lives in assets/, the pages live at the root: re-root the URLs.
+    css = css.replace("url('fonts/", "url('assets/fonts/")
+    # Comments are for whoever opens the file, not for the wire.
+    css = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+    css = re.sub(r"\n\s*\n+", "\n", css).strip()
+    return css
+
+
 def build(check: bool = False) -> int:
     template = (ROOT / "templates" / "base.html").read_text(encoding="utf-8")
+    fonts = font_face_css()
     stale: list[str] = []
 
     for frag_path in sorted((ROOT / "pages").glob("*.html")):
@@ -91,6 +111,9 @@ def build(check: bool = False) -> int:
         rel = meta.get("rel", "")
         surface_class, theme, scheme = SURFACES[meta.get("surface", "ink")]
         accent = meta.get("accent", "")
+        # One case study, one motion law. The page declares which product
+        # physics it inherits; the stylesheet does the rest.
+        physics = meta.get("physics", "")
         og_image = meta.get("image", "")
 
         desk, mob = nav_html(meta.get("nav", ""), rel)
@@ -108,8 +131,10 @@ def build(check: bool = False) -> int:
             "{{SCHEME}}": scheme,
             "{{OGTYPE}}": meta.get("ogtype", "website"),
             "{{ACCENTATTR}}": f' data-accent="{accent}"' if accent else "",
+            "{{PHYSICSATTR}}": f' data-physics="{physics}"' if physics else "",
             "{{NAVDESK}}": desk,
             "{{NAVMOB}}": mob,
+            "{{FONTFACE}}": fonts,
             "{{HEADEXTRA}}": meta.get("headextra", ""),
             "{{OGIMAGE}}": (
                 f'<meta property="og:image" content="{SITE}{og_image}" />'

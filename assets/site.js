@@ -4,10 +4,18 @@
    Enhancement only. Everything on every page is complete, readable, navigable
    and linkable with this file absent, blocked, or thrown out by an error.
 
-   Three small jobs:
+   Five small jobs:
      1. reveal-on-scroll for anything carrying [data-rise] or [data-motion]
      2. a hairline reading-progress bar
      3. closing the mobile menu on Escape, on outside click, and on navigation
+     4. the global Motion On/Off control
+     5. the cinematic layer — and, far more often, the decision not to load it
+
+   Jobs 1-3 are the site. Job 5 is an escalation that is allowed to happen only
+   after the useful page has painted, and only when the device, the pointer,
+   the viewport, the reported memory, Save-Data and the visitor's own motion
+   preference all say yes. Neither cinematic bundle is in the critical path and
+   neither is ever required for the page to be complete.
 
    Nothing here hijacks scrolling, and nothing here plays sound.
    =========================================================================== */
@@ -17,12 +25,31 @@
 
   var root = document.documentElement;
 
+  /* Where this file lives, so a dynamic import resolves against the script
+     rather than against the document that happens to have loaded it. */
+  var HERE = (function () {
+    var self = document.currentScript;
+    var src = self && self.src ? self.src : "";
+    return src ? src.replace(/[^/]*$/, "") : "assets/";
+  })();
+
   /* --- the reduced-motion contract ---------------------------------------- */
 
   var mq = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
 
   function still() {
     return !!(mq && mq.matches) || root.getAttribute("data-motion") === "off";
+  }
+
+  /* The stored preference may only ever make the site stiller than the system
+     asked for. If the OS says reduce, nothing stored here can turn motion on. */
+  var STORE = "ce-motion";
+  try {
+    if (window.localStorage && localStorage.getItem(STORE) === "off") {
+      root.setAttribute("data-motion", "off");
+    }
+  } catch (e) {
+    /* storage denied — the default, which is "follow the system", stands */
   }
 
   /* If the preference is turned on mid-visit, reveal everything immediately
@@ -133,6 +160,139 @@
     });
   }
 
+  /* --- 4. the motion control ----------------------------------------------- */
+
+  /* Any atmospheric movement on this site that runs longer than five seconds
+     is the shader plane, and this is the switch that stops it. It is a real
+     button with a real pressed state, it is reachable from the keyboard, and
+     it is the same control on every page. */
+  var cinema = { atmos: null, aperture: null };
+
+  function motionControls() {
+    var btns = document.querySelectorAll("[data-motion-toggle]");
+    if (!btns.length) return;
+
+    function paint() {
+      var off = root.getAttribute("data-motion") === "off";
+      for (var i = 0; i < btns.length; i++) btns[i].setAttribute("aria-pressed", off ? "true" : "false");
+    }
+
+    function toggle() {
+      var off = root.getAttribute("data-motion") !== "off";
+      root.setAttribute("data-motion", off ? "off" : "auto");
+      try {
+        if (window.localStorage) localStorage.setItem(STORE, off ? "off" : "auto");
+      } catch (e) {}
+      paint();
+      if (off) {
+        teardown();
+        revealAll();
+      } else {
+        cinematics();
+      }
+    }
+
+    for (var i = 0; i < btns.length; i++) btns[i].addEventListener("click", toggle);
+    paint();
+  }
+
+  function teardown() {
+    if (cinema.atmos && cinema.atmos.destroy) cinema.atmos.destroy();
+    if (cinema.aperture && cinema.aperture.destroy) cinema.aperture.destroy();
+    cinema.atmos = null;
+    cinema.aperture = null;
+    var c = document.querySelector("[data-atmos-slot] canvas");
+    if (c && c.parentNode) c.parentNode.removeChild(c);
+  }
+
+  /* --- 5. the cinematic layer ---------------------------------------------- */
+
+  function saveData() {
+    var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    return !!(c && c.saveData);
+  }
+
+  function webglOK() {
+    try {
+      var c = document.createElement("canvas");
+      return !!(window.WebGLRenderingContext && (c.getContext("webgl") || c.getContext("experimental-webgl")));
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function fine() {
+    return !!(window.matchMedia && window.matchMedia("(pointer: fine)").matches);
+  }
+
+  /* Every gate, in one place, so what does and does not get a shader is a
+     matter of record rather than of guesswork. An unavailable capability is
+     read as a no: deviceMemory that a browser declines to report means the
+     static composition, not a gamble on the hardware. */
+  function mayRenderShader() {
+    return (
+      !still() &&
+      fine() &&
+      window.innerWidth >= 1000 &&
+      typeof navigator.deviceMemory === "number" &&
+      navigator.deviceMemory >= 4 &&
+      !saveData() &&
+      webglOK()
+    );
+  }
+
+  function mayRunTimeline() {
+    return !still() && fine() && window.innerWidth >= 1000 && !saveData();
+  }
+
+  function cinematics() {
+    var section = document.querySelector("[data-aperture]");
+    if (!section || still()) return;
+
+    if (mayRunTimeline() && !cinema.aperture) {
+      import(HERE + "vendor/aperture.js")
+        .then(function (m) {
+          if (still()) return;
+          cinema.aperture = m.mount(section);
+        })
+        .catch(function () {
+          /* The static composition is the fallback, and it is already on screen. */
+        });
+    }
+
+    if (mayRenderShader() && !cinema.atmos) {
+      var slot = section.querySelector("[data-atmos-slot]");
+      if (!slot) return;
+      import(HERE + "vendor/atmosphere.js")
+        .then(function (m) {
+          if (still() || !mayRenderShader()) return;
+          var canvas = document.createElement("canvas");
+          canvas.className = "ap__canvas";
+          canvas.setAttribute("aria-hidden", "true");
+          /* Decorative, never focusable, never above the content it sits behind. */
+          slot.appendChild(canvas);
+          cinema.atmos = m.mount(canvas, {
+            onLost: function () {
+              cinema.atmos = null;
+              if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+            }
+          });
+        })
+        .catch(function () {});
+    }
+  }
+
+  /* After the useful site. Never before it, and never during it. */
+  function scheduleCinematics() {
+    var go = function () {
+      try {
+        cinematics();
+      } catch (e) {}
+    };
+    if ("requestIdleCallback" in window) requestIdleCallback(go, { timeout: 2400 });
+    else setTimeout(go, 900);
+  }
+
   /* --- start --------------------------------------------------------------- */
 
   function start() {
@@ -140,6 +300,7 @@
       reveals();
       progress();
       menu();
+      motionControls();
     } catch (err) {
       /* A failure in any of the above must never leave content hidden. */
       revealAll();
@@ -158,5 +319,17 @@
   window.addEventListener("load", function () {
     var hidden = document.querySelectorAll("[data-rise]:not(.is-in)");
     if (hidden.length && !("IntersectionObserver" in window)) revealAll();
+    scheduleCinematics();
   });
+
+  /* Turning the system preference on mid-visit stops the renderer outright,
+     rather than leaving a shader running behind somebody who asked for still. */
+  if (mq && typeof mq.addEventListener === "function") {
+    mq.addEventListener("change", function () {
+      if (mq.matches) teardown();
+      else scheduleCinematics();
+    });
+  }
+
+  window.addEventListener("pagehide", teardown);
 })();

@@ -23,14 +23,119 @@
      path comes from a CDN, so a blocked third-party host costs this page
      nothing at all. -->
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/InstrumentSerif-400.woff2" crossorigin />
-<link rel="preload" as="font" type="font/woff2" href="assets/fonts/SpaceGrotesk-500.woff2" crossorigin />
-<link rel="stylesheet" href="assets/fonts.css" />
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/SpaceGrotesk-var.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/Newsreader-400.woff2" crossorigin />
+<style>@font-face{
+  font-family:'Instrument Serif';
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+  src:url('assets/fonts/InstrumentSerif-400.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Instrument Serif';
+  font-style:italic;
+  font-weight:400;
+  font-display:swap;
+  src:url('assets/fonts/InstrumentSerif-400-italic.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Newsreader';
+  font-style:normal;
+  font-weight:400 700;
+  font-display:swap;
+  src:url('assets/fonts/Newsreader-400.woff2') format('woff2-variations'),
+      url('assets/fonts/Newsreader-400.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Newsreader';
+  font-style:italic;
+  font-weight:400;
+  font-display:swap;
+  src:url('assets/fonts/Newsreader-400-italic.woff2') format('woff2-variations'),
+      url('assets/fonts/Newsreader-400-italic.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Space Grotesk';
+  font-style:normal;
+  font-weight:400 700;
+  font-display:swap;
+  src:url('assets/fonts/SpaceGrotesk-var.woff2') format('woff2-variations'),
+      url('assets/fonts/SpaceGrotesk-var.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'IBM Plex Mono';
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+  src:url('assets/fonts/IBMPlexMono-400.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Instrument Serif fallback';
+  font-style:normal; font-weight:400;
+  src:local('Times New Roman'), local('Liberation Serif'), local('Tinos'), local('Nimbus Roman');
+  size-adjust:84.0%; ascent-override:117.5%; descent-override:36.9%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Instrument Serif fallback';
+  font-style:italic; font-weight:400;
+  src:local('Times New Roman Italic'), local('Liberation Serif Italic'), local('Tinos Italic');
+  size-adjust:88.4%; ascent-override:112.0%; descent-override:35.1%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Newsreader fallback';
+  font-style:normal; font-weight:400 500;
+  src:local('Times New Roman'), local('Liberation Serif'), local('Tinos'), local('Nimbus Roman');
+  size-adjust:100.9%; ascent-override:73.4%; descent-override:26.7%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Newsreader fallback';
+  font-style:normal; font-weight:501 700;
+  src:local('Times New Roman Bold'), local('Liberation Serif Bold'), local('Tinos Bold');
+  size-adjust:96.3%; ascent-override:76.9%; descent-override:28.0%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Newsreader fallback';
+  font-style:italic; font-weight:400 700;
+  src:local('Times New Roman Italic'), local('Liberation Serif Italic'), local('Tinos Italic');
+  size-adjust:93.5%; ascent-override:79.1%; descent-override:28.9%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Space Grotesk fallback';
+  font-style:normal; font-weight:400;
+  src:local('Arial'), local('Liberation Sans'), local('Arimo'), local('Helvetica');
+  size-adjust:109.7%; ascent-override:89.4%; descent-override:26.4%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Space Grotesk fallback';
+  font-style:normal; font-weight:500;
+  src:local('Arial'), local('Liberation Sans'), local('Arimo'), local('Helvetica');
+  size-adjust:109.9%; ascent-override:89.2%; descent-override:26.4%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Space Grotesk fallback';
+  font-style:normal; font-weight:600 700;
+  src:local('Arial Bold'), local('Liberation Sans Bold'), local('Arimo Bold'), local('Helvetica Bold');
+  size-adjust:102.0%; ascent-override:96.1%; descent-override:28.4%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'IBM Plex Mono fallback';
+  font-style:normal; font-weight:400;
+  src:local('Courier New'), local('Liberation Mono'), local('Cousine'), local('Nimbus Mono PS');
+  size-adjust:100.0%; ascent-override:103.0%; descent-override:28.0%; line-gap-override:0%;
+}</style>
 <link rel="stylesheet" href="assets/site.css" />
 <script>document.documentElement.classList.add('js');</script>
 
 </head>
 
-<body class="on-ink" data-accent="health-journal">
+<body class="on-ink" data-accent="health-journal" data-physics="grow">
 
 <a class="skip" href="#main">Skip to content</a>
 
@@ -56,6 +161,14 @@
       <a href="contact.html">Contact</a>
     </nav>
 
+    <!-- The one control that stops every continuous movement on the site. It
+         appears only once a script is running, because with no script there is
+         nothing continuous to stop. -->
+    <button class="motionbtn" type="button" data-motion-toggle aria-pressed="false">
+      <span class="led" aria-hidden="true"></span>
+      <span>Reduce motion</span>
+    </button>
+
     <details class="navmob" data-menu>
       <summary aria-label="Menu">
         <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -71,6 +184,10 @@
           <a href="contact.html">Contact<span class="chev" aria-hidden="true">&rarr;</span></a>
         </nav>
         <a class="btn btn--primary" href="mailto:connor.eppolito803@myci.csuci.edu">Email Connor</a>
+        <button class="motionbtn" type="button" data-motion-toggle aria-pressed="false">
+          <span class="led" aria-hidden="true"></span>
+          <span>Reduce motion</span>
+        </button>
       </div>
     </details>
 
@@ -81,13 +198,13 @@
 <section class="case-hero" aria-labelledby="page-h">
   <div class="shell">
     <p class="case-hero__top" data-rise>
-      <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+      <span data-vt="accent-health-journal" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
       <span class="chip">Health tooling</span>
       <span class="chip">v1.21</span>
       <span class="chip">Local-first PWA</span>
     </p>
 
-    <h1 class="h1" id="page-h" data-rise style="--d:60ms">Health Journal</h1>
+    <h1 class="h1" id="page-h" data-vt="title-health-journal" data-rise style="--d:60ms">Health Journal</h1>
     <p class="case-hero__sub" data-rise style="--d:110ms">A minute a day, and the pattern comes out over weeks.</p>
 
     <p class="case-hero__lede" data-rise style="--d:160ms">
@@ -107,7 +224,7 @@
       </a>
     </div>
 
-    <p class="quiet small mt-3" data-rise style="max-width:60ch">
+    <p class="quiet small mt-3" data-rise style="max-width:36em">
       <b>Not medical advice.</b> The app says this too, at the top of its own
       README and inside the product. It is a personal tracking tool; it surfaces
       possible patterns in your own logs and never claims a cause.
@@ -117,11 +234,14 @@
 
 <section style="padding-top:0;border:0" aria-label="The running app">
   <div class="shell">
-    <div style="display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))" data-motion="grow">
+    <div style="display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))" data-motion="materialise">
 
       <figure class="shot shotframe">
-        <img src="assets/projects/health-journal/hero-health-journal-dashboard.webp"
-             width="920" height="2480" loading="eager" decoding="async"
+        <img data-vt="shot-health-journal" src="assets/projects/health-journal/hero-health-journal-dashboard-720.webp"
+               srcset="assets/projects/health-journal/hero-health-journal-dashboard-720.webp 720w,
+               assets/projects/health-journal/hero-health-journal-dashboard.webp 920w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
+             width="920" height="2480" loading="eager" fetchpriority="high" decoding="async"
              alt="Health Journal on a phone. Today's overall skin severity is rated 5 with an eleven-day streak and seven- and thirty-day averages beside it. Under it, quick-add tiles for check-in, food, bowel and photo; today's completed check-in listing fourteen answers; and a thirty-day trend chart drawing overall skin severity, itch, sleep quality and stress as four coloured lines." />
         <figcaption class="shotframe__cap">
           The dashboard, on the phone width the app is designed for, with the
@@ -131,7 +251,10 @@
       </figure>
 
       <figure class="shot shotframe">
-        <img src="assets/projects/health-journal/health-journal-timeline.webp"
+        <img src="assets/projects/health-journal/health-journal-timeline-720.webp"
+               srcset="assets/projects/health-journal/health-journal-timeline-720.webp 720w,
+               assets/projects/health-journal/health-journal-timeline.webp 920w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
              width="920" height="2480" loading="lazy" decoding="async"
              alt="The Health Journal history timeline: a colour legend running from mild through severe, then a rail of recent days — Friday the 21st rated 4 with routine and a photo, Wednesday the 19th rated 5 with the note scratched in sleep again, Monday the 17th with the note tried the new fragrance-free lotion." />
         <figcaption class="shotframe__cap">
@@ -142,7 +265,10 @@
       </figure>
 
       <figure class="shot shotframe">
-        <img src="assets/projects/health-journal/health-journal-trend.webp"
+        <img src="assets/projects/health-journal/health-journal-trend-720.webp"
+               srcset="assets/projects/health-journal/health-journal-trend-720.webp 720w,
+               assets/projects/health-journal/health-journal-trend.webp 920w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
              width="920" height="2480" loading="lazy" decoding="async"
              alt="The Insights screen: a metric selector across the top, a trend chart with a solid daily line and a dashed seven-day average, disclosures explaining how it is drawn and offering a week-by-week view, a Flares card explaining that nothing is detected for you, and a year grid with one row per month." />
         <figcaption class="shotframe__cap">
@@ -177,7 +303,7 @@
             AI observations with your own key, encrypted cross-device sync, and
             daily weather context.
           </p>
-          <dl class="facts">
+          <dl class="facts" data-motion="materialise">
             <div><dt>Stack</dt><dd>React, Vite, installable PWA</dd></div>
             <div><dt>Storage</dt><dd>On-device; no account required</dd></div>
             <div><dt>Native</dt><dd>iOS app + Home Screen widget via Capacitor</dd></div>
@@ -425,7 +551,7 @@
     <div class="foot__grid">
       <div>
         <p class="foot__sig">Health science,<br />built and tested.</p>
-        <p class="quiet small mt-2" style="max-width:34ch">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
+        <p class="quiet small mt-2" style="max-width:20.4em">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
       </div>
       <div>
         <h3>Site</h3>
