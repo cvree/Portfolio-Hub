@@ -5,40 +5,87 @@ ogtitle: Connor Eppolito
 nav: home
 surface: ink
 accent: research
-image: assets/projects/health-journal/hero-health-journal-dashboard.webp
+image: assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp
+headextra: <link rel="preload" as="image" fetchpriority="high" href="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp" imagesrcset="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-720.webp 720w, assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp 1280w, assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp 2400w" imagesizes="(max-width: 999px) 92vw, 46vw" />
 desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands, an NREMT-certified EMT, a phlebotomy technician in training, president of the CSUCI Esports Club, and the builder behind six shipped health, research and multiplayer products.
 -->
 
 <!-- ===================================================================== -->
-<!-- HERO — the ten seconds                                                -->
+<!-- THE EVIDENCE APERTURE — the signature moment, and the ten seconds      -->
 <!-- ===================================================================== -->
-<section class="hero" aria-labelledby="hero-h">
-  <div class="shell">
-    <div class="hero__grid">
+<!--
+  Five things compose this hero, and every one of them is drawn before any
+  script runs: a medical-teal biological signal, a cobalt competitive bracket,
+  a solar-gold current, warm-ivory editorial type, and one real screenshot of
+  a real product. What the desktop timeline does is animate *into* this frame.
+  What you are reading is what it lands on.
+-->
+<section class="ap" data-aperture aria-labelledby="hero-h">
+  <div class="ap__stage" data-ap="stage">
 
-      <div>
-        <p class="eyebrow" data-rise>
+    <div class="ap__field" aria-hidden="true">
+      <!-- the shader plane, if the device ever earns one, mounts in here -->
+      <div class="ap__glass" data-atmos-slot></div>
+
+      <!-- the signal: a clinical trace, drawn, not downloaded -->
+      <svg class="ap__sig" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false" aria-hidden="true">
+        <path class="ap__signal--ghost" d="M0 596 L188 596 L214 590 L236 604 L258 596 L430 596 L446 548 L460 650 L474 572 L488 596 L672 596 L700 588 L726 606 L752 596 L918 596 L934 536 L948 656 L962 578 L976 596 L1178 596 L1206 588 L1232 606 L1258 596 L1440 596" />
+        <path class="ap__signal" data-ap="signal" d="M0 560 L180 560 L206 553 L228 568 L250 560 L422 560 L438 508 L452 618 L466 536 L480 560 L664 560 L692 552 L718 570 L744 560 L910 560 L926 496 L940 624 L954 542 L968 560 L1170 560 L1198 552 L1224 570 L1250 560 L1440 560" />
+      </svg>
+
+      <!-- the same trace, composed for a narrow frame rather than cropped out
+           of the wide one: on a phone the signal runs under the name and lands
+           on the evidence, which is where the eye goes anyway -->
+      <svg class="ap__sig ap__sig--nar" viewBox="0 0 420 900" preserveAspectRatio="xMidYMid slice" focusable="false" aria-hidden="true">
+        <path class="ap__signal--ghost" d="M0 452 L54 452 L66 446 L78 458 L90 452 L150 452 L160 408 L170 506 L180 430 L190 452 L262 452 L276 444 L290 460 L304 452 L360 452 L372 420 L382 486 L392 440 L400 452 L420 452" />
+        <path class="ap__signal" d="M0 428 L58 428 L70 421 L82 436 L94 428 L156 428 L166 378 L177 486 L188 402 L198 428 L272 428 L286 420 L300 438 L314 428 L372 428 L384 392 L394 470 L404 414 L412 428 L420 428" />
+      </svg>
+
+      <!-- the competitive structure: a bracket, resolving right to left -->
+      <svg class="ap__brk" viewBox="0 0 620 620" preserveAspectRatio="xMaxYMid meet" focusable="false" aria-hidden="true">
+        <g class="ap__bracket-group" data-ap="grid">
+          <path class="ap__bracket" d="M24 84 H132 V186 H244" />
+          <path class="ap__bracket" d="M24 288 H132 V186" />
+          <path class="ap__bracket" d="M24 396 H132 V498 H244" />
+          <path class="ap__bracket" d="M24 600 H132 V498" />
+          <path class="ap__bracket" d="M244 186 V342 H352" />
+          <path class="ap__bracket" d="M244 498 V342" />
+          <path class="ap__bracket" d="M352 342 H452" />
+          <circle class="ap__bracket-node" cx="244" cy="186" r="3.5" />
+          <circle class="ap__bracket-node" cx="244" cy="498" r="3.5" />
+          <circle class="ap__bracket-node" cx="352" cy="342" r="4.5" />
+        </g>
+      </svg>
+
+      <!-- the current -->
+      <span class="ap__current" data-ap="current"></span>
+    </div>
+
+    <div class="shell ap__in">
+
+      <div class="ap__copy">
+        <p class="eyebrow">
           <span class="tick" aria-hidden="true"></span>Camarillo, California<span class="u">Available December 2026</span>
         </p>
 
-        <h1 class="display hero__name" id="hero-h" data-rise style="--d:60ms">
-          <span class="line">Connor</span>
-          <span class="line line--2">Eppolito</span>
+        <h1 class="display ap__title" id="hero-h" data-ap="title">
+          <span class="line" data-ap-line>Connor</span>
+          <span class="line line--2" data-ap-line>Eppolito</span>
         </h1>
 
-        <ul class="hero__stance" data-rise style="--d:140ms">
+        <ul class="hero__stance">
           <li>Health Science Student</li>
           <li>NREMT-Certified EMT</li>
           <li>Product Builder</li>
           <li>Esports Leader</li>
         </ul>
 
-        <p class="lede mt-3" data-rise style="--d:200ms" >
+        <p class="lede mt-3">
           I work at the seam between <em>patient care</em> and <em>the tools that
           support it</em> — and I build the tools.
         </p>
 
-        <div class="btn-row hero__actions" data-rise style="--d:260ms">
+        <div class="btn-row hero__actions">
           <a class="btn btn--primary" href="work.html">
             View projects <span class="arrow" aria-hidden="true">&rarr;</span>
           </a>
@@ -48,21 +95,45 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
         </div>
       </div>
 
-      <div data-rise style="--d:200ms">
-        <p class="prose quiet" style="font-size:1.02rem">
-          Six products, shipped and shown running: a real-time multiplayer word
-          game, a private health journal with a living timeline, a phlebotomy
-          certification platform I built while studying for the exam myself, a
-          guided-audio session builder, a computer-vision pipeline that reads an
-          esports broadcast, and an editor that turns a research paper into a
-          cited visual talk.
-        </p>
-        <p class="prose quiet mt-2" style="font-size:1.02rem">
-          Everything here is described from the repository, the running build and
-          the record it comes from. Nothing is a mockup.
-        </p>
-      </div>
+      <figure class="ap__ev">
+        <div class="ap__frame">
+          <div class="ap__iris">
+            <span class="ap__blade ap__blade--t" data-ap="blade-a" aria-hidden="true"></span>
+            <span class="ap__blade ap__blade--b" data-ap="blade-b" aria-hidden="true"></span>
+            <img data-ap="shot" data-vt="shot-phlebotomy"
+                 src="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp"
+                 srcset="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-720.webp 720w,
+                         assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp 1280w,
+                         assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp 2400w"
+                 sizes="(max-width: 999px) 92vw, 46vw"
+                 width="2400" height="1629" loading="eager" decoding="async" fetchpriority="high"
+                 alt="The Order of Draw drill running in Phlebotomy Exam Prep: four drill modes across the top with Arrange selected, six draggable tube cards each illustrated in its real cap colour and named by additive, and a side panel carrying the mnemonic, an explanation of the mode, and a note reading read the label, not the cap." />
+          </div>
+          <span class="ap__marks" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        </div>
+        <figcaption class="ap__cap">
+          <span data-ap="lift">Phlebotomy Exam Prep — the Order of Draw drill, running</span>
+          <a class="go" href="phlebotomy-exam-prep.html" data-ap="lift">Read the case study &rarr;</a>
+        </figcaption>
+      </figure>
 
+    </div>
+  </div>
+
+  <div class="shell ap__after">
+    <div class="ap__afterin">
+      <p class="prose quiet" data-rise style="font-size:1.02rem">
+        Six products, shipped and shown running: a real-time multiplayer word
+        game, a private health journal with a living timeline, a phlebotomy
+        certification platform I built while studying for the exam myself, a
+        guided-audio session builder, a computer-vision pipeline that reads an
+        esports broadcast, and an editor that turns a research paper into a
+        cited visual talk.
+      </p>
+      <p class="prose quiet" data-rise style="font-size:1.02rem">
+        Everything here is described from the repository, the running build and
+        the record it comes from. Nothing is a mockup.
+      </p>
     </div>
   </div>
 </section>
@@ -141,7 +212,7 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
       <li class="work" data-accent="spellbomb" data-rise>
         <div class="work__body">
           <p class="work__idx">01 / Live multiplayer</p>
-          <h3 class="work__title"><a href="spellbomb.html">SpellBomb</a></h3>
+          <h3 class="work__title" data-vt="title-spellbomb"><a href="spellbomb.html">SpellBomb</a></h3>
           <p class="work__kicker">The bomb is on you. Spell it, or it goes off.</p>
           <p class="work__blurb">
             One host, a four-letter room code, and everyone else on their own
@@ -150,14 +221,18 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
             Discord Activity in a voice channel without becoming a second game.
           </p>
           <p class="work__meta">
-            <span class="chip chip--dev"><span class="led" aria-hidden="true"></span>In development</span>
+            <span data-vt="accent-spellbomb" class="chip chip--dev"><span class="led" aria-hidden="true"></span>In development</span>
             <span class="chip">Node · Socket.IO</span>
             <span class="chip">v9.3.0</span>
           </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
         <div class="work__shot">
-          <img src="assets/projects/spellbomb/hero-spellbomb-game.webp"
+          <img data-vt="shot-spellbomb" src="assets/projects/spellbomb/hero-spellbomb-game-1280.webp"
+               srcset="assets/projects/spellbomb/hero-spellbomb-game-720.webp 720w,
+               assets/projects/spellbomb/hero-spellbomb-game-1280.webp 1280w,
+               assets/projects/spellbomb/hero-spellbomb-game.webp 2400w"
+               sizes="(max-width: 840px) 92vw, 46vw"
                width="2400" height="1500" loading="eager" decoding="async"
                alt="A live six-player SpellBomb round: the bomb hangs lit in the middle of the arena with an arrow pointing at the player named sam, five other players ringed around it with their remaining hearts, an eleven-letter word tray reading I-N-A-L-I-E-N with four empty slots, and the answer box mid-word." />
         </div>
@@ -166,7 +241,7 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
       <li class="work" data-accent="health-journal" data-rise>
         <div class="work__body">
           <p class="work__idx">02 / Health tooling</p>
-          <h3 class="work__title"><a href="health-journal.html">Health Journal</a></h3>
+          <h3 class="work__title" data-vt="title-health-journal"><a href="health-journal.html">Health Journal</a></h3>
           <p class="work__kicker">A minute a day, and the pattern comes out over weeks.</p>
           <p class="work__blurb">
             A private daily health journal that never leaves the device. You design
@@ -176,14 +251,17 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
             into their own history.
           </p>
           <p class="work__meta">
-            <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+            <span data-vt="accent-health-journal" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">React · Vite · PWA</span>
             <span class="chip">Local-first</span>
           </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
         <div class="work__shot work__shot--tall">
-          <img src="assets/projects/health-journal/hero-health-journal-dashboard.webp"
+          <img data-vt="shot-health-journal" src="assets/projects/health-journal/hero-health-journal-dashboard-720.webp"
+               srcset="assets/projects/health-journal/hero-health-journal-dashboard-720.webp 720w,
+               assets/projects/health-journal/hero-health-journal-dashboard.webp 920w"
+               sizes="(max-width: 840px) 92vw, 46vw"
                width="920" height="2480" loading="lazy" decoding="async"
                alt="Health Journal on a phone: today's overall skin severity rated 5 with an eleven-day streak, quick-add tiles for check-in, food, bowel and photo, today's completed check-in with fourteen answers, and a thirty-day trend chart comparing four metrics as coloured lines." />
         </div>
@@ -192,7 +270,7 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
       <li class="work" data-accent="phlebotomy" data-rise>
         <div class="work__body">
           <p class="work__idx">03 / Certification study</p>
-          <h3 class="work__title"><a href="phlebotomy-exam-prep.html">Phlebotomy Exam Prep</a></h3>
+          <h3 class="work__title" data-vt="title-phlebotomy"><a href="phlebotomy-exam-prep.html">Phlebotomy Exam Prep</a></h3>
           <p class="work__kicker">Know what to study before the exam, not after it.</p>
           <p class="work__blurb">
             The platform I wanted while training for the NHA CPT myself. 513
@@ -201,14 +279,18 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
             the weak area rather than the score.
           </p>
           <p class="work__meta">
-            <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+            <span data-vt="accent-phlebotomy" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">Next.js · Static export</span>
             <span class="chip">257 tests</span>
           </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
         <div class="work__shot">
-          <img src="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp"
+          <img src="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp"
+               srcset="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-720.webp 720w,
+               assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp 1280w,
+               assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp 2400w"
+               sizes="(max-width: 840px) 92vw, 46vw"
                width="2400" height="1629" loading="lazy" decoding="async"
                alt="The Order of Draw drill: six draggable tube cards with their colour illustrations and additive names, four drill modes across the top, and a side panel carrying the mnemonic, an explanation of this mode, and a warning to read the label rather than the cap." />
         </div>
@@ -217,7 +299,7 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
       <li class="work" data-accent="manifester" data-rise>
         <div class="work__body">
           <p class="work__idx">04 / Guided audio</p>
-          <h3 class="work__title"><a href="manifester.html">Manifester</a></h3>
+          <h3 class="work__title" data-vt="title-manifester"><a href="manifester.html">Manifester</a></h3>
           <p class="work__kicker">Your own words, read back over a room that breathes.</p>
           <p class="work__blurb">
             Write the lines you want to hear, pick a voice, and the app loops them
@@ -226,14 +308,18 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
             at all; the background sound changes live without stopping the session.
           </p>
           <p class="work__meta">
-            <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+            <span data-vt="accent-manifester" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">React · Vite · PWA</span>
             <span class="chip">Offline voice cache</span>
           </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
         <div class="work__shot">
-          <img src="assets/projects/manifester/hero-manifester-player.webp"
+          <img data-vt="shot-manifester" src="assets/projects/manifester/hero-manifester-player-1280.webp"
+               srcset="assets/projects/manifester/hero-manifester-player-720.webp 720w,
+               assets/projects/manifester/hero-manifester-player-1280.webp 1280w,
+               assets/projects/manifester/hero-manifester-player.webp 2400w"
+               sizes="(max-width: 840px) 92vw, 46vw"
                width="2400" height="1500" loading="lazy" decoding="async"
                alt="The Manifester player expanded to fill the screen: a session titled Evening steadiness, a breathing orb reading Breathe in with a two-second count, the spoken line I trust myself to handle what comes, a pause control, 9:38 remaining on pass 8, and the Moon Garden ambience named at the foot." />
         </div>
@@ -242,7 +328,7 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
       <li class="work" data-accent="owcs" data-rise>
         <div class="work__body">
           <p class="work__idx">05 / Computer vision</p>
-          <h3 class="work__title"><a href="owcs-comp-tracker.html">OWCS Comp Tracker</a></h3>
+          <h3 class="work__title" data-vt="title-owcs"><a href="owcs-comp-tracker.html">OWCS Comp Tracker</a></h3>
           <p class="work__kicker">A broadcast is a video of a match, not a record of one.</p>
           <p class="work__blurb">
             A no-budget pipeline that turns an esports VOD into an auditable
@@ -251,14 +337,18 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
             review gate where every read sits beside the frame it was read from.
           </p>
           <p class="work__meta">
-            <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+            <span data-vt="accent-owcs" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">Python · OpenCV</span>
             <span class="chip">Static site, no server</span>
           </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
         <div class="work__shot">
-          <img src="assets/projects/owcs/hero-owcs-review.webp"
+          <img data-vt="shot-owcs" src="assets/projects/owcs/hero-owcs-review-1280.webp"
+               srcset="assets/projects/owcs/hero-owcs-review-720.webp 720w,
+               assets/projects/owcs/hero-owcs-review-1280.webp 1280w,
+               assets/projects/owcs/hero-owcs-review.webp 2400w"
+               sizes="(max-width: 840px) 92vw, 46vw"
                width="2400" height="1500" loading="lazy" decoding="async"
                alt="The OWCS Comp Tracker review screen: Al Qadsiah versus Twisted Minds with fourteen detected slots, three round boundaries drawn as time bars, and a list of detected heroes each with the frame it was read from, a confidence percentage, and Approve, Correct and Flag buttons." />
         </div>
@@ -267,7 +357,7 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
       <li class="work" data-accent="paper-animator" data-rise>
         <div class="work__body">
           <p class="work__idx">06 / Research tooling</p>
-          <h3 class="work__title"><a href="paper-animator.html">PaperAnimator</a></h3>
+          <h3 class="work__title" data-vt="title-paper-animator"><a href="paper-animator.html">PaperAnimator</a></h3>
           <p class="work__kicker">Read the paper. Mark it up. That is the presentation.</p>
           <p class="work__blurb">
             Open a research paper and mark a passage; a scene appears on the
@@ -276,14 +366,18 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
             source gets attached — and therefore none that can be skipped.
           </p>
           <p class="work__meta">
-            <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+            <span data-vt="accent-paper-animator" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">React 19 · TypeScript</span>
             <span class="chip">Runs entirely in the browser</span>
           </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
         <div class="work__shot">
-          <img src="assets/projects/paperanimator/hero-paperanimator-thread.webp"
+          <img data-vt="shot-paper-animator" src="assets/projects/paperanimator/hero-paperanimator-thread-1280.webp"
+               srcset="assets/projects/paperanimator/hero-paperanimator-thread-720.webp 720w,
+               assets/projects/paperanimator/hero-paperanimator-thread-1280.webp 1280w,
+               assets/projects/paperanimator/hero-paperanimator-thread.webp 2400w"
+               sizes="(max-width: 840px) 92vw, 46vw"
                width="2400" height="1500" loading="lazy" decoding="async"
                alt="The PaperAnimator editor: a rendered research paper on the left with one sentence selected and an earlier passage washed in mint, a curved blue thread running from that sentence to the scene it produced, and a storyboard of two scenes on the right." />
         </div>

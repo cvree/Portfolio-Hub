@@ -4,6 +4,7 @@ title: OWCS Comp Tracker — Connor Eppolito
 ogtitle: OWCS Comp Tracker — a broadcast, made auditable
 nav: work
 surface: ink
+physics: sort
 accent: owcs
 ogtype: article
 image: assets/projects/owcs/hero-owcs-review.webp
@@ -13,13 +14,13 @@ desc: A $0, no-build pipeline that turns an esports broadcast VOD into an audita
 <section class="case-hero" aria-labelledby="page-h">
   <div class="shell">
     <p class="case-hero__top" data-rise>
-      <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+      <span data-vt="accent-owcs" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
       <span class="chip">Computer vision</span>
       <span class="chip">Python · OpenCV · SQLite</span>
       <span class="chip">107 test modules</span>
     </p>
 
-    <h1 class="h1" id="page-h" data-rise style="--d:60ms">OWCS<br />Comp Tracker</h1>
+    <h1 class="h1" id="page-h" data-vt="title-owcs" data-rise style="--d:60ms">OWCS<br />Comp Tracker</h1>
     <p class="case-hero__sub" data-rise style="--d:110ms">A broadcast is a video of a match, not a record of one.</p>
 
     <p class="case-hero__lede" data-rise style="--d:160ms">
@@ -41,7 +42,7 @@ desc: A $0, no-build pipeline that turns an esports broadcast VOD into an audita
       </a>
     </div>
 
-    <p class="quiet small mt-3" data-rise style="max-width:60ch">
+    <p class="quiet small mt-3" data-rise style="max-width:36em">
       An independent fan project. Unaffiliated with, and not endorsed by, Blizzard
       Entertainment or any tournament organiser.
     </p>
@@ -50,9 +51,13 @@ desc: A $0, no-build pipeline that turns an esports broadcast VOD into an audita
 
 <section style="padding-top:0;border:0" aria-label="The review screen">
   <div class="shell">
-    <figure class="shot shotframe" data-motion="unfold">
-      <img src="assets/projects/owcs/hero-owcs-review.webp"
-           width="2400" height="1500" loading="eager" decoding="async"
+    <figure class="shot shotframe" data-motion="sort-in">
+      <img data-vt="shot-owcs" src="assets/projects/owcs/hero-owcs-review-1280.webp"
+               srcset="assets/projects/owcs/hero-owcs-review-720.webp 720w,
+               assets/projects/owcs/hero-owcs-review-1280.webp 1280w,
+               assets/projects/owcs/hero-owcs-review.webp 2400w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
+           width="2400" height="1500" loading="eager" fetchpriority="high" decoding="async"
            alt="The OWCS Comp Tracker review screen for Al Qadsiah versus Twisted Minds: fourteen detected slots, fourteen unconfirmed, zero decided by you, with an Approve 3 clean reads button. Below, three round boundaries drawn as time bars from 32:21 to 46:05 with 85 percent confidence each, then a list of detected heroes — Shion at 95 percent over 307 agreeing frames, Symmetra at 90 percent, Mauga at 92, Kiriko twice for two different stints, Juno at 96 — each showing the frame it was read from and Approve, Correct and Flag buttons." />
       <figcaption class="shotframe__cap">
         The Review screen, served from the repository on the committed Al Qadsiah
@@ -87,7 +92,7 @@ desc: A $0, no-build pipeline that turns an esports broadcast VOD into an audita
             swaps with before-and-after evidence crops, and seven suspected swaps
             rejected as noise.
           </p>
-          <dl class="facts">
+          <dl class="facts" data-motion="sort">
             <div><dt>Detection</dt><dd>Python + OpenCV, ranked template match</dd></div>
             <div><dt>Store</dt><dd>Staged, idempotent SQLite</dd></div>
             <div><dt>Site</dt><dd>Static HTML/CSS/JS, no build step</dd></div>
@@ -160,8 +165,12 @@ desc: A $0, no-build pipeline that turns an esports broadcast VOD into an audita
       <article class="chapter" data-rise>
         <div class="chapter__label"><span class="n">&mdash;</span><h2>Confirmed, and rejected</h2></div>
         <div class="chapter__body">
-          <figure class="shot shotframe shotframe--wide">
-            <img src="assets/projects/owcs/owcs-swaps.webp"
+          <figure class="shot shotframe shotframe--wide" tabindex="0" aria-label="Screenshot — scroll sideways to see the full width">
+            <img src="assets/projects/owcs/owcs-swaps-1280.webp"
+               srcset="assets/projects/owcs/owcs-swaps-720.webp 720w,
+               assets/projects/owcs/owcs-swaps-1280.webp 1280w,
+               assets/projects/owcs/owcs-swaps.webp 1600w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
                  width="1600" height="1000" loading="lazy" decoding="async"
                  alt="The swap review list. Four rows are marked rejected — Kiriko to Shion, Symmetra to Sojourn, Lúcio to Sojourn and one above — each explaining that the candidate was seen once or twice before the original hero returned, which is noise rather than a swap. The last row, Juno to Lúcio at 39:54, is marked confirmed at 82 percent with real before-and-after evidence crops beside it and a Confirm button." />
             <figcaption class="shotframe__cap">

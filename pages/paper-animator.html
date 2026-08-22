@@ -4,6 +4,7 @@ title: PaperAnimator — Connor Eppolito
 ogtitle: PaperAnimator — the highlight is the citation
 nav: work
 surface: ink
+physics: unfold
 accent: paper-animator
 ogtype: article
 image: assets/projects/paperanimator/hero-paperanimator-thread.webp
@@ -13,13 +14,13 @@ desc: Open a research paper and get a source-faithful animated presentation you 
 <section class="case-hero" aria-labelledby="page-h">
   <div class="shell">
     <p class="case-hero__top" data-rise>
-      <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+      <span data-vt="accent-paper-animator" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
       <span class="chip">Research tooling</span>
       <span class="chip">React 19 · TypeScript</span>
       <span class="chip">Nothing is uploaded</span>
     </p>
 
-    <h1 class="h1" id="page-h" data-rise style="--d:60ms">PaperAnimator</h1>
+    <h1 class="h1" id="page-h" data-vt="title-paper-animator" data-rise style="--d:60ms">PaperAnimator</h1>
     <p class="case-hero__sub" data-rise style="--d:110ms">Read the paper. Mark it up. That is the presentation.</p>
 
     <p class="case-hero__lede" data-rise style="--d:160ms">
@@ -43,8 +44,12 @@ desc: Open a research paper and get a source-faithful animated presentation you 
 <section style="padding-top:0;border:0" aria-label="The editor">
   <div class="shell">
     <figure class="shot shotframe" data-motion="unfold">
-      <img src="assets/projects/paperanimator/hero-paperanimator-thread.webp"
-           width="2400" height="1500" loading="eager" decoding="async"
+      <img data-vt="shot-paper-animator" src="assets/projects/paperanimator/hero-paperanimator-thread-1280.webp"
+               srcset="assets/projects/paperanimator/hero-paperanimator-thread-720.webp 720w,
+               assets/projects/paperanimator/hero-paperanimator-thread-1280.webp 1280w,
+               assets/projects/paperanimator/hero-paperanimator-thread.webp 2400w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
+           width="2400" height="1500" loading="eager" fetchpriority="high" decoding="async"
            alt="The PaperAnimator editor. On the left, a research paper rendered as printed — Sleep Duration and Recovery in Endurance Athletes — with one sentence of the abstract selected in blue, an earlier passage washed in mint because a scene already uses it, and a floating instrument bar over the selection offering Big number, statement, pull quote and more. A curved blue thread runs from the selected sentence across to the scene it produced. On the right, the stage plays that scene above a transport reading scene 2 of 2, and a storyboard below holds both scenes." />
       <figcaption class="shotframe__cap">
         Two scenes into a real paper. The mint wash marks a passage a scene
@@ -85,7 +90,7 @@ desc: Open a research paper and get a source-faithful animated presentation you 
             <li><b>Spotlight</b> — those exact words marked inside the sentence around them.</li>
             <li><b>Side by side</b> — this passage against one you kept earlier, in two columns.</li>
           </ul>
-          <dl class="facts">
+          <dl class="facts" data-motion="unfold">
             <div><dt>Stack</dt><dd>React 19, TypeScript, Vite, Zustand, pdf.js</dd></div>
             <div><dt>Animations</dt><dd>21 entrances, 6 sustained motions</dd></div>
             <div><dt>Exports</dt><dd>MP4, ZIP, PPTX, PDF, SRT, VTT, TXT, project file</dd></div>
@@ -155,8 +160,12 @@ desc: Open a research paper and get a source-faithful animated presentation you 
       <article class="chapter" data-rise>
         <div class="chapter__label"><span class="n">&mdash;</span><h2>Studio</h2></div>
         <div class="chapter__body">
-          <figure class="shot shotframe shotframe--wide">
-            <img src="assets/projects/paperanimator/paperanimator-studio.webp"
+          <figure class="shot shotframe shotframe--wide" tabindex="0" aria-label="Screenshot — scroll sideways to see the full width">
+            <img src="assets/projects/paperanimator/paperanimator-studio-1280.webp"
+               srcset="assets/projects/paperanimator/paperanimator-studio-720.webp 720w,
+               assets/projects/paperanimator/paperanimator-studio-1280.webp 1280w,
+               assets/projects/paperanimator/paperanimator-studio.webp 1800w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
                  width="1800" height="1125" loading="lazy" decoding="async"
                  alt="PaperAnimator in Studio mode. The paper stays on the left; on the right the stage plays the current scene above a transport with a scrubber, an Animate this button and a scene counter, and the panel below switches between a Storyboard tab and an Inspector tab. A source-integrity score of 100 sits in the header beside the Export button." />
             <figcaption class="shotframe__cap">

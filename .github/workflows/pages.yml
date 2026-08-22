@@ -46,8 +46,15 @@ jobs:
               if [ ! -f "$f" ]; then echo "$page -> missing: $f"; missing=1; fi
             done
           done
-          for f in $(grep -oE "url\('fonts/[^']+'\)" assets/fonts.css | sed -E "s/url\('(.*)'\)/assets\/\1/" | sort -u); do
-            if [ ! -f "$f" ]; then echo "fonts.css -> missing: $f"; missing=1; fi
+          # Responsive sources are references too, and a missing derivative is
+          # invisible until a phone asks for it.
+          for f in $(grep -ohE 'srcset="[^"]*"' *.html | grep -oE 'assets/[^ ,"]+\.webp' | sort -u); do
+            if [ ! -f "$f" ]; then echo "srcset -> missing: $f"; missing=1; fi
+          done
+          # The @font-face block is inlined into every page by the generator,
+          # so the URLs to check are the ones in the pages themselves.
+          for f in $(grep -ohE "url\('assets/fonts/[^']+'\)" *.html | sed -E "s/url\('(.*)'\)/\1/" | sort -u); do
+            if [ ! -f "$f" ]; then echo "inlined @font-face -> missing: $f"; missing=1; fi
           done
           exit $missing
 
@@ -62,6 +69,16 @@ jobs:
             [ "$n" -eq 1 ] || { echo "$page: $n <h1> elements (expected 1)"; bad=1; }
           done
           exit $bad
+
+      - name: The vendor bundles must match their sources
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Rebuild the vendor bundles and fail on drift
+        run: |
+          npm ci
+          node tools/build_vendor.mjs --check
 
       - name: Every image must declare alt, width and height
         run: |

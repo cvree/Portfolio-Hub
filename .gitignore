@@ -1,0 +1,8 @@
+# Toolchain, not site. Everything the browser is served is committed.
+node_modules/
+.lighthouseci/
+.lighthouseci-mobile/
+.lighthouseci-desktop/
+playwright-report/
+test-results/
+.scratch/

@@ -1,0 +1,111 @@
+name: Verify
+
+# Everything a change to this site has to survive before it can be published.
+# The deploy workflow (pages.yml) keeps its own fast structural checks so a
+# deploy is never gated on a browser download; this job is the deep pass.
+
+on:
+  push:
+    branches: [main, 'claude/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generated:
+    name: Generated output matches its sources
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: The committed pages must match templates/ + pages/
+        run: python3 tools/build_pages.py --check
+
+      - name: The committed vendor bundles must match assets/src/
+        run: node tools/build_vendor.mjs --check
+
+      - name: The generated HTML must be structurally valid
+        run: npx html-validate "*.html"
+
+      - name: Nothing may reference a remote runtime dependency
+        run: |
+          set -euo pipefail
+          # A CDN in the critical path is the one thing this site is built to
+          # avoid, so it fails the build rather than the visitor.
+          if grep -RInE '(src|href)="https?://' *.html assets/*.css assets/*.js assets/vendor/*.js \
+             | grep -vE 'rel="canonical"|og:url|linkedin\.com|github\.com|cvree\.github\.io|schema\.org|w3\.org|mailto:'; then
+            echo "a remote runtime dependency reached the site"; exit 1
+          fi
+          if grep -RIn 'cdn\.\|unpkg\.\|jsdelivr\|googleapis\.com/css' *.html assets/ ; then
+            echo "a CDN reference reached the site"; exit 1
+          fi
+
+  browser:
+    name: Browsers, accessibility, print and no-JS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Structure, links, overflow, view transitions, keyboard, print, axe
+        run: npx playwright test
+        env:
+          BROWSERS: chromium,firefox,webkit
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
+
+  budgets:
+    name: Lighthouse budgets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Mobile
+        run: |
+          export CHROME_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
+          npx lhci autorun --config=lighthouserc.mobile.json
+
+      - name: Desktop
+        run: |
+          export CHROME_PATH="$(node -e "console.log(require('playwright').chromium.executablePath())")"
+          rm -rf .lighthouseci
+          npx lhci autorun --config=lighthouserc.json
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: lighthouse
+          path: |
+            .lighthouseci-mobile/
+            .lighthouseci-desktop/
+          retention-days: 14

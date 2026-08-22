@@ -23,14 +23,15 @@
      path comes from a CDN, so a blocked third-party host costs this page
      nothing at all. -->
 <link rel="preload" as="font" type="font/woff2" href="{{REL}}assets/fonts/InstrumentSerif-400.woff2" crossorigin />
-<link rel="preload" as="font" type="font/woff2" href="{{REL}}assets/fonts/SpaceGrotesk-500.woff2" crossorigin />
-<link rel="stylesheet" href="{{REL}}assets/fonts.css" />
+<link rel="preload" as="font" type="font/woff2" href="{{REL}}assets/fonts/SpaceGrotesk-var.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="{{REL}}assets/fonts/Newsreader-400.woff2" crossorigin />
+<style>{{FONTFACE}}</style>
 <link rel="stylesheet" href="{{REL}}assets/site.css" />
 <script>document.documentElement.classList.add('js');</script>
 {{HEADEXTRA}}
 </head>
 
-<body class="{{SURFACE}}"{{ACCENTATTR}}>
+<body class="{{SURFACE}}"{{ACCENTATTR}}{{PHYSICSATTR}}>
 
 <a class="skip" href="#main">Skip to content</a>
 
@@ -51,6 +52,14 @@
       {{NAVDESK}}
     </nav>
 
+    <!-- The one control that stops every continuous movement on the site. It
+         appears only once a script is running, because with no script there is
+         nothing continuous to stop. -->
+    <button class="motionbtn" type="button" data-motion-toggle aria-pressed="false">
+      <span class="led" aria-hidden="true"></span>
+      <span>Reduce motion</span>
+    </button>
+
     <details class="navmob" data-menu>
       <summary aria-label="Menu">
         <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -61,6 +70,10 @@
           {{NAVMOB}}
         </nav>
         <a class="btn btn--primary" href="mailto:connor.eppolito803@myci.csuci.edu">Email Connor</a>
+        <button class="motionbtn" type="button" data-motion-toggle aria-pressed="false">
+          <span class="led" aria-hidden="true"></span>
+          <span>Reduce motion</span>
+        </button>
       </div>
     </details>
 
@@ -76,7 +89,7 @@
     <div class="foot__grid">
       <div>
         <p class="foot__sig">Health science,<br />built and tested.</p>
-        <p class="quiet small mt-2" style="max-width:34ch">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
+        <p class="quiet small mt-2" style="max-width:20.4em">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
       </div>
       <div>
         <h3>Site</h3>

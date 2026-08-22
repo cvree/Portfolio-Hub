@@ -51,14 +51,17 @@
   --p-line-firm: color-mix(in srgb, var(--p-text) 30%, transparent);
 
   /* type */
-  --display: 'Instrument Serif', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
-  --read:    'Newsreader', Georgia, 'Times New Roman', serif;
-  --ui:      'Space Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --mono:    'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --display: 'Instrument Serif', 'Instrument Serif fallback', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --read:    'Newsreader', 'Newsreader fallback', Georgia, 'Times New Roman', serif;
+  --ui:      'Space Grotesk', 'Space Grotesk fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:    'IBM Plex Mono', 'IBM Plex Mono fallback', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* rhythm */
   --gutter: clamp(1.25rem, 4.4vw, 3.5rem);
-  --measure: 66ch;
+  /* The measure, in em rather than ch: `ch` is the width of the current
+     font's zero, so a container sized in it changes width the moment a webfont
+     swaps in — and re-wraps everything inside it. Same measure, stable box. */
+  --measure: 39.6em;
   --shell: 1320px;
   --radius: 3px;
 
@@ -210,7 +213,7 @@ section + section{ border-top:1px solid var(--line); }
 .lede{
   font-size:clamp(1.2rem, 1.02rem + .78vw, 1.6rem);
   line-height:1.5;
-  max-width:34ch;
+  max-width:20.4em;
   color:var(--text);
 }
 .prose{ max-width:var(--measure); }
@@ -450,7 +453,7 @@ section + section{ border-top:1px solid var(--line); }
 
 .sechead{
   display:grid; gap:1.1rem;
-  grid-template-columns:minmax(0,1fr) minmax(0,min(46ch,42%));
+  grid-template-columns:minmax(0,1fr) minmax(0,min(27.6em,42%));
   align-items:end;
   margin-bottom:clamp(2rem, 4vw, 3.25rem);
 }
@@ -485,7 +488,7 @@ section + section{ border-top:1px solid var(--line); }
 .work__title a{ text-decoration:none; }
 .work__title a::after{ content:""; position:absolute; inset:0; }
 .work__kicker{ font-family:var(--ui); font-weight:500; font-size:.95rem; color:var(--accent); }
-.work__blurb{ margin-top:.95rem; color:var(--text-quiet); font-size:1.02rem; line-height:1.55; max-width:52ch; }
+.work__blurb{ margin-top:.95rem; color:var(--text-quiet); font-size:1.02rem; line-height:1.55; max-width:31.2em; }
 .work__meta{ margin-top:1.15rem; display:flex; flex-wrap:wrap; gap:.5rem; }
 .work__go{
   margin-top:1.3rem; display:inline-flex; align-items:center; gap:.5rem;
@@ -532,7 +535,7 @@ section + section{ border-top:1px solid var(--line); }
   font-family:var(--ui); font-weight:500; font-size:clamp(1.05rem,.95rem+.4vw,1.28rem);
   color:var(--accent); margin-top:.85rem;
 }
-.case-hero__lede{ margin-top:1.4rem; max-width:60ch; font-size:1.1rem; line-height:1.6; color:var(--text-quiet); }
+.case-hero__lede{ margin-top:1.4rem; max-width:36em; font-size:1.1rem; line-height:1.6; color:var(--text-quiet); }
 .case-hero__actions{ margin-top:2rem; }
 
 .shotframe{
@@ -549,6 +552,9 @@ section + section{ border-top:1px solid var(--line); }
   background:color-mix(in srgb, var(--text) 3%, transparent);
 }
 .shotframe--wide{ overflow-x:auto; max-width:100%; -webkit-overflow-scrolling:touch; }
+/* A region that scrolls has to be reachable by keyboard, so it is a focus stop
+   with a name and a visible ring rather than a trap for pointer users only. */
+.shotframe--wide:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
 .shotframe--wide img{ min-width:700px; }
 @media (min-width:760px){ .shotframe--wide img{ min-width:0; } }
 
@@ -633,7 +639,7 @@ figure.shot + figure.shot{ margin-top:1.5rem; }
 
 /* --- résumé --------------------------------------------------------------- */
 
-.cv{ --measure:72ch; }
+.cv{ --measure:43.2em; }
 .cv__head{
   display:grid; grid-template-columns:minmax(0,1fr) auto; gap:1.5rem; align-items:end;
   padding-bottom:1.5rem; border-bottom:2px solid var(--p-text);
@@ -663,7 +669,7 @@ figure.shot + figure.shot{ margin-top:1.5rem; }
 .cv__skills dt{ font-family:var(--ui); font-weight:700; font-size:.94rem; margin-bottom:.3rem; }
 .cv__skills dd{ margin:0; font-size:.98rem; line-height:1.5; color:var(--p-text-quiet); }
 
-.cv__note{ font-size:.9rem; color:var(--p-text-faint); margin-top:1rem; }
+.cv__note{ font-size:.9rem; color:var(--p-text-quiet); margin-top:1rem; }
 
 /* --- research card -------------------------------------------------------- */
 
@@ -716,7 +722,7 @@ figure.shot + figure.shot{ margin-top:1.5rem; }
 .foot a:hover{ color:var(--text); }
 .foot__sig{ font-family:var(--display); font-size:clamp(1.6rem,1.2rem+1.6vw,2.4rem); line-height:1.1; }
 .foot__base{ margin-top:2.5rem; padding-top:1.5rem; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:.75rem 1.5rem; justify-content:space-between; }
-.foot__base p{ font-family:var(--mono); font-size:.7rem; letter-spacing:.07em; color:var(--text-faint); }
+.foot__base p{ font-family:var(--mono); font-size:.72rem; letter-spacing:.07em; color:var(--text-quiet); }
 
 /* --- next / prev ---------------------------------------------------------- */
 
@@ -835,19 +841,31 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
    =========================================================================== */
 
 @media print{
-  @page{ margin:14mm 14mm 16mm; }
+  @page{ margin:11mm 12mm 12mm; }
 
   :root{ --shell:100%; --gutter:0; }
 
   html,body{
     background:#fff !important;
     color:#000 !important;
-    font-size:10.4pt;
-    line-height:1.42;
+    font-size:8.8pt;
+    line-height:1.28;
   }
   body{ overflow:visible; }
 
-  .atmos,.grain,.masthead,.foot,.skip,.progress,.no-print,.nextup{ display:none !important; }
+  .atmos,.grain,.masthead,.foot,.skip,.progress,.no-print,.nextup,
+  .ap__field,.ap__canvas,.ap__blade,.ap__marks,.motionbtn{ display:none !important; }
+
+  /* No transition, no shader, no scroll timeline, and every collapsed detail
+     opened — paper gets the document, in full and in order. */
+  *{ view-transition-name:none !important; animation:none !important; transition:none !important; }
+  details{ display:block !important; }
+  details > summary{ display:none !important; }
+  details[open] > *,
+  details > *{ display:revert !important; }
+  [data-rise],[data-motion],[data-motion] > *{
+    opacity:1 !important; transform:none !important; clip-path:none !important;
+  }
 
   .shell{ max-width:100%; padding:0; }
   section{ padding-block:0; border:0; }
@@ -855,22 +873,38 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
   a{ text-decoration:none; color:#000 !important; }
   .cv__contact a{ border:0; }
 
-  .cv__head{ border-bottom:1.5pt solid #000; padding-bottom:8pt; }
-  .cv__name{ font-size:26pt; }
-  .cv__stance{ font-size:10.5pt; }
-  .cv__contact{ font-size:8.4pt; line-height:1.6; }
+  .cv__head{ border-bottom:1.2pt solid #000; padding-bottom:5pt; }
+  .cv__name{ font-size:20pt; }
+  .cv__stance{ font-size:8pt; margin-top:2pt; }
+  .cv__contact{ font-size:6.9pt; line-height:1.4; }
 
-  .cv__sec{ padding-block:10pt 8pt; border-bottom:.5pt solid #999; break-inside:avoid; }
-  .cv__sec > h2{ font-size:8pt; letter-spacing:.16em; color:#000; margin-bottom:7pt; }
+  .cv__sec{ padding-block:4.5pt 3pt; border-bottom:.5pt solid #999; break-inside:auto; }
+  .cv__sec > h2{ font-size:7pt; letter-spacing:.15em; color:#000; margin-bottom:4pt; }
   .cv__entry{ break-inside:avoid; }
-  .cv__entry + .cv__entry{ margin-top:9pt; padding-top:9pt; border-top:.5pt solid #ccc; }
-  .cv__role{ font-size:11.2pt; }
-  .cv__org{ font-size:10pt; color:#333; }
-  .cv__dates{ font-size:8.4pt; color:#333; }
-  .cv__points li{ font-size:9.9pt; line-height:1.4; }
-  .cv__points li::before{ background:#000; }
-  .cv__skills dd{ color:#222; }
-  .cv__note{ color:#444; font-size:8.6pt; }
+  .cv__entry + .cv__entry{ margin-top:5pt; padding-top:5pt; border-top:.5pt solid #ccc; }
+  .cv__role{ font-size:9.4pt; }
+  .cv__org{ font-size:7.5pt; color:#333; margin-top:0; }
+  .cv__dates{ font-size:7.2pt; color:#333; }
+  .cv__points{ margin-top:3pt; gap:1.5pt; }
+  .cv__points li{ font-size:8.5pt; line-height:1.26; padding-left:7pt; }
+  .cv__points li::before{ background:#000; top:.62em; width:4.5pt; }
+  .cv__row{ gap:1pt 8pt; }
+  .cv__skills{ gap:5pt 14pt; grid-template-columns:1fr 1fr; }
+  .cv__skills dt{ font-size:7.7pt; margin-bottom:1pt; }
+  .cv__skills dd{ color:#222; font-size:7.4pt; line-height:1.26; }
+  .cv__note{ color:#444; font-size:7.2pt; margin-top:5pt; }
+
+  /* The two long sections are the reason a full record ran to five pages. Set
+     in two columns they are the same words at the same size, read the way a
+     dense reference section is normally read — and the whole document lands on
+     two pages without a single claim being dropped for paper. */
+  .cv__sec--cols{ column-count:2; column-gap:14pt; }
+  .cv__sec--cols .cv__entry{ break-inside:avoid; }
+  .cv__sec--cols > h2{ column-span:all; }
+  .cv__sec--cols > p{ column-span:all; font-size:7.4pt; margin-bottom:3pt !important; }
+  .cv__sec--cols .cv__entry + .cv__entry{ margin-top:4pt; padding-top:4pt; }
+
+  .cv__sec > p{ font-size:7.9pt; line-height:1.3; }
 
   .research{ border:.5pt solid #999; background:none; padding:8pt; break-inside:avoid; }
   .research__stat{ color:#000; font-size:22pt; }
@@ -888,3 +922,617 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
 .mt-1{ margin-top:.75rem; } .mt-2{ margin-top:1.5rem; } .mt-3{ margin-top:2.25rem; } .mt-4{ margin-top:3rem; }
 .stack > * + *{ margin-top:1.1rem; }
 .flow > * + *{ margin-top:2rem; }
+
+/* ===========================================================================
+   ===========================================================================
+   THE CINEMATIC LAYER
+   ---------------------------------------------------------------------------
+   Everything below this line is an escalation of the system above it, not a
+   replacement for it. Three rules govern all of it:
+
+     1. The static frame is the finished frame. Motion animates *into* the
+        composition the CSS already draws, never out of nothing — so a failed
+        script, an unsupported property or a reduced-motion preference leaves a
+        page that looks authored rather than half-built.
+     2. Navigation is ordinary. Nothing here delays a link, hides a control,
+        intercepts a wheel event or asks to be learned.
+     3. One dominant movement per viewport, and it resolves before you read.
+   =========================================================================== */
+
+/* --- animatable custom properties ----------------------------------------- */
+
+@property --ap-iris   { syntax: '<percentage>'; inherits: false; initial-value: 0%; }
+@property --fuse-burn { syntax: '<percentage>'; inherits: false; initial-value: 100%; }  /* burnt through */
+@property --grow-run  { syntax: '<percentage>'; inherits: false; initial-value: 100%; }
+@property --lift      { syntax: '<length>';     inherits: false; initial-value: 0px; }
+
+/* ===========================================================================
+   1. CROSS-DOCUMENT VIEW TRANSITIONS
+   ---------------------------------------------------------------------------
+   Twelve pages, one film. A project card's screenshot becomes that project's
+   case-study hero; its title and its accent marker travel with it. Browsers
+   without the feature get an ordinary, instant navigation and lose nothing.
+   =========================================================================== */
+
+@view-transition { navigation: auto; }
+
+/* Restrained and consistent: one duration, one easing, opacity + transform +
+   clip only. No blur — it is expensive, and it reads as a smear rather than a
+   cut. Nothing here is long enough to make a link feel slow. */
+::view-transition-group(*){
+  animation-duration:300ms;
+  animation-timing-function:cubic-bezier(.22,.61,.36,1);
+}
+::view-transition-old(root){ animation:vt-leave 180ms cubic-bezier(.4,0,1,1) both; }
+::view-transition-new(root){ animation:vt-enter 300ms cubic-bezier(.16,1,.3,1) both; }
+
+@keyframes vt-leave{ to{ opacity:0; transform:translateY(-6px); } }
+@keyframes vt-enter{ from{ opacity:0; transform:translateY(10px); clip-path:inset(0 0 6% 0); } }
+
+/* The identity and the navigation shell persist, so the chrome never blinks. */
+::view-transition-group(site-wordmark),
+::view-transition-group(site-nav){ animation-duration:220ms; }
+::view-transition-old(site-nav),
+::view-transition-new(site-nav){ animation:none; mix-blend-mode:normal; height:100%; }
+
+.wordmark{ view-transition-name:site-wordmark; }
+.masthead{ view-transition-name:site-nav; }
+
+/* Per-project names. Each appears exactly once in any one document — the
+   home page's aperture is the active project screenshot there, so the card
+   below it deliberately does not claim the same name a second time. */
+[data-vt="shot-spellbomb"]      { view-transition-name:shot-spellbomb; }
+[data-vt="shot-health-journal"] { view-transition-name:shot-health-journal; }
+[data-vt="shot-phlebotomy"]     { view-transition-name:shot-phlebotomy; }
+[data-vt="shot-manifester"]     { view-transition-name:shot-manifester; }
+[data-vt="shot-owcs"]           { view-transition-name:shot-owcs; }
+[data-vt="shot-paper-animator"] { view-transition-name:shot-paper-animator; }
+
+[data-vt="title-spellbomb"]      { view-transition-name:title-spellbomb; }
+[data-vt="title-health-journal"] { view-transition-name:title-health-journal; }
+[data-vt="title-phlebotomy"]     { view-transition-name:title-phlebotomy; }
+[data-vt="title-manifester"]     { view-transition-name:title-manifester; }
+[data-vt="title-owcs"]           { view-transition-name:title-owcs; }
+[data-vt="title-paper-animator"] { view-transition-name:title-paper-animator; }
+
+[data-vt="accent-spellbomb"]      { view-transition-name:accent-spellbomb; }
+[data-vt="accent-health-journal"] { view-transition-name:accent-health-journal; }
+[data-vt="accent-phlebotomy"]     { view-transition-name:accent-phlebotomy; }
+[data-vt="accent-manifester"]     { view-transition-name:accent-manifester; }
+[data-vt="accent-owcs"]           { view-transition-name:accent-owcs; }
+[data-vt="accent-paper-animator"] { view-transition-name:accent-paper-animator; }
+
+/* A screenshot that changes aspect between index and case study should cut
+   through the crop rather than squash. */
+::view-transition-old(shot-spellbomb), ::view-transition-new(shot-spellbomb),
+::view-transition-old(shot-health-journal), ::view-transition-new(shot-health-journal),
+::view-transition-old(shot-phlebotomy), ::view-transition-new(shot-phlebotomy),
+::view-transition-old(shot-manifester), ::view-transition-new(shot-manifester),
+::view-transition-old(shot-owcs), ::view-transition-new(shot-owcs),
+::view-transition-old(shot-paper-animator), ::view-transition-new(shot-paper-animator){
+  height:100%; object-fit:cover; object-position:top center;
+}
+
+/* Reduced motion: the transition becomes a state change, not a move. */
+@media (prefers-reduced-motion:reduce){
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*){ animation-duration:1ms !important; animation-delay:0s !important; }
+}
+html[data-motion="off"] ::view-transition-group(*),
+html[data-motion="off"] ::view-transition-old(*),
+html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !important; }
+
+/* ===========================================================================
+   2. THE MOTION CONTROL
+   ---------------------------------------------------------------------------
+   A real button with a real pressed state. It is only shown once a script is
+   running, because with no script there is no continuous motion to stop.
+   The choice is stored locally and can only ever make the site *stiller* than
+   the operating system asked for — it never overrides a reduce preference.
+   =========================================================================== */
+
+.motionbtn{
+  display:none;
+  align-items:center; gap:.5rem;
+  font-family:var(--mono); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--text-quiet);
+  background:transparent; border:1px solid var(--line-firm); border-radius:var(--radius);
+  min-height:38px; padding:.4rem .7rem; cursor:pointer; white-space:nowrap;
+  transition:color 200ms var(--ease), border-color 200ms var(--ease);
+}
+.js .motionbtn{ display:inline-flex; }
+.motionbtn:hover{ color:var(--text); border-color:var(--accent); }
+.motionbtn .led{
+  width:.42rem; height:.42rem; border-radius:50%; flex:none;
+  background:var(--accent); box-shadow:0 0 0 3px var(--accent-soft);
+}
+.motionbtn[aria-pressed="true"] .led{ background:var(--text-faint); box-shadow:none; }
+/* The label never changes, so the accessible name is stable and matches what
+   is on screen; the pressed state and the lamp carry the state instead. */
+.motionbtn[aria-pressed="true"]{ color:var(--text); border-color:var(--line-firm); }
+@media (max-width:1120px){ .masthead .motionbtn{ display:none !important; } }
+.navmob__panel .motionbtn{ width:100%; justify-content:center; margin-top:1rem; min-height:48px; }
+
+/* ===========================================================================
+   3. THE EVIDENCE APERTURE
+   ---------------------------------------------------------------------------
+   The home hero. Five things compose it, and all five are drawn by CSS and
+   inline SVG before a single script runs:
+
+     · a thin medical-teal biological signal
+     · a cobalt competitive bracket structure
+     · a restrained solar-gold current
+     · warm-ivory editorial typography
+     · a dark atmosphere derived from the active project accent
+
+   The aperture is open in the static frame. The desktop timeline closes it at
+   the start of the pinned sequence and opens it again as you scroll — so the
+   thing you see with no JavaScript is the thing the animation lands on.
+   =========================================================================== */
+
+.ap{ position:relative; padding:0; border:0; }
+.ap__stage{
+  position:relative;
+  min-height:min(100svh, 980px);
+  display:flex; align-items:center;
+  padding-block:clamp(2.5rem,6vh,4.5rem) clamp(2.5rem,6vh,4rem);
+  overflow:clip;
+}
+@media (max-width:999px){
+  .ap__stage{ min-height:auto; padding-block:clamp(2rem,6vw,3.5rem) clamp(2rem,5vw,3rem); }
+}
+
+/* the shader plane, when it is allowed to exist at all */
+.ap__canvas{
+  position:absolute; inset:0; z-index:0;
+  width:100%; height:100%; display:block;
+  pointer-events:none; opacity:0;
+  transition:opacity 900ms var(--ease);
+}
+.ap__canvas.is-live{ opacity:.72; }
+
+/* the drawn field: signal, bracket, current. Never interactive, never read. */
+.ap__field{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  overflow:hidden;
+}
+.ap__field svg{ position:absolute; inset:0; width:100%; height:100%; }
+/* The shader mounts in here, underneath the drawn field, so the SVG signal and
+   the bracket always read even when the plane behind them is live — and so the
+   canvas can never end up above anything a visitor can click. */
+.ap__glass{ position:absolute; inset:0; z-index:0; pointer-events:none; }
+.ap__field .ap__sig{ z-index:1; }
+/* One of the two traces is drawn for the frame it is in; the other is not in
+   the document's way at all. */
+.ap__sig--nar{ display:none; }
+@media (max-width:999px){
+  .ap__field .ap__sig{ display:none; }
+  .ap__field .ap__sig--nar{ display:block; }
+}
+/* The bracket belongs behind the evidence, not across the headline. */
+.ap__field .ap__brk{ z-index:1; left:auto; right:0; width:min(54%, 660px); opacity:.85; }
+@media (max-width:999px){ .ap__field .ap__brk{ width:min(78%, 420px); opacity:.6; } }
+.ap__frame{ position:relative; }
+.ap__signal{
+  fill:none; stroke:var(--teal); stroke-width:1.35;
+  vector-effect:non-scaling-stroke;
+  opacity:.62;
+  filter:drop-shadow(0 0 6px color-mix(in srgb, var(--teal) 45%, transparent));
+}
+.ap__signal--ghost{ stroke:var(--teal); opacity:.14; stroke-width:1; }
+.ap__bracket{ fill:none; stroke:var(--cobalt); stroke-width:1; vector-effect:non-scaling-stroke; opacity:.36; }
+.ap__bracket-node{ fill:var(--cobalt); opacity:.5; }
+.ap__current{
+  position:absolute; left:0; right:0; top:auto; bottom:22%;
+  height:1px; background:linear-gradient(90deg, transparent, var(--gold) 22%, var(--gold) 62%, transparent);
+  opacity:.5;
+}
+
+.ap__in{
+  position:relative; z-index:2;
+  display:grid; gap:clamp(2rem,4vw,4rem);
+  grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);
+  align-items:center; width:100%;
+}
+@media (max-width:999px){ .ap__in{ grid-template-columns:1fr; align-items:start; } }
+
+.ap__copy{ min-width:0; }
+.ap__title{ margin-top:1.4rem; }
+.ap__title .line{ display:block; }
+.ap__title .line--2{ font-style:italic; color:var(--accent); }
+.ap__ch{ display:inline-block; will-change:transform, opacity; }
+
+/* The evidence: one real screenshot, framed like an instrument read-out.
+   No laptop, no phone bezel, no floating browser chrome — the product is
+   shown as the product. */
+.ap__ev{ margin:0; position:relative; min-width:0; }
+.ap__iris{
+  position:relative; overflow:hidden;
+  border:1px solid var(--line-firm);
+  border-radius:var(--radius);
+  background:var(--ink-card);
+  box-shadow:0 50px 90px -60px rgba(0,0,0,.95), 0 0 0 1px color-mix(in srgb, var(--accent) 16%, transparent);
+  /* Registered above with an initial value of 0%, i.e. open. A registered
+     custom property resolves to its initial value rather than to a var()
+     fallback, so the resting state has to be the finished one — otherwise a
+     page whose script never runs clips its own evidence away. */
+  clip-path:inset(var(--ap-iris) 0 var(--ap-iris) 0 round var(--radius));
+}
+.ap__iris img{
+  width:100%; aspect-ratio:16/10; object-fit:cover; object-position:top center;
+  display:block;
+}
+/* The blades. In the static frame they are parked outside the opening, so a
+   page with no JavaScript shows the screenshot, not a shutter. */
+.ap__blade{
+  position:absolute; left:0; right:0; height:52%;
+  background:linear-gradient(var(--ink), color-mix(in srgb, var(--ink) 82%, var(--accent)));
+  z-index:2; pointer-events:none;
+}
+/* Parked by position, not by transform, so the timeline owns the transform
+   outright and never composes itself on top of a resting offset. */
+.ap__blade--t{ bottom:100%; border-bottom:1px solid var(--accent-line); }
+.ap__blade--b{ top:100%; border-top:1px solid var(--accent-line); }
+
+/* corner brackets — the instrument's registration marks */
+.ap__marks{ position:absolute; inset:-9px; pointer-events:none; z-index:3; }
+.ap__marks span{
+  position:absolute; width:16px; height:16px;
+  border:1px solid var(--accent); opacity:.55;
+}
+.ap__marks span:nth-child(1){ top:0; left:0; border-right:0; border-bottom:0; }
+.ap__marks span:nth-child(2){ top:0; right:0; border-left:0; border-bottom:0; }
+.ap__marks span:nth-child(3){ bottom:0; left:0; border-right:0; border-top:0; }
+.ap__marks span:nth-child(4){ bottom:0; right:0; border-left:0; border-top:0; }
+
+.ap__cap{
+  margin-top:1rem;
+  display:flex; flex-wrap:wrap; gap:.5rem 1.1rem; align-items:baseline;
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.08em; line-height:1.7;
+  color:var(--text-quiet);
+}
+.ap__cap .go{
+  font-weight:500; color:var(--accent); text-decoration:none;
+  border-bottom:1px solid var(--accent-line);
+  display:inline-flex; align-items:center; padding-block:.3rem;
+}
+@media (hover:none),(pointer:coarse){ .ap__cap .go{ min-height:44px; } }
+.ap__cap .go:hover{ border-bottom-color:var(--accent); }
+
+/* Where the pinned sequence lets go: the composition stops moving and what is
+   left on screen is prose you can read and links you can use. */
+.ap__after{ position:relative; z-index:2; padding-block:clamp(1.5rem,4vw,3rem) clamp(2rem,5vw,3.5rem); }
+.ap__afterin{
+  display:grid; gap:clamp(1.25rem,3vw,2.5rem);
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,18em),1fr));
+  padding-top:clamp(1.25rem,3vw,2rem);
+  border-top:1px solid var(--line);
+}
+
+/* The read-out strip that the sequence resolves into: the aperture stops
+   moving and what is left is somewhere to go. */
+.ap__readout{
+  position:relative; z-index:2;
+  display:grid; gap:1px;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  border-block:1px solid var(--line);
+  background:var(--ink);
+}
+.ap__readout li{ background:var(--ink); padding:1rem 1.15rem; box-shadow:0 0 0 1px var(--line); }
+.ap__readout .k{ font-family:var(--mono); font-size:.63rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); display:block; }
+.ap__readout .v{ display:block; font-family:var(--ui); font-weight:500; font-size:.95rem; line-height:1.4; margin-top:.4rem; }
+
+/* The timeline animates the blades, not the clip; the iris stays open the whole
+   time so the evidence is never hidden behind a shutter waiting on a script. */
+
+/* ===========================================================================
+   4. NATIVE SCROLL-DRIVEN MOTION
+   ---------------------------------------------------------------------------
+   CSS is the default animation engine here. Every animation in this block is
+   written so that its *unanimated* state is the readable one: transforms and
+   partial opacity only, never 0 → 1, so an unsupported browser, a stalled
+   timeline or a short page can never strand content invisible.
+   =========================================================================== */
+
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion:no-preference){
+
+    /* Screenshots settle into frame as they enter — the same law the aperture
+       uses, applied quietly to every other piece of evidence on the site. */
+    .work__shot img,
+    .shotframe > img,
+    .shot > img{
+      animation:evidence-settle linear both;
+      animation-timeline:view();
+      animation-range:entry 0% entry 92%;
+    }
+    @keyframes evidence-settle{
+      from{ transform:scale(1.045) translateY(1.2%); }
+      to  { transform:none; }
+    }
+
+    /* Section rules draw rather than appear. */
+    .sechead .eyebrow .tick{
+      animation:tick-draw linear both;
+      animation-timeline:view();
+      animation-range:entry 10% entry 80%;
+    }
+    @keyframes tick-draw{ from{ transform:scaleX(.1); transform-origin:0 50%; } to{ transform:none; } }
+
+    /* The masthead firms up once you have left the first screen. */
+    .masthead{
+      animation:mast-firm linear both;
+      animation-timeline:scroll(root block);
+      animation-range:0 220px;
+    }
+    @keyframes mast-firm{
+      from{ border-bottom-color:transparent; }
+      to  { border-bottom-color:var(--line); }
+    }
+  }
+}
+
+/* --- the native aperture reveal (no GSAP, no pin) -------------------------- */
+/* Below the cinematic threshold — and on any browser without GSAP loaded —
+   the aperture still opens, driven by the scroll position of the section
+   itself. It starts open, so it is never a shutter over the evidence. */
+@supports (animation-timeline: view()) and (clip-path: inset(0% 0 0% 0)){
+  @media (prefers-reduced-motion:no-preference) and (max-width:999px){
+    .ap__iris{
+      animation:iris-open linear both;
+      animation-timeline:view();
+      animation-range:entry 12% cover 22%;
+    }
+    @keyframes iris-open{
+      from{ --ap-iris:19%; }
+      to  { --ap-iris:0%; }
+    }
+  }
+}
+
+/* ===========================================================================
+   5. PER-PROJECT PRODUCT PHYSICS
+   ---------------------------------------------------------------------------
+   One law per case study, inherited from what the product itself does. Each is
+   finite, each resolves, and none of them is applied to a page it does not
+   belong to.
+   =========================================================================== */
+
+/* --- SpellBomb · fuse and impact ------------------------------------------ */
+/* A fuse accumulates along the spine of the page, and the reveal lands once,
+   with weight. Nothing flashes, nothing shakes, nothing covers the text. */
+.physics{ position:relative; }
+[data-physics="fuse"] .case-body{ position:relative; }
+[data-physics="fuse"] .case-body::before{
+  content:""; position:absolute; left:-1.15rem; top:0; bottom:0; width:2px;
+  background:linear-gradient(var(--accent), color-mix(in srgb, var(--accent) 10%, transparent));
+  opacity:.28; border-radius:2px;
+}
+@media (max-width:840px){ [data-physics="fuse"] .case-body::before{ left:-.6rem; } }
+@supports (animation-timeline: scroll()){
+  @media (prefers-reduced-motion:no-preference){
+    [data-physics="fuse"] .case-body::before{
+      opacity:.9;
+      background:linear-gradient(var(--accent) 0 0) no-repeat;
+      background-size:100% var(--fuse-burn);
+      box-shadow:0 0 10px color-mix(in srgb, var(--accent) 40%, transparent);
+      animation:fuse-burn linear both;
+      animation-timeline:view();
+      animation-range:cover 6% cover 88%;
+    }
+    @keyframes fuse-burn{ from{ --fuse-burn:6%; } to{ --fuse-burn:100%; } }
+  }
+}
+.js [data-motion="impact"]{ transform:scale(1.012); opacity:0; }
+.js [data-motion="impact"].is-in{
+  transform:none; opacity:1;
+  transition:transform 520ms cubic-bezier(.2,1.5,.4,1), opacity 300ms var(--ease);
+}
+
+/* --- Health Journal · growth and materialisation -------------------------- */
+/* A record that builds. The spine grows between related evidence rather than
+   glowing at it; teal is living data here, not a light source. */
+[data-physics="grow"] .case-body{ position:relative; }
+[data-physics="grow"] .chapter{ position:relative; }
+[data-physics="grow"] .chapter::before{
+  content:""; position:absolute; left:-1.15rem; top:0; width:1px; height:100%;
+  background:var(--accent); opacity:.22;
+}
+@media (max-width:840px){ [data-physics="grow"] .chapter::before{ left:-.6rem; } }
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion:no-preference){
+    [data-physics="grow"] .chapter::before{
+      opacity:.6; height:var(--grow-run);
+      animation:grow-run linear both;
+      animation-timeline:view();
+      animation-range:entry 0% cover 34%;
+    }
+    @keyframes grow-run{ from{ --grow-run:0%; } to{ --grow-run:100%; } }
+  }
+}
+.js [data-motion="materialise"] > *{ opacity:0; transform:translateY(8px) scaleY(.97); transform-origin:bottom; }
+.js [data-motion="materialise"].is-in > *{
+  opacity:1; transform:none;
+  transition:opacity 520ms var(--ease), transform 760ms var(--ease-snap);
+}
+.js [data-motion="materialise"].is-in > *:nth-child(1){ transition-delay:0ms; }
+.js [data-motion="materialise"].is-in > *:nth-child(2){ transition-delay:110ms; }
+.js [data-motion="materialise"].is-in > *:nth-child(3){ transition-delay:220ms; }
+.js [data-motion="materialise"].is-in > *:nth-child(4){ transition-delay:330ms; }
+.js [data-motion="materialise"].is-in > *:nth-child(5){ transition-delay:440ms; }
+.js [data-motion="materialise"].is-in > *:nth-child(6){ transition-delay:550ms; }
+
+/* --- Manifester · one breath ---------------------------------------------- */
+/* Finite. One inhale, one exhale, and then it is still — a session that ends,
+   which is what the product is. Nothing here pulses forever. */
+.js [data-motion="breathe"]{ transform:scale(.988); opacity:0; }
+.js [data-motion="breathe"].is-in{
+  animation:breathe-once 6.4s var(--ease) 1 both;
+}
+@keyframes breathe-once{
+  0%  { transform:scale(.988); opacity:0; }
+  30% { transform:scale(1.006); opacity:1; }
+  52% { transform:scale(1.014); opacity:1; }
+  100%{ transform:scale(1);     opacity:1; }
+}
+
+/* --- OWCS · sorting and competition --------------------------------------- */
+/* Alignment is the reward: rows arrive out of order and snap into a structure
+   you can read down. Fast, tactical, and over quickly. */
+.js [data-motion="sort"] > *{ opacity:0; transform:translateY(10px) translateX(var(--sx, -6px)); }
+.js [data-motion="sort"].is-in > *{
+  opacity:1; transform:none;
+  transition:opacity 380ms var(--ease), transform 520ms cubic-bezier(.2,.9,.2,1);
+}
+.js [data-motion="sort"].is-in > *:nth-child(odd){ --sx:6px; }
+
+/* --- PaperAnimator · unfolding -------------------------------------------- */
+/* A page opens into a scene: layered planes, a hinge, and continuity from the
+   source to the thing it produced. */
+.js [data-motion="unfold"]{ opacity:0; clip-path:inset(0 0 62% 0); transform:perspective(1400px) rotateX(2.6deg); transform-origin:top center; }
+.js [data-motion="unfold"].is-in{
+  opacity:1; clip-path:inset(0 0 0 0); transform:none;
+  transition:opacity 520ms var(--ease), clip-path 980ms var(--ease-snap), transform 980ms var(--ease-snap);
+}
+
+/* One-element variants of the two collection laws, for a hero figure that is
+   a single frame rather than a set of rows. */
+.js [data-motion="sort-in"]{ opacity:0; transform:translateX(-10px) translateY(8px); }
+.js [data-motion="sort-in"].is-in{
+  opacity:1; transform:none;
+  transition:opacity 360ms var(--ease), transform 540ms cubic-bezier(.2,.9,.2,1);
+}
+.js [data-motion="sequence-in"]{ opacity:0; transform:translateY(12px); }
+.js [data-motion="sequence-in"].is-in{
+  opacity:1; transform:none;
+  transition:opacity 420ms var(--ease) 120ms, transform 620ms var(--ease-snap) 120ms;
+}
+
+/* --- Phlebotomy · sequence and precision ---------------------------------- */
+/* Steps settle in the correct order and a hairline connects each to the next.
+   Calm, exact, and entirely free of spectacle. */
+[data-physics="sequence"] .chapter__label{ position:relative; }
+[data-physics="sequence"] .chapter__label .n{ position:relative; padding-left:1.35rem; }
+[data-physics="sequence"] .chapter__label .n::before{
+  content:""; position:absolute; left:0; top:.44em;
+  width:.55rem; height:.55rem; border:1px solid var(--accent); border-radius:50%;
+  background:var(--ink);
+}
+[data-physics="sequence"] .chapter__label .n::after{
+  content:""; position:absolute; left:.25rem; top:1.35em; bottom:auto;
+  width:1px; height:1.6rem; background:var(--accent-line);
+}
+[data-physics="sequence"] .chapter:last-of-type .chapter__label .n::after{ display:none; }
+
+/* ===========================================================================
+   6. MOBILE ART DIRECTION
+   ---------------------------------------------------------------------------
+   Composed for the width, not shrunk to it. No WebGL, no pins, no pointer
+   dependency — and every hover behaviour above has a tap, focus or scroll
+   equivalent below.
+   =========================================================================== */
+
+@media (max-width:999px){
+  .ap__field .ap__bracket-group{ opacity:.5; }
+  .ap__current{ bottom:auto; top:calc(100% - 30%); }
+  .ap__ev{ margin-top:clamp(1.75rem,5vw,2.5rem); }
+  .ap__cap{ font-size:.68rem; }
+}
+@media (max-width:640px){
+  .ap__iris img{ aspect-ratio:4/3; }
+  .ap__readout{ grid-template-columns:1fr 1fr; }
+}
+
+/* Tap targets, pressed states, and a card that is one target rather than
+   three overlapping ones.
+
+   A link sitting inside a sentence is deliberately left alone: padding it out
+   to 44 px would break the leading of the paragraph around it, and an inline
+   link in a block of text is exempt from the target-size guidance for exactly
+   that reason. Everything that is a *control* rather than a phrase is sized. */
+@media (hover:none),(pointer:coarse){
+  .wordmark,
+  .foot a,
+  .cv__contact a,
+  .card__t a,
+  .navmob > summary{
+    min-height:44px;
+    display:inline-flex;
+    align-items:center;
+  }
+  .foot ul{ gap:0; }
+  .foot li{ display:flex; }
+  .cv__contact a{ padding-block:.35rem; }
+  .card__t a{ align-items:flex-start; }
+  /* A link that sits in a card's footer row is a control, not a phrase. */
+  .card__f .link{ min-height:44px; display:inline-flex; align-items:center; }
+
+  .work{ transition:background 160ms var(--ease); }
+  .work:active{ background:var(--ink-raised); }
+  .on-paper .work:active{ background:var(--paper-sunk); }
+  .work:active .work__go .arrow{ transform:translateX(4px); }
+  .contact-list a:active,
+  .nextup a:active{ background:var(--ink-raised); }
+  .on-paper .contact-list a:active,
+  .on-paper .nextup a:active{ background:var(--paper-sunk); }
+  .btn:active{ transform:translateY(1px); background:var(--accent-soft); }
+  .work__go{ min-height:44px; align-items:center; }
+}
+/* The whole card is the target: the title's ::after already covers the row,
+   so nothing inside it may be a second, competing link. */
+.work__body a:not(.work__title a){ position:relative; z-index:2; }
+.work:focus-within{ background:var(--ink-raised); }
+.on-paper .work:focus-within{ background:var(--paper-sunk); }
+.work__title a:focus-visible{ outline:none; }
+.work:has(.work__title a:focus-visible){
+  outline:2px solid var(--accent); outline-offset:-2px;
+}
+
+/* ===========================================================================
+   7. REDUCED MOTION AND THE MOTION-OFF CONTROL
+   ---------------------------------------------------------------------------
+   Stillness is not a stripped version of the page. Every composition below
+   still holds its final, art-directed state; only the movement is gone.
+   =========================================================================== */
+
+@media (prefers-reduced-motion:reduce){
+  .ap__canvas{ display:none !important; }
+  .ap__iris{ --ap-iris:0% !important; animation:none !important; }
+  .ap__blade{ display:none !important; }
+  .js [data-motion="impact"],
+  .js [data-motion="sort-in"],
+  .js [data-motion="sequence-in"],
+  .js [data-motion="materialise"] > *,
+  .js [data-motion="breathe"]{ opacity:1 !important; transform:none !important; }
+  .js [data-motion="breathe"].is-in{ animation:none !important; }
+  .work__shot img,
+  .shotframe > img,
+  .shot > img,
+  .sechead .eyebrow .tick,
+  [data-physics="fuse"] .case-body::before,
+  [data-physics="grow"] .chapter::before,
+  .masthead{ animation:none !important; }
+  [data-physics="fuse"] .case-body::before{ background:linear-gradient(var(--accent), color-mix(in srgb, var(--accent) 10%, transparent)); opacity:.28; }
+  [data-physics="grow"] .chapter::before{ height:100%; }
+}
+
+html[data-motion="off"] .ap__canvas{ display:none !important; }
+html[data-motion="off"] .ap__iris{ --ap-iris:0% !important; animation:none !important; }
+html[data-motion="off"] .ap__blade{ display:none !important; }
+html[data-motion="off"] [data-motion],
+html[data-motion="off"] [data-motion] > *{ opacity:1 !important; transform:none !important; clip-path:none !important; animation:none !important; }
+html[data-motion="off"] .work__shot img,
+html[data-motion="off"] .shotframe > img,
+html[data-motion="off"] .shot > img,
+html[data-motion="off"] [data-physics] .case-body::before,
+html[data-motion="off"] [data-physics] .chapter::before,
+html[data-motion="off"] .masthead,
+html[data-motion="off"] .sechead .eyebrow .tick{ animation:none !important; }
+html[data-motion="off"] [data-physics="grow"] .chapter::before{ height:100%; }
+html[data-motion="off"] .progress{ display:none; }
+
+/* With no script at all there is nothing to pause, nothing hidden, and no
+   shutter — the composed final frame is simply what the document is. */
+html:not(.js) .ap__blade{ display:none; }
+html:not(.js) .ap__canvas{ display:none; }
