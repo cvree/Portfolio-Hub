@@ -101,6 +101,9 @@
 
   /* --- 2. reading progress ------------------------------------------------- */
 
+  /* The reading-progress bar is the site's own signal, drawn as you read it:
+     one continuous ECG across the top of the document, complete exactly when
+     the document is. It only ever reports — it never steers. */
   function progress() {
     var bar = document.querySelector("[data-progress]");
     if (!bar || still()) return;
@@ -111,7 +114,8 @@
       var doc = document.documentElement;
       var span = doc.scrollHeight - window.innerHeight;
       var pct = span > 40 ? (doc.scrollTop || document.body.scrollTop) / span : 0;
-      bar.style.width = Math.max(0, Math.min(1, pct)) * 100 + "%";
+      pct = Math.max(0, Math.min(1, pct));
+      bar.style.setProperty("--read", pct * 100 + "%");
       ticking = false;
     }
 
@@ -162,6 +166,38 @@
     });
   }
 
+  /* --- 3b. arrival: the monitor acquires signal ---------------------------- */
+
+  /* Not a loader, and deliberately not shaped like one: the page is complete,
+     painted and clickable the entire time this runs. It is the trace catching
+     up to a document that is already there. It plays once, it takes about a
+     second and a quarter, and the first input of any kind cuts it short. */
+  function acquire() {
+    var ap = document.querySelector("[data-aperture]");
+    if (!ap || still()) return;
+
+    ap.classList.add("is-acquiring");
+    ap.classList.add("is-sweeping");
+
+    var done = false;
+    function settle() {
+      if (done) return;
+      done = true;
+      ap.classList.remove("is-acquiring");
+      ap.classList.remove("is-sweeping");
+      window.removeEventListener("pointerdown", settle, true);
+      window.removeEventListener("keydown", settle, true);
+      window.removeEventListener("wheel", settle, true);
+      window.removeEventListener("touchstart", settle, true);
+    }
+
+    window.setTimeout(settle, 1560);
+    window.addEventListener("pointerdown", settle, true);
+    window.addEventListener("keydown", settle, true);
+    window.addEventListener("wheel", settle, { capture: true, passive: true });
+    window.addEventListener("touchstart", settle, { capture: true, passive: true });
+  }
+
   /* --- 4. the motion control ----------------------------------------------- */
 
   /* Any atmospheric movement on this site that runs longer than five seconds
@@ -189,6 +225,7 @@
       if (off) {
         teardown();
         revealAll();
+        stopBeat();
       } else {
         cinematics();
       }
@@ -207,6 +244,128 @@
        retune instant; it does not take the instrument away. */
     var c = document.querySelector("[data-atmos-slot] canvas");
     if (c && c.parentNode) c.parentNode.removeChild(c);
+  }
+
+  /* --- 4b. sound ------------------------------------------------------------
+     Every tone on this site is an oscillator and an envelope, built in the
+     browser when it is needed. Nothing is downloaded, nothing is a file, and
+     nothing makes a sound until somebody presses the control that says it
+     will — so the promise on the Manifester page, that nothing here autoplays
+     sound, stays literally true.
+
+     The context is not even constructed until the first press, because an
+     AudioContext created without a gesture is a context the browser is going
+     to suspend anyway. */
+
+  var SOUND_STORE = "ce-sound";
+  var audio = { ctx: null, on: false, bus: null };
+
+  function tone(freq, dur, type, peak, at) {
+    if (!audio.ctx || !audio.on) return;
+    var t = at || audio.ctx.currentTime;
+    var osc = audio.ctx.createOscillator();
+    var env = audio.ctx.createGain();
+    osc.type = type || "sine";
+    osc.frequency.setValueAtTime(freq, t);
+    env.gain.setValueAtTime(0.0001, t);
+    env.gain.exponentialRampToValueAtTime(peak || 0.06, t + 0.006);
+    env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    osc.connect(env);
+    env.connect(audio.bus);
+    osc.start(t);
+    osc.stop(t + dur + 0.02);
+  }
+
+  /* Three sounds, and only three. The monitor's blip, the detent of a channel
+     committing, and the aperture on a navigation. Anything else would be
+     decoration with a volume control. */
+  var SFX = {
+    beat: function () { tone(1180, 0.09, "sine", 0.05); tone(590, 0.06, "sine", 0.025); },
+    detent: function () { tone(320, 0.05, "triangle", 0.05); tone(1600, 0.03, "sine", 0.018); },
+    iris: function () { tone(190, 0.24, "sine", 0.05); tone(95, 0.3, "sine", 0.035); }
+  };
+
+  function play(name) {
+    if (!audio.on || still()) return;
+    try {
+      if (SFX[name]) SFX[name]();
+    } catch (e) {}
+  }
+
+  /* The blip lands when the sweep reaches the QRS — one beat per sweep, when
+     the trace is actually drawing. A metronome running under a portfolio is
+     not sound design, it is a smoke alarm. */
+  var beatTimer = 0;
+  function beatOnce(rate) {
+    if (!audio.on || still()) return;
+    if (beatTimer) window.clearTimeout(beatTimer);
+    beatTimer = window.setTimeout(function () {
+      play("beat");
+    }, (rate || 2.6) * 260);
+  }
+  function stopBeat() {
+    if (beatTimer) window.clearTimeout(beatTimer);
+    beatTimer = 0;
+  }
+
+  function sound() {
+    var btns = document.querySelectorAll("[data-sound-toggle]");
+    if (!btns.length) return;
+
+    /* The control only appears once a script is running, because with no
+       script there is nothing for it to switch on. */
+    for (var i = 0; i < btns.length; i++) btns[i].removeAttribute("hidden");
+
+    function paint() {
+      for (var j = 0; j < btns.length; j++) {
+        btns[j].setAttribute("aria-pressed", audio.on ? "true" : "false");
+      }
+    }
+
+    function toggle() {
+      audio.on = !audio.on;
+      try {
+        if (window.localStorage) localStorage.setItem(SOUND_STORE, audio.on ? "on" : "off");
+      } catch (e) {}
+
+      if (audio.on) {
+        try {
+          var AC = window.AudioContext || window.webkitAudioContext;
+          if (!audio.ctx && AC) {
+            audio.ctx = new AC();
+            audio.bus = audio.ctx.createGain();
+            audio.bus.gain.value = 0.5;
+            audio.bus.connect(audio.ctx.destination);
+          }
+          if (audio.ctx && audio.ctx.state === "suspended") audio.ctx.resume();
+        } catch (e) {
+          audio.on = false;
+        }
+        play("detent");
+      } else {
+        stopBeat();
+      }
+      paint();
+    }
+
+    for (var k = 0; k < btns.length; k++) btns[k].addEventListener("click", toggle);
+    paint();
+
+    /* A stored "on" is deliberately not honoured on load: a page that starts
+       making noise because of something you did on a previous visit is a page
+       that autoplays sound, whatever the reason. The stored value only decides
+       what the control looks like the moment you reach for it. */
+
+    document.addEventListener("ce:sweep", function (ev) {
+      play("detent");
+      beatOnce(ev.detail && ev.detail.rate);
+    });
+
+    /* Stop the moment the tab is not in front of somebody. */
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stopBeat();
+    });
+    window.addEventListener("pagehide", stopBeat);
   }
 
   /* --- 5. the cinematic layer ---------------------------------------------- */
@@ -340,6 +499,8 @@
       progress();
       menu();
       motionControls();
+      sound();
+      acquire();
     } catch (err) {
       /* A failure in any of the above must never leave content hidden. */
       revealAll();
@@ -369,6 +530,16 @@
       else scheduleCinematics();
     });
   }
+
+  /* The aperture blinks between documents, so it gets the aperture's sound. */
+  document.addEventListener("click", function (ev) {
+    if (!audio.on) return;
+    var a = ev.target.closest ? ev.target.closest("a[href]") : null;
+    if (!a) return;
+    var href = a.getAttribute("href") || "";
+    if (/^(https?:|mailto:|#)/.test(href)) return;
+    play("iris");
+  });
 
   window.addEventListener("pagehide", teardown);
 })();

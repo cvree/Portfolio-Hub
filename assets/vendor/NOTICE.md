@@ -19,13 +19,13 @@ withholding a control is not the same as withholding an effect.
 
 | Package | Version | Source | License | Bundle | Raw | Gzip |
 | --- | --- | --- | --- | --- | --- | --- |
-| `—` | — | this repository | MIT (this repository) | `assets/vendor/channel.js` | 6.1 KB | 2.4 KB |
-| `gsap` | 3.15.0 | https://github.com/greensock/GSAP | GreenSock Standard 'No Charge' License | `assets/vendor/aperture.js` | 113.9 KB | 44.9 KB |
+| `—` | — | this repository | MIT (this repository) | `assets/vendor/channel.js` | 6.6 KB | 2.5 KB |
+| `gsap` | 3.15.0 | https://github.com/greensock/GSAP | GreenSock Standard 'No Charge' License | `assets/vendor/aperture.js` | 113.6 KB | 44.8 KB |
 | `ogl` | 1.0.11 | https://github.com/oframe/ogl | Unlicense | `assets/vendor/atmosphere.js` | 49.5 KB | 15.1 KB |
 
-Total lazy cinematic payload: **60.1 KB gzip**
+Total lazy cinematic payload: **60.0 KB gzip**
 (`aperture.js` + `atmosphere.js`, against a budget of 100 KB). The control
-module is counted separately, at **2.4 KB gzip**, because it is not a
+module is counted separately, at **2.5 KB gzip**, because it is not a
 cinematic effect and does not answer to the cinematic gates. None of it is
 requested until after the useful site has rendered.
 

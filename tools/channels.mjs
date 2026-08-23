@@ -33,7 +33,7 @@ for (const vp of [{ w: 1440, h: 900, tag: 'desktop' }, { w: 390, h: 844, tag: 'm
     /* Clicking scrolls the control into view; the record is of the composition
        at the position every visitor actually arrives at. */
     await page.evaluate(() => window.scrollTo(0, 0));
-    await page.waitForTimeout(1100);
+    await page.waitForTimeout(1500);
     await page.screenshot({ path: path.join(out, `${vp.tag}-${slug}.png`) });
     console.log('shot', vp.tag, slug);
   }

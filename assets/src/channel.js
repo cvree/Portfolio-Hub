@@ -77,6 +77,8 @@ export function mount(section) {
   const strip = section.querySelector('[data-channel-strip]');
   const list = strip && strip.querySelector('.ch__list');
   const live = section.querySelector('.ap__signal[data-sig="live"]');
+  const sweep = section.querySelector('[data-sig="sweep"]');
+  const head = section.querySelector('[data-sig="head"]');
   const iris = section.querySelector('.ap__iris');
   const shot = section.querySelector('[data-ap="shot"]');
   const hint = section.querySelector('[data-ch-hint]');
@@ -108,7 +110,22 @@ export function mount(section) {
   let preview = null;
   let raf = 0;
   let swapTimer = 0;
+  let sweepTimer = 0;
   let dead = false;
+
+  /* One sweep, at the rate the tuned channel actually beats at. The class is
+     removed afterwards so the next one can restart it from the top rather
+     than joining a cycle already in progress. */
+  function sweepOnce() {
+    if (stillNow()) return;
+    const rate = parseFloat(getComputedStyle(section).getPropertyValue('--rate')) || 2.6;
+    clearTimeout(sweepTimer);
+    section.classList.remove('is-sweeping');
+    void section.offsetWidth;
+    section.classList.add('is-sweeping');
+    section.dispatchEvent(new CustomEvent('ce:sweep', { bubbles: true, detail: { rate } }));
+    sweepTimer = setTimeout(() => section.classList.remove('is-sweeping'), rate * 1000 + 60);
+  }
 
   /* --- the strip becomes a radio group ------------------------------------
      Six links become six buttons, in the same boxes, with the same words. A
@@ -176,20 +193,15 @@ export function mount(section) {
   let from = shapes[channel] ? shapes[channel].slice() : null;
   let showing = channel;
 
+  /* One geometry, three things drawing it: the trail, the bright leading edge,
+     and the cursor at the head of it. They can never be out of step because
+     they are never given different shapes. */
   function setPath(pts) {
     if (!live || !pts) return;
-    /* The aperture's opening sequence draws this same path with a dash offset.
-       Changing the geometry underneath it would change the path's length and
-       leave the draw reporting a fraction it is no longer at, so the fraction
-       is what is preserved across a morph — not the number. */
-    const dash = parseFloat(live.style.strokeDasharray) || 0;
-    const drawn = dash ? 1 - (parseFloat(live.style.strokeDashoffset) || 0) / dash : 0;
-    live.setAttribute('d', toPath(pts));
-    if (dash) {
-      const len = live.getTotalLength();
-      live.style.strokeDasharray = len + ' ' + len;
-      live.style.strokeDashoffset = String(len * (1 - drawn));
-    }
+    const d = toPath(pts);
+    live.setAttribute('d', d);
+    if (sweep) sweep.setAttribute('d', d);
+    if (head) head.style.offsetPath = `path("${d}")`;
   }
 
   function morph(slug) {
@@ -223,7 +235,10 @@ export function mount(section) {
       setPath(out);
       from = out;
       raf = k < 1 ? requestAnimationFrame(step) : 0;
-      if (!raf) from = target.slice();
+      if (!raf) {
+        from = target.slice();
+        measure();
+      }
     };
     raf = requestAnimationFrame(step);
   }
@@ -320,6 +335,11 @@ export function mount(section) {
       paintTune();
     }
 
+    /* The monitor re-acquires on the new channel. The rate has already been
+       written by paintTune, so the sweep is this product's rhythm, not the
+       last one's. */
+    sweepOnce();
+
     if (moveFocus) {
       const b = opts.find((o) => o.dataset.ch === slug);
       if (b) b.focus();
@@ -405,6 +425,16 @@ export function mount(section) {
 
   /* --- start ---------------------------------------------------------------- */
 
+  /* CSS carries a reasonable guess so the sweep runs with no script at all;
+     once there is a script, it gets the measured number. */
+  function measure() {
+    if (!live || !live.getTotalLength) return;
+    try {
+      section.style.setProperty('--sig-len', Math.round(live.getTotalLength()));
+    } catch (e) {}
+  }
+  measure();
+
   section.classList.add('is-wired');
   document.documentElement.dataset.channel = channel;
   paintStrip();
@@ -415,6 +445,8 @@ export function mount(section) {
       dead = true;
       cancelAnimationFrame(raf);
       clearTimeout(swapTimer);
+      clearTimeout(sweepTimer);
+      section.classList.remove('is-sweeping');
       iris.classList.remove('is-swap');
       closeAllNotes();
       section.classList.remove('is-wired');

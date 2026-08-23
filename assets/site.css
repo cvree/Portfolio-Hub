@@ -1107,13 +1107,8 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
    canvas can never end up above anything a visitor can click. */
 .ap__glass{ position:absolute; inset:0; z-index:0; pointer-events:none; }
 .ap__field .ap__sig{ z-index:1; }
-/* One of the two traces is drawn for the frame it is in; the other is not in
-   the document's way at all. */
-.ap__sig--nar{ display:none; }
-@media (max-width:999px){
-  .ap__field .ap__sig{ display:none; }
-  .ap__field .ap__sig--nar{ display:block; }
-}
+/* There is one trace now, and it is composed for the frame it is in rather
+   than duplicated for it. See THE PULSE in section 9. */
 /* The bracket belongs behind the evidence, not across the headline. */
 .ap__field .ap__brk{ z-index:1; left:auto; right:0; width:min(54%, 660px); opacity:.85; }
 @media (max-width:999px){ .ap__field .ap__brk{ width:min(78%, 420px); opacity:.6; } }
@@ -2093,4 +2088,319 @@ html:not(.js) .ap__spots{ display:none !important; }
   .work__spec .n{ color:#000 !important; font-size:12pt; }
   .num > .num__t{ display:revert !important; }
   .num::after{ content:none !important; }
+}
+
+/* ===========================================================================
+   ===========================================================================
+   9. THE PULSE
+   ---------------------------------------------------------------------------
+   Connor is an NREMT-certified EMT. A heartbeat is the one signal every human
+   being on earth reads without being taught, and this site was drawing one at
+   fourteen per cent opacity behind everything else.
+
+   So the trace stops being wallpaper and becomes the protagonist. It is not a
+   decoration that happens to look medical: it is the page's state made
+   visible. It carries the channel (each product has its own rhythm), it
+   carries the scroll (the progress bar is this same trace, drawn as you read),
+   it carries arrival (the monitor acquires signal), and it carries navigation
+   (the aperture blinks between documents). One idea, four jobs, twelve pages.
+
+   Everything below still resolves. Nothing pulses forever without meaning,
+   nothing here is the only route to a fact, and all of it stops dead under
+   prefers-reduced-motion.
+   =========================================================================== */
+
+/* Per-channel rhythm. A fuse is tachycardic, a breath is not — the rate is a
+   fact about the product, the same way the waveform's shape is. */
+.ap{ --rate:2.6s; --sig-len:3000; }
+.ap[data-tune="spellbomb"]      { --rate:1.45s; }
+.ap[data-tune="health-journal"] { --rate:5.2s; }
+.ap[data-tune="phlebotomy"]     { --rate:2.6s; }
+.ap[data-tune="manifester"]     { --rate:6.4s; }
+.ap[data-tune="owcs"]           { --rate:2.0s; }
+.ap[data-tune="paper-animator"] { --rate:4.6s; }
+
+/* The trace at rest is the history: what the monitor has already drawn. It is
+   quieter than it was bright, because the bright part is now a moving edge. */
+.ap__signal{
+  stroke-width:2.1;
+  opacity:0;
+  filter:drop-shadow(0 0 7px color-mix(in srgb, var(--accent) 30%, transparent));
+  transition:opacity 520ms var(--ease), stroke 620ms var(--ease);
+}
+.ap[data-tune="spellbomb"]      .ap__signal[data-sig="spellbomb"],
+.ap[data-tune="health-journal"] .ap__signal[data-sig="health-journal"],
+.ap[data-tune="phlebotomy"]     .ap__signal[data-sig="phlebotomy"],
+.ap[data-tune="manifester"]     .ap__signal[data-sig="manifester"],
+.ap[data-tune="owcs"]           .ap__signal[data-sig="owcs"],
+.ap[data-tune="paper-animator"] .ap__signal[data-sig="paper-animator"],
+.ap.is-wired .ap__signal[data-sig="live"]{ opacity:.5; }
+
+/* THE SWEEP. A patient monitor draws a bright leading edge that travels and
+   leaves a dimmer trail behind it. But a bright line looping forever behind
+   somebody's name is decoration with a heartbeat painted on it — so this one
+   does not loop. It runs once on arrival, and then only ever again when you
+   touch the instrument. The pulse answers you; it does not perform at you. */
+.ap__sweep{
+  fill:none;
+  stroke:color-mix(in srgb, var(--accent) 70%, var(--teal));
+  stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+  filter:drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 85%, transparent))
+         drop-shadow(0 0 40px color-mix(in srgb, var(--accent) 45%, transparent));
+  opacity:0;
+  transition:stroke 620ms var(--ease);
+}
+.ap.is-sweeping .ap__sweep{
+  opacity:1;
+  animation:sweep var(--rate) cubic-bezier(.28,0,.18,1) 1 both;
+}
+@keyframes sweep{
+  from{ stroke-dasharray:calc(var(--sig-len) * .14) calc(var(--sig-len) * 1.04); stroke-dashoffset:calc(var(--sig-len) * 1.18); }
+  to  { stroke-dasharray:calc(var(--sig-len) * .14) calc(var(--sig-len) * 1.04); stroke-dashoffset:calc(var(--sig-len) * -.04); }
+}
+
+/* The cursor a monitor puts at the live edge. It rides the same geometry as
+   the line it is drawing, so it can never be out of step with it — and it
+   exists only while something is actually being drawn. */
+.ap__head{
+  fill:var(--accent);
+  offset-path:path("M0 560 L206 547 L228 560 L250 578 L260 468 L272 620 L302 543 L338 560 L640 560 L666 547 L688 560 L710 578 L720 468 L732 620 L762 543 L798 560 L1100 560 L1126 547 L1148 560 L1170 578 L1180 468 L1192 620 L1222 543 L1258 560 L1440 560");
+  offset-rotate:0deg;
+  opacity:0;
+  filter:drop-shadow(0 0 14px var(--accent));
+}
+.ap.is-sweeping .ap__head{
+  animation:head var(--rate) cubic-bezier(.28,0,.18,1) 1 both;
+}
+@keyframes head{
+  from{ offset-distance:0%; opacity:0; }
+  8%  { opacity:1; }
+  92% { opacity:1; }
+  to  { offset-distance:100%; opacity:0; }
+}
+
+/* THE RAIL. Behind the copy the trace was a texture nobody could read: half of
+   it sat under a screenshot and the other half under a headline. On a band of
+   its own, directly above the channels it answers to, it is legible edge to
+   edge — and the hero's background gets quiet again, which is what a
+   background is for. The viewBox is cropped to the waveform's own range, so
+   the amplitude fills the rail instead of being a tenth of it. */
+.ap__rail{
+  position:relative; z-index:2;
+  height:clamp(58px, 8.4vh, 104px);
+  border-top:1px solid var(--line);
+  overflow:hidden;
+}
+.ap__rail::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--text) 7%, transparent) 0 1px, transparent 1px 72px),
+    linear-gradient(color-mix(in srgb, var(--accent) 4%, transparent), transparent 62%);
+  opacity:.7;
+}
+.ap__rail .ap__sig{ position:absolute; inset:0; width:100%; height:100%; }
+@media (max-width:999px){ .ap__rail{ height:clamp(52px, 8vh, 78px); } }
+
+/* --- arrival: the monitor acquires signal ---------------------------------
+   Not a loader. The page is complete, painted and clickable throughout; this
+   is the trace catching up to a document that is already there. It runs once,
+   it takes about a second and a quarter, and any input at all cuts it short. */
+/* Arrival is the same sweep, run once at a fixed pace, with the trail written
+   in behind it rather than already there. */
+.ap.is-acquiring{ --rate:1.5s; }
+.ap.is-acquiring .ap__signal{ animation:acquire-trail 1.5s linear 1 both; }
+@keyframes acquire-trail{ from{ opacity:0; } 30%{ opacity:.06; } to{ opacity:.34; } }
+
+/* ---------------------------------------------------------------------------
+   9.1 · THE SPINE — the same trace, reporting the scroll, on all twelve pages
+   ---------------------------------------------------------------------------
+   The reading-progress bar was a 2 px rectangle. It is now the site's own
+   signal, drawn as you read it: one continuous ECG across the top of every
+   document, complete exactly when the document is. It still only ever
+   reports — it never steers, and it is never in the way.
+   --------------------------------------------------------------------------- */
+
+.progress{
+  position:fixed; left:0; top:0; height:22px; width:100%; z-index:120;
+  pointer-events:none; background:transparent;
+  overflow:hidden;
+}
+.progress svg{ display:block; width:100%; height:100%; }
+.progress svg path{ fill:none; stroke-linecap:round; stroke-linejoin:round; }
+
+/* The whole trace, dim: what the document is. */
+.progress__ghost{ position:absolute; inset:0; }
+.progress__ghost path{ stroke:var(--text); opacity:.08; stroke-width:1; }
+
+/* The same trace, bright, clipped to how far you have read. A dash pattern
+   would have been the obvious way to do this and it is the wrong one: with
+   vector-effect:non-scaling-stroke the pattern resolves in screen space, not
+   in the stretched viewBox, so the numbers never line up. A clip does not
+   care what the coordinate system is doing. */
+.progress__fill{
+  position:absolute; inset:0; display:block;
+  clip-path:inset(0 calc(100% - var(--read, 0%)) 0 0);
+  transition:clip-path 140ms linear;
+}
+.progress__fill path{
+  stroke:var(--accent); stroke-width:1.7;
+  filter:drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 65%, transparent));
+}
+@media (max-width:640px){ .progress{ height:16px; } }
+
+/* ---------------------------------------------------------------------------
+   9.2 · THE CUT — every navigation is the aperture blinking
+   ---------------------------------------------------------------------------
+   Twelve pages, one film. The outgoing document closes to a slit and the
+   incoming one opens out of it: the same aperture the hero is built around,
+   at the scale of the whole viewport. It costs one clip-path either side, it
+   is the browser's own cross-document transition, and a browser without the
+   feature navigates instantly and loses nothing.
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion:no-preference){
+  ::view-transition-old(root){
+    animation:iris-shut 260ms cubic-bezier(.7,0,.84,0) both;
+  }
+  ::view-transition-new(root){
+    animation:iris-open 420ms cubic-bezier(.16,1,.3,1) both;
+  }
+  @keyframes iris-shut{
+    from{ clip-path:inset(0 0 0 0); opacity:1; }
+    to  { clip-path:inset(48% 0 48% 0); opacity:.35; }
+  }
+  @keyframes iris-open{
+    from{ clip-path:inset(48% 0 48% 0); opacity:.35; }
+    to  { clip-path:inset(0 0 0 0); opacity:1; }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   9.3 · SOUND — off until somebody asks for it
+   ---------------------------------------------------------------------------
+   Every tone on this site is synthesised in the browser from an oscillator and
+   an envelope. Nothing is downloaded, nothing is a file, and nothing makes a
+   sound until the visitor presses the control that says it will. The promise
+   on the Manifester page — that nothing here autoplays sound — is still
+   literally true.
+   --------------------------------------------------------------------------- */
+
+.soundbtn{
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.45rem .7rem; border:1px solid var(--line);
+  border-radius:var(--radius); background:transparent;
+  font-family:var(--mono); font-size:.63rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--text-quiet); cursor:pointer;
+  transition:border-color 260ms var(--ease), color 260ms var(--ease);
+}
+.soundbtn:hover{ color:var(--text); border-color:var(--line-firm); }
+.soundbtn[aria-pressed="true"]{ color:var(--accent); border-color:var(--accent-line); }
+.soundbtn .bars{ display:flex; align-items:flex-end; gap:2px; height:.7rem; }
+.soundbtn .bars i{
+  display:block; width:2px; height:30%; background:currentColor; border-radius:1px;
+  transition:height 240ms var(--ease-snap);
+}
+.soundbtn[aria-pressed="true"] .bars i:nth-child(1){ height:55%; }
+.soundbtn[aria-pressed="true"] .bars i:nth-child(2){ height:100%; }
+.soundbtn[aria-pressed="true"] .bars i:nth-child(3){ height:70%; }
+@media (hover:none),(pointer:coarse){ .soundbtn{ min-height:44px; } }
+
+/* ---------------------------------------------------------------------------
+   9.4 · STILLNESS
+   ---------------------------------------------------------------------------
+   A heartbeat that will not stop is the single worst thing this page could do
+   to somebody with a vestibular disorder. Under reduced motion the monitor
+   holds one complete, finished trace and nothing on it moves at all.
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion:reduce){
+  .ap__sweep,.ap__head,.ap.is-sweeping .ap__sweep,.ap.is-sweeping .ap__head,
+  .ap.is-acquiring .ap__signal{ animation:none !important; }
+  .ap__sweep{ stroke-dasharray:none !important; stroke-dashoffset:0 !important; opacity:.72 !important; }
+  .ap__head{ display:none !important; }
+  .ap__signal{ opacity:.5 !important; }
+  .progress__fill{ transition:none !important; }
+  ::view-transition-old(root),::view-transition-new(root){ animation:none !important; }
+}
+html[data-motion="off"] .ap__sweep,
+html[data-motion="off"] .ap__head,
+html[data-motion="off"] .ap.is-sweeping .ap__sweep,
+html[data-motion="off"] .ap.is-sweeping .ap__head,
+html[data-motion="off"] .ap.is-acquiring .ap__signal{ animation:none !important; }
+html[data-motion="off"] .ap__sweep{ stroke-dasharray:none !important; stroke-dashoffset:0 !important; opacity:.72 !important; }
+html[data-motion="off"] .ap__head{ display:none !important; }
+html[data-motion="off"] .ap__signal{ opacity:.5 !important; }
+
+/* With no script the monitor is still running — the sweep is a CSS animation
+   and the trace is markup. What is absent is only what a script would have
+   had to draw. */
+html:not(.js) .ap__head{ display:none; }
+
+@media print{
+  .progress,.soundbtn{ display:none !important; }
+}
+
+/* ---------------------------------------------------------------------------
+   9.5 · THE FRAME BREAKS
+   ---------------------------------------------------------------------------
+   A screenshot inside a rounded card, beside a column of text, is the shape of
+   every product page on the internet, and no amount of line-work behind it
+   changes that silhouette. So the evidence stops being a card: it runs off the
+   right edge of the screen the way a frame of film does, the name is set at the
+   scale of a title card rather than a heading, and the channel strip becomes a
+   broadcast strip across the foot of the composition.
+
+   The measure, the reading order, the tap targets and the link are all exactly
+   what they were. What changed is the shape of the thing.
+   --------------------------------------------------------------------------- */
+
+@media (min-width:1000px){
+  /* The inset the shell would have given us, computed once and applied to the
+     things that still want it. The stage clips its own overflow, so bleeding
+     past the viewport edge can never produce a horizontal scrollbar. */
+  .ap__in{
+    --inset:calc((100vw - min(100vw, var(--shell))) / 2 + var(--gutter));
+    max-width:none; padding-inline:0;
+    grid-template-columns:minmax(0,1fr) minmax(0,1.06fr);
+    gap:clamp(1rem,2.2vh,1.8rem) clamp(2rem,3.4vw,3.4rem);
+  }
+  .ap__copy{ padding-left:var(--inset); }
+  /* The strip runs the full width of the screen — that is what makes it a
+     broadcast strip rather than a row of buttons — and only the label above it
+     is inset to the copy's own margin. */
+  .ap__panel{ padding-inline:0; }
+  .ch__top{ padding-inline:var(--inset); }
+
+
+
+  /* Off the edge. No radius, no right border, no corner marks on an edge that
+     does not exist — an instrument's registration marks belong on the corners
+     it actually has. */
+  .ap__ev{ margin-right:0; }
+  .ap__iris{
+    border-radius:0; border-right:0;
+    box-shadow:0 60px 120px -70px rgba(0,0,0,.98), 0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent);
+  }
+  .ap__iris img{ aspect-ratio:16/9.4; }
+  .ap__marks{ inset:-9px -1px -9px -9px; }
+  .ap__marks span:nth-child(2),
+  .ap__marks span:nth-child(4){ display:none; }
+  .ap__cap,.ap__notes{ padding-right:var(--gutter); }
+
+  /* Title-card scale. The name is the composition, not a heading above one. */
+  .ap__title{
+    font-size:clamp(3.2rem, .4rem + 6.6vw, 7.6rem);
+    line-height:.92; letter-spacing:-.026em;
+  }
+  .ap__copy .lede{ font-size:clamp(1.05rem,.98rem+.3vw,1.24rem); max-width:22em; }
+}
+
+/* The strip runs the width of the screen, as a broadcast strip does, and only
+   its contents are inset. */
+@media (min-width:1000px){
+  .ch{ border-top:1px solid var(--line); padding-top:0; }
+  .ch__top{ padding-block:clamp(.7rem,1.4vw,1rem) 0; margin-bottom:.55rem; }
+  .ch__list{ border-left:0; border-right:0; border-radius:0; }
+  .ap__readout{ border-left:0; border-right:0; border-radius:0; }
 }

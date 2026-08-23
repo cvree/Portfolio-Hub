@@ -58,7 +58,6 @@ function unsplit(el) {
 export function mount(section) {
   const q = (sel) => section.querySelector(sel);
   const title = q('[data-ap="title"]');
-  const signal = q('[data-ap="signal"]');
   const grid = q('[data-ap="grid"]');
   const current = q('[data-ap="current"]');
   const bladeA = q('[data-ap="blade-a"]');
@@ -105,29 +104,10 @@ export function mount(section) {
         },
       });
 
-      /* 1 — the biological signal and the competitive grid converge. The line
-             is drawn with its own dash offset rather than a paid plugin: one
-             tweened number, one setter, nothing else to ship. */
-      const len = signal && signal.getTotalLength ? signal.getTotalLength() : 0;
-      if (len) {
-        signal.style.strokeDasharray = len + ' ' + len;
-        /* Already running before you touch the scrollbar: the trace exists in
-           the first frame and the sequence extends it, rather than conjuring a
-           line out of an empty rectangle. */
-        const draw = { v: 0.22 };
-        signal.style.strokeDashoffset = String(len * (1 - draw.v));
-        tl.to(
-          draw,
-          {
-            v: 1,
-            duration: 1.1,
-            onUpdate() {
-              signal.style.strokeDashoffset = String(len * (1 - draw.v));
-            },
-          },
-          0
-        );
-      }
+      /* 1 — the competitive grid converges and the current runs. The trace is
+             not drawn here: it lives on its own rail now, it is whole on
+             arrival, and a scrubbed dash offset would leave it cut off at
+             whatever scroll position somebody happened to land on. */
       tl.fromTo(grid, { opacity: 0.34, scaleX: 1.1, transformOrigin: '50% 50%' }, { opacity: 1, scaleX: 1, duration: 1.2 }, 0.05)
         .fromTo(current, { scaleX: 0.12, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 0.9 }, 0.3);
 
@@ -137,8 +117,8 @@ export function mount(section) {
              They park shallower than they used to, because the specimen now
              carries hotspots and a picture somebody is invited to look into
              has to be legible at the scroll position everybody starts at. */
-      tl.fromTo(bladeA, { yPercent: 28 }, { yPercent: 0, duration: 1.0, ease: 'power2.inOut' }, 0.35)
-        .fromTo(bladeB, { yPercent: -28 }, { yPercent: 0, duration: 1.0, ease: 'power2.inOut' }, 0.35)
+      tl.fromTo(bladeA, { yPercent: 13 }, { yPercent: 0, duration: 1.0, ease: 'power2.inOut' }, 0.35)
+        .fromTo(bladeB, { yPercent: -13 }, { yPercent: 0, duration: 1.0, ease: 'power2.inOut' }, 0.35)
         .fromTo(shot, { scale: 1.06, opacity: 0.82 }, { scale: 1, opacity: 1, duration: 1.2 }, 0.35);
 
       /* 3 — it settles into the selected-work system, and the sequence ends on
@@ -153,10 +133,6 @@ export function mount(section) {
         tl.scrollTrigger && tl.scrollTrigger.kill(true);
         tl.kill();
         gsap.set([grid, current, bladeA, bladeB, shot, meta, chars], { clearProps: 'all' });
-        if (signal) {
-          signal.style.strokeDasharray = '';
-          signal.style.strokeDashoffset = '';
-        }
         unsplit(title);
         section.classList.remove('is-cinematic');
         ScrollTrigger.refresh();

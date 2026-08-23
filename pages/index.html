@@ -35,24 +35,6 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
       <!-- the shader plane, if the device ever earns one, mounts in here -->
       <div class="ap__glass" data-atmos-slot></div>
 
-      <!-- THE SIGNAL. Six waveforms, one per product, and each one means
-           something about the product it belongs to: a fuse that spikes and
-           drops, a slow circadian rise, a clean clinical trace, a breath, a
-           square-wave swap timeline, a page fold. All six are drawn with the
-           same twenty-five points, so one can be interpolated into the next
-           rather than dissolved through it. -->
-      <svg class="ap__sig" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false" aria-hidden="true">
-        <g class="ap__sigwrap">
-          <path class="ap__signal--ghost" d="M0 596 L1440 596" />
-          <path class="ap__signal" data-ap="signal" data-sig="live" d="M0 560 L210 547 L238 560 L252 580 L260 468 L272 620 L294 560 L332 545 L640 560 L670 547 L698 560 L712 580 L720 468 L732 620 L754 560 L792 545 L1100 560 L1130 547 L1158 560 L1172 580 L1180 468 L1192 620 L1214 560 L1252 545 L1440 560" />
-          <path class="ap__signal" data-sig="spellbomb" d="M0 560 L60 549 L120 535 L180 519 L220 505 L240 500 L252 587 L300 560 L480 560 L540 543 L600 520 L660 495 L700 472 L720 464 L732 603 L780 560 L960 560 L1020 533 L1080 497 L1140 458 L1180 422 L1200 410 L1212 628 L1260 560 L1440 560" />
-          <path class="ap__signal" data-sig="health-journal" d="M0 580 L60 572 L120 555 L180 534 L240 513 L300 494 L360 480 L420 472 L480 470 L540 472 L600 477 L660 480 L720 482 L780 480 L840 477 L900 472 L960 470 L1020 472 L1080 480 L1140 494 L1200 513 L1260 534 L1320 555 L1380 572 L1440 580" />
-          <path class="ap__signal" data-sig="phlebotomy" d="M0 560 L210 547 L238 560 L252 580 L260 468 L272 620 L294 560 L332 545 L640 560 L670 547 L698 560 L712 580 L720 468 L732 620 L754 560 L792 545 L1100 560 L1130 547 L1158 560 L1172 580 L1180 468 L1192 620 L1214 560 L1252 545 L1440 560" />
-          <path class="ap__signal" data-sig="manifester" d="M0 560 L60 556 L120 537 L180 508 L240 494 L300 508 L360 537 L420 556 L480 560 L540 564 L600 583 L660 612 L720 626 L780 612 L840 583 L900 564 L960 560 L1020 556 L1080 537 L1140 508 L1200 494 L1260 508 L1320 537 L1380 556 L1440 560" />
-          <path class="ap__signal" data-sig="owcs" d="M0 560 L120 560 L120 486 L260 486 L260 608 L420 608 L420 520 L540 520 L540 470 L680 470 L680 600 L820 600 L820 530 L940 530 L940 644 L1060 644 L1060 486 L1180 486 L1180 572 L1300 572 L1300 500 L1380 500 L1380 560 L1420 560 L1440 560" />
-          <path class="ap__signal" data-sig="paper-animator" d="M0 560 L60 560 L120 560 L180 560 L240 560 L300 560 L360 560 L420 560 L480 560 L540 558 L600 552 L660 540 L700 520 L720 428 L740 470 L760 540 L800 596 L860 616 L920 608 L980 590 L1040 574 L1100 564 L1200 560 L1320 560 L1440 560" />
-        </g>
-      </svg>
 
       <!-- THE BRACKET. Reseeded per channel: a different branch depth and
            different node positions, converging on the evidence every time. -->
@@ -265,6 +247,33 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
            that answers to whichever one is committed. One row of the hero
            grid, under the evidence, on the first screen. -->
       <div class="ap__panel">
+        <!-- THE RAIL. The pulse gets a band of its own, unobstructed,
+             directly above the channels it answers to. -->
+        <div class="ap__rail" aria-hidden="true">
+        <!-- THE SIGNAL. Six waveforms, one per product, and each one means
+             something about the product it belongs to: a fuse that spikes and
+             drops, a slow circadian rise, a clean clinical trace, a breath, a
+             square-wave swap timeline, a page fold. All six are drawn with the
+             same twenty-five points, so one can be interpolated into the next
+             rather than dissolved through it. -->
+        <svg class="ap__sig" viewBox="0 430 1440 260" preserveAspectRatio="none" focusable="false" aria-hidden="true">
+          <g class="ap__sigwrap">
+            <path class="ap__signal--ghost" d="M0 596 L1440 596" />
+            <path class="ap__signal" data-ap="signal" data-sig="live" d="M0 560 L206 547 L228 560 L250 578 L260 468 L272 620 L302 543 L338 560 L640 560 L666 547 L688 560 L710 578 L720 468 L732 620 L762 543 L798 560 L1100 560 L1126 547 L1148 560 L1170 578 L1180 468 L1192 620 L1222 543 L1258 560 L1440 560" />
+            <path class="ap__signal" data-sig="spellbomb" d="M0 560 L60 549 L120 535 L180 519 L220 505 L240 500 L252 587 L300 560 L480 560 L540 543 L600 520 L660 495 L700 472 L720 464 L732 603 L780 560 L960 560 L1020 533 L1080 497 L1140 458 L1180 422 L1200 410 L1212 628 L1260 560 L1440 560" />
+            <path class="ap__signal" data-sig="health-journal" d="M0 580 L60 572 L120 555 L180 534 L240 513 L300 494 L360 480 L420 472 L480 470 L540 472 L600 477 L660 480 L720 482 L780 480 L840 477 L900 472 L960 470 L1020 472 L1080 480 L1140 494 L1200 513 L1260 534 L1320 555 L1380 572 L1440 580" />
+            <path class="ap__signal" data-sig="phlebotomy" d="M0 560 L206 547 L228 560 L250 578 L260 468 L272 620 L302 543 L338 560 L640 560 L666 547 L688 560 L710 578 L720 468 L732 620 L762 543 L798 560 L1100 560 L1126 547 L1148 560 L1170 578 L1180 468 L1192 620 L1222 543 L1258 560 L1440 560" />
+            <path class="ap__signal" data-sig="manifester" d="M0 560 L60 556 L120 537 L180 508 L240 494 L300 508 L360 537 L420 556 L480 560 L540 564 L600 583 L660 612 L720 626 L780 612 L840 583 L900 564 L960 560 L1020 556 L1080 537 L1140 508 L1200 494 L1260 508 L1320 537 L1380 556 L1440 560" />
+            <path class="ap__signal" data-sig="owcs" d="M0 560 L120 560 L120 486 L260 486 L260 608 L420 608 L420 520 L540 520 L540 470 L680 470 L680 600 L820 600 L820 530 L940 530 L940 644 L1060 644 L1060 486 L1180 486 L1180 572 L1300 572 L1300 500 L1380 500 L1380 560 L1420 560 L1440 560" />
+            <path class="ap__signal" data-sig="paper-animator" d="M0 560 L60 560 L120 560 L180 560 L240 560 L300 560 L360 560 L420 560 L480 560 L540 558 L600 552 L660 540 L700 520 L720 428 L740 470 L760 540 L800 596 L860 616 L920 608 L980 590 L1040 574 L1100 564 L1200 560 L1320 560 L1440 560" />
+
+            <!-- THE SWEEP: the bright leading edge a monitor draws, and the
+                 cursor sitting at the head of it. Both ride the live path. -->
+            <path class="ap__sweep" data-sig="sweep" d="M0 560 L206 547 L228 560 L250 578 L260 468 L272 620 L302 543 L338 560 L640 560 L666 547 L688 560 L710 578 L720 468 L732 620 L762 543 L798 560 L1100 560 L1126 547 L1148 560 L1170 578 L1180 468 L1192 620 L1222 543 L1258 560 L1440 560" />
+            <circle class="ap__head" data-sig="head" r="4.5" />
+          </g>
+        </svg>
+        </div>
         <div class="ch" data-channel-strip>
           <div class="ch__top">
             <p class="ch__label" id="ch-h"><span class="led" aria-hidden="true"></span>The instrument</p>
