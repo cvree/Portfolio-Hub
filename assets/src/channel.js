@@ -77,6 +77,7 @@ export function mount(section) {
   const strip = section.querySelector('[data-channel-strip]');
   const list = strip && strip.querySelector('.ch__list');
   const live = section.querySelector('.ap__signal[data-sig="live"]');
+  const rail = section.querySelector('[data-pulse]');
   const sweep = section.querySelector('[data-sig="sweep"]');
   const head = section.querySelector('[data-sig="head"]');
   const iris = section.querySelector('.ap__iris');
@@ -117,14 +118,14 @@ export function mount(section) {
      removed afterwards so the next one can restart it from the top rather
      than joining a cycle already in progress. */
   function sweepOnce() {
-    if (stillNow()) return;
-    const rate = parseFloat(getComputedStyle(section).getPropertyValue('--rate')) || 2.6;
+    if (stillNow() || !rail) return;
+    const rate = parseFloat(getComputedStyle(rail).getPropertyValue('--rate')) || 2.6;
     clearTimeout(sweepTimer);
-    section.classList.remove('is-sweeping');
-    void section.offsetWidth;
-    section.classList.add('is-sweeping');
+    rail.classList.remove('is-sweeping');
+    void rail.offsetWidth;
+    rail.classList.add('is-sweeping');
     section.dispatchEvent(new CustomEvent('ce:sweep', { bubbles: true, detail: { rate } }));
-    sweepTimer = setTimeout(() => section.classList.remove('is-sweeping'), rate * 1000 + 60);
+    sweepTimer = setTimeout(() => rail.classList.remove('is-sweeping'), rate * 1000 + 60);
   }
 
   /* --- the strip becomes a radio group ------------------------------------
@@ -446,7 +447,7 @@ export function mount(section) {
       cancelAnimationFrame(raf);
       clearTimeout(swapTimer);
       clearTimeout(sweepTimer);
-      section.classList.remove('is-sweeping');
+      if (rail) rail.classList.remove('is-sweeping');
       iris.classList.remove('is-swap');
       closeAllNotes();
       section.classList.remove('is-wired');

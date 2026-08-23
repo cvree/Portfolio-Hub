@@ -98,11 +98,17 @@ test.describe('the keyboard', () => {
     await expect(page.locator('.ap')).toHaveAttribute('data-channel', 'manifester');
     await expect(page.locator(':focus')).toHaveAttribute('data-ch', 'manifester');
 
+    /* One press at a time, each one settled before the next: a channel change
+       starts a swap and a sweep, and firing the next key into the middle of
+       those is a race the test would win or lose by luck. */
     await page.keyboard.press('ArrowLeft');
+    await expect(page.locator(':focus')).toHaveAttribute('data-ch', 'phlebotomy');
     await page.keyboard.press('ArrowLeft');
+    await expect(page.locator(':focus')).toHaveAttribute('data-ch', 'health-journal');
     await expect(page.locator('.ap')).toHaveAttribute('data-channel', 'health-journal');
 
     await page.keyboard.press('Home');
+    await expect(page.locator(':focus')).toHaveAttribute('data-ch', 'spellbomb');
     await expect(page.locator('.ap')).toHaveAttribute('data-channel', 'spellbomb');
     await page.keyboard.press('End');
     await expect(page.locator('.ap')).toHaveAttribute('data-channel', 'paper-animator');

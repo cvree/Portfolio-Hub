@@ -232,6 +232,77 @@ The read-out and the Selected Work spec lines state the same numbers, because
 there is one set of facts on this page and not two. Every one of them is
 checkable against the repository it describes.
 
+## The pulse
+
+Connor is an NREMT-certified EMT. A heartbeat is the one signal every human
+being reads without being taught, and this site had been drawing one at
+fourteen per cent opacity behind everything else.
+
+It is the protagonist now. **The trace has a rail of its own** — edge to edge,
+on a faint graticule, directly above the channels it answers to — and the same
+rail stands on each of the six case studies, tuned to that one product. Six
+waveforms, six rhythms, and each means something about the thing it belongs to:
+
+| | Waveform | Rate |
+| --- | --- | --- |
+| SpellBomb | a fuse: three ramps, each steeper than the last, each ending in a drop | 1.45 s |
+| Health Journal | one slow circadian rise across the whole width | 5.2 s |
+| Phlebotomy Exam Prep | a clean clinical trace: isoelectric baseline, three PQRST complexes | 2.6 s |
+| Manifester | a breath — long, even, beginning and ending on the line | 6.4 s |
+| OWCS Comp Tracker | a square-wave swap timeline: compositions hold, then change | 2.0 s |
+| PaperAnimator | a page fold: flat stock, one hard crease, flat again | 4.6 s |
+
+All six are authored with the same twenty-five points, so one is interpolated
+into the next rather than dissolved through it.
+
+**It does not loop.** A bright line running forever behind somebody's name is
+decoration with a heartbeat painted on it. It sweeps once on arrival — the
+monitor acquiring signal, about a second and a half, non-blocking, and the
+first input of any kind cuts it short — and then it rests, complete and still,
+until you touch the instrument. Changing channel makes it re-acquire at the new
+product's rate. The pulse answers you; it does not perform at you.
+
+`--rate` is a custom property, so it inherits: the home page's tuned channel
+writes it and a case study's own accent writes it, and neither has to know the
+other exists.
+
+## The spine
+
+The reading-progress bar was a two-pixel rectangle. It is the same signal now,
+drawn as you read it: one ECG across the top of all twelve documents, dim for
+its whole length and bright as far as you have got. It only ever reports — it
+never steers, and it is never in the way.
+
+A dash pattern would have been the obvious way to draw it and it is the wrong
+one: with `vector-effect: non-scaling-stroke` the pattern resolves in screen
+space rather than in the stretched viewBox, so the numbers never line up. A
+clip does not care what the coordinate system is doing.
+
+## The cut
+
+Every navigation is the aperture blinking. The outgoing document closes to a
+horizontal slit and the incoming one opens out of it — the same aperture the
+hero is built around, at the scale of the whole viewport, on the browser's own
+cross-document view transition. Two `clip-path` animations, no router, and a
+browser without the feature navigates instantly and loses nothing.
+
+## Sound
+
+Off until somebody asks for it, on every page, beside the motion control.
+
+Every tone is an oscillator and an envelope built in the browser when it is
+first needed — nothing is downloaded, nothing is a file, and the AudioContext
+is not even constructed until the first press. There are three sounds and only
+three: the monitor's blip when the trace reaches the QRS, the detent of a
+channel committing, and the aperture on a navigation. Anything else would be
+decoration with a volume control.
+
+A stored "on" is deliberately not honoured on load. A page that starts making
+noise because of something you did on a previous visit is a page that autoplays
+sound, whatever the reason — so the stored value only decides what the control
+looks like the moment you reach for it. The promise on the Manifester page,
+that nothing here autoplays sound, is still literally true.
+
 ## The motion control
 
 Because the shader keeps moving for longer than five seconds, every page carries
@@ -347,6 +418,7 @@ Three changes fixed it, and together they took mobile CLS to 0.000:
 - the hardware gate: no canvas at 390 px, under Save-Data, at 2 GB reported
   memory, or when the browser reports no memory at all
 - the motion control's name, pressed state, effect and persistence
+- sound: silent until pressed, silent again the moment it is switched off
 - the instrument, against all five inputs: six working links with no script,
   a named radio group with a roving `tabindex` and arrow, `Home` and `End`
   keys, hover that previews without committing, tap that commits on a target of

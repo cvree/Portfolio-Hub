@@ -173,18 +173,22 @@
      up to a document that is already there. It plays once, it takes about a
      second and a quarter, and the first input of any kind cuts it short. */
   function acquire() {
-    var ap = document.querySelector("[data-aperture]");
-    if (!ap || still()) return;
+    var rails = document.querySelectorAll("[data-pulse]");
+    if (!rails.length || still()) return;
 
-    ap.classList.add("is-acquiring");
-    ap.classList.add("is-sweeping");
+    for (var i = 0; i < rails.length; i++) {
+      rails[i].classList.add("is-acquiring");
+      rails[i].classList.add("is-sweeping");
+    }
 
     var done = false;
     function settle() {
       if (done) return;
       done = true;
-      ap.classList.remove("is-acquiring");
-      ap.classList.remove("is-sweeping");
+      for (var j = 0; j < rails.length; j++) {
+        rails[j].classList.remove("is-acquiring");
+        rails[j].classList.remove("is-sweeping");
+      }
       window.removeEventListener("pointerdown", settle, true);
       window.removeEventListener("keydown", settle, true);
       window.removeEventListener("wheel", settle, true);

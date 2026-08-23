@@ -76,7 +76,12 @@ test('the case study is reachable from the home hero by keyboard alone', async (
   const go = page.getByRole('link', { name: /Read the case study/i });
   await expect(go).toBeVisible();
   await go.focus();
-  await expect(go).toBeFocused();
+  /* toBeFocused() also requires the page itself to be the active one, which
+     under a parallel run it intermittently is not. What this test is actually
+     about is where focus went inside the document. */
+  await expect
+    .poll(() => page.evaluate(() => (document.activeElement as HTMLElement)?.textContent?.trim() || ''))
+    .toMatch(/Read the case study/i);
   await page.keyboard.press('Enter');
   await page.waitForURL(/phlebotomy-exam-prep\.html$/, { timeout: 15000 });
   await expect(page.locator('h1')).toBeVisible();
