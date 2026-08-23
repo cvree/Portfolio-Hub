@@ -40,6 +40,7 @@ uniform vec3  uAccent;    // the page's own accent, linear-ish sRGB
 uniform vec3  uCobalt;
 uniform vec3  uTeal;
 uniform float uFade;      // master, so the plane can arrive and leave politely
+uniform vec2  uTune;      // x: interference tightness, y: refraction softness
 
 float hash(vec2 p) {
   p = fract(p * vec2(123.34, 456.21));
@@ -68,7 +69,7 @@ void main() {
   // refraction across it does.
   vec2  centre = vec2(0.18, -0.02) + uPointer * 0.05;
   float r      = length(p - centre);
-  float iris   = smoothstep(0.86, 0.16, r);
+  float iris   = smoothstep(0.86 * uTune.y, 0.16, r);
 
   // The aperture edge itself — one thin bright ring, tightening as the hero
   // scrolls, so the atmosphere is doing the same thing the hero is doing.
@@ -83,11 +84,11 @@ void main() {
   // --- the signal ---------------------------------------------------------
   // Fine horizontal interference, drifting slowly, refracted by the iris so
   // it bends where the field is strongest rather than sliding over it.
-  float bend  = iris * 0.13;
+  float bend  = iris * 0.13 * uTune.y;
   float t     = uTime * 0.045;
   float n     = vnoise(vec2(p.x * 2.4 + t, p.y * 3.1 - t * 0.6));
   n           = mix(n, vnoise(vec2(p.x * 6.7 - t * 1.4, p.y * 7.3 + t)), 0.42);
-  float lines = sin((p.y + bend * n * 2.0) * 232.0 + n * 5.4 - uTime * 0.22);
+  float lines = sin((p.y + bend * n * 2.0) * (232.0 * uTune.x) + n * 5.4 - uTime * 0.22);
   float sig   = smoothstep(0.94, 1.0, lines) * iris * (0.24 + 0.34 * n);
 
   // --- assembly -----------------------------------------------------------
@@ -149,6 +150,7 @@ export function mount(canvas, opts) {
       uCobalt: { value: rgb(styles.getPropertyValue('--cobalt'), [0.30, 0.44, 0.91]) },
       uTeal: { value: rgb(styles.getPropertyValue('--teal'), [0.09, 0.63, 0.56]) },
       uFade: { value: 0 },
+      uTune: { value: [1, 1] },
     },
   });
   const mesh = new Mesh(gl, { geometry: new Triangle(gl), program });
@@ -160,6 +162,12 @@ export function mount(canvas, opts) {
   const target = [0, 0];
   const eased = [0, 0];
   let t0 = 0;
+  /* Where the light is going, and where it currently is. A channel change
+     moves the target; the frame loop walks the uniforms toward it, so the
+     room changes at the same speed the accent interpolates rather than
+     cutting between two rooms. */
+  const accentTo = program.uniforms.uAccent.value.slice();
+  const tuneTo = [1, 1];
 
   function size() {
     const w = host.clientWidth || window.innerWidth;
@@ -181,6 +189,12 @@ export function mount(canvas, opts) {
 
     const rect = host.getBoundingClientRect();
     const through = rect.height ? Math.min(1, Math.max(0, -rect.top / rect.height)) : 0;
+
+    for (let i = 0; i < 3; i++) {
+      program.uniforms.uAccent.value[i] += (accentTo[i] - program.uniforms.uAccent.value[i]) * 0.06;
+    }
+    program.uniforms.uTune.value[0] += (tuneTo[0] - program.uniforms.uTune.value[0]) * 0.06;
+    program.uniforms.uTune.value[1] += (tuneTo[1] - program.uniforms.uTune.value[1]) * 0.06;
 
     program.uniforms.uTime.value = time;
     program.uniforms.uPointer.value = eased;
@@ -252,8 +266,25 @@ export function mount(canvas, opts) {
     canvas.classList.remove('is-live');
   }
 
+  /* The one thing the outside world may say to this plane: which channel the
+     hero is tuned to. It never asks who is asking, and it never reaches back
+     into the document to find out. */
+  function tune(opts2) {
+    if (dead || !opts2) return;
+    if (opts2.accent) {
+      const c = rgb(opts2.accent, accentTo);
+      accentTo[0] = c[0];
+      accentTo[1] = c[1];
+      accentTo[2] = c[2];
+    }
+    if (opts2.optics) {
+      tuneTo[0] = opts2.optics.interference || 1;
+      tuneTo[1] = opts2.optics.refraction || 1;
+    }
+  }
+
   canvas.classList.add('is-live');
-  return { destroy };
+  return { destroy, tune };
 }
 
 export default { mount };

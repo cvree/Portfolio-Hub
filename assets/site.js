@@ -10,6 +10,8 @@
      3. closing the mobile menu on Escape, on outside click, and on navigation
      4. the global Motion On/Off control
      5. the cinematic layer — and, far more often, the decision not to load it
+     6. the home page's channel selector, which is a control rather than a
+        decoration and therefore has a much looser gate than the shader does
 
    Jobs 1-3 are the site. Job 5 is an escalation that is allowed to happen only
    after the useful page has painted, and only when the device, the pointer,
@@ -166,7 +168,7 @@
      is the shader plane, and this is the switch that stops it. It is a real
      button with a real pressed state, it is reachable from the keyboard, and
      it is the same control on every page. */
-  var cinema = { atmos: null, aperture: null };
+  var cinema = { atmos: null, aperture: null, channel: null };
 
   function motionControls() {
     var btns = document.querySelectorAll("[data-motion-toggle]");
@@ -201,6 +203,8 @@
     if (cinema.aperture && cinema.aperture.destroy) cinema.aperture.destroy();
     cinema.atmos = null;
     cinema.aperture = null;
+    /* The channel is a control, not a movement. Turning motion off makes the
+       retune instant; it does not take the instrument away. */
     var c = document.querySelector("[data-atmos-slot] canvas");
     if (c && c.parentNode) c.parentNode.removeChild(c);
   }
@@ -245,6 +249,30 @@
     return !still() && fine() && window.innerWidth >= 1000 && !saveData();
   }
 
+  /* The channel selector answers to one gate and one only: did the visitor
+     ask for less data? It runs on a phone, on a keyboard, on a slow machine
+     and under reduced motion, because it is the page's one real control and
+     withholding a control is not the same as withholding an effect. Somebody
+     who asked for Save-Data keeps the six links, which navigate to the same
+     six case studies and cost nothing extra at all. */
+  function mayWireChannel() {
+    return !saveData();
+  }
+
+  function channels() {
+    var section = document.querySelector("[data-aperture] [data-channel-strip]");
+    if (!section || cinema.channel || !mayWireChannel()) return;
+    var host = document.querySelector("[data-aperture]");
+    import(HERE + "vendor/channel.js")
+      .then(function (m) {
+        cinema.channel = m.mount(host);
+      })
+      .catch(function () {
+        /* Six links to six case studies, which is what the document already
+           holds. Nothing to undo and nothing to apologise for. */
+      });
+  }
+
   function cinematics() {
     var section = document.querySelector("[data-aperture]");
     if (!section || still()) return;
@@ -282,9 +310,20 @@
     }
   }
 
+  /* One wire between the two, and it runs through the document rather than
+     through an import: the channel announces itself, and whoever is listening
+     — today, the shader plane — answers. Neither module knows the other is
+     there, so either can be absent without the other noticing. */
+  document.addEventListener("ce:channel", function (ev) {
+    if (cinema.atmos && cinema.atmos.tune) cinema.atmos.tune(ev.detail);
+  });
+
   /* After the useful site. Never before it, and never during it. */
   function scheduleCinematics() {
     var go = function () {
+      try {
+        channels();
+      } catch (e) {}
       try {
         cinematics();
       } catch (e) {}

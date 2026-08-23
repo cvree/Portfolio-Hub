@@ -133,9 +133,12 @@ export function mount(section) {
 
       /* 2 — the aperture opens. The blades start parked at the edges of a slit,
              not shut: the first frame is a composed image with the product
-             already legible through it, never a shutter over a loading screen. */
-      tl.fromTo(bladeA, { yPercent: 45 }, { yPercent: 0, duration: 1.0, ease: 'power2.inOut' }, 0.35)
-        .fromTo(bladeB, { yPercent: -45 }, { yPercent: 0, duration: 1.0, ease: 'power2.inOut' }, 0.35)
+             already legible through it, never a shutter over a loading screen.
+             They park shallower than they used to, because the specimen now
+             carries hotspots and a picture somebody is invited to look into
+             has to be legible at the scroll position everybody starts at. */
+      tl.fromTo(bladeA, { yPercent: 28 }, { yPercent: 0, duration: 1.0, ease: 'power2.inOut' }, 0.35)
+        .fromTo(bladeB, { yPercent: -28 }, { yPercent: 0, duration: 1.0, ease: 'power2.inOut' }, 0.35)
         .fromTo(shot, { scale: 1.06, opacity: 0.82 }, { scale: 1, opacity: 1, duration: 1.2 }, 0.35);
 
       /* 3 — it settles into the selected-work system, and the sequence ends on

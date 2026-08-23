@@ -2,7 +2,7 @@
    Deterministic vendor build
    ---------------------------------------------------------------------------
    The deployed site is static and self-contained: no CDN, no import map, no
-   network dependency of any kind at runtime. So the two cinematic modules are
+   network dependency of any kind at runtime. So the three lazy modules are
    bundled here, at author time, from pinned packages in node_modules, and the
    *output* is committed. esbuild never runs on a visitor's request.
 
@@ -24,6 +24,17 @@ const OUT = path.join(ROOT, 'assets', 'vendor');
 const check = process.argv.includes('--check');
 
 const TARGETS = [
+  {
+    entry: 'assets/src/channel.js',
+    file: 'channel.js',
+    packages: [],
+    why:
+      'The home page\'s channel selector. It has no dependency at all — it is ' +
+      'here because it is main-thread work that the critical path must not ' +
+      'carry, not because it needed a library. It is bundled and committed ' +
+      'through the same path as the other two so that exactly one mechanism ' +
+      'puts JavaScript on this site.',
+  },
   {
     entry: 'assets/src/aperture.js',
     file: 'aperture.js',
@@ -90,6 +101,18 @@ for (const t of TARGETS) {
 
   const raw = Buffer.byteLength(code);
   const gz = gzipSync(Buffer.from(code), { level: 9 }).length;
+  if (!t.packages.length) {
+    rows.push({
+      pkg: '—',
+      version: '—',
+      repo: 'this repository',
+      license: 'MIT (this repository)',
+      file: t.file,
+      raw,
+      gz,
+      why: t.why,
+    });
+  }
   for (const pkg of t.packages) {
     const meta = JSON.parse(readFileSync(path.join(ROOT, 'node_modules', pkg, 'package.json'), 'utf8'));
     rows.push({ pkg, version: meta.version, file: t.file, raw, gz, why: t.why, ...LICENSES[pkg] });
@@ -112,23 +135,29 @@ node tools/build_vendor.mjs          # write
 node tools/build_vendor.mjs --check  # CI: fail if the committed output drifted
 \`\`\`
 
-Neither bundle is in the critical path. \`site.js\` imports them dynamically,
-after first paint, and only when the page asks for them and the device, the
-motion preference, Save-Data and the pointer type all pass.
+No bundle here is in the critical path. \`site.js\` imports them dynamically,
+after first paint. The two cinematic ones load only when the page asks for them
+and the device, the motion preference, Save-Data and the pointer type all pass.
+\`channel.js\` is a control rather than an effect, so its only gate is
+Save-Data — it runs on a phone, on a keyboard and under reduced motion, because
+withholding a control is not the same as withholding an effect.
 
 | Package | Version | Source | License | Bundle | Raw | Gzip |
 | --- | --- | --- | --- | --- | --- | --- |
 ${rows.map((r) => `| \`${r.pkg}\` | ${r.version} | ${r.repo} | ${r.license} | \`assets/vendor/${r.file}\` | ${(r.raw / 1024).toFixed(1)} KB | ${(r.gz / 1024).toFixed(1)} KB |`).join('\n')}
 
-Total lazy cinematic payload: **${(rows.reduce((a, r) => a + r.gz, 0) / 1024).toFixed(1)} KB gzip**, none of it
+Total lazy cinematic payload: **${(rows.filter((r) => r.pkg !== '—').reduce((a, r) => a + r.gz, 0) / 1024).toFixed(1)} KB gzip**
+(\`aperture.js\` + \`atmosphere.js\`, against a budget of 100 KB). The control
+module is counted separately, at **${(rows.filter((r) => r.pkg === '—').reduce((a, r) => a + r.gz, 0) / 1024).toFixed(1)} KB gzip**, because it is not a
+cinematic effect and does not answer to the cinematic gates. None of it is
 requested until after the useful site has rendered.
 
 ## Why each one is here
 
-${rows.map((r) => `### \`${r.pkg}\` ${r.version} — ${r.license}\n\n${r.why}\n`).join('\n')}
+${rows.map((r) => `### ${r.pkg === '—' ? `\`assets/vendor/${r.file}\` — no dependency` : `\`${r.pkg}\` ${r.version} — ${r.license}`}\n\n${r.why}\n`).join('\n')}
 ### \`esbuild\` ${esb.version} — MIT
 
-Build-time only. It tree-shakes and minifies the two modules above into the
+Build-time only. It tree-shakes and minifies the modules above into the
 committed bundles. Nothing from esbuild reaches a browser.
 
 Source: ${LICENSES.esbuild.repo}

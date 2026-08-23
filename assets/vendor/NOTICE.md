@@ -10,19 +10,30 @@ node tools/build_vendor.mjs          # write
 node tools/build_vendor.mjs --check  # CI: fail if the committed output drifted
 ```
 
-Neither bundle is in the critical path. `site.js` imports them dynamically,
-after first paint, and only when the page asks for them and the device, the
-motion preference, Save-Data and the pointer type all pass.
+No bundle here is in the critical path. `site.js` imports them dynamically,
+after first paint. The two cinematic ones load only when the page asks for them
+and the device, the motion preference, Save-Data and the pointer type all pass.
+`channel.js` is a control rather than an effect, so its only gate is
+Save-Data — it runs on a phone, on a keyboard and under reduced motion, because
+withholding a control is not the same as withholding an effect.
 
 | Package | Version | Source | License | Bundle | Raw | Gzip |
 | --- | --- | --- | --- | --- | --- | --- |
+| `—` | — | this repository | MIT (this repository) | `assets/vendor/channel.js` | 6.1 KB | 2.4 KB |
 | `gsap` | 3.15.0 | https://github.com/greensock/GSAP | GreenSock Standard 'No Charge' License | `assets/vendor/aperture.js` | 113.9 KB | 44.9 KB |
-| `ogl` | 1.0.11 | https://github.com/oframe/ogl | Unlicense | `assets/vendor/atmosphere.js` | 48.9 KB | 15.0 KB |
+| `ogl` | 1.0.11 | https://github.com/oframe/ogl | Unlicense | `assets/vendor/atmosphere.js` | 49.5 KB | 15.1 KB |
 
-Total lazy cinematic payload: **59.9 KB gzip**, none of it
+Total lazy cinematic payload: **60.1 KB gzip**
+(`aperture.js` + `atmosphere.js`, against a budget of 100 KB). The control
+module is counted separately, at **2.4 KB gzip**, because it is not a
+cinematic effect and does not answer to the cinematic gates. None of it is
 requested until after the useful site has rendered.
 
 ## Why each one is here
+
+### `assets/vendor/channel.js` — no dependency
+
+The home page's channel selector. It has no dependency at all — it is here because it is main-thread work that the critical path must not carry, not because it needed a library. It is bundled and committed through the same path as the other two so that exactly one mechanism puts JavaScript on this site.
 
 ### `gsap` 3.15.0 — GreenSock Standard 'No Charge' License
 
@@ -34,7 +45,7 @@ One full-screen triangle and one fragment shader behind the home hero. OGL suppl
 
 ### `esbuild` 0.28.2 — MIT
 
-Build-time only. It tree-shakes and minifies the two modules above into the
+Build-time only. It tree-shakes and minifies the modules above into the
 committed bundles. Nothing from esbuild reaches a browser.
 
 Source: https://github.com/evanw/esbuild

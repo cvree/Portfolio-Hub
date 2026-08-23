@@ -153,6 +153,9 @@ inline SVG before any script runs, so that frame is what a visitor gets with
 JavaScript off, with reduced motion on, on a phone, and on a laptop that does
 not qualify for the rest of it.
 
+That frame is also **one of six**, and the visitor picks which. See *The
+instrument*, below.
+
 On a desktop with a fine pointer and no reduced-motion preference, one short
 pinned sequence animates *into* that frame rather than out of nothing. Across
 roughly three-quarters of a viewport of ordinary scrolling, the signal extends
@@ -179,6 +182,56 @@ browser declines to report is read as a no. It is capped at 1.5× device pixel
 ratio, pauses when the hero scrolls away or the tab is hidden, and releases its
 context on exit or on context loss.
 
+## The instrument
+
+The hero is a six-position control — one channel per shipped product — and
+picking a position retunes the whole page in one connected move: the accent
+(interpolated through a registered `--accent`, not switched), the waveform of
+the signal, the seed of the bracket, the screenshot in the aperture, the
+read-out beneath it, the caption, the case-study link, the light and
+interference in the shader, and the row that lights up in Selected Work. One
+input, one machine answering across every layer at once.
+
+Each of the six waveforms means something about its product — a fuse that
+spikes and drops, a slow circadian rise, a clean clinical trace, a breath, a
+square-wave swap timeline, a page fold. All six are authored with the same
+twenty-five points, so one is interpolated into the next rather than dissolved
+through it.
+
+**All six compositions are real markup and real CSS state.** Nothing draws a
+composition into existence; the selector only moves between states the
+stylesheet already holds. Which means:
+
+- **With no JavaScript** the strip is six ordinary links to six case studies,
+  standing under the composition the document declares. That is the design, not
+  a fallback. There is no state in which this control is dead.
+- **With JavaScript** `assets/vendor/channel.js` (2.4 KB gzip, no dependency)
+  replaces the six links with a `role="radiogroup"` of six radios in the same
+  boxes — a link that does not navigate would be a lie, so it stops being a
+  link. Arrow keys move between positions with a roving `tabindex`; `Home` and
+  `End` jump. Hovering previews on a fine pointer and never commits; commit
+  takes a click, a tap, `Enter`, `Space` or an arrow key.
+- **The URL never changes and history is never touched.** This is a hero, not a
+  route.
+- **Under reduced motion** the retune is the same state change arriving
+  instantly. Nothing is withheld: the selector still selects, the evidence
+  still swaps, the read-out still retunes. Only the travel is gone.
+- **Under Save-Data** the module is not fetched at all and the six links stand.
+  It is the one gate the instrument answers to — a control is not an effect,
+  and the rest of the cinematic gates would withhold it from a phone.
+
+The evidence in the frame carries **two or three hotspots** — real buttons with
+real accessible names, positioned in normalised coordinates, each naming a part
+of the interface visibly in the picture, in words taken from the alt text and
+the case study. Panels open beside the frame, never over the thing they
+describe. They render only once the module has wired them, because an unwired
+hotspot is a dead control. Nothing that only a hotspot says is a fact the page
+needs: the figcaption carries the meaning and the case study carries the rest.
+
+The read-out and the Selected Work spec lines state the same numbers, because
+there is one set of facts on this page and not two. Every one of them is
+checkable against the repository it describes.
+
 ## The motion control
 
 Because the shader keeps moving for longer than five seconds, every page carries
@@ -199,7 +252,9 @@ project card's screenshot becomes that project's case-study hero.
 Durations are 180–300 ms, opacity, transform and clipping only, no blur. No name
 appears twice in one document; on the home page the aperture *is* the active
 project screenshot, so the card below it deliberately does not claim the same
-name a second time. Browsers without the feature navigate normally and lose
+name a second time. When the hero is tuned off its default channel it is
+borrowing a picture the work index owns, so it gives the name back rather than
+claiming it twice. Browsers without the feature navigate normally and lose
 nothing, reduced motion collapses every transition to an instant state change,
 and back and forward are unaffected.
 
@@ -292,6 +347,13 @@ Three changes fixed it, and together they took mobile CLS to 0.000:
 - the hardware gate: no canvas at 390 px, under Save-Data, at 2 GB reported
   memory, or when the browser reports no memory at all
 - the motion control's name, pressed state, effect and persistence
+- the instrument, against all five inputs: six working links with no script,
+  a named radio group with a roving `tabindex` and arrow, `Home` and `End`
+  keys, hover that previews without committing, tap that commits on a target of
+  at least 44 px, the same instant state change under reduced motion and under
+  the site's own Motion control, and no module fetched at all under Save-Data —
+  plus the three hard limits: nothing learnable-before-usable, no fact reachable
+  only through an interaction, and no interaction that delays a link
 - keyboard order, focus rings on everything tabbable, the skip link, the mobile
   menu's Escape behaviour, and reaching a case study from the hero by keyboard
 - the résumé printing to exactly two pages on Letter and on A4
@@ -315,7 +377,11 @@ checks and publishes.
   surfaces. Accent colours are used for display type, borders and marks rather
   than for small text.
 - Tap targets are at least 48 px tall on mobile, and the navigation panel's rows
-  are 56 px.
+  are 56 px. The hero's channel positions and its specimen hotspots are at
+  least 44 px on any coarse pointer.
+- A number that climbs on entry is drawn with `content: counter()`, which lives
+  outside the text layer — so the treatment is used only where prose beside it
+  states the same number, and the drawn numeral is marked decorative.
 - Wide diagrams and screenshots scroll inside their own frame on narrow screens
   rather than shrinking their labels.
 
@@ -339,7 +405,10 @@ Nothing third-party is in the critical path, and nothing is fetched from another
 origin at any point. Two audited, pinned packages are bundled into
 `assets/vendor/` at author time and lazily imported after first paint — GSAP
 with ScrollTrigger for the Evidence Aperture timeline, and OGL for the single
-shader plane. `assets/vendor/NOTICE.md` records the exact version, source,
+shader plane. A third bundle, `channel.js`, goes through the same path with no
+dependency at all: it is there because it is main-thread work the critical path
+must not carry, not because it needed a library.
+`assets/vendor/NOTICE.md` records the exact version, source,
 licence, generated filename, raw and gzip weight, and the reason each one
 exists; `node tools/build_vendor.mjs --check` fails CI if the committed output
 drifts from its sources.

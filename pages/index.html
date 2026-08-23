@@ -11,39 +11,81 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
 -->
 
 <!-- ===================================================================== -->
-<!-- THE EVIDENCE APERTURE — the signature moment, and the ten seconds      -->
+<!-- THE EVIDENCE APERTURE — the instrument, and the ten seconds            -->
 <!-- ===================================================================== -->
 <!--
-  Five things compose this hero, and every one of them is drawn before any
-  script runs: a medical-teal biological signal, a cobalt competitive bracket,
-  a solar-gold current, warm-ivory editorial type, and one real screenshot of
-  a real product. What the desktop timeline does is animate *into* this frame.
-  What you are reading is what it lands on.
+  The hero is a six-position instrument. One channel per shipped product;
+  picking one retunes the accent, the signal, the bracket, the evidence, the
+  read-out, the caption, the link and the shader in one connected move.
+
+  Every one of the six compositions below is real markup and real CSS state.
+  Nothing here is drawn into existence by a script: the selector only ever
+  moves between six states the stylesheet already holds. With no script it is
+  six ordinary links to six case studies, standing under the composition the
+  document declares — and that is the design, not a fallback.
+
+  Channel 03 is the one the document is composed on: it is the accent this
+  page declares, the capture it preloads, and the image it shares when it is
+  linked. Nothing arrives blank, ever.
 -->
-<section class="ap" data-aperture aria-labelledby="hero-h">
+<section class="ap" data-aperture data-channel="phlebotomy" data-tune="phlebotomy" aria-labelledby="hero-h">
   <div class="ap__stage" data-ap="stage">
 
     <div class="ap__field" aria-hidden="true">
       <!-- the shader plane, if the device ever earns one, mounts in here -->
       <div class="ap__glass" data-atmos-slot></div>
 
-      <!-- the signal: a clinical trace, drawn, not downloaded -->
+      <!-- THE SIGNAL. Six waveforms, one per product, and each one means
+           something about the product it belongs to: a fuse that spikes and
+           drops, a slow circadian rise, a clean clinical trace, a breath, a
+           square-wave swap timeline, a page fold. All six are drawn with the
+           same twenty-five points, so one can be interpolated into the next
+           rather than dissolved through it. -->
       <svg class="ap__sig" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false" aria-hidden="true">
-        <path class="ap__signal--ghost" d="M0 596 L188 596 L214 590 L236 604 L258 596 L430 596 L446 548 L460 650 L474 572 L488 596 L672 596 L700 588 L726 606 L752 596 L918 596 L934 536 L948 656 L962 578 L976 596 L1178 596 L1206 588 L1232 606 L1258 596 L1440 596" />
-        <path class="ap__signal" data-ap="signal" d="M0 560 L180 560 L206 553 L228 568 L250 560 L422 560 L438 508 L452 618 L466 536 L480 560 L664 560 L692 552 L718 570 L744 560 L910 560 L926 496 L940 624 L954 542 L968 560 L1170 560 L1198 552 L1224 570 L1250 560 L1440 560" />
+        <g class="ap__sigwrap">
+          <path class="ap__signal--ghost" d="M0 596 L1440 596" />
+          <path class="ap__signal" data-ap="signal" data-sig="live" d="M0 560 L210 547 L238 560 L252 580 L260 468 L272 620 L294 560 L332 545 L640 560 L670 547 L698 560 L712 580 L720 468 L732 620 L754 560 L792 545 L1100 560 L1130 547 L1158 560 L1172 580 L1180 468 L1192 620 L1214 560 L1252 545 L1440 560" />
+          <path class="ap__signal" data-sig="spellbomb" d="M0 560 L60 549 L120 535 L180 519 L220 505 L240 500 L252 587 L300 560 L480 560 L540 543 L600 520 L660 495 L700 472 L720 464 L732 603 L780 560 L960 560 L1020 533 L1080 497 L1140 458 L1180 422 L1200 410 L1212 628 L1260 560 L1440 560" />
+          <path class="ap__signal" data-sig="health-journal" d="M0 580 L60 572 L120 555 L180 534 L240 513 L300 494 L360 480 L420 472 L480 470 L540 472 L600 477 L660 480 L720 482 L780 480 L840 477 L900 472 L960 470 L1020 472 L1080 480 L1140 494 L1200 513 L1260 534 L1320 555 L1380 572 L1440 580" />
+          <path class="ap__signal" data-sig="phlebotomy" d="M0 560 L210 547 L238 560 L252 580 L260 468 L272 620 L294 560 L332 545 L640 560 L670 547 L698 560 L712 580 L720 468 L732 620 L754 560 L792 545 L1100 560 L1130 547 L1158 560 L1172 580 L1180 468 L1192 620 L1214 560 L1252 545 L1440 560" />
+          <path class="ap__signal" data-sig="manifester" d="M0 560 L60 556 L120 537 L180 508 L240 494 L300 508 L360 537 L420 556 L480 560 L540 564 L600 583 L660 612 L720 626 L780 612 L840 583 L900 564 L960 560 L1020 556 L1080 537 L1140 508 L1200 494 L1260 508 L1320 537 L1380 556 L1440 560" />
+          <path class="ap__signal" data-sig="owcs" d="M0 560 L120 560 L120 486 L260 486 L260 608 L420 608 L420 520 L540 520 L540 470 L680 470 L680 600 L820 600 L820 530 L940 530 L940 644 L1060 644 L1060 486 L1180 486 L1180 572 L1300 572 L1300 500 L1380 500 L1380 560 L1420 560 L1440 560" />
+          <path class="ap__signal" data-sig="paper-animator" d="M0 560 L60 560 L120 560 L180 560 L240 560 L300 560 L360 560 L420 560 L480 560 L540 558 L600 552 L660 540 L700 520 L720 428 L740 470 L760 540 L800 596 L860 616 L920 608 L980 590 L1040 574 L1100 564 L1200 560 L1320 560 L1440 560" />
+        </g>
       </svg>
 
-      <!-- the same trace, composed for a narrow frame rather than cropped out
-           of the wide one: on a phone the signal runs under the name and lands
-           on the evidence, which is where the eye goes anyway -->
-      <svg class="ap__sig ap__sig--nar" viewBox="0 0 420 900" preserveAspectRatio="xMidYMid slice" focusable="false" aria-hidden="true">
-        <path class="ap__signal--ghost" d="M0 452 L54 452 L66 446 L78 458 L90 452 L150 452 L160 408 L170 506 L180 430 L190 452 L262 452 L276 444 L290 460 L304 452 L360 452 L372 420 L382 486 L392 440 L400 452 L420 452" />
-        <path class="ap__signal" d="M0 428 L58 428 L70 421 L82 436 L94 428 L156 428 L166 378 L177 486 L188 402 L198 428 L272 428 L286 420 L300 438 L314 428 L372 428 L384 392 L394 470 L404 414 L412 428 L420 428" />
-      </svg>
-
-      <!-- the competitive structure: a bracket, resolving right to left -->
+      <!-- THE BRACKET. Reseeded per channel: a different branch depth and
+           different node positions, converging on the evidence every time. -->
       <svg class="ap__brk" viewBox="0 0 620 620" preserveAspectRatio="xMaxYMid meet" focusable="false" aria-hidden="true">
-        <g class="ap__bracket-group" data-ap="grid">
+        <g data-ap="grid">
+        <g class="ap__bracket-group" data-brk="spellbomb">
+          <path class="ap__bracket" d="M24 120 H120 V196 H252" />
+          <path class="ap__bracket" d="M24 272 H120 V196" />
+          <path class="ap__bracket" d="M24 348 H120 V424 H252" />
+          <path class="ap__bracket" d="M24 500 H120 V424" />
+          <path class="ap__bracket" d="M252 196 V310 H392" />
+          <path class="ap__bracket" d="M252 424 V310" />
+          <path class="ap__bracket" d="M392 310 H480" />
+          <circle class="ap__bracket-node" cx="252" cy="196" r="3.5" />
+          <circle class="ap__bracket-node" cx="252" cy="424" r="3.5" />
+          <circle class="ap__bracket-node" cx="392" cy="310" r="5" />
+        </g>
+        <g class="ap__bracket-group" data-brk="health-journal">
+          <path class="ap__bracket" d="M24 310 H140" />
+          <path class="ap__bracket" d="M140 150 V470" />
+          <path class="ap__bracket" d="M140 150 H300" />
+          <path class="ap__bracket" d="M140 470 H300" />
+          <path class="ap__bracket" d="M300 70 V226" />
+          <path class="ap__bracket" d="M300 400 V560" />
+          <path class="ap__bracket" d="M300 70 H452" />
+          <path class="ap__bracket" d="M300 226 H452" />
+          <path class="ap__bracket" d="M300 400 H452" />
+          <path class="ap__bracket" d="M300 560 H452" />
+          <circle class="ap__bracket-node" cx="140" cy="310" r="5" />
+          <circle class="ap__bracket-node" cx="300" cy="150" r="3.5" />
+          <circle class="ap__bracket-node" cx="300" cy="470" r="3.5" />
+        </g>
+        <g class="ap__bracket-group" data-brk="phlebotomy">
           <path class="ap__bracket" d="M24 84 H132 V186 H244" />
           <path class="ap__bracket" d="M24 288 H132 V186" />
           <path class="ap__bracket" d="M24 396 H132 V498 H244" />
@@ -54,6 +96,46 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
           <circle class="ap__bracket-node" cx="244" cy="186" r="3.5" />
           <circle class="ap__bracket-node" cx="244" cy="498" r="3.5" />
           <circle class="ap__bracket-node" cx="352" cy="342" r="4.5" />
+        </g>
+        <g class="ap__bracket-group" data-brk="manifester">
+          <path class="ap__bracket" d="M24 200 H240 V310 H470" />
+          <path class="ap__bracket" d="M24 470 H240 V310" />
+          <circle class="ap__bracket-node" cx="240" cy="200" r="3.5" />
+          <circle class="ap__bracket-node" cx="240" cy="470" r="3.5" />
+          <circle class="ap__bracket-node" cx="470" cy="310" r="5.5" />
+        </g>
+        <g class="ap__bracket-group" data-brk="owcs">
+          <path class="ap__bracket" d="M24 30 H110 V70 H210" />
+          <path class="ap__bracket" d="M24 110 H110 V70" />
+          <path class="ap__bracket" d="M24 190 H110 V230 H210" />
+          <path class="ap__bracket" d="M24 270 H110 V230" />
+          <path class="ap__bracket" d="M24 350 H110 V390 H210" />
+          <path class="ap__bracket" d="M24 430 H110 V390" />
+          <path class="ap__bracket" d="M24 510 H110 V550 H210" />
+          <path class="ap__bracket" d="M24 590 H110 V550" />
+          <path class="ap__bracket" d="M210 70 V150 H330" />
+          <path class="ap__bracket" d="M210 230 V150" />
+          <path class="ap__bracket" d="M210 390 V470 H330" />
+          <path class="ap__bracket" d="M210 550 V470" />
+          <path class="ap__bracket" d="M330 150 V310 H470" />
+          <path class="ap__bracket" d="M330 470 V310" />
+          <circle class="ap__bracket-node" cx="330" cy="150" r="3.5" />
+          <circle class="ap__bracket-node" cx="330" cy="470" r="3.5" />
+          <circle class="ap__bracket-node" cx="470" cy="310" r="5" />
+        </g>
+        <g class="ap__bracket-group" data-brk="paper-animator">
+          <path class="ap__bracket" d="M24 90 H300" />
+          <path class="ap__bracket" d="M24 250 H300" />
+          <path class="ap__bracket" d="M24 390 H300" />
+          <path class="ap__bracket" d="M24 550 H300" />
+          <path class="ap__bracket" d="M300 90 V550" />
+          <path class="ap__bracket" d="M300 320 H470" />
+          <circle class="ap__bracket-node" cx="300" cy="90" r="3" />
+          <circle class="ap__bracket-node" cx="300" cy="250" r="3" />
+          <circle class="ap__bracket-node" cx="300" cy="390" r="3" />
+          <circle class="ap__bracket-node" cx="300" cy="550" r="3" />
+          <circle class="ap__bracket-node" cx="470" cy="320" r="5" />
+        </g>
         </g>
       </svg>
 
@@ -108,15 +190,136 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
                  sizes="(max-width: 999px) 92vw, 46vw"
                  width="2400" height="1629" loading="eager" decoding="async" fetchpriority="high"
                  alt="The Order of Draw drill running in Phlebotomy Exam Prep: four drill modes across the top with Arrange selected, six draggable tube cards each illustrated in its real cap colour and named by additive, and a side panel carrying the mnemonic, an explanation of the mode, and a note reading read the label, not the cap." />
+
+            <!-- THE SPECIMEN. Each hotspot names a part of the interface that
+                 is visibly in the frame, in words taken from the alt text and
+                 the case study. Nothing that only exists in a hotspot is
+                 information a visitor needs: the figcaption carries the
+                 meaning, and the case study carries the rest. They render only
+                 once the module has wired them — an unwired hotspot would be a
+                 dead control, and this site does not ship those. -->
+            <span class="ap__spots" data-spots="spellbomb">
+              <button class="ap__spot" type="button" style="--x:.5;--y:.33" aria-expanded="false" aria-controls="sp-sb-1"><span aria-hidden="true">1</span><span class="vh">The lit bomb, and whose turn it is</span></button>
+              <button class="ap__spot" type="button" style="--x:.5;--y:.65" aria-expanded="false" aria-controls="sp-sb-2"><span aria-hidden="true">2</span><span class="vh">The letter tray and the answer box</span></button>
+            </span>
+            <span class="ap__spots" data-spots="health-journal">
+              <button class="ap__spot" type="button" style="--x:.17;--y:.67" aria-expanded="false" aria-controls="sp-hj-1"><span aria-hidden="true">1</span><span class="vh">Today&rsquo;s severity, rated 5</span></button>
+              <button class="ap__spot" type="button" style="--x:.76;--y:.48" aria-expanded="false" aria-controls="sp-hj-2"><span aria-hidden="true">2</span><span class="vh">The eleven-day streak</span></button>
+            </span>
+            <span class="ap__spots" data-spots="phlebotomy">
+              <button class="ap__spot" type="button" style="--x:.5;--y:.368" aria-expanded="false" aria-controls="sp-ph-1"><span aria-hidden="true">1</span><span class="vh">The drill mode</span></button>
+              <button class="ap__spot" type="button" style="--x:.155;--y:.6" aria-expanded="false" aria-controls="sp-ph-2"><span aria-hidden="true">2</span><span class="vh">The six tube cards</span></button>
+              <button class="ap__spot" type="button" style="--x:.8;--y:.565" aria-expanded="false" aria-controls="sp-ph-3"><span aria-hidden="true">3</span><span class="vh">The side panel</span></button>
+            </span>
+            <span class="ap__spots" data-spots="manifester">
+              <button class="ap__spot" type="button" style="--x:.49;--y:.37" aria-expanded="false" aria-controls="sp-mf-1"><span aria-hidden="true">1</span><span class="vh">The breathing orb</span></button>
+              <button class="ap__spot" type="button" style="--x:.2;--y:.66" aria-expanded="false" aria-controls="sp-mf-2"><span aria-hidden="true">2</span><span class="vh">The line, spoken</span></button>
+            </span>
+            <span class="ap__spots" data-spots="owcs">
+              <button class="ap__spot" type="button" style="--x:.49;--y:.33" aria-expanded="false" aria-controls="sp-ow-1"><span aria-hidden="true">1</span><span class="vh">The match, and its round boundaries</span></button>
+              <button class="ap__spot" type="button" style="--x:.84;--y:.6" aria-expanded="false" aria-controls="sp-ow-2"><span aria-hidden="true">2</span><span class="vh">The human review gate</span></button>
+            </span>
+            <span class="ap__spots" data-spots="paper-animator">
+              <button class="ap__spot" type="button" style="--x:.35;--y:.4" aria-expanded="false" aria-controls="sp-pa-1"><span aria-hidden="true">1</span><span class="vh">The marked passage</span></button>
+              <button class="ap__spot" type="button" style="--x:.63;--y:.33" aria-expanded="false" aria-controls="sp-pa-2"><span aria-hidden="true">2</span><span class="vh">The thread to the scene</span></button>
+            </span>
           </div>
           <span class="ap__marks" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
         </div>
+
+        <div class="ap__notes">
+          <p class="ap__note" id="sp-sb-1" hidden><b>The bomb, lit.</b> It hangs in the middle of the arena with an arrow pointing at the player it is on — here, sam. The five other players are ringed around it with the hearts they have left.</p>
+          <p class="ap__note" id="sp-sb-2" hidden><b>The tray, mid-word.</b> Eleven letters reading I-N-A-L-I-E-N with four slots still empty, and the answer box carrying what has been typed so far.</p>
+          <p class="ap__note" id="sp-hj-1" hidden><b>Today, rated.</b> Overall skin severity at 5, sitting beside a seven-day average of 5 and a thirty-day average of 6 — one day next to the window that gives it meaning.</p>
+          <p class="ap__note" id="sp-hj-2" hidden><b>Eleven days running.</b> Sunday 9 August — and the line under the title says where the entry lives: private, on this device.</p>
+          <p class="ap__note" id="sp-ph-1" hidden><b>Four drill modes.</b> Arrange, What next, Spot the error, Fill the gaps — four different ways to be wrong about the same six tubes. Arrange is the one running here.</p>
+          <p class="ap__note" id="sp-ph-2" hidden><b>Six CLSI positions.</b> Each tube card is drawn in its real cap colour and named by the additive it carries, and they are dragged into order.</p>
+          <p class="ap__note" id="sp-ph-3" hidden><b>The side panel.</b> The mnemonic — <i>Boys Love Ravishing Girls Like Gary</i> — what this mode is asking for, and the warning that decides the whole exercise in practice: read the label, not the cap.</p>
+          <p class="ap__note" id="sp-mf-1" hidden><b>The breathing orb.</b> Reading <i>Breathe in</i> on a two-second count, over the spoken line: <i>I trust myself to handle what comes.</i></p>
+          <p class="ap__note" id="sp-mf-2" hidden><b>Your own words, read back.</b> <i>I trust myself to handle what comes.</i> Under it: 9:38 remaining on pass 8 of a session called Evening steadiness, over the Moon Garden ambience.</p>
+          <p class="ap__note" id="sp-ow-1" hidden><b>Three rounds, bounded.</b> Al Qadsiah versus Twisted Minds — fourteen detected slots, and the three round boundaries the pipeline found, drawn across the timeline as time bars.</p>
+          <p class="ap__note" id="sp-ow-2" hidden><b>The review gate.</b> Every detected hero sits beside the frame it was read from and the confidence it was read at, with Approve, Correct and Flag on each one.</p>
+          <p class="ap__note" id="sp-pa-1" hidden><b>The paper, marked.</b> One sentence is selected and an earlier passage is washed in mint — the highlight is the citation, so there is no later step where a source gets attached.</p>
+          <p class="ap__note" id="sp-pa-2" hidden><b>The thread.</b> A curved line runs from the marked sentence to the scene it produced — two scenes, two pages, and every one of them carrying the exact words it came from.</p>
+        </div>
+
         <figcaption class="ap__cap">
-          <span data-ap="lift">Phlebotomy Exam Prep — the Order of Draw drill, running</span>
-          <a class="go" href="phlebotomy-exam-prep.html" data-ap="lift">Read the case study &rarr;</a>
+          <span data-cap="spellbomb" hidden>SpellBomb — a live six-player round, the fuse running</span>
+          <span data-cap="health-journal" hidden>Health Journal — the dashboard on day eleven of a streak</span>
+          <span data-ap="lift" data-cap="phlebotomy">Phlebotomy Exam Prep — the Order of Draw drill, running</span>
+          <span data-cap="manifester" hidden>Manifester — a session playing, pass 8 of Evening steadiness</span>
+          <span data-cap="owcs" hidden>OWCS Comp Tracker — the human review gate, mid-match</span>
+          <span data-cap="paper-animator" hidden>PaperAnimator — a marked passage and the scene it produced</span>
+
+          <a class="go" data-link="spellbomb" href="spellbomb.html" hidden>Read the case study — SpellBomb &rarr;</a>
+          <a class="go" data-link="health-journal" href="health-journal.html" hidden>Read the case study — Health Journal &rarr;</a>
+          <a class="go" data-ap="lift" data-link="phlebotomy" href="phlebotomy-exam-prep.html">Read the case study — Phlebotomy Exam Prep &rarr;</a>
+          <a class="go" data-link="manifester" href="manifester.html" hidden>Read the case study — Manifester &rarr;</a>
+          <a class="go" data-link="owcs" href="owcs-comp-tracker.html" hidden>Read the case study — OWCS Comp Tracker &rarr;</a>
+          <a class="go" data-link="paper-animator" href="paper-animator.html" hidden>Read the case study — PaperAnimator &rarr;</a>
         </figcaption>
+
       </figure>
 
+      <!-- THE INSTRUMENT PANEL: the six positions, and the read-out
+           that answers to whichever one is committed. One row of the hero
+           grid, under the evidence, on the first screen. -->
+      <div class="ap__panel">
+        <div class="ch" data-channel-strip>
+          <div class="ch__top">
+            <p class="ch__label" id="ch-h"><span class="led" aria-hidden="true"></span>The instrument</p>
+            <p class="ch__hint" data-ch-hint>Six products. Six case studies.</p>
+          </div>
+          <ul class="ch__list">
+            <li><a class="ch__opt" href="spellbomb.html" data-ch="spellbomb"><span class="ch__n">01</span><span class="ch__name">SpellBomb</span><span class="ch__kind">Live multiplayer</span></a></li>
+            <li><a class="ch__opt" href="health-journal.html" data-ch="health-journal"><span class="ch__n">02</span><span class="ch__name">Health Journal</span><span class="ch__kind">Health tooling</span></a></li>
+            <li><a class="ch__opt" href="phlebotomy-exam-prep.html" data-ch="phlebotomy" aria-current="true"><span class="ch__n">03</span><span class="ch__name">Phlebotomy Exam Prep</span><span class="ch__kind">Certification study</span></a></li>
+            <li><a class="ch__opt" href="manifester.html" data-ch="manifester"><span class="ch__n">04</span><span class="ch__name">Manifester</span><span class="ch__kind">Guided audio</span></a></li>
+            <li><a class="ch__opt" href="owcs-comp-tracker.html" data-ch="owcs"><span class="ch__n">05</span><span class="ch__name">OWCS Comp Tracker</span><span class="ch__kind">Computer vision</span></a></li>
+            <li><a class="ch__opt" href="paper-animator.html" data-ch="paper-animator"><span class="ch__n">06</span><span class="ch__name">PaperAnimator</span><span class="ch__kind">Research tooling</span></a></li>
+          </ul>
+        </div>
+
+        <!-- THE READ-OUT. Real facts, checkable against the case study and the
+             repository each one comes from. One set is in the document without a
+             hidden attribute; with no script the other five are not rendered. -->
+        <ul class="ap__readout" data-readout="spellbomb" hidden>
+          <li><span class="k">Status</span><span class="v">In development</span></li>
+          <li><span class="k">Runtime</span><span class="v">Node 18+ · Express · Socket.IO</span></li>
+          <li><span class="k">Rush puzzles</span><span class="n">260</span></li>
+          <li><span class="k">Version</span><span class="n">9.3.0</span></li>
+        </ul>
+        <ul class="ap__readout" data-readout="health-journal" hidden>
+          <li><span class="k">Status</span><span class="v">Live</span></li>
+          <li><span class="k">Stack</span><span class="v">React · Vite · installable PWA</span></li>
+          <li><span class="k">Storage</span><span class="v">On-device. No account required</span></li>
+          <li><span class="k">Export formats</span><span class="n">4</span></li>
+        </ul>
+        <ul class="ap__readout" data-readout="phlebotomy">
+          <li><span class="k">Status</span><span class="v">Live</span></li>
+          <li><span class="k">Original questions</span><span class="n">513</span></li>
+          <li><span class="k">Vocabulary terms</span><span class="n">181</span></li>
+          <li><span class="k">Tests</span><span class="n">257</span></li>
+        </ul>
+        <ul class="ap__readout" data-readout="manifester" hidden>
+          <li><span class="k">Status</span><span class="v">Live</span></li>
+          <li><span class="k">Studio voices</span><span class="n">2</span></li>
+          <li><span class="k">Visualiser rooms</span><span class="n">6</span></li>
+          <li><span class="k">Export</span><span class="v">Real MP3, rendered on-device</span></li>
+        </ul>
+        <ul class="ap__readout" data-readout="owcs" hidden>
+          <li><span class="k">Status</span><span class="v">Live</span></li>
+          <li><span class="k">Detection</span><span class="v">Python · OpenCV, ranked template match</span></li>
+          <li><span class="k">Test modules</span><span class="n">107</span></li>
+          <li><span class="k">Hosting cost</span><span class="v">$0 — GitHub Pages</span></li>
+        </ul>
+        <ul class="ap__readout" data-readout="paper-animator" hidden>
+          <li><span class="k">Status</span><span class="v">Live</span></li>
+          <li><span class="k">Stack</span><span class="v">React 19 · TypeScript · Vite</span></li>
+          <li><span class="k">Entrance animations</span><span class="n">21</span></li>
+          <li><span class="k">Network calls</span><span class="v">None. No account, no API key</span></li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -139,52 +342,73 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
 </section>
 
 <!-- ===================================================================== -->
-<!-- CREDIBILITY STRIP                                                      -->
+<!-- THE VITALS — the credibility strip, read as an instrument              -->
 <!-- ===================================================================== -->
+<!--
+  Every word here was already true on this page; none of it is new. What
+  changed is the order of importance inside each cell: the certification or
+  the number is the loudest thing, the label is small and monospaced, and the
+  sentence is third rather than first. Three of these facts are larger than
+  the other five, so three of these cells are larger than the other five.
+
+  The two counters climb once, on entry, from a registered custom property
+  animated by the compositor — no interval, no tick loop, no script. The
+  literal digits in the markup are what a browser without @property or without
+  a view() timeline prints, which is the finished number, immediately.
+-->
 <section aria-labelledby="creds-h" style="padding-block:0 clamp(3rem,6vw,5.5rem);border:0">
   <div class="shell">
     <h2 class="vh" id="creds-h">Background at a glance</h2>
-    <ul class="creds" data-motion="sequence">
-      <li>
-        <span class="k">Emergency medicine</span>
-        <span class="v">NREMT-certified EMT</span>
-        <span class="n">Patient assessment, vitals, transport support and clinical documentation in the field.</span>
+    <ul class="vitals" data-motion="sequence">
+
+      <li class="vitals__cell vitals__cell--lg vitals__cell--w5">
+        <p class="vitals__k">Emergency medicine</p>
+        <p class="vitals__v">NREMT</p>
+        <p class="vitals__s">Certified EMT. Patient assessment, vitals, transport support and clinical documentation in the field.</p>
       </li>
-      <li>
-        <span class="k">Phlebotomy</span>
-        <span class="v">CPT training in progress</span>
-        <span class="n">Coursework completed July 2026; preparing for the NHA Certified Phlebotomy Technician exam.</span>
+
+      <li class="vitals__cell vitals__cell--lg vitals__cell--w4">
+        <p class="vitals__k">Leadership</p>
+        <p class="vitals__v">President</p>
+        <p class="vitals__s">CSUCI Esports Club. Previously Vice President at CSUCI and at Santa Barbara City College.</p>
       </li>
-      <li>
-        <span class="k">Leadership</span>
-        <span class="v">President, CSUCI Esports Club</span>
-        <span class="n">Previously Vice President at CSUCI and at Santa Barbara City College.</span>
+
+      <li class="vitals__cell vitals__cell--w3">
+        <p class="vitals__k">Phlebotomy</p>
+        <p class="vitals__v">CPT</p>
+        <p class="vitals__s">Training in progress. Coursework completed July 2026; preparing for the NHA Certified Phlebotomy Technician exam.</p>
       </li>
-      <li>
-        <span class="k">Competition</span>
-        <span class="v">Competitive esports</span>
-        <span class="n">Overwatch, Deadlock and Marvel&nbsp;Rivals — plus the team and event operations around them.</span>
+
+      <li class="vitals__cell vitals__cell--lg vitals__cell--w4">
+        <p class="vitals__k">Education</p>
+        <p class="vitals__v" aria-hidden="true"><span class="num num--frac" style="--count:3;--count-frac:813"><span class="num__t">3.813</span></span></p>
+        <p class="vitals__s"><span class="vh">3.813 </span>GPA. B.S. Health Science at CSU Channel Islands, senior, expected December 2026. President&rsquo;s List · Dean&rsquo;s List.</p>
       </li>
-      <li>
-        <span class="k">Education</span>
-        <span class="v">B.S. Health Science, CSUCI</span>
-        <span class="n">Senior, expected December 2026. GPA 3.813 · President&rsquo;s List · Dean&rsquo;s List.</span>
+
+      <li class="vitals__cell vitals__cell--w3">
+        <p class="vitals__k">Research</p>
+        <p class="vitals__v" aria-hidden="true"><span class="num" style="--count:105"><span class="num__t">105</span></span></p>
+        <p class="vitals__s"><span class="vh">105 </span>participants surveyed. A collaborative academic study on Alzheimer&rsquo;s and dementia education, with measured improvement in confidence.</p>
       </li>
-      <li>
-        <span class="k">Foundation</span>
-        <span class="v">A.A. Mathematics &amp; Science</span>
-        <span class="n">Mathematics emphasis, Santa Barbara City College. Prior computer engineering coursework at SDSU.</span>
+
+      <li class="vitals__cell vitals__cell--w5">
+        <p class="vitals__k">Foundation</p>
+        <p class="vitals__v">A.A.</p>
+        <p class="vitals__s">Mathematics &amp; Science, mathematics emphasis, Santa Barbara City College. Prior computer engineering coursework at SDSU.</p>
       </li>
-      <li>
-        <span class="k">Research</span>
-        <span class="v">Alzheimer&rsquo;s &amp; dementia education</span>
-        <span class="n">Collaborative academic study, 105 participants, measured improvement in confidence.</span>
+
+      <li class="vitals__cell vitals__cell--w5">
+        <p class="vitals__k">Competition</p>
+        <p class="vitals__v">3</p>
+        <p class="vitals__s">titles played competitively — Overwatch, Deadlock and Marvel&nbsp;Rivals — plus the team and event operations around them.</p>
       </li>
-      <li>
-        <span class="k">Informatics</span>
-        <span class="v">Health data, in coursework and in code</span>
-        <span class="n">Health Care Informatics, Biostatistics and Research Methods — then built against them.</span>
+
+      <li class="vitals__cell vitals__cell--w7">
+        <p class="vitals__k">Informatics</p>
+        <p class="vitals__v">Health data</p>
+        <p class="vitals__s">In coursework and in code: Health Care Informatics, Biostatistics and Research Methods — then built against them.</p>
       </li>
+
     </ul>
   </div>
 </section>
@@ -207,9 +431,9 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
       </p>
     </div>
 
-    <ol class="works">
+    <ol class="works works--rig">
 
-      <li class="work" data-accent="spellbomb" data-rise>
+      <li class="work work--wide" data-accent="spellbomb" data-rise>
         <div class="work__body">
           <p class="work__idx">01 / Live multiplayer</p>
           <h3 class="work__title" data-vt="title-spellbomb"><a href="spellbomb.html">SpellBomb</a></h3>
@@ -225,20 +449,24 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
             <span class="chip">Node · Socket.IO</span>
             <span class="chip">v9.3.0</span>
           </p>
+          <p class="work__spec">
+            <span><span class="n">260</span><span class="k">Rush puzzles</span></span>
+            <span><span class="n">9.3.0</span><span class="k">Version</span></span>
+          </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
-        <div class="work__shot">
+        <div data-motion="fuse" class="work__shot">
           <img data-vt="shot-spellbomb" src="assets/projects/spellbomb/hero-spellbomb-game-1280.webp"
                srcset="assets/projects/spellbomb/hero-spellbomb-game-720.webp 720w,
                assets/projects/spellbomb/hero-spellbomb-game-1280.webp 1280w,
                assets/projects/spellbomb/hero-spellbomb-game.webp 2400w"
                sizes="(max-width: 840px) 92vw, 46vw"
-               width="2400" height="1500" loading="eager" decoding="async"
+               width="2400" height="1500" loading="lazy" decoding="async"
                alt="A live six-player SpellBomb round: the bomb hangs lit in the middle of the arena with an arrow pointing at the player named sam, five other players ringed around it with their remaining hearts, an eleven-letter word tray reading I-N-A-L-I-E-N with four empty slots, and the answer box mid-word." />
         </div>
       </li>
 
-      <li class="work" data-accent="health-journal" data-rise>
+      <li class="work work--offset" data-accent="health-journal" data-rise>
         <div class="work__body">
           <p class="work__idx">02 / Health tooling</p>
           <h3 class="work__title" data-vt="title-health-journal"><a href="health-journal.html">Health Journal</a></h3>
@@ -255,9 +483,13 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
             <span class="chip">React · Vite · PWA</span>
             <span class="chip">Local-first</span>
           </p>
+          <p class="work__spec">
+            <span><span class="n">4</span><span class="k">Export formats</span></span>
+            <span><span class="n">0</span><span class="k">Network calls</span></span>
+          </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
-        <div class="work__shot work__shot--tall">
+        <div data-motion="grow" class="work__shot work__shot--tall">
           <img data-vt="shot-health-journal" src="assets/projects/health-journal/hero-health-journal-dashboard-720.webp"
                srcset="assets/projects/health-journal/hero-health-journal-dashboard-720.webp 720w,
                assets/projects/health-journal/hero-health-journal-dashboard.webp 920w"
@@ -267,7 +499,7 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
         </div>
       </li>
 
-      <li class="work" data-accent="phlebotomy" data-rise>
+      <li class="work work--flip" data-accent="phlebotomy" data-rise>
         <div class="work__body">
           <p class="work__idx">03 / Certification study</p>
           <h3 class="work__title" data-vt="title-phlebotomy"><a href="phlebotomy-exam-prep.html">Phlebotomy Exam Prep</a></h3>
@@ -283,9 +515,19 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
             <span class="chip">Next.js · Static export</span>
             <span class="chip">257 tests</span>
           </p>
+          <p class="work__spec">
+            <span>
+              <span aria-hidden="true"><span class="n num" style="--count:513"><span class="num__t">513</span></span><span class="k">Original questions</span></span>
+              <span class="vh">513 original questions</span>
+            </span>
+            <span>
+              <span aria-hidden="true"><span class="n num" style="--count:257"><span class="num__t">257</span></span><span class="k">Tests</span></span>
+              <span class="vh">257 tests</span>
+            </span>
+          </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
-        <div class="work__shot">
+        <div data-motion="sequence" class="work__shot">
           <img src="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp"
                srcset="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-720.webp 720w,
                assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp 1280w,
@@ -296,7 +538,7 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
         </div>
       </li>
 
-      <li class="work" data-accent="manifester" data-rise>
+      <li class="work work--narrow" data-accent="manifester" data-rise>
         <div class="work__body">
           <p class="work__idx">04 / Guided audio</p>
           <h3 class="work__title" data-vt="title-manifester"><a href="manifester.html">Manifester</a></h3>
@@ -312,9 +554,13 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
             <span class="chip">React · Vite · PWA</span>
             <span class="chip">Offline voice cache</span>
           </p>
+          <p class="work__spec">
+            <span><span class="n">6</span><span class="k">Visualiser rooms</span></span>
+            <span><span class="n">2</span><span class="k">Studio voices</span></span>
+          </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
-        <div class="work__shot">
+        <div data-motion="breathe" class="work__shot">
           <img data-vt="shot-manifester" src="assets/projects/manifester/hero-manifester-player-1280.webp"
                srcset="assets/projects/manifester/hero-manifester-player-720.webp 720w,
                assets/projects/manifester/hero-manifester-player-1280.webp 1280w,
@@ -325,7 +571,7 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
         </div>
       </li>
 
-      <li class="work" data-accent="owcs" data-rise>
+      <li class="work work--wide" data-accent="owcs" data-rise>
         <div class="work__body">
           <p class="work__idx">05 / Computer vision</p>
           <h3 class="work__title" data-vt="title-owcs"><a href="owcs-comp-tracker.html">OWCS Comp Tracker</a></h3>
@@ -341,9 +587,13 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
             <span class="chip">Python · OpenCV</span>
             <span class="chip">Static site, no server</span>
           </p>
+          <p class="work__spec">
+            <span><span class="n">107</span><span class="k">Test modules</span></span>
+            <span><span class="n">$0</span><span class="k">Hosting cost</span></span>
+          </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
-        <div class="work__shot">
+        <div data-motion="sort" class="work__shot">
           <img data-vt="shot-owcs" src="assets/projects/owcs/hero-owcs-review-1280.webp"
                srcset="assets/projects/owcs/hero-owcs-review-720.webp 720w,
                assets/projects/owcs/hero-owcs-review-1280.webp 1280w,
@@ -354,7 +604,7 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
         </div>
       </li>
 
-      <li class="work" data-accent="paper-animator" data-rise>
+      <li class="work work--flip" data-accent="paper-animator" data-rise>
         <div class="work__body">
           <p class="work__idx">06 / Research tooling</p>
           <h3 class="work__title" data-vt="title-paper-animator"><a href="paper-animator.html">PaperAnimator</a></h3>
@@ -370,9 +620,13 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
             <span class="chip">React 19 · TypeScript</span>
             <span class="chip">Runs entirely in the browser</span>
           </p>
+          <p class="work__spec">
+            <span><span class="n">21</span><span class="k">Entrance animations</span></span>
+            <span><span class="n">8</span><span class="k">Export formats</span></span>
+          </p>
           <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
-        <div class="work__shot">
+        <div data-motion="unfold" class="work__shot">
           <img data-vt="shot-paper-animator" src="assets/projects/paperanimator/hero-paperanimator-thread-1280.webp"
                srcset="assets/projects/paperanimator/hero-paperanimator-thread-720.webp 720w,
                assets/projects/paperanimator/hero-paperanimator-thread-1280.webp 1280w,
