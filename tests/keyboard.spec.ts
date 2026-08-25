@@ -70,10 +70,12 @@ test('the mobile menu opens, closes on Escape, and traps nothing', async ({ page
   expect(tag).toBe('summary');
 });
 
-test('the case study is reachable from the home hero by keyboard alone', async ({ page }) => {
+test('a case study is reachable from the home page by keyboard alone', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('index.html', { waitUntil: 'load' });
-  const go = page.getByRole('link', { name: /Read the case study/i });
+  /* Each room is one target and its title carries it, so the title's link is
+     the thing a keyboard reaches — there is no second, competing control. */
+  const go = page.locator('[data-wk="phlebotomy"] .wk__t a');
   await expect(go).toBeVisible();
   await go.focus();
   /* toBeFocused() also requires the page itself to be the active one, which
@@ -81,7 +83,7 @@ test('the case study is reachable from the home hero by keyboard alone', async (
      about is where focus went inside the document. */
   await expect
     .poll(() => page.evaluate(() => (document.activeElement as HTMLElement)?.textContent?.trim() || ''))
-    .toMatch(/Read the case study/i);
+    .toMatch(/Phlebotomy Exam Prep/i);
   await page.keyboard.press('Enter');
   await page.waitForURL(/phlebotomy-exam-prep\.html$/, { timeout: 15000 });
   await expect(page.locator('h1')).toBeVisible();

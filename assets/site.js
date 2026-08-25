@@ -4,20 +4,23 @@
    Enhancement only. Everything on every page is complete, readable, navigable
    and linkable with this file absent, blocked, or thrown out by an error.
 
-   Five small jobs:
-     1. reveal-on-scroll for anything carrying [data-rise] or [data-motion]
+   Seven small jobs:
+     1. reveal-on-scroll for anything carrying [data-rise], [data-motion] or
+        [data-scene]
      2. a hairline reading-progress bar
      3. closing the mobile menu on Escape, on outside click, and on navigation
      4. the global Motion On/Off control
-     5. the cinematic layer — and, far more often, the decision not to load it
-     6. the home page's channel selector, which is a control rather than a
-        decoration and therefore has a much looser gate than the shader does
+     5. the hero's three domain controls — CARE, BUILD, COMPETE
+     6. the Selected Work rail: which room you are in, and how far through
+     7. the two lazy layers, and far more often the decision not to load them
 
-   Jobs 1-3 are the site. Job 5 is an escalation that is allowed to happen only
+   Jobs 1-6 are the site, and every one of them is small enough to live in the
+   critical file. The hero's whole arrival choreography is CSS — this file only
+   ends it when you touch something. Job 7 is an escalation that happens only
    after the useful page has painted, and only when the device, the pointer,
    the viewport, the reported memory, Save-Data and the visitor's own motion
-   preference all say yes. Neither cinematic bundle is in the critical path and
-   neither is ever required for the page to be complete.
+   preference all say yes. Neither lazy module is ever required for the page to
+   be complete.
 
    Nothing here hijacks scrolling, and nothing here plays sound.
    =========================================================================== */
@@ -57,7 +60,7 @@
   /* If the preference is turned on mid-visit, reveal everything immediately
      rather than leaving whatever had not scrolled into view hidden forever. */
   function revealAll() {
-    var all = document.querySelectorAll("[data-rise], [data-motion]");
+    var all = document.querySelectorAll("[data-rise], [data-motion], [data-scene]");
     for (var i = 0; i < all.length; i++) all[i].classList.add("is-in");
   }
 
@@ -70,7 +73,7 @@
   /* --- 1. reveal on scroll ------------------------------------------------- */
 
   function reveals() {
-    var targets = document.querySelectorAll("[data-rise], [data-motion]");
+    var targets = document.querySelectorAll("[data-rise], [data-motion], [data-scene]");
     if (!targets.length) return;
 
     if (still() || !("IntersectionObserver" in window)) {
@@ -166,40 +169,179 @@
     });
   }
 
-  /* --- 3b. arrival: the monitor acquires signal ---------------------------- */
+  /* --- 3b. arrival, and the right to interrupt it ------------------------- */
 
-  /* Not a loader, and deliberately not shaped like one: the page is complete,
-     painted and clickable the entire time this runs. It is the trace catching
-     up to a document that is already there. It plays once, it takes about a
-     second and a quarter, and the first input of any kind cuts it short. */
-  function acquire() {
-    var rails = document.querySelectorAll("[data-pulse]");
-    if (!rails.length || still()) return;
-
-    for (var i = 0; i < rails.length; i++) {
-      rails[i].classList.add("is-acquiring");
-      rails[i].classList.add("is-sweeping");
-    }
+  /* The hero's whole entrance is CSS keyframes: it starts at first paint, it
+     costs the main thread nothing, and it is finished inside about a second
+     and a half. This function does exactly one thing — it ends the sequence
+     the moment the visitor does anything at all, because nobody should have to
+     wait out a piece of choreography to read a name. Adding .is-settled drops
+     every animation and leaves the composed final frame, which is the frame
+     the page was designed around anyway. */
+  function arrival() {
+    var scene = document.querySelector("[data-signal]");
+    if (!scene) return;
 
     var done = false;
     function settle() {
       if (done) return;
       done = true;
-      for (var j = 0; j < rails.length; j++) {
-        rails[j].classList.remove("is-acquiring");
-        rails[j].classList.remove("is-sweeping");
-      }
+      scene.classList.add("is-settled");
       window.removeEventListener("pointerdown", settle, true);
       window.removeEventListener("keydown", settle, true);
       window.removeEventListener("wheel", settle, true);
       window.removeEventListener("touchstart", settle, true);
+      window.removeEventListener("scroll", settle, true);
     }
 
-    window.setTimeout(settle, 1560);
+    if (still()) {
+      settle();
+      return;
+    }
+
+    window.setTimeout(settle, 2400);
     window.addEventListener("pointerdown", settle, true);
     window.addEventListener("keydown", settle, true);
     window.addEventListener("wheel", settle, { capture: true, passive: true });
     window.addEventListener("touchstart", settle, { capture: true, passive: true });
+    window.addEventListener("scroll", settle, { capture: true, passive: true });
+  }
+
+  /* --- 3c. the three domains ------------------------------------------------
+     CARE, BUILD, COMPETE. A radio group with a roving tabindex, arrow keys
+     that move and commit as they go, and a persistent, unambiguous selection.
+
+     This lives in the critical file rather than in a lazy bundle on purpose:
+     it is a control, not an effect. A control that only works once a second
+     request has landed is a control that does not work. It has no dependency,
+     it is a few hundred bytes, and it answers to pointer, touch and keyboard
+     identically. Turning motion off does not take it away — it only makes the
+     change instant, which is what stillness means here. */
+  function domains() {
+    var host = document.querySelector("[data-signal]");
+    if (!host) return;
+    var group = host.querySelector("[data-domains]");
+    if (!group) return;
+
+    var opts = [].slice.call(group.querySelectorAll("[data-dom]"));
+    if (!opts.length) return;
+    var proofs = [].slice.call(host.querySelectorAll("[data-proof]"));
+
+    /* What each domain does to the field behind the sculpture. The colours are
+       the same three the stylesheet holds; they are repeated here because the
+       shader is given a value, not a selector. */
+    var FIELD = {
+      care:    { accent: "#17a08f", optics: { interference: 1.0, refraction: 1.0 } },
+      build:   { accent: "#4c6fe8", optics: { interference: 1.5, refraction: 0.78 } },
+      compete: { accent: "#d9a94a", optics: { interference: 0.72, refraction: 1.34 } }
+    };
+    var requick = 0;
+
+    function commit(name) {
+      if (!name || host.getAttribute("data-domain") === name) return;
+      host.setAttribute("data-domain", name);
+
+      for (var j = 0; j < proofs.length; j++) {
+        if (proofs[j].getAttribute("data-proof") === name) proofs[j].setAttribute("data-active", "");
+        else proofs[j].removeAttribute("data-active");
+      }
+
+      /* The trace is redrawn rather than dissolved: the new signature is
+         written across the viewport the way a monitor would write it. Removing
+         the class and forcing a reflow is what restarts the animation. */
+      if (!still()) {
+        host.classList.remove("is-tuning");
+        void host.offsetWidth;
+        host.classList.add("is-tuning");
+        if (requick) window.clearTimeout(requick);
+        requick = window.setTimeout(function () {
+          host.classList.remove("is-tuning");
+        }, 760);
+      }
+
+      /* One wire out, through the document rather than through an import, so
+         the shader can answer without either module knowing the other is
+         there. */
+      var detail = FIELD[name] || {};
+      document.dispatchEvent(new CustomEvent("ce:domain", {
+        detail: { domain: name, accent: detail.accent, optics: detail.optics }
+      }));
+
+      /* The detent lands on the press; the QRS answers it a beat later. Both
+         are silent unless somebody has turned sound on. */
+      play("detent");
+      window.setTimeout(function () {
+        document.dispatchEvent(new CustomEvent("ce:qrs"));
+      }, 180);
+    }
+
+    /* The controls are real radio inputs in a real fieldset, so the arrow
+       keys, the roving focus, the group semantics and the announced state all
+       come from the browser rather than from a re-implementation of them here.
+       This listener is the whole of the wiring. */
+    group.addEventListener("change", function (ev) {
+      var el = ev.target;
+      if (el && el.getAttribute && el.getAttribute("data-dom")) commit(el.value);
+    });
+  }
+
+  /* --- 3d. the Selected Work rail ------------------------------------------
+     Six rooms, one spine. The rail's links are ordinary same-page anchors and
+     stay that way: all this does is report which room you are in — aria-current
+     on the matching link, the room's accent on the rail, and how far through
+     the six you have read, as a stroke length on the spine.
+
+     It never converts the articles into tabs, never hides an inactive one and
+     never competes with the scroll position for authority. */
+  function theatre() {
+    var host = document.querySelector("[data-theatre]");
+    if (!host || !("IntersectionObserver" in window)) return;
+
+    var rooms = [].slice.call(host.querySelectorAll("[data-wk]"));
+    var links = [].slice.call(host.querySelectorAll("[data-rail]"));
+    var spine = host.querySelector("[data-spine]");
+    var counter = host.querySelector("[data-rail-n]");
+    if (!rooms.length) return;
+
+    var active = "";
+    function mark(name) {
+      if (name === active) return;
+      active = name;
+      var n = 0;
+      for (var i = 0; i < links.length; i++) {
+        var on = links[i].getAttribute("data-rail") === name;
+        if (on) {
+          links[i].setAttribute("aria-current", "true");
+          n = i + 1;
+        } else {
+          links[i].removeAttribute("aria-current");
+        }
+      }
+      var room = host.querySelector('[data-wk="' + name + '"]');
+      if (room) host.setAttribute("data-accent", room.getAttribute("data-accent") || "");
+      if (counter) counter.textContent = n < 10 ? "0" + n : String(n);
+      if (spine) spine.style.setProperty("--spine", rooms.length ? n / rooms.length : 0);
+    }
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        /* The room whose middle is nearest the middle of the viewport wins.
+           Reading the DOM order rather than the entry order keeps the answer
+           stable when two rooms are on screen at once. */
+        var best = null;
+        var mid = window.innerHeight / 2;
+        for (var i = 0; i < rooms.length; i++) {
+          var b = rooms[i].getBoundingClientRect();
+          if (b.bottom < 0 || b.top > window.innerHeight) continue;
+          var d = Math.abs(b.top + b.height / 2 - mid);
+          if (!best || d < best.d) best = { d: d, el: rooms[i] };
+        }
+        if (best) mark(best.el.getAttribute("data-wk"));
+        void entries;
+      },
+      { rootMargin: "-20% 0px -20% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
+    for (var i = 0; i < rooms.length; i++) io.observe(rooms[i]);
   }
 
   /* --- 4. the motion control ----------------------------------------------- */
@@ -208,7 +350,7 @@
      is the shader plane, and this is the switch that stops it. It is a real
      button with a real pressed state, it is reachable from the keyboard, and
      it is the same control on every page. */
-  var cinema = { atmos: null, aperture: null, channel: null };
+  var cinema = { atmos: null, parallax: null };
 
   function motionControls() {
     var btns = document.querySelectorAll("[data-motion-toggle]");
@@ -241,11 +383,9 @@
 
   function teardown() {
     if (cinema.atmos && cinema.atmos.destroy) cinema.atmos.destroy();
-    if (cinema.aperture && cinema.aperture.destroy) cinema.aperture.destroy();
+    if (cinema.parallax && cinema.parallax.destroy) cinema.parallax.destroy();
     cinema.atmos = null;
-    cinema.aperture = null;
-    /* The channel is a control, not a movement. Turning motion off makes the
-       retune instant; it does not take the instrument away. */
+    cinema.parallax = null;
     var c = document.querySelector("[data-atmos-slot] canvas");
     if (c && c.parentNode) c.parentNode.removeChild(c);
   }
@@ -281,8 +421,8 @@
   }
 
   /* Three sounds, and only three. The monitor's blip, the detent of a channel
-     committing, and the aperture on a navigation. Anything else would be
-     decoration with a volume control. */
+     committing, and the trace flattening on a navigation. Anything else would
+     be decoration with a volume control. */
   var SFX = {
     beat: function () { tone(1180, 0.09, "sine", 0.05); tone(590, 0.06, "sine", 0.025); },
     detent: function () { tone(320, 0.05, "triangle", 0.05); tone(1600, 0.03, "sine", 0.018); },
@@ -360,9 +500,12 @@
        that autoplays sound, whatever the reason. The stored value only decides
        what the control looks like the moment you reach for it. */
 
-    document.addEventListener("ce:sweep", function (ev) {
-      play("detent");
-      beatOnce(ev.detail && ev.detail.rate);
+    /* One quiet two-note response to the QRS, and only if sound is on and the
+       arrival is actually playing. Scrolling past a project boundary makes no
+       sound at all: a noise per section is a smoke alarm, not sound design. */
+    document.addEventListener("ce:qrs", function (ev) {
+      play("beat");
+      void ev;
     });
 
     /* Stop the moment the tab is not in front of somebody. */
@@ -412,42 +555,29 @@
     return !still() && fine() && window.innerWidth >= 1000 && !saveData();
   }
 
-  /* The channel selector answers to one gate and one only: did the visitor
-     ask for less data? It runs on a phone, on a keyboard, on a slow machine
-     and under reduced motion, because it is the page's one real control and
-     withholding a control is not the same as withholding an effect. Somebody
-     who asked for Save-Data keeps the six links, which navigate to the same
-     six case studies and cost nothing extra at all. */
-  function mayWireChannel() {
-    return !saveData();
-  }
-
-  function channels() {
-    var section = document.querySelector("[data-aperture] [data-channel-strip]");
-    if (!section || cinema.channel || !mayWireChannel()) return;
-    var host = document.querySelector("[data-aperture]");
-    import(HERE + "vendor/channel.js")
-      .then(function (m) {
-        cinema.channel = m.mount(host);
-      })
-      .catch(function () {
-        /* Six links to six case studies, which is what the document already
-           holds. Nothing to undo and nothing to apologise for. */
-      });
+  /* The pointer parallax is an effect, not a control, so it answers to the
+     effect gates: a fine pointer to move it with, a viewport wide enough for
+     the separation to read, and a visitor who has not asked for less data or
+     less movement. */
+  function mayMoveParallax() {
+    return !still() && fine() && window.innerWidth >= 1000 && !saveData();
   }
 
   function cinematics() {
-    var section = document.querySelector("[data-aperture]");
+    var section = document.querySelector("[data-signal]");
     if (!section || still()) return;
 
-    if (mayRunTimeline() && !cinema.aperture) {
-      import(HERE + "vendor/aperture.js")
+    /* The sculpture separates under the pointer by a few pixels and the trace
+       bends locally by a few more. That is the whole module: no timeline, no
+       dependency, and nothing it does is load-bearing. */
+    if (mayMoveParallax() && !cinema.parallax) {
+      import(HERE + "vendor/signal.js")
         .then(function (m) {
-          if (still()) return;
-          cinema.aperture = m.mount(section);
+          if (still() || !mayMoveParallax()) return;
+          cinema.parallax = m.mount(section);
         })
         .catch(function () {
-          /* The static composition is the fallback, and it is already on screen. */
+          /* The assembled sculpture is already on screen, exactly as composed. */
         });
     }
 
@@ -458,7 +588,7 @@
         .then(function (m) {
           if (still() || !mayRenderShader()) return;
           var canvas = document.createElement("canvas");
-          canvas.className = "ap__canvas";
+          canvas.className = "sig__canvas";
           canvas.setAttribute("aria-hidden", "true");
           /* Decorative, never focusable, never above the content it sits behind. */
           slot.appendChild(canvas);
@@ -473,20 +603,18 @@
     }
   }
 
-  /* One wire between the two, and it runs through the document rather than
-     through an import: the channel announces itself, and whoever is listening
-     — today, the shader plane — answers. Neither module knows the other is
-     there, so either can be absent without the other noticing. */
-  document.addEventListener("ce:channel", function (ev) {
+  /* One wire between the domain control and the shader, and it runs through
+     the document rather than through an import: the control announces itself
+     and whoever is listening answers. Neither module knows the other is there,
+     so either can be absent without the other noticing. */
+  document.addEventListener("ce:domain", function (ev) {
     if (cinema.atmos && cinema.atmos.tune) cinema.atmos.tune(ev.detail);
+    if (cinema.parallax && cinema.parallax.tune) cinema.parallax.tune(ev.detail);
   });
 
   /* After the useful site. Never before it, and never during it. */
   function scheduleCinematics() {
     var go = function () {
-      try {
-        channels();
-      } catch (e) {}
       try {
         cinematics();
       } catch (e) {}
@@ -504,7 +632,9 @@
       menu();
       motionControls();
       sound();
-      acquire();
+      arrival();
+      domains();
+      theatre();
     } catch (err) {
       /* A failure in any of the above must never leave content hidden. */
       revealAll();
@@ -535,7 +665,7 @@
     });
   }
 
-  /* The aperture blinks between documents, so it gets the aperture's sound. */
+  /* The trace flattens between documents, so a navigation gets that tone. */
   document.addEventListener("click", function (ev) {
     if (!audio.on) return;
     var a = ev.target.closest ? ev.target.closest("a[href]") : null;

@@ -25,42 +25,32 @@ const check = process.argv.includes('--check');
 
 const TARGETS = [
   {
-    entry: 'assets/src/channel.js',
-    file: 'channel.js',
+    entry: 'assets/src/signal.js',
+    file: 'signal.js',
     packages: [],
     why:
-      'The home page\'s channel selector. It has no dependency at all — it is ' +
-      'here because it is main-thread work that the critical path must not ' +
-      'carry, not because it needed a library. It is bundled and committed ' +
-      'through the same path as the other two so that exactly one mechanism ' +
-      'puts JavaScript on this site.',
-  },
-  {
-    entry: 'assets/src/aperture.js',
-    file: 'aperture.js',
-    packages: ['gsap'],
-    why:
-      'The Evidence Aperture is a single pinned, scrubbed timeline that has to ' +
-      'stay in step with the scroll position across five separate elements, be ' +
-      'torn down completely when the viewport or the motion preference stops ' +
-      'qualifying, and re-measure on resize. ScrollTrigger.matchMedia does ' +
-      'exactly that; a hand-rolled equivalent would be larger and worse.',
+      "The hero's pointer layer. It has no dependency at all — it is here " +
+      'because it is main-thread work the critical path must not carry, not ' +
+      'because it needed a library. Everything the hero actually does is CSS ' +
+      'and markup that has painted before this file is requested; what is left ' +
+      'for a script is the one thing CSS cannot do, which is read where the ' +
+      'pointer is. It is bundled and committed through the same path as the ' +
+      'shader so that exactly one mechanism puts JavaScript on this site.',
   },
   {
     entry: 'assets/src/atmosphere.js',
     file: 'atmosphere.js',
     packages: ['ogl'],
     why:
-      'One full-screen triangle and one fragment shader behind the home hero. ' +
-      'OGL supplies the WebGL context, program compilation and resize plumbing ' +
-      'in a few kilobytes and tree-shakes down to the four classes actually ' +
+      'One full-screen triangle and one fragment shader behind the hero. OGL ' +
+      'supplies the WebGL context, program compilation and resize plumbing in ' +
+      'a few kilobytes and tree-shakes down to the four classes actually ' +
       'imported. Three.js was measured against it and rejected: it is an order ' +
       'of magnitude larger for a plane that draws no geometry.',
   },
 ];
 
 const LICENSES = {
-  gsap: { repo: 'https://github.com/greensock/GSAP', license: "GreenSock Standard 'No Charge' License" },
   ogl: { repo: 'https://github.com/oframe/ogl', license: 'Unlicense' },
   esbuild: { repo: 'https://github.com/evanw/esbuild', license: 'MIT' },
 };
@@ -136,21 +126,20 @@ node tools/build_vendor.mjs --check  # CI: fail if the committed output drifted
 \`\`\`
 
 No bundle here is in the critical path. \`site.js\` imports them dynamically,
-after first paint. The two cinematic ones load only when the page asks for them
-and the device, the motion preference, Save-Data and the pointer type all pass.
-\`channel.js\` is a control rather than an effect, so its only gate is
-Save-Data — it runs on a phone, on a keyboard and under reduced motion, because
-withholding a control is not the same as withholding an effect.
+after first paint, and only when the device, the motion preference, Save-Data
+and the pointer type all pass. Neither is ever required for a page to be
+complete: the hero's arrival, its three domain states, the six Selected Work
+scenes and every control on the site are CSS, markup and the critical
+\`site.js\` — none of which is behind a lazy request.
 
 | Package | Version | Source | License | Bundle | Raw | Gzip |
 | --- | --- | --- | --- | --- | --- | --- |
 ${rows.map((r) => `| \`${r.pkg}\` | ${r.version} | ${r.repo} | ${r.license} | \`assets/vendor/${r.file}\` | ${(r.raw / 1024).toFixed(1)} KB | ${(r.gz / 1024).toFixed(1)} KB |`).join('\n')}
 
-Total lazy cinematic payload: **${(rows.filter((r) => r.pkg !== '—').reduce((a, r) => a + r.gz, 0) / 1024).toFixed(1)} KB gzip**
-(\`aperture.js\` + \`atmosphere.js\`, against a budget of 100 KB). The control
-module is counted separately, at **${(rows.filter((r) => r.pkg === '—').reduce((a, r) => a + r.gz, 0) / 1024).toFixed(1)} KB gzip**, because it is not a
-cinematic effect and does not answer to the cinematic gates. None of it is
-requested until after the useful site has rendered.
+Total lazy payload: **${(rows.reduce((a, r) => a + r.gz, 0) / 1024).toFixed(1)} KB gzip**, against a
+budget of 100 KB. None of it is requested until after the useful site has
+rendered, and the shader additionally requires WebGL, a fine pointer, a
+viewport of at least 1000 px and at least 4 GB of reported memory.
 
 ## Why each one is here
 
@@ -164,9 +153,24 @@ Source: ${LICENSES.esbuild.repo}
 
 ## Not used, deliberately
 
-\`lenis\`, \`three\`, Rive, Spline, React, Vue and any client-side router are
-absent by design. Native scrolling is part of this site's identity, and OGL
-draws the one shader plane the hero needs without a scene graph.
+\`gsap\`, \`lenis\`, \`three\`, Rive, Spline, React, Vue and any client-side
+router are absent by design.
+
+GSAP was in this repository until the redesign and was removed by it. It earned
+its 44.8 KB gzip when the hero was a pinned, scrubbed ScrollTrigger timeline
+that had to stay in step with the scroll position across five elements. The
+hero is no longer a scrubbed timeline: every motion in the current design is a
+finite transition that plays once and settles, which is precisely what CSS
+keyframes express — off the main thread, at no scripting cost, and with the
+composed final frame as the state that renders when motion is refused. Keeping
+an animation engine to re-implement that would have been two engines doing one
+job, and 44.8 KB of it.
+
+\`lenis\` was considered and declined for the same reason. With no shared GSAP
+ticker left to synchronise against it would have been this site's only runtime
+dependency a visitor could feel go wrong, and all six Selected Work rooms are
+built on native sticky positioning — the browser's own scrolling is not a
+detail of this design, it is the mechanism.
 
 ## Fonts
 

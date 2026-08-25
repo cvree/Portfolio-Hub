@@ -31,28 +31,28 @@ test.describe('with JavaScript disabled', () => {
     });
   }
 
-  test('the home hero is a composed frame, not an empty stage', async ({ page }) => {
+  test('the home hero is an assembled sculpture, not an empty stage', async ({ page }) => {
     await page.goto('index.html');
-    const iris = page.locator('.ap__iris img');
-    await expect(iris).toBeVisible();
-    const box = await iris.boundingBox();
-    expect(box!.height).toBeGreaterThan(180);
-    /* The blades are one thing that could cover the evidence; the aperture's
-       own clip is the other, and a clipped element still reports a box and
-       still counts as visible, so it has to be asserted directly. */
-    expect(await page.locator('.ap__blade:visible').count()).toBe(0);
-    const clip = await page.locator('.ap__iris').evaluate((e) => getComputedStyle(e).clipPath);
+    const ce = page.locator('.ce');
+    await expect(ce).toBeVisible();
+    const box = await ce.boundingBox();
+    expect(box!.height).toBeGreaterThan(140);
+
+    /* A clipped element still reports a box and still counts as visible, so
+       the clip has to be asserted directly. */
+    const clip = await ce.evaluate((e) => getComputedStyle(e).clipPath);
     expect(clip).not.toMatch(/inset\(\s*(?:[1-9]\d|100)/);
 
-    /* And, finally, that the pixels are actually there: a fully clipped frame
-       is indistinguishable from an empty one in the DOM but not on screen. */
-    const painted = await page.locator('.ap__frame').screenshot();
-    expect(painted.byteLength).toBeGreaterThan(9000);
+    /* And, finally, that the pixels are actually there: an unassembled
+       monogram is indistinguishable from an assembled one in the DOM but not
+       on screen. */
+    const painted = await ce.screenshot();
+    expect(painted.byteLength).toBeGreaterThan(4000);
   });
 
   test('the résumé and contact routes work', async ({ page }) => {
     await page.goto('index.html');
-    await page.getByRole('link', { name: /download résumé/i }).click();
+    await page.getByRole('link', { name: /view résumé/i }).click();
     await expect(page).toHaveURL(/resume\.html$/);
     await expect(page.locator('h1')).toContainText('Connor Eppolito');
   });
@@ -67,7 +67,7 @@ test.describe('with prefers-reduced-motion: reduce', () => {
 
   test('no shader is created, and no cinematic bundle is fetched', async ({ page }) => {
     const asked: string[] = [];
-    page.on('request', (r) => /vendor\/(aperture|atmosphere)\.js/.test(r.url()) && asked.push(r.url()));
+    page.on('request', (r) => /vendor\/(signal|atmosphere)\.js/.test(r.url()) && asked.push(r.url()));
     await page.goto('index.html', { waitUntil: 'load' });
     await page.waitForTimeout(3000);
     expect(asked).toEqual([]);
@@ -78,7 +78,7 @@ test.describe('with prefers-reduced-motion: reduce', () => {
     test(`${p}: every section is in its final state`, async ({ page }) => {
       await page.goto(p, { waitUntil: 'load' });
       await page.waitForTimeout(900);
-      const unfinished = await page.$$eval('main [data-rise], main [data-motion]', (els) =>
+      const unfinished = await page.$$eval('main [data-rise], main [data-motion], main [data-scene]', (els) =>
         els
           .filter((e) => {
             const c = getComputedStyle(e);
