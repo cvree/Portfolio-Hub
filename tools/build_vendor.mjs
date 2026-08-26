@@ -144,7 +144,7 @@ No bundle here is in the critical path. \`site.js\` imports them dynamically,
 after first paint, and only when the device, the motion preference, Save-Data
 and the pointer type all pass. Neither is ever required for a page to be
 complete: the hero's arrival, the projected mark it is built around, the six
-Selected Work scenes and every control on the site are CSS, markup and the
+Projects scenes and every control on the site are CSS, markup and the
 critical \`site.js\` — none of which is behind a lazy request.
 
 | Package | Version | Source | License | Bundle | Raw | Gzip |
@@ -184,7 +184,7 @@ job, and 44.8 KB of it.
 
 \`lenis\` was considered and declined for the same reason. With no shared GSAP
 ticker left to synchronise against it would have been this site's only runtime
-dependency a visitor could feel go wrong, and all six Selected Work rooms are
+dependency a visitor could feel go wrong, and all six Projects rooms are
 built on native sticky positioning — the browser's own scrolling is not a
 detail of this design, it is the mechanism.
 

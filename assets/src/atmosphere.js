@@ -7,7 +7,7 @@
 
    It used to render behind the hero of one page and nowhere else, which meant
    the most expensive and the best-looking thing on the site was visible for
-   about one screenful and then thrown away on the way to Selected Work. It is
+   about one screenful and then thrown away on the way to Projects. It is
    now mounted on the fixed atmosphere plane the base template already puts on
    every page, so the room the site is read in is the same room from the first
    scroll to the footer — and it answers to the document rather than to one
@@ -19,12 +19,30 @@
      the motes         a sparse specular grid, brightest near the light
      the key           a directional light the pointer leads, never follows
 
+   Three of the numbers in here are not about how it looks. They are about
+   whether the page in front of it can be read:
+
+     the levelling     every accent is scaled to one luminance before it
+                       reaches a uniform, so a room changes hue and not level
+     the reading mask  the caller says where the words are; the plane thins
+                       the interference and lowers its ceiling exactly there,
+                       and nowhere else
+     the ceiling       a luminance limit with a soft shoulder, strict over
+                       text and generous everywhere else
+
+   A plane that cannot be read over is not atmosphere, it is weather indoors.
+   The three above are what keeps this one on the right side of that line, and
+   they are deliberately three rather than one dial turned down: the accents
+   were unequal, the interference was an obstruction, and nothing at all
+   guaranteed a floor. Turning the gain down would have dimmed the answer to
+   all three and solved none of them.
+
    It renders BEHIND pages that are already complete without it. Every caller
    gate lives in site.js; this module assumes it was allowed to run and only
    worries about running cheaply and stopping cleanly.
    =========================================================================== */
 
-import { Renderer, Program, Mesh, Triangle } from 'ogl';
+import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl';
 
 const VERT = /* glsl */ `
 attribute vec2 uv;
@@ -55,6 +73,8 @@ uniform float uFade;      // master, so the plane can arrive and leave politely
 uniform vec2  uTune;      // x: interference tightness, y: refraction softness
 uniform float uGain;      // the one master: how loud the plane is
 uniform float uLift;      // and how much louder it is allowed to be in a hero
+uniform sampler2D uRead;  // a coverage map of where the words are right now
+uniform vec2  uCap;       // luminance ceiling: x in the open, y over the words
 
 float hash(vec2 p) {
   p = fract(p * vec2(123.34, 456.21));
@@ -90,6 +110,22 @@ void main() {
   vec2 p = (vUv - 0.5) * vec2(aspect, 1.0);
 
   float t = uTime * 0.035;
+
+  // --- the reading mask ---------------------------------------------------
+  // One texture lookup, and it is the whole of what this plane knows about the
+  // page in front of it: a coverage map, forty-eight cells by twenty-seven,
+  // marked where the caller found lines of text and blurred until it has no
+  // edge left. Everything legibility costs is spent where this map is lit and
+  // nowhere else.
+  //
+  // It is a map rather than a rectangle because a rectangle was not honest.
+  // The words on a page are not one box: at the top of the home page they are
+  // a column down the left, with a projection standing in the empty half and a
+  // strip of figures across the bottom of the frame, and the smallest box
+  // containing all three is the entire viewport. Dimming that box would have
+  // paid for the space around the projection — the one part of this site that
+  // was never hard to read — out of the same purse as the paragraph that was.
+  float read = texture2D(uRead, vUv).r;
 
   // --- the aurora ---------------------------------------------------------
   // A flow field warped by a second field. The whole thing drifts upward and
@@ -133,11 +169,21 @@ void main() {
   // --- the interference ---------------------------------------------------
   // Fine horizontal signal, bent by the iris so it refracts through the field
   // rather than sliding over it.
+  //
+  // This is the layer that made the site unreadable. At full amplitude it is
+  // a topographic contour map at 232 cycles a screen, and a contour map drawn
+  // across a paragraph is not a texture behind the words, it is a second set
+  // of lines competing with them at the same frequency the eye reads at. The
+  // frequency is untouched, because the frequency is the character; what
+  // changed is that it is now a presence rather than an obstruction, and that
+  // it stands down almost entirely where the words are. In the open it still
+  // refracts through the iris exactly as before.
   float bend  = iris * 0.14 * uTune.y;
   float n     = vnoise(vec2(p.x * 2.4 + t, p.y * 3.1 - t * 0.6));
   n           = mix(n, vnoise(vec2(p.x * 6.7 - t * 1.4, p.y * 7.3 + t)), 0.42);
   float lines = sin((p.y + bend * n * 2.0) * (232.0 * uTune.x) + n * 5.4 - uTime * 0.22);
   float sig   = smoothstep(0.94, 1.0, lines) * iris * (0.24 + 0.34 * n);
+  sig        *= mix(1.0, 0.12, read);
 
   // --- the motes ----------------------------------------------------------
   // A sparse specular grid: most cells are dark, a few carry a slow pulse, and
@@ -157,7 +203,7 @@ void main() {
   col += uCobalt * bandB * 0.155;
   col += uTeal   * aurora * iris * 0.080;
   col += uAccent * iris  * (0.075 + 0.105 * key);
-  col += uTeal   * sig   * 0.42;
+  col += uTeal   * sig   * 0.15;
   col += uAccent * ring  * 0.34;
   col += mix(uAccent, vec3(1.0), 0.55) * mote * 0.16;
 
@@ -179,6 +225,27 @@ void main() {
   // never has the loud version.
   col *= uFade * uGain * mix(uLift, 1.0, smoothstep(0.0, 0.26, uScroll));
 
+  // --- the ceiling --------------------------------------------------------
+  // The gain is an intention. This is the guarantee.
+  //
+  // Nothing above bounds what any of it adds up to: three layers that each
+  // look reasonable can meet on one fragment and produce a highlight bright
+  // enough that quiet body copy has nowhere left to go. So the last thing the
+  // plane does is put a ceiling on its own luminance — a low one where the
+  // words are, a generous one everywhere else — which is what turns "we turned
+  // it down and it looked fine on the machine we turned it down on" into a
+  // number this site can be tested against.
+  //
+  // The shoulder is exponential rather than a clamp. min() would flatten every
+  // highlight onto the same value and turn the aurora's brightest passages
+  // into a poster; 1 - exp(-L / cap) is unity for small L, asymptotic to the
+  // cap for large L, and smooth in between — so a bright pass rolls off into
+  // the limit instead of collapsing against it, and the plane keeps its
+  // gradients right up to the edge of what it is allowed.
+  float lum = dot(col, vec3(0.2126, 0.7152, 0.0722));
+  float cap = mix(uCap.x, uCap.y, read);
+  col *= (cap * (1.0 - exp(-lum / max(cap, 1e-4)))) / max(lum, 1e-4);
+
   // Dither, so a very dark gradient does not band on an 8-bit display. It is
   // added after the gain, because a dither the gain multiplies is not a dither
   // any more — it is grain.
@@ -197,6 +264,72 @@ function rgb(css, fallback) {
   const p = String(css).match(/-?[\d.]+/g);
   if (p && p.length >= 3) return [p[0] / 255, p[1] / 255, p[2] / 255];
   return fallback;
+}
+
+/* --- levelling ------------------------------------------------------------
+   The plane is handed a different accent for every project, and the accents
+   are nowhere near each other in brightness. Spellbomb's gold carries about
+   1.6x the relative luminance of the teal every ratio in the shader was set
+   against, and OWCS's lime carries nearly 2.5x — so scrolling into those two
+   rooms did not change the colour of the light, it turned the light up, and
+   the copy underneath went with it. Nobody chose that; it fell out of picking
+   colours from six running products.
+
+   So each accent is scaled to one luminance before it is ever written to a
+   uniform. The scale is a ceiling, not a level: an accent already quieter than
+   the reference is left exactly where it is, because the answer to one room
+   being too loud is never to turn a quiet room up. What survives the scale is
+   the hue and the saturation — which is the whole of what the accent was for.
+
+   Three exponentials, once per room change. */
+const REF = 0.273; /* #17a08f, the teal the layer ratios were composed against */
+
+function toLinear(c) {
+  return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+}
+
+function levelled(c) {
+  const lum = 0.2126 * toLinear(c[0]) + 0.7152 * toLinear(c[1]) + 0.0722 * toLinear(c[2]);
+  if (!(lum > REF)) return c.slice();
+  /* The uniform is read as an sRGB-encoded value, so the scale that lands a
+     linear luminance ratio is that ratio taken through the same curve. */
+  const k = Math.pow(REF / lum, 1 / 2.4);
+  return [c[0] * k, c[1] * k, c[2] * k];
+}
+
+/* --- the coverage map -----------------------------------------------------
+   Small on purpose. Forty-eight by twenty-seven is about thirty pixels a cell
+   on a laptop, which is roughly the height of a line of body copy — fine
+   enough to tell a column of prose from the empty half of a hero, coarse
+   enough that rebuilding it costs thirteen hundred bytes and a few thousand
+   integer writes. Nothing in this map needs to resolve a glyph. It needs to
+   resolve a paragraph. */
+const MASK_W = 48;
+const MASK_H = 27;
+const MASK_N = MASK_W * MASK_H;
+
+/* Separable 1-2-1, twice, in place. Two passes of a three-tap over a grid this
+   size is a wide, soft falloff in the finished frame — and it is what stops the
+   mask from having a border, which is the one way a mask like this can look
+   like a mistake rather than like depth. */
+function blur(a, b) {
+  for (let pass = 0; pass < 2; pass++) {
+    for (let y = 0; y < MASK_H; y++) {
+      const row = y * MASK_W;
+      for (let x = 0; x < MASK_W; x++) {
+        const l = a[row + (x > 0 ? x - 1 : 0)];
+        const r = a[row + (x < MASK_W - 1 ? x + 1 : MASK_W - 1)];
+        b[row + x] = (l + 2 * a[row + x] + r) * 0.25;
+      }
+    }
+    for (let x = 0; x < MASK_W; x++) {
+      for (let y = 0; y < MASK_H; y++) {
+        const u = b[(y > 0 ? y - 1 : 0) * MASK_W + x];
+        const d = b[(y < MASK_H - 1 ? y + 1 : MASK_H - 1) * MASK_W + x];
+        a[y * MASK_W + x] = (u + 2 * b[y * MASK_W + x] + d) * 0.25;
+      }
+    }
+  }
 }
 
 export function mount(canvas, opts) {
@@ -228,6 +361,29 @@ export function mount(canvas, opts) {
   const gl = renderer.gl;
   gl.clearColor(0, 0, 0, 1);
 
+  /* Where the words are: the target the caller writes, the state that eases
+     toward it, and the one byte per cell that actually goes to the GPU. */
+  const maskWant = new Float32Array(MASK_N);
+  const maskWork = new Float32Array(MASK_N);
+  const maskNow = new Float32Array(MASK_N);
+  const maskBytes = new Uint8Array(MASK_N);
+  let maskMoving = false;
+
+  const maskTex = new Texture(gl, {
+    image: maskBytes,
+    width: MASK_W,
+    height: MASK_H,
+    format: gl.LUMINANCE,
+    internalFormat: gl.LUMINANCE,
+    type: gl.UNSIGNED_BYTE,
+    generateMipmaps: false,
+    minFilter: gl.LINEAR,
+    magFilter: gl.LINEAR,
+    wrapS: gl.CLAMP_TO_EDGE,
+    wrapT: gl.CLAMP_TO_EDGE,
+    flipY: false,
+  });
+
   const program = new Program(gl, {
     vertex: VERT,
     fragment: FRAG,
@@ -236,13 +392,31 @@ export function mount(canvas, opts) {
       uRes: { value: [1, 1] },
       uPointer: { value: [0, 0] },
       uScroll: { value: 0 },
-      uAccent: { value: rgb(styles.getPropertyValue('--accent'), [0.09, 0.63, 0.56]) },
+      uAccent: { value: levelled(rgb(styles.getPropertyValue('--accent'), [0.09, 0.63, 0.56])) },
       uCobalt: { value: rgb(styles.getPropertyValue('--cobalt'), [0.30, 0.44, 0.91]) },
       uTeal: { value: rgb(styles.getPropertyValue('--teal'), [0.09, 0.63, 0.56]) },
       uFade: { value: 0 },
       uTune: { value: [1, 1] },
-      uGain: { value: options.gain || 3.2 },
+      /* This and the lift a hero passes in were both set by eye against
+         headless captures, where the plane composites far darker than it does
+         on a real GPU, and both were about twice what the page could carry.
+         They are lower now — but the number that actually keeps the copy
+         readable is the ceiling below, not either of these. The gain decides
+         what the room looks like; the ceiling decides what it may cost. */
+      uGain: { value: options.gain || 2.6 },
       uLift: { value: options.lift || 1 },
+      /* Nothing is being read yet, so nothing is masked yet: an empty map puts
+         the plane at its open ceiling everywhere until the caller says
+         otherwise, which is also exactly what a page with no script gets. */
+      uRead: { value: maskTex },
+      /* Luminance ceilings, in the encoded space the framebuffer is read in.
+         The open one is high enough that the aurora's best passages are
+         untouched by it; the reading one is derived from the page rather than
+         chosen — #9d9a90 body copy needs a backdrop under 0.032 relative
+         luminance to clear 4.5:1, and this is what the plane may contribute to
+         that once the wash beneath it and the plane's own 0.85 opacity have
+         taken their share. */
+      uCap: { value: [options.cap || 0.62, options.readCap || 0.175] },
     },
   });
   const mesh = new Mesh(gl, { geometry: new Triangle(gl), program });
@@ -304,6 +478,7 @@ export function mount(canvas, opts) {
     }
     program.uniforms.uTune.value[0] += (tuneTo[0] - program.uniforms.uTune.value[0]) * 0.06;
     program.uniforms.uTune.value[1] += (tuneTo[1] - program.uniforms.uTune.value[1]) * 0.06;
+    if (maskMoving) settleMask();
     program.uniforms.uScroll.value += (scrollTo - program.uniforms.uScroll.value) * 0.08;
 
     program.uniforms.uTime.value = time;
@@ -386,7 +561,7 @@ export function mount(canvas, opts) {
   function tune(opts2) {
     if (dead || !opts2) return;
     if (opts2.accent) {
-      const c = rgb(opts2.accent, accentTo);
+      const c = levelled(rgb(opts2.accent, accentTo));
       accentTo[0] = c[0];
       accentTo[1] = c[1];
       accentTo[2] = c[2];
@@ -397,7 +572,66 @@ export function mount(canvas, opts) {
     }
   }
 
-  return { destroy, tune };
+  /* The mask walks toward what the caller last said, one frame at a time. It
+     eases for the same reason the accent does: a mask that snapped to each new
+     paragraph would read as the plane flinching away from the text, which is
+     precisely the thing it must never look like. */
+  function settleMask() {
+    let moving = false;
+    for (let i = 0; i < MASK_N; i++) {
+      const d = maskWant[i] - maskNow[i];
+      if (d > 0.002 || d < -0.002) {
+        maskNow[i] += d * 0.16;
+        moving = true;
+      } else {
+        maskNow[i] = maskWant[i];
+      }
+      maskBytes[i] = maskNow[i] * 255;
+    }
+    maskMoving = moving;
+    maskTex.image = maskBytes;
+    maskTex.needsUpdate = true;
+  }
+
+  /* And the second thing the outside world may say: where the words are, as a
+     flat run of rectangles in the plane's own uv — four numbers each, y
+     measured from the bottom because that is the direction the fullscreen
+     triangle's uv runs.
+
+     The plane does not go looking for the text itself. It has no idea what
+     this site's markup is called, and the day it learns is the day it can only
+     be used on this site. The caller measures; this rasterises what it is
+     told, blurs it until it has no edge, and believes it. An empty run clears
+     the mask and the plane opens back up. */
+  function read(rects, count) {
+    if (dead) return;
+    maskWant.fill(0);
+    const n = count || 0;
+    for (let i = 0; i < n; i++) {
+      const o = i * 4;
+      /* Two cells of margin all round, which is exactly what the two blur
+         passes below reach. Without it the softening eats inward instead of
+         outward and a single short line — an eyebrow, a caption, a figure —
+         ends up with a mask that never reaches full strength anywhere along
+         it, which is the one case a mask like this must not get wrong. */
+      let x0 = Math.floor(rects[o] * MASK_W) - 2;
+      let y0 = Math.floor(rects[o + 1] * MASK_H) - 2;
+      let x1 = Math.ceil(rects[o + 2] * MASK_W) + 2;
+      let y1 = Math.ceil(rects[o + 3] * MASK_H) + 2;
+      if (x0 < 0) x0 = 0;
+      if (y0 < 0) y0 = 0;
+      if (x1 > MASK_W) x1 = MASK_W;
+      if (y1 > MASK_H) y1 = MASK_H;
+      for (let y = y0; y < y1; y++) {
+        const row = y * MASK_W;
+        for (let x = x0; x < x1; x++) maskWant[row + x] = 1;
+      }
+    }
+    blur(maskWant, maskWork);
+    maskMoving = true;
+  }
+
+  return { destroy, tune, read };
 }
 
 export default { mount };

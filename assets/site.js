@@ -10,10 +10,11 @@
      2. a hairline reading-progress bar
      3. closing the mobile menu on Escape, on outside click, and on navigation
      4. the global Motion On/Off control — the one switch in the masthead
-     5. the Selected Work rail: which room you are in, how far through, and
+     5. the Projects rail: which room you are in, how far through, and
         what colour the room the whole page is read in should be
      6. the contact card, which turns over
-     7. the three lazy layers, and far more often the decision not to load them
+     7. the three lazy layers, and far more often the decision not to load them,
+        and telling the atmosphere where on the screen the words currently are
 
    Jobs 1-6 are the site, and every one of them is small enough to live in the
    critical file. The hero's whole arrival choreography is CSS — this file only
@@ -207,7 +208,7 @@
     window.addEventListener("scroll", settle, { capture: true, passive: true });
   }
 
-  /* --- 3d. the Selected Work rail ------------------------------------------
+  /* --- 3d. the Projects rail ------------------------------------------------
      Six rooms, one spine. The rail's links are ordinary same-page anchors and
      stay that way: all this does is report which room you are in — aria-current
      on the matching link, the room's accent on the rail, and how far through
@@ -390,6 +391,7 @@
     if (cinema.atmos && cinema.atmos.destroy) cinema.atmos.destroy();
     if (cinema.pulse && cinema.pulse.destroy) cinema.pulse.destroy();
     if (cinema.holo && cinema.holo.destroy) cinema.holo.destroy();
+    readingMask(null);
     cinema.atmos = null;
     cinema.pulse = null;
     cinema.holo = null;
@@ -506,15 +508,124 @@
                loud it may be over the top of one: a page built around a hero
                can carry the loud version for a screenful, and a page that opens
                on a paragraph cannot. */
-            lift: document.querySelector("[data-signal]") ? 2.7 : 1,
+            lift: document.querySelector("[data-signal]") ? 2.0 : 1,
             onLost: function () {
               cinema.atmos = null;
+              readingMask(null);
               if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
             }
           });
+          readingMask(cinema.atmos);
         })
         .catch(function () {});
     }
+  }
+
+  /* --- 5b. where the words are --------------------------------------------- */
+
+  /* The plane draws light, the page is read over the top of it, and until now
+     neither of those two facts knew about the other. This is the wire between
+     them, and it runs in this direction on purpose: the module measures
+     nothing and this file names nothing the module has to understand. All that
+     crosses is a run of rectangles in the plane's own coordinates.
+
+     They are the LINES, not the elements. A block element is as wide as
+     whatever contains it however narrow its ink is, so measuring boxes would
+     have reported the tag strip at the top of a case study as full-bleed text
+     and dimmed the plane clean across the frame for four short chips. A range
+     over the element's contents gives back one rectangle per line actually
+     laid out, which is the same thing a reader sees, and it costs a layout
+     read the scroll handler was going to force anyway.
+
+     Nothing here is a constant somebody has to keep in step with the
+     stylesheet by hand — no shell width, no measure, no breakpoint. That
+     matters most on the page it is least obvious on: the home hero puts its
+     words down the left, so that is what gets covered, and the projection in
+     the empty half keeps the plane at full strength behind it. */
+  var READS = "p, li, dd, dt, h1, h2, h3, h4, blockquote, figcaption, td, th";
+  var readIO = null;
+  var onScreen = [];
+  var readPlane = null;
+  var queued = false;
+
+  function readingMask(plane) {
+    if (readIO) {
+      readIO.disconnect();
+      readIO = null;
+      onScreen = [];
+      readPlane = null;
+      window.removeEventListener("scroll", queueRead);
+      window.removeEventListener("resize", queueRead);
+    }
+    if (!plane || !plane.read || !("IntersectionObserver" in window)) return;
+
+    var main = document.getElementById("main") || document.body;
+    var text = main.querySelectorAll(READS);
+    if (!text.length) return;
+
+    readIO = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        var el = entries[i].target;
+        var at = onScreen.indexOf(el);
+        if (entries[i].isIntersecting) {
+          if (at < 0) onScreen.push(el);
+        } else if (at >= 0) {
+          onScreen.splice(at, 1);
+        }
+      }
+      measureRead(plane);
+    });
+    for (var i = 0; i < text.length; i++) readIO.observe(text[i]);
+
+    readPlane = plane;
+    window.addEventListener("scroll", queueRead, { passive: true });
+    window.addEventListener("resize", queueRead, { passive: true });
+    measureRead(plane);
+  }
+
+  /* One measurement per frame at most, and none at all while nothing moves. */
+  function queueRead() {
+    if (queued || !readPlane) return;
+    queued = true;
+    requestAnimationFrame(function () {
+      queued = false;
+      measureRead(readPlane);
+    });
+  }
+
+  /* One buffer, filled and refilled. Two hundred and fifty-six lines is more
+     than fits on any screen this site is read on; past that the mask is
+     already covering everything the extra lines would have covered. */
+  var LINES = 256;
+  var lineBuf = new Float32Array(LINES * 4);
+  var range = null;
+
+  function measureRead(plane) {
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var n = 0;
+
+    if (!range) range = document.createRange();
+
+    for (var i = 0; i < onScreen.length && n < LINES; i++) {
+      range.selectNodeContents(onScreen[i]);
+      var lines = range.getClientRects();
+      for (var j = 0; j < lines.length && n < LINES; j++) {
+        var r = lines[j];
+        if (r.width < 4 || r.height < 4) continue;
+        if (r.bottom <= 0 || r.top >= vh || r.right <= 0 || r.left >= vw) continue;
+        var o = n * 4;
+        /* Into the plane's uv, whose y runs up from the bottom of the
+           viewport, clipped to the frame it is drawn in. */
+        lineBuf[o] = Math.max(0, r.left) / vw;
+        lineBuf[o + 1] = 1 - Math.min(vh, r.bottom) / vh;
+        lineBuf[o + 2] = Math.min(vw, r.right) / vw;
+        lineBuf[o + 3] = 1 - Math.max(0, r.top) / vh;
+        n++;
+      }
+    }
+
+    plane.read(lineBuf, n);
   }
 
   /* One wire between what is being read and the room it is read in, and it

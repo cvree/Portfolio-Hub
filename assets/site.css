@@ -343,11 +343,6 @@ section + section{ border-top:1px solid var(--line); }
   background:var(--accent); flex:none;
   transform:translateY(-.15rem);
 }
-.wordmark .role{
-  font-family:var(--mono); font-weight:400; font-size:.66rem;
-  letter-spacing:.13em; text-transform:uppercase; color:var(--text-quiet);
-}
-@media (max-width:560px){ .wordmark .role{ display:none; } }
 
 .nav{ display:flex; align-items:center; gap:.15rem; }
 .nav a{
@@ -893,6 +888,11 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
 
   .atmos,.grain,.masthead,.foot,.skip,.progress,.no-print,.nextup,
   .sig__field,.atmos__canvas,.sig__stage,.th__rail,.scene,.motionbtn{ display:none !important; }
+  /* A sheet of paper is narrower than 999 px, so the hero's mobile rules apply
+     to it — including the ground the identity carries when the projection is
+     behind it. There is no projection on paper and no plane behind it, so
+     there is nothing for that ground to hold back. */
+  .sig__copy::before{ display:none !important; }
 
   /* No transition, no shader, no scroll timeline, and every collapsed detail
      opened — paper gets the document, in full and in order. */
@@ -2532,6 +2532,28 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   /* No pointer to turn it with, so it never claims a press. holo.js gives it
      the scroll instead. */
   .holo__grid{ opacity:.28; }
+
+  /* One scrim, and only here. Everywhere else on the site the thing behind a
+     paragraph is the atmosphere, and the atmosphere is told where the words
+     are and lowers its own ceiling for them. This is the one place that is not
+     true: with no room for a column beside it the projection moves BEHIND the
+     identity, and an object with its own light in it does not answer to the
+     plane's ceiling — nor should it, because its brightness is the point of
+     it. So the copy carries a soft ground of its own instead. It is a
+     gradient, not a panel: it has no edge you can find, it costs no element,
+     and the object keeps every bit of the light it had. */
+  .sig__copy{ position:relative; z-index:1; }
+  .sig__copy::before{
+    content:"";
+    position:absolute;
+    inset:-7% -9% -5% -8%;
+    z-index:-1;
+    pointer-events:none;
+    background:radial-gradient(118% 82% at 34% 44%,
+      color-mix(in srgb, var(--ink) 84%, transparent) 0%,
+      color-mix(in srgb, var(--ink) 62%, transparent) 46%,
+      transparent 76%);
+  }
 
   .sig__title{ font-size:clamp(3.1rem, 15vw, 5rem); }
   .sig__lede{ max-width:24em; font-size:1rem; }

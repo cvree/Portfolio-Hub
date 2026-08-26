@@ -180,7 +180,7 @@ test.describe('the first viewport', () => {
     });
   }
 
-  test('no capture of any kind appears above Selected Work', async ({ page }) => {
+  test('no capture of any kind appears above Projects', async ({ page }) => {
     await page.goto('index.html', { waitUntil: 'load' });
     const worksTop = await page.locator('[data-theatre]').evaluate((e) => e.getBoundingClientRect().top + window.scrollY);
     const early = await page.$$eval('img', (imgs, top) =>
@@ -224,10 +224,10 @@ test.describe('what the hero no longer asks of anybody', () => {
     for (const fact of OPEN_FACTS) expect(text).toContain(fact);
   });
 
-  test('the masthead carries one control and four destinations', async ({ page }) => {
+  test('the masthead carries one control and three destinations', async ({ page }) => {
     const nav = page.locator('.masthead nav[aria-label="Primary"] a');
-    await expect(nav).toHaveCount(4);
-    expect(await nav.allInnerTexts()).toEqual(['Selected Work', 'About', 'Résumé', 'Contact']);
+    await expect(nav).toHaveCount(3);
+    expect(await nav.allInnerTexts()).toEqual(['Projects', 'Résumé', 'Contact']);
     expect(await page.locator('.masthead__in > button').count()).toBe(1);
     await expect(page.locator('.masthead__in > [data-motion-toggle]')).toBeVisible();
   });

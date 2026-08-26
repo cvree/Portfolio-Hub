@@ -8,7 +8,7 @@ script. No framework, no CDN in the critical path, and no third-party runtime
 dependency in the path of anything a visitor needs.
 
 Above that sits a cinematic layer — the **CE Signal Sculpture** on the home
-page, six living Selected Work scenes, cross-document view transitions across
+page, six living project scenes, cross-document view transitions across
 all twelve pages, native scroll-driven motion, and one product-physics law per
 case study. Every part of it is an escalation of the page underneath it, and
 every part of it can fail without taking that page with it.
@@ -17,7 +17,7 @@ The design system it answers to is written down in [`DESIGN.md`](DESIGN.md).
 
 ```
 index.html                  Home — one signal
-work.html                   Selected Work — the index
+work.html                   Projects — the index
 spellbomb.html              ┐
 health-journal.html         │
 phlebotomy-exam-prep.html   │ six case studies, one per flagship product
@@ -84,7 +84,7 @@ Each page fragment opens with a small front-matter block:
 ```html
 <!--meta
 path: work.html
-title: Selected Work — Connor Eppolito
+title: Projects — Connor Eppolito
 nav: work                 which navigation item is current
 surface: ink | paper      near-black, or the warm ivory document surface
 accent: spellbomb         the per-page accent colour
@@ -163,7 +163,7 @@ of it is cut from the same `<path>`:
 | **The rings** | Three orbital rings, each on its own axis and its own clock, each with one bright arc |
 | **The room** | A projector cone, a breathing emitter plate and a perspective floor grid |
 
-There is **no raster image anywhere above Selected Work**. The hero is geometry
+There is **no raster image anywhere above Projects**. The hero is geometry
 and type, over the atmosphere plane that every page carries.
 
 ### What it replaced, and why
@@ -264,7 +264,45 @@ Three decisions make it usable rather than merely present:
 - **It renders at thirty frames a second**, because nothing on it moves fast
   and this is now the whole site's cost rather than one hero's.
 
-Reading a project in Selected Work retunes it to that project's own accent over
+### The legibility floor
+
+The first version of this plane was tuned by eye against headless captures, and
+headless captures composite far darker than a real GPU does. On real hardware
+body copy set in `--text-quiet` was landing at **1.2:1** over the plane's bright
+passages, against a 4.5:1 requirement. That is not a plane somebody can read
+over; it is weather indoors.
+
+Three separate things were wrong, and all three are fixed separately, because
+turning one dial down would have dimmed the answer to all three and solved none
+of them:
+
+| | What was wrong | What it does now |
+| --- | --- | --- |
+| **The levelling** | Six accents taken from six running products, spread over two and a half times in relative luminance — `#ded7c6` and `#b9e24d` each carry about 2.5× the light of `#17a08f`. Scrolling into SpellBomb or OWCS did not change the colour of the light, it turned the light up. | Every accent is scaled to one luminance before it reaches a uniform. The scale is a ceiling, never a lift: a quiet accent is left where it is. Hue and saturation survive it; level does not. |
+| **The reading mask** | Nothing on the plane knew where the words were, so a 232-cycle interference field drew contour lines straight across paragraphs. | `site.js` measures the **line boxes** of the text on screen — with a `Range`, not the elements, because a block is as wide as its container however narrow its ink is — and hands them over as a 48 × 27 coverage map. In the open the interference keeps about a third of its old amplitude; over the map it keeps a twentieth, and the ceiling below drops with it. |
+| **The ceiling** | Three layers that each looked reasonable could meet on one fragment with nothing bounding the sum. | The last thing the shader does is limit its own luminance: strict where the map is lit, generous everywhere else, with an exponential shoulder rather than a clamp so highlights roll off into the limit instead of collapsing against it. |
+
+The map is a map rather than a rectangle because a rectangle was not honest. The
+words at the top of the home page are a column down the left, a projection
+stands in the empty half, and a strip of figures crosses the bottom of the
+frame — and the smallest box containing all three is the entire viewport.
+Dimming that box would have paid for the space around the projection, which was
+never hard to read, out of the same purse as the paragraph that was.
+
+The hero of the home page is the one place the plane's ceiling cannot help,
+because at one column the projection moves *behind* the identity and an object
+with its own light in it does not answer to the plane. That copy carries a soft
+radial ground of its own instead — a gradient with no edge you can find, not a
+panel — and the object keeps every bit of its brightness.
+
+None of this is asserted against a token. `tests/legibility.spec.ts` renders
+each page with the plane live, blanks the glyphs, screenshots, and computes the
+real WCAG ratio between the text's own colour and the 98th-percentile pixel
+behind it, on a teal page, a gold page and a lime page, at 1440 × 900 and
+390 × 844, at the top of the document and halfway through it. The worst run on
+the site measures **5.26:1** against a 4.5 floor.
+
+Reading a project in Projects retunes it to that project's own accent over
 about a second: the rail announces the room through a `ce:room` event on the
 document and the shader answers. Neither imports the other.
 
@@ -277,7 +315,7 @@ when the tab is hidden, and releases its context on exit or on context loss. The
 résumé is set on paper and does not get it: a plane that draws light on black
 has nothing to say there.
 
-## Selected Work — six living specimens
+## Projects — six living specimens
 
 Six rooms, six motion laws, one spine.
 
@@ -458,7 +496,7 @@ project card's screenshot becomes that project's case-study hero.
 
 Durations are 180–300 ms, opacity, transform and clipping only, no blur. No name
 appears twice in one document: the identity hero holds no raster at all, so each
-of the six Selected Work scenes claims its project's names exactly once, and the
+of the six project scenes claims its project's names exactly once, and the
 transition carries the active title, accent and capture into the case-study hero
 it opens. Browsers without the feature navigate normally and lose
 nothing, reduced motion collapses every transition to an instant state change,
@@ -568,12 +606,12 @@ Three changes fixed it, and together they took mobile CLS to 0.000:
   pointer that leads the tilt; a drag that throws the object and inertia that
   brings it to rest; nothing changed by any of that — no URL, no history entry,
   no document width or height; and no module fetched under Save-Data, with the
-  whole object still standing — plus the hard limits: no raster above Selected
-  Work, every credential in the first viewport at 1440 and at 390, an arrival
+  whole object still standing — plus the hard limits: no raster above Projects,
+  every credential in the first viewport at 1440 and at 390, an arrival
   that ends on the first input, and no interaction that delays a link
 - the simplification, asserted so it cannot quietly come back: no radio group,
   no `role="tab"` and nothing `display: none` in the hero waiting for a press;
-  every fact the old domain panels held present in the open page text; four
+  every fact the old domain panels held present in the open page text; three
   primary destinations and exactly one button in the masthead; and no sound
   control on any page
 - the six rooms: one distinct motion law each made of elements that can

@@ -55,7 +55,7 @@ test('landscape keeps the menu reachable and the page within its width', async (
   await page.setViewportSize({ width: 844, height: 390 });
   await page.goto('index.html', { waitUntil: 'load' });
   await page.locator('[data-menu] summary').click();
-  await expect(page.locator('.navmob__panel').getByRole('link', { name: 'Selected Work' })).toBeVisible();
+  await expect(page.locator('.navmob__panel').getByRole('link', { name: 'Projects' })).toBeVisible();
   const over = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth
   );

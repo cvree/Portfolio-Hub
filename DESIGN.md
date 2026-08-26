@@ -56,7 +56,7 @@ critical path, the honest status labels — survives unchanged.
 ## 2. The object: the projection
 
 The hero is one object and no controls: the GitHub mark, projected. There is no
-raster image anywhere above Selected Work.
+raster image anywhere above Projects.
 
 It is a real volume rather than a picture of one. Six layers, all of them cut
 from the same `<path>`:
@@ -133,7 +133,7 @@ phlebotomy      #17a08f     paper-animator  #ded7c6
 ```
 
 Chrome — the navigation, the rules, the type — never changes colour. Only the
-marks and the atmosphere do. Reading a project in Selected Work retunes the
+marks and the atmosphere do. Reading a project in Projects retunes the
 plane behind the whole page to that project's own accent, over about a second:
 the rail announces which room you are in through a `ce:room` event on the
 document, and the shader answers it. Neither side imports the other, so either
@@ -341,7 +341,7 @@ but only once the half-turn has actually shown it.
 
 The best-looking thing on this site used to be visible for about one screenful.
 One OGL fragment plane rendered behind the hero of the home page and nowhere
-else, and it was built, compiled and thrown away on the way to Selected Work —
+else, and it was built, compiled and thrown away on the way to Projects —
 for a visitor with a fine pointer, a viewport of at least 1000 px and a browser
 reporting four gigabytes or more of memory. Which is to say: no phone, no
 tablet, and no Safari at all, because Safari does not implement
@@ -370,15 +370,74 @@ Three decisions make it usable rather than merely present:
   somebody is *reading*; `uLift` is how much louder it is allowed to be over
   the top of a page that has a hero to justify it. The lift is spent by the
   time the hero has scrolled away, and a page that opens on a paragraph passes
-  a lift of 1 and never has the loud version. A full-strength interference
-  field behind body copy is a plane that has stopped being a room and started
-  being a competitor.
+  a lift of 1 and never has the loud version.
 - **It renders at thirty frames a second.** Nothing on it moves fast. Half the
   frames are indistinguishable and cost exactly as much, and this is now the
   whole site's cost rather than one hero's.
 
 The résumé is the one page set on paper. A plane that draws light on black has
 nothing to say on it, so it is not asked to.
+
+### The legibility floor
+
+Both of those numbers were originally set by eye, against headless captures.
+Headless captures composite far darker than a real GPU does, and on real
+hardware the result was a plane nobody could read over: body copy set in
+`--text-quiet` measured **1.2:1** against the rendered composite, where the
+requirement is 4.5. The interference field — 232 cycles a screen — was drawing
+topographic contour lines across paragraphs at the same frequency the eye reads
+at.
+
+A gain turned down would have hidden that rather than fixed it, because three
+independent things were wrong. Each has its own answer:
+
+**The levelling.** Six accents taken from six running products spread over two
+and a half times in relative luminance: `#ded7c6` and `#b9e24d` each carry about
+2.5× the light of `#17a08f`. Scrolling into OWCS did not change the colour of the room, it
+turned the room up. Every accent is now scaled to a single luminance before it
+reaches a uniform. The scale is a ceiling and never a lift — the answer to one
+room being too loud is never to turn a quiet one up — and what survives it is
+the hue and the saturation, which is the whole of what an accent was for.
+
+**The reading mask.** Nothing on the plane knew where the words were. `site.js`
+now measures the **line boxes** of the text on screen and hands them to the
+plane as a 48 × 27 coverage map, blurred until it has no edge. In the open the
+interference keeps about a third of the amplitude it had; over that map it keeps
+a twentieth, and the luminance ceiling below drops with it. Outside the map
+nothing else changes at all.
+
+It measures lines rather than elements because a block is as wide as its
+container however narrow its ink is — measuring boxes would have read four short
+chips at the top of a case study as full-bleed text. And it is a map rather than
+a rectangle because a rectangle was not honest: at the top of the home page the
+words are a column down the left, a projection stands in the empty half, and a
+strip of figures crosses the bottom of the frame. The smallest box containing
+all three is the whole viewport, and dimming it would have paid for the space
+around the projection — never hard to read — out of the same purse as the
+paragraph that was.
+
+**The ceiling.** Three layers that each look reasonable can meet on one fragment
+with nothing bounding the sum. The last thing the shader does is limit its own
+luminance: a low limit where the map is lit, a generous one everywhere else. The
+shoulder is exponential rather than a clamp, so a bright pass rolls off into the
+limit instead of collapsing against it and the aurora keeps its gradients right
+up to the edge of what it is allowed. This is the number the site can be tested
+against; the gain is only an intention.
+
+One place on the site the ceiling cannot help. At one column the projection in
+the home hero moves *behind* the identity, and an object with its own light in
+it does not answer to the plane — nor should it, because its brightness is the
+point of it. That copy carries a soft radial ground of its own instead: a
+gradient with no edge you can find, not a panel, and the object keeps every bit
+of the light it had.
+
+None of this is asserted against a token, because a token is no longer what a
+visitor reads over. `tests/legibility.spec.ts` renders each page with the plane
+live, blanks the glyphs, screenshots it, and computes the real WCAG ratio
+between the text's own colour and the pixels actually behind it — on a teal
+page, a gold page and a lime page, at 1440 × 900 and 390 × 844, at the top of
+the document and halfway through it. The worst run on the site measures 5.26:1
+against a 4.5 floor. If that number moves, the atmosphere got louder.
 
 ### The gates, and why they moved
 
@@ -401,17 +460,18 @@ The redesign took things away, and the count is the point:
 | --- | --- | --- |
 | The hero's domain tab set | 3 radios + 3 proof panels, two thirds hidden at any moment | Nothing. Every fact is open in the credentials strip below. |
 | The sound layer | A second masthead switch, an `AudioContext`, three synthesised tones and the whole subsystem behind them | Nothing. The site makes no sound and needs no control to say so. |
-| Primary navigation | 6 items | **4** — Selected Work, About, Résumé, Contact. Home is the wordmark; Experience is a chapter of the résumé it sits beside. |
-| The footer's project column | 6 project links repeating Selected Work | One route to Selected Work; the complete map is the Site column. |
+| Primary navigation | 6 items | **3** — Projects, Résumé, Contact. Home is the wordmark; Experience is a chapter of the résumé it sits beside; About is a page about the site's own taste rather than a destination anybody arrives looking for. Both are in the footer's Site column. |
+| The footer's project column | 6 project links repeating Projects | One route to Projects; the complete map is the Site column. |
 | Duplicate button rows | Two actions under the through-line, two under the contact call | One each. |
 | The hero's social row | GitHub, LinkedIn, Email under the actions | The `@cvree` handle beside the location, and the footer. |
+| The wordmark's tagline | `Health Science · EMT · Builder`, set in mono beside the name and hidden below 560 px anyway | The name and the dot. The three words it carried are the first line of the hero, the first line of the résumé and half the `<title>` of the home page; a masthead is not the fourth place to say them. |
 
 A masthead is a place to go, not an index. The complete map of the site is at
 the foot of every page, where a map belongs.
 
 ---
 
-## 5. Selected Work: six living specimens
+## 5. Projects: six living specimens
 
 Six rooms, six motion laws, one spine.
 
@@ -512,7 +572,7 @@ doing one job, and 44.8 KB of it. The lazy payload fell from **62.4 KB gzip to
 
 With no shared GSAP ticker left to synchronise against, Lenis would have been
 this site's only runtime dependency a visitor could feel go wrong — and all six
-Selected Work rooms are built on native sticky positioning. The browser's own
+The project rooms are built on native sticky positioning. The browser's own
 scrolling is not a detail of this design, it is the mechanism.
 
 ### Studied, not installed

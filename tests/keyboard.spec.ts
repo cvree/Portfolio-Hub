@@ -16,7 +16,7 @@ test('the first tab stops are the skip link, the wordmark, then the navigation',
   }
   expect(seen[0]).toMatch(/Skip to content/);
   expect(seen.join(' | ')).toMatch(/Connor Eppolito/);
-  expect(seen.join(' | ')).toMatch(/Selected Work/);
+  expect(seen.join(' | ')).toMatch(/Projects/);
 });
 
 test('the skip link moves focus into main', async ({ page }) => {
@@ -62,7 +62,7 @@ test('the mobile menu opens, closes on Escape, and traps nothing', async ({ page
   const menu = page.locator('[data-menu]');
   await menu.locator('summary').click();
   await expect(menu).toHaveAttribute('open', '');
-  await expect(menu.getByRole('link', { name: 'Selected Work' })).toBeVisible();
+  await expect(menu.getByRole('link', { name: 'Projects' })).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(menu).not.toHaveAttribute('open', '');
   /* Focus came back to the control that opened it. */

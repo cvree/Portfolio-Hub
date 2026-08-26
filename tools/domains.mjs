@@ -1,4 +1,4 @@
-/* One frame per hero domain, desktop and mobile, the six Selected Work rooms
+/* One frame per hero domain, desktop and mobile, the six Projects rooms
    in the state a visitor actually reads them in, the sculpture under the hand,
    and the contact card on both of its faces.
 

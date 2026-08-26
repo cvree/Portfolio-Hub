@@ -14,16 +14,16 @@ No bundle here is in the critical path. `site.js` imports them dynamically,
 after first paint, and only when the device, the motion preference, Save-Data
 and the pointer type all pass. Neither is ever required for a page to be
 complete: the hero's arrival, the projected mark it is built around, the six
-Selected Work scenes and every control on the site are CSS, markup and the
+Projects scenes and every control on the site are CSS, markup and the
 critical `site.js` — none of which is behind a lazy request.
 
 | Package | Version | Source | License | Bundle | Raw | Gzip |
 | --- | --- | --- | --- | --- | --- | --- |
 | `—` | — | this repository | MIT (this repository) | `assets/vendor/pulse.js` | 2.0 KB | 0.9 KB |
 | `—` | — | this repository | MIT (this repository) | `assets/vendor/holo.js` | 2.8 KB | 1.1 KB |
-| `ogl` | 1.0.11 | https://github.com/oframe/ogl | Unlicense | `assets/vendor/atmosphere.js` | 52.9 KB | 16.5 KB |
+| `ogl` | 1.0.11 | https://github.com/oframe/ogl | Unlicense | `assets/vendor/atmosphere.js` | 62.2 KB | 19.5 KB |
 
-Total lazy payload: **18.5 KB gzip**, against a
+Total lazy payload: **21.5 KB gzip**, against a
 budget of 100 KB. None of it is requested until after the useful site has
 rendered, and the shader additionally requires WebGL and a device that does not
 report under 4 GB of memory — a browser that declines to report at all is not
@@ -67,7 +67,7 @@ job, and 44.8 KB of it.
 
 `lenis` was considered and declined for the same reason. With no shared GSAP
 ticker left to synchronise against it would have been this site's only runtime
-dependency a visitor could feel go wrong, and all six Selected Work rooms are
+dependency a visitor could feel go wrong, and all six Projects rooms are
 built on native sticky positioning — the browser's own scrolling is not a
 detail of this design, it is the mechanism.
 
