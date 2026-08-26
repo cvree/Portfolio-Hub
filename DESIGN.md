@@ -4,10 +4,10 @@ The design system behind [cvree.github.io/Portfolio-Hub](https://cvree.github.io
 
 > **Care. Code. Competition. One signal.**
 >
-> Connor's identity is encoded as a living signal: one decisive QRS assembles
-> CARE, BUILD and COMPETE into a bespoke CE monogram, and that same signal
-> conducts the visitor through six genuinely different pieces of product
-> evidence.
+> Connor's identity is a signal drawn across the whole site: an atmosphere
+> plane that is the room every page is read in, a projected mark that is the
+> one object in the first viewport, and a trace that reports how hard the
+> visitor is reading it.
 
 ---
 
@@ -21,10 +21,11 @@ systems for people under pressure* — expressed in four rooms.
 
 A heartbeat is the one signal every human being reads without being taught. So
 the site does not illustrate that disposition; it draws it. A single ECG trace
-crosses the first viewport, assembles the monogram on its QRS, becomes the
-progress spine beside the six projects, and finishes as the reading-progress
-line at the top of every page. There is one signal, and everything on the site
-is a state of it.
+runs the progress spine beside the six projects and the reading-progress line
+at the top of every page, gaining amplitude with how hard you are reading. It
+runs over an atmosphere plane that is the room the whole site is read in, and
+in front of both stands one object: the GitHub mark, projected. There is one
+signal, and everything on the site is a state of it.
 
 ### What the previous design got wrong
 
@@ -52,32 +53,59 @@ critical path, the honest status labels — survives unchanged.
 
 ---
 
-## 2. The object: the CE Signal Sculpture
+## 2. The object: the projection
 
-The hero is a monogram assembled from three planes of aligned SVG geometry.
-There is no raster image anywhere above Selected Works.
+The hero is one object and no controls: the GitHub mark, projected. There is no
+raster image anywhere above Selected Work.
 
-| Plane | Colour | Geometry | What it *is* |
-| --- | --- | --- | --- |
-| **CARE** | medical teal `#17a08f` | An open arc — the **C** — drawn as a monitor lead, with electrode points at both terminals | The clinical work. The C is open to the right, and the page's trace runs straight through its mouth. |
-| **BUILD** | controlled cobalt `#5b7cf0` | A trunk and three branches — the **E** — with nodes at every junction and three short stubs | The product work, as the module graph it actually is. |
-| **COMPETE** | warm solar gold `#d9a94a` | Four entrants, two semifinals, one final — converging on the tip of the E's middle branch | The competitive work. The champion's seat *is* part of the letterform. |
+It is a real volume rather than a picture of one. Six layers, all of them cut
+from the same `<path>`:
 
-Aligned, they read as **CE** immediately. Separated — by a few pixels of
-pointer parallax, or by choosing a domain — they show what the identity is made
-of.
+| Layer | What it is |
+| --- | --- |
+| **The extrusion** | Eighteen `<use>` references to one path, stacked along Z at 2.4 px apart inside a `preserve-3d` scene, running a hue ramp from cyan at the face to violet at the back. Turning it reveals a solid rather than a sticker. |
+| **The film** | An oil-slick conic spectrum clipped to the silhouette, with a specular highlight that sits wherever the pointer is. |
+| **The ghosts** | Two more copies of the silhouette, cyan and magenta, in `screen` blend, pulled apart *along the current tilt* — so the chromatic split answers the object rather than sitting at a fixed offset pretending to. |
+| **The scan** | A line raster and one bright bar travelling down through it, both clipped to the mark. |
+| **The rings** | Three orbital rings, each on its own axis and its own clock, each with one bright arc so the rotation is legible rather than implied. |
+| **The room** | A projector cone, a breathing emitter plate and a perspective floor grid under all of it. |
 
-The C does not carry a picture of a heartbeat. It reads the one the page is
-already drawing. That is the whole idea in one detail: the signal belongs to
-the page, and the clinical plane is what is open to it.
+### What the previous object got wrong
+
+What stood here before was a monogram assembled out of three planes — CARE as a
+clinical arc, BUILD as a node graph, COMPETE as a bracket — with a
+three-position radio group under it deciding which plane was lit.
+
+It was a diagram of an idea about somebody rather than an object anybody wanted
+to look at, and it cost more than it returned:
+
+1. **It needed a caption to be understood.** A monogram whose meaning depends on
+   a legend is a logo that failed.
+2. **Its control hid two thirds of its own content.** Every fact in those three
+   proof panels is restated, open and uncontested, in the credentials strip
+   immediately below the hero. The tab set was a gate on information that was
+   already free further down the page.
+3. **It only moved if you had a mouse.** The whole interaction was pointer
+   parallax and a fine-pointer-only hold.
+
+The projection answers all three. It is a mark everybody already recognises, it
+says nothing at all so nothing can be hidden behind it, and it turns for
+everybody: the pointer leads the tilt, a drag throws it, a click nudges it, and
+with no pointer at all the scroll turns it instead.
 
 ### Hard limits on the object
 
-- Plane separation under the pointer: **≤ 14 px** at full deflection.
-- Whole-object tilt: **≤ 3°**.
+- Pointer tilt: **≤ 26° horizontally, ≤ 16° vertically.**
+- Idle travel: a **42° sway**, never a full orbit. A mark turning a full circle
+  spends a third of every revolution edge-on or backwards, which is a third of
+  the time nobody can tell what they are looking at.
+- A throw coasts and **stops**, inside about a second. A hero that never settles
+  is a hero nobody can look away from.
 - The native cursor is never replaced, and the object never follows it.
-- On touch, the explicit CARE / BUILD / COMPETE controls are the interaction.
-  Nothing on this site requires a hover.
+- It is `aria-hidden` and carries no fact, so nobody who ignores it loses
+  anything. Turning it changes no state, no URL and no history entry.
+- On a coarse pointer it is `pointer-events: none` and stands behind the copy:
+  a draggable object in the first viewport is an object that eats the scroll.
 
 ---
 
@@ -96,19 +124,20 @@ Two surfaces, and they mean different things:
 | `--text-quiet` | `#9d9a90` | 7.0:1 on ink — the floor for anything under 18 px |
 | `--text-faint` | `#6f6d66` | 3.8:1. **Large text and non-text marks only.** |
 
-Three domain colours, and six project accents taken from the running products:
+Six project accents, taken from the running products:
 
 ```
---care    #17a08f     spellbomb       #f0a23c
---build   #5b7cf0     health-journal  #7fa6f0
---compete #d9a94a     phlebotomy      #17a08f
-                      manifester      #c99189
-                      owcs            #b9e24d
-                      paper-animator  #ded7c6
+spellbomb       #f0a23c     manifester      #c99189
+health-journal  #7fa6f0     owcs            #b9e24d
+phlebotomy      #17a08f     paper-animator  #ded7c6
 ```
 
 Chrome — the navigation, the rules, the type — never changes colour. Only the
-marks do.
+marks and the atmosphere do. Reading a project in Selected Work retunes the
+plane behind the whole page to that project's own accent, over about a second:
+the rail announces which room you are in through a `ce:room` event on the
+document, and the shader answers it. Neither side imports the other, so either
+can be absent without the other noticing.
 
 > **Contrast rule.** `--text-faint` is 3.8:1 and fails AA below 18 px. Anything
 > small takes `--text-quiet`. A decorative layer that carries text is never
@@ -154,14 +183,12 @@ All of it is CSS keyframes. It starts at first paint, it costs the main thread
 nothing, and the first input of any kind ends it.
 
 ```
-0–240 ms      the calibration line and the resting trace become visible
-120–700 ms    a bright sample head crosses the viewport
-~420 ms       the QRS strikes; one refraction ring passes the object
-420–1100 ms   the three planes come out of a controlled exploded state into
-              exact alignment, and the CE resolves
+0–420 ms      the floor grid, the projector cone and the emitter come up
+180–1280 ms   the projection resolves: it arrives edge-on, small and
+              transparent, and turns into its resting three-quarter view
 650–1250 ms   an ink edge travels the name, line by line
-1000–1500 ms  the credentials and the actions settle on a mechanical detent
-by ~1600 ms   still, and waiting
+1000–1400 ms  the credentials and the actions settle on a mechanical detent
+by ~1500 ms   still, and waiting
 ```
 
 **Nothing in that sequence gates a word.** Every keyframe either runs on
@@ -170,16 +197,16 @@ The name is opaque in the first frame; what travels across it is a bright edge
 *over* type that was readable before the edge arrived. Primary copy never
 starts at `opacity: 0`.
 
-The planes arrive from an *exploded* state, never from nothing — a visitor who
-lands mid-sequence sees a monogram coming together, not a blank rectangle
-waiting to be filled.
+The projection arrives the way one would — edge-on and transparent, resolving
+into the object — never from nothing. A visitor who lands mid-sequence sees a
+hologram coming up, not a blank rectangle waiting to be filled.
 
 ### The three rules
 
 1. Nothing a visitor needs is drawn into existence by an animation.
 2. Every enhanced starting state is applied through `html.js`, set by a
    synchronous statement in `<head>`. There is no frame in which the assembled
-   sculpture is visible before it explodes, and no frame in which a control
+   object is visible before it materialises, and no frame in which a control
    that cannot work is on screen.
 3. Every start state lives inside
    `@media (prefers-reduced-motion: no-preference)` and behind
@@ -196,16 +223,15 @@ layer that answers the visitor, and it is built on the one signal every human
 being already knows how to read.
 
 **A heart rate answers effort, and then it settles.** So does this one. The
-pulse layer writes four custom properties onto `<html>` and then gets out of
+pulse layer writes three custom properties onto `<html>` and then gets out of
 the way:
 
 | Property | Range | What it is |
 | --- | --- | --- |
 | `--pulse` | 0 → 1 | **Exertion.** Scroll velocity, decaying back to nothing in about a second. |
 | `--px`, `--py` | −1 → 1 | The pointer, eased. Fine pointers only. |
-| `--grab-x`, `--grab-y` | −1 → 1 | A deliberate hold on the sculpture, spring-returned. |
 
-Four things read them:
+Three things read them:
 
 1. **The trace across the top of every page** gains amplitude, glow and weight
    with `--pulse`. Scroll hard and the signal rises; stop and it comes back
@@ -213,26 +239,13 @@ Four things read them:
    it — it is the one piece of state a visitor is already generating, reported
    in the one language nobody has to be taught.
 2. **The hero trace** does the same, behind the name.
-3. **The CE sculpture** separates under the pointer by ≤ 14 px and tilts by
-   ≤ 3°, ambient and unasked for.
-4. **The card on the contact page** tilts, and its foil rakes against the tilt
+3. **The card on the contact page** tilts, and its foil rakes against the tilt
    the way a real specular highlight does.
 
-### Taking hold of the object
-
-Two inputs, and they mean different things.
-
-The pointer *drifts* the sculpture — three degrees, ambient, never asked for. A
-**hold** is an explicit act, so it is allowed to pull much further: up to nine
-degrees of tilt and 26 px of plane separation, along the drag. Letting go runs
-a real spring — stiffness 0.13, damping 0.80 — so the planes land just past
-alignment once and stop. A hold that oozes back is a hold that felt like syrup.
-
-A press that never travelled is a press, not a drag. Releasing without having
-moved more than six pixels **strikes** the object instead: one more QRS across
-the viewport, one more refraction ring, and the planes snap back together on
-the beat. The module only reports that it happened; the page decides what it
-means.
+The hold this module used to own — taking the sculpture in hand — belongs to
+the hologram driver now. Two modules reaching for the same pointer was one
+module too many, and the object that answers a hand should be the module that
+listens for it.
 
 ### One beat, on a real activation
 
@@ -242,17 +255,42 @@ action, settle — 720 ms, once, and it clears itself.
 
 ### What it costs
 
-**1.3 KB gzip, no dependency, and no layout.** One `requestAnimationFrame`
+**0.9 KB gzip, no dependency, and no layout.** One `requestAnimationFrame`
 loop that stops running the moment everything is at rest, and stops entirely
 when the document is hidden. Every value is clamped at the source rather than
 trusted downstream. It never changes the height or the width of the document —
 `tests/pulse.spec.ts` asserts exactly that.
 
 It answers the same three gates as everything else: reduced motion, the site's
-own motion control, and Save-Data. Under any of them it is never fetched, not
-one property is ever written, and the sculpture is not holdable. On a phone it
-still loads, because the part that matters most there is the part that needs no
-pointer at all.
+own motion control, and Save-Data. Under any of them it is never fetched and
+not one property is ever written. On a phone it still loads, because the part
+that matters most there is the part that needs no pointer at all.
+
+### 4b-ii. The hologram driver
+
+`assets/vendor/holo.js` is the same shape of thing, for the object in the hero:
+**1.1 KB gzip, no dependency**, five custom properties on the host, and a frame
+loop that stops itself the moment nothing is moving, the object leaves the
+screen, or the tab goes behind something else.
+
+| Property | What it is |
+| --- | --- |
+| `--rx`, `--ry` | The tilt the pointer leads, in degrees. |
+| `--spin` | The angle a drag has thrown, in degrees, with inertia. |
+| `--tilt` | The same horizontal tilt as a plain −1 → 1 ratio, which is what the chromatic split needs and degrees cannot give it. |
+| `--px`, `--py` | Where the light lands on the film, 0 → 1. |
+| `--grab` | 1 while the object is held, 0 otherwise. |
+
+**Everything the object does without it:** stand at its resting three-quarter
+angle, sway, orbit its rings, run its scan bar and breathe its emitter. All of
+that is keyframes. What the module adds is the part a stylesheet cannot know —
+where the pointer is, and whether somebody has taken hold.
+
+A drag is claimed on the host and released on the window, so a pointer that
+leaves the element still lets go. It never touches the vertical axis, so a drag
+that turns out to be a scroll is a scroll. A press that never travelled is not
+a throw: it gets one deliberate nudge instead, because a click on the object
+should do something.
 
 ---
 
@@ -263,7 +301,7 @@ a thickness, printed on the same warm ivory the résumé is set on, because pape
 is what this site already means by *the artefact you hand somebody*.
 
 Both faces carry real content. The front is the identity: name, the four
-credentials, the monogram struck in foil, the signal across the foot, and the
+credentials, the clinical mark struck in foil, the signal across the foot, and the
 availability. The back is every route out of the page, as four ordinary links.
 
 | State | What the visitor gets |
@@ -296,6 +334,80 @@ but only once the half-turn has actually shown it.
 > `--teal-ink` (`#0b6357`, 5.6:1). The tokens `--teal-ink`, `--cobalt-ink` and
 > `--gold-ink` exist for exactly this: the same three colours, drawn deeper,
 > for type set on paper.
+
+---
+
+## 4d. The atmosphere — one plane, every page, the whole viewport
+
+The best-looking thing on this site used to be visible for about one screenful.
+One OGL fragment plane rendered behind the hero of the home page and nowhere
+else, and it was built, compiled and thrown away on the way to Selected Work —
+for a visitor with a fine pointer, a viewport of at least 1000 px and a browser
+reporting four gigabytes or more of memory. Which is to say: no phone, no
+tablet, and no Safari at all, because Safari does not implement
+`navigator.deviceMemory`.
+
+It is now mounted on the fixed atmosphere plane the base template already puts
+on **every** page. The room the site is read in is the same room from the first
+scroll to the footer, and it answers to the document rather than to one section.
+
+| Layer | What it is |
+| --- | --- |
+| **The aurora** | A domain-warped flow field, three octaves, drifting on its own clock. It never repeats inside a visit and never reads as a looping texture. |
+| **The aperture** | A soft iris the pointer nudges, whose edge *tightens as the document is read*. |
+| **The interference** | A fine signal, refracted where the field is strongest rather than sliding over it. |
+| **The motes** | A sparse specular grid, brightest near the light, so the far edges of frame have something to do. |
+| **The key** | A directional light the pointer leads and never follows. |
+
+Three decisions make it usable rather than merely present:
+
+- **It composites with `screen`.** The plane draws light on black, so under
+  `screen` its black is exactly nothing and its light is added to the gradient
+  wash underneath. The wash is never hidden, there is no frame where an
+  un-drawn canvas covers it, and the arrival is the shader's own fade rather
+  than a CSS transition the compositor has to be trusted with.
+- **It is loud in one place only.** `uGain` is the level it reads at while
+  somebody is *reading*; `uLift` is how much louder it is allowed to be over
+  the top of a page that has a hero to justify it. The lift is spent by the
+  time the hero has scrolled away, and a page that opens on a paragraph passes
+  a lift of 1 and never has the loud version. A full-strength interference
+  field behind body copy is a plane that has stopped being a room and started
+  being a competitor.
+- **It renders at thirty frames a second.** Nothing on it moves fast. Half the
+  frames are indistinguishable and cost exactly as much, and this is now the
+  whole site's cost rather than one hero's.
+
+The résumé is the one page set on paper. A plane that draws light on black has
+nothing to say on it, so it is not asked to.
+
+### The gates, and why they moved
+
+Reduced motion and Save-Data are somebody telling you not to. No WebGL is the
+browser telling you it cannot. A device that reports its memory and reports
+less than four gigabytes is telling you it is small, and that answer is still
+honoured.
+
+**Silence is not any of those, and is no longer read as one.** What the old
+gates were protecting most visitors from was two radial gradients' worth of GPU
+work on one triangle — while costing them the entire atmosphere.
+
+---
+
+## 4e. What was removed
+
+The redesign took things away, and the count is the point:
+
+| Gone | Was | Now |
+| --- | --- | --- |
+| The hero's domain tab set | 3 radios + 3 proof panels, two thirds hidden at any moment | Nothing. Every fact is open in the credentials strip below. |
+| The sound layer | A second masthead switch, an `AudioContext`, three synthesised tones and the whole subsystem behind them | Nothing. The site makes no sound and needs no control to say so. |
+| Primary navigation | 6 items | **4** — Selected Work, About, Résumé, Contact. Home is the wordmark; Experience is a chapter of the résumé it sits beside. |
+| The footer's project column | 6 project links repeating Selected Work | One route to Selected Work; the complete map is the Site column. |
+| Duplicate button rows | Two actions under the through-line, two under the contact call | One each. |
+| The hero's social row | GitHub, LinkedIn, Email under the actions | The `@cvree` handle beside the location, and the footer. |
+
+A masthead is a place to go, not an index. The complete map of the site is at
+the foot of every page, where a map belongs.
 
 ---
 
@@ -349,10 +461,12 @@ The phone gets its own composition, not a narrower copy of the desktop one.
 - Identity-first opening; natural overflow on short screens, no `100vh` trap.
 - At **390 × 844**, before the first scroll: the name, `@cvree`, the location,
   the availability, all four credentials, and **both** primary actions.
-- The assembled sculpture stands **behind and slightly right of the name** at
-  ~62 vw, as a field rather than as an illustration.
-- CARE / BUILD / COMPETE become a three-position segmented touch control; every
-  target clears 44 px.
+- The projection stands **behind the name and out past the right edge of it**
+  at ~80 vw, where the section's own overflow clip cuts it — as the field the
+  identity is lit by rather than as an illustration beside it. It is at 58 %
+  opacity and `pointer-events: none`: still the object, still moving, and never
+  competing with a word or with the scroll.
+- With no pointer to turn it, the **scroll** turns it instead.
 - The project rail stops being a spine and becomes a swipeable chapter index.
   It is **not** sticky: on a phone a sticky index is a permanent tax on the
   shortest dimension the visitor has.
@@ -374,8 +488,9 @@ used.
 
 | Shipped | Gate | Cost |
 | --- | --- | --- |
-| `assets/vendor/pulse.js` — the pulse layer, every page, no dependency | motion allowed, not Save-Data | **1.3 KB gzip** |
-| `assets/vendor/atmosphere.js` — one OGL shader plane | the above, plus a fine pointer, ≥1000 px, WebGL and ≥4 GB reported memory | **15.1 KB gzip** |
+| `assets/vendor/pulse.js` — the pulse layer, every page, no dependency | motion allowed, not Save-Data | **0.9 KB gzip** |
+| `assets/vendor/holo.js` — the hologram driver, home page, no dependency | the same two | **1.1 KB gzip** |
+| `assets/vendor/atmosphere.js` — one OGL shader plane, every page | the same two, plus WebGL, and not a device that reports under 4 GB | **16.5 KB gzip** |
 
 Neither is in the critical path. Neither is ever required for a page to be
 complete.
@@ -429,12 +544,12 @@ fictional telemetry · invented testimonials, users, detections, clinical values
 or project numbers · emoji as interface iconography · two animation engines
 doing one job.
 
-**Nothing on this site makes a sound until somebody presses the control that
-says it will.** Every tone is an oscillator and an envelope built in the
-browser at the moment it is needed; the `AudioContext` is not even constructed
-until the first press. A stored "on" is deliberately not honoured on load — a
-page that starts making noise because of something you did on a previous visit
-is a page that autoplays sound, whatever the reason.
+**Nothing on this site makes a sound.** There was a sound layer here — three
+synthesised tones behind a masthead switch, correct in every detail, autoplaying
+nothing — and it is gone. It was a control that existed to make a promise about
+a feature nobody asked for, and the honest version of that promise is not
+having the feature. The masthead now carries one switch, and it is the one that
+stops every continuous movement on the site.
 
 ---
 
@@ -442,13 +557,14 @@ is a page that autoplays sound, whatever the reason.
 
 | State | What the visitor gets |
 | --- | --- |
-| **No JavaScript** | All three domains open as a proof row. The sculpture assembled. The trace a complete static path. Six ordinary articles with six ordinary links. Every scene its composed final frame. No control on screen that cannot work. |
-| **`prefers-reduced-motion: reduce`** | The same, with the domain controls live and every change instant. No canvas, no sweep, no start states — because none of them is ever applied. |
+| **No JavaScript** | The projection standing, swaying, orbiting and scanning — all of that is keyframes. Six ordinary articles with six ordinary links. Every scene its composed final frame. No control on screen that cannot work. |
+| **`prefers-reduced-motion: reduce`** | The same composition, still. Every layer of the object is on it at its resting three-quarter angle; only the movement goes. No canvas, no start states — because none of them is ever applied. |
 | **The site's motion control** | Identical to the above, and remembered. It can only ever make the site *stiller* than the operating system asked for. |
-| **Save-Data** | Native scrolling, no module requested at all, and the control still works — withholding a control is not the same as withholding an effect. |
-| **Coarse pointer** | State selection instead of hover depth. Every target ≥ 44 px. Nothing anywhere depends on hovering, and nothing is draggable out from under the scroll. The trace still answers the scroll, which is the part of the pulse layer that matters most on a phone. |
-| **Keyboard** | Real radio inputs in a real fieldset, so arrow keys, roving focus and announced position come from the browser rather than from a re-implementation. Focus indication at least as clear as hover. |
+| **Save-Data** | Native scrolling, no module requested at all, and the whole hero still standing. |
+| **Coarse pointer** | The scroll turns the object instead of the pointer. Every target ≥ 44 px. Nothing anywhere depends on hovering, and nothing is draggable out from under the scroll. The trace still answers the scroll, which is the part of the pulse layer that matters most on a phone. |
+| **Keyboard** | Nothing in the hero to operate, because there is nothing in it to reach. Every route is an ordinary link; focus indication at least as clear as hover. |
 
-**No fact exists only in an inactive enhanced state.** With no script every
-proof group is open; with a script the controls choose which one stands. The
-information does not change — only how much of it is on screen at once.
+**No fact exists only in an enhanced state, because no fact is in the hero's
+object at all.** The projection says nothing. Everything about Connor is in the
+copy beside it and in the strip below it, open, at first paint, with nothing to
+press.

@@ -32,12 +32,12 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE = "https://cvree.github.io/Portfolio-Hub/"
 
-# The primary navigation, in the order it is read. This list is the single
-# definition of it; both the desktop bar and the mobile panel are drawn from it.
+# The primary navigation, in the order it is read. Four items, and the reason
+# there are four is that a masthead is a place to go, not an index: Home is the
+# wordmark to the left of it, Experience is a chapter of the résumé it sits
+# beside, and the complete map of the site is at the foot of every page.
 NAV = [
-    ("home", "Home", "index.html"),
     ("work", "Selected Work", "work.html"),
-    ("experience", "Experience", "experience.html"),
     ("about", "About", "about.html"),
     ("resume", "Résumé", "resume.html"),
     ("contact", "Contact", "contact.html"),

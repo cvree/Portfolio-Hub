@@ -135,16 +135,41 @@ a{ color:inherit; }
   color-scheme:light;
 }
 
-/* The atmosphere: one fixed wash and one grain layer, both non-interactive.
-   Nothing here moves, so there is nothing here to disable. */
+/* THE ATMOSPHERE. One fixed plane, the whole viewport, every page.
+
+   The wash below is the entire design with no script: two radial gradients,
+   nothing moving, nothing to disable. When the shader is allowed to run it
+   mounts a canvas inside this element and renders over the wash — which is why
+   the shader now costs one plane instead of one section. It used to be built,
+   compiled and thrown away for a single screenful behind a single hero; it is
+   now the room the whole site is read in, and it answers to how far through
+   the document you are rather than to how far through one section.
+
+   The canvas is `position:absolute` inside a `position:fixed` parent, so it is
+   painted once at viewport size and never re-laid-out on scroll. */
 .atmos{
   position:fixed; inset:0; z-index:0; pointer-events:none;
+  overflow:clip;
   background:
     radial-gradient(120vw 80vh at 82% -10%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%),
     radial-gradient(90vw 70vh at -10% 8%, color-mix(in srgb, var(--cobalt) 9%, transparent), transparent 58%);
   opacity:.85;
   transition:background 900ms var(--ease);
 }
+/* Screen blend, and no opacity choreography at all. The plane draws light on
+   black, so under `screen` its black is exactly nothing and its light is added
+   to the wash underneath — which means the gradient is never hidden, there is
+   no frame where an un-drawn canvas covers it, and the arrival is the shader's
+   own uFade ramp rather than a transition the compositor has to be trusted
+   with. */
+.atmos__canvas{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  mix-blend-mode:screen;
+}
+/* The résumé is the one page set on paper. A plane that draws light on black
+   has nothing to say on it, so it is not asked to. */
+.on-paper .atmos__canvas{ display:none; }
 .on-paper .atmos{
   background:
     radial-gradient(120vw 80vh at 88% -14%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
@@ -525,10 +550,16 @@ section + section{ border-top:1px solid var(--line); }
   color:var(--text-quiet); white-space:nowrap;
 }
 .chip .led{ width:.42rem; height:.42rem; border-radius:50%; background:currentColor; flex:none; }
+/* A chip label is 10.5 px, which is small text, and the site's own rule is that
+   an accent is for display type, borders and marks rather than for small text.
+   Two of these were breaking it: `--cobalt` is 4.42:1 on ink and `--text-faint`
+   is 3.77:1, both under the 4.5:1 AA floor. The border still carries the raw
+   accent — a border is a mark — and the word takes a value that clears the
+   floor against both ink and ink-raised. */
 .chip--live{ color:var(--teal); border-color:color-mix(in srgb, var(--teal) 45%, transparent); }
 .chip--dev{ color:var(--gold); border-color:color-mix(in srgb, var(--gold) 45%, transparent); }
-.chip--exp{ color:var(--cobalt); border-color:color-mix(in srgb, var(--cobalt) 45%, transparent); }
-.chip--concept{ color:var(--text-faint); }
+.chip--exp{ color:#7a97f2; border-color:color-mix(in srgb, var(--cobalt) 45%, transparent); }
+.chip--concept{ color:var(--text-quiet); }
 .on-paper .chip--live{ color:#0b6f62; }
 .on-paper .chip--dev{ color:#8a6412; }
 .on-paper .chip--exp{ color:#2b4ec0; }
@@ -861,7 +892,7 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
   body{ overflow:visible; }
 
   .atmos,.grain,.masthead,.foot,.skip,.progress,.no-print,.nextup,
-  .sig__field,.sig__canvas,.sig__stage,.th__rail,.scene,.motionbtn{ display:none !important; }
+  .sig__field,.atmos__canvas,.sig__stage,.th__rail,.scene,.motionbtn{ display:none !important; }
 
   /* No transition, no shader, no scroll timeline, and every collapsed detail
      opened — paper gets the document, in full and in order. */
@@ -1061,60 +1092,63 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
 .navmob__panel .motionbtn{ width:100%; justify-content:center; margin-top:1rem; min-height:48px; }
 
 /* ===========================================================================
-   3. ONE SIGNAL — the identity hero
+   3. THE PROJECTION — the identity hero
    ---------------------------------------------------------------------------
    Care. Code. Competition. One signal.
 
-   The hero is a monogram assembled out of three planes, each of which is a
-   real part of Connor's working life drawn as geometry rather than pictured:
+   What used to stand here was a monogram assembled out of three planes with a
+   three-position control under it deciding which plane was lit. It was a
+   diagram of an idea about somebody rather than an object anybody wanted to
+   look at, and the control under it hid two thirds of its own content behind a
+   tab set whose every fact is restated, open and uncontested, in the strip
+   immediately below the hero. Both are gone, and the page lost no information
+   at all in the trade.
 
-     CARE     a clinical arc with a three-beat rhythm strip inside its bowl,
-              running out through its mouth into the trace that crosses the
-              page. It is the C.
-     BUILD    a node topology whose trunk and three branches are the E, with
-              the short stubs a real module graph grows.
-     COMPETE  a tournament bracket whose champion's seat is the tip of the E's
-              middle branch. It does not decorate the monogram; it finishes it.
+   What stands here now is one object: the GitHub mark, projected. It is a real
+   volume rather than a picture of one —
+
+     eighteen depth slices of a single path, stacked along Z inside a
+     `preserve-3d` scene, running a hue ramp from cyan at the front to violet
+     at the back, so turning it reveals an extrusion rather than a flat sticker
+     the light of a spectral film clipped to the silhouette, whose specular
+     highlight sits wherever the pointer is
+     two chromatic ghosts, split along the tilt, in screen blend
+     a scan bar and a line raster crossing the face
+     three orbital rings, each on its own axis and its own clock
+     a projector cone, an emitter plate and a perspective floor grid under it
 
    Three rules govern every line below, and they are the same three the rest of
    this stylesheet answers to:
 
      1. Nothing a visitor needs is drawn into existence by an animation. Every
         word, action and link in this hero is at full opacity in the first
-        frame; the arrival adds meaning to type that is already readable.
+        frame; the arrival adds meaning to type that is already readable, and
+        the object it plays over carries no fact at all.
      2. The whole arrival is CSS. It is compositor work, it costs the main
         thread nothing, it plays exactly once, and the first input of any kind
         ends it. There is no loader, no gate and no "enter".
      3. Every enhanced starting state is applied through html.js, which is set
         by a synchronous statement in <head>. So there is no frame in which the
-        assembled sculpture is visible before it explodes, and no frame in
+        assembled object is visible before it materialises, and no frame in
         which a control that cannot work is on screen.
-   =========================================================================== */
 
-/* The three domains, as colour. Teal and cobalt are the site's own; the solar
-   gold is the warm end of the same family, lifted just enough to hold its own
-   against near-black. */
-:root{
-  --care:    #17a08f;
-  --build:   #5b7cf0;
-  --compete: #d9a94a;
-}
+   The object turns with no script at all: the orbit, the rings, the scan and
+   the plate are keyframes. `assets/vendor/holo.js` adds only what a stylesheet
+   cannot know — where the pointer is, and whether somebody has taken hold.
+   =========================================================================== */
 
 .sig{
   position:relative;
   border:0;
   padding:0;
   isolation:isolate;
-  /* The trace is deliberately wider than the section that anchors it. This is
-     where it gets clipped, so it can never make the document wider than the
-     screen it is on. */
+  /* The projection's own glow is deliberately wider than the copy beside it.
+     This is where it gets clipped, so it can never make the document wider
+     than the screen it is on. */
   overflow-x:clip;
 }
-[data-signal][data-domain="care"]    { --accent:var(--care); }
-[data-signal][data-domain="build"]   { --accent:var(--build); }
-[data-signal][data-domain="compete"] { --accent:var(--compete); }
 
-/* --- the field: the trace, and the one canvas that may sit behind it ------- */
+/* --- the field the projection stands in ----------------------------------- */
 
 .sig__field{
   position:absolute;
@@ -1122,80 +1156,9 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   overflow:clip;
   pointer-events:none;
   z-index:0;
-}
-.sig__glass{ position:absolute; inset:0; }
-.sig__canvas{
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  opacity:0;
-  transition:opacity 900ms var(--ease);
-}
-.sig__canvas.is-live{ opacity:.66; }
-
-/* THE SIGNAL. Anchored to the sculpture, not to a measured percentage of the
-   section: left:41.4% of the stage is the mouth of the C, and the QRS sits at
-   the centre of the trace — so the event lands in the mouth at every width the
-   site supports, with nothing to re-measure when the copy changes length. */
-.sig__trace{
-  position:absolute;
-  top:50%;
-  left:41.4%;
-  /* The reset caps every svg at its container. This one is deliberately wider
-     than the stage that anchors it: it is the page's signal, not the
-     sculpture's decoration. */
-  width:100vw;
-  max-width:none;
-  height:clamp(180px, 32vh, 330px);
-  transform:translate(-50%, -50%);
-  z-index:-1;
-  overflow:visible;
-}
-.sig__base{
-  fill:none;
-  stroke:var(--text);
-  stroke-width:1;
-  vector-effect:non-scaling-stroke;
-  opacity:.11;
-}
-.sig__wave{
-  fill:none;
-  stroke:var(--accent);
-  stroke-width:1.8;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  vector-effect:non-scaling-stroke;
-  /* The same exertion the spine reports, on the trace the sculpture reads. */
-  opacity:calc(.34 + var(--pulse, 0) * .34);
-  transform-box:fill-box;
-  transform-origin:center;
-  transform:scaleY(calc(1 + var(--pulse, 0) * .42));
-  transition:stroke 520ms var(--ease);
-}
-/* Only the sample under the head is bright. A whole line at full strength is
-   a neon tube, not a monitor. */
-.sig__sweep{
-  fill:none;
-  stroke:var(--accent);
-  stroke-width:2.6;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  vector-effect:non-scaling-stroke;
-  opacity:0;
-  filter:drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 55%, transparent));
-}
-/* One compact refraction ring, passing through the object as the QRS lands. */
-.sig__ring{
-  position:absolute;
-  left:41.4%;
-  top:50%;
-  width:clamp(180px, 22vw, 330px);
-  aspect-ratio:1;
-  transform:translate(-50%, -50%) scale(.2);
-  border:1px solid color-mix(in srgb, var(--accent) 60%, transparent);
-  border-radius:50%;
-  opacity:0;
-  z-index:-1;
-  pointer-events:none;
+  background:
+    radial-gradient(46vw 52vh at 74% 46%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 66%),
+    radial-gradient(38vw 40vh at 78% 78%, color-mix(in srgb, var(--cobalt) 12%, transparent), transparent 62%);
 }
 
 /* --- the composition ------------------------------------------------------ */
@@ -1205,9 +1168,7 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   z-index:1;
   display:grid;
   grid-template-columns:minmax(0, 47fr) minmax(0, 53fr);
-  grid-template-areas:
-    "copy  stage"
-    "panel panel";
+  grid-template-areas:"copy stage";
   align-items:center;
   column-gap:clamp(1.5rem, 3.4vw, 3.5rem);
   row-gap:clamp(1.75rem, 4vh, 3rem);
@@ -1216,7 +1177,6 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
 }
 .sig__copy{ grid-area:copy; min-width:0; }
 .sig__stage{ grid-area:stage; min-width:0; }
-.sig__panel{ grid-area:panel; min-width:0; }
 
 /* --- the identity --------------------------------------------------------- */
 
@@ -1284,11 +1244,12 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   color:var(--text-quiet);
   font-size:clamp(1.02rem, .96rem + .3vw, 1.16rem);
   line-height:1.55;
-  max-width:26em;
+  max-width:27em;
 }
 
-/* The four credentials, in the first viewport and requiring nothing of the
-   visitor. The proof panel below expands each one; this states them. */
+/* The four credentials, stated in the first viewport and requiring nothing of
+   the visitor. The strip immediately below the hero expands every one of
+   them — with no control to press and nothing hidden behind a tab. */
 .sig__stance{
   margin-top:clamp(.9rem, 2vh, 1.3rem);
   display:grid;
@@ -1321,28 +1282,13 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
 
 .sig__actions{ margin-top:clamp(1.2rem, 2.6vh, 1.9rem); }
 
-.sig__links{
-  margin-top:clamp(1rem, 2.2vh, 1.5rem);
-  display:flex;
-  flex-wrap:wrap;
-  gap:.4rem 1.6rem;
-  font-family:var(--mono);
-  font-size:.72rem;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-}
-.sig__links a{
-  display:inline-flex;
-  align-items:center;
-  min-height:44px;
-  color:var(--text-quiet);
-  text-decoration:none;
-  border-bottom:1px solid transparent;
-  transition:color 200ms var(--ease), border-color 200ms var(--ease);
-}
-.sig__links a:hover{ color:var(--text); border-bottom-color:var(--accent); }
-
-/* --- the sculpture -------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   3.0 · THE PROJECTION
+   ---------------------------------------------------------------------------
+   Everything below is decorative. It carries no fact, it is `aria-hidden`, and
+   the only thing a visitor can do to it is turn it — which changes nothing on
+   the page and withholds nothing from anyone who never touches it.
+   --------------------------------------------------------------------------- */
 
 .sig__stage{
   position:relative;
@@ -1351,349 +1297,320 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   align-items:center;
   justify-content:center;
 }
-.ce{
-  width:100%;
-  max-width:min(100%, 660px);
-  height:auto;
-  aspect-ratio:560 / 400;
-  overflow:visible;
-  /* Two inputs, and they mean different things. The pointer *drifts* the
-     object — three degrees, ambient, never asked for. A hold is an explicit
-     act, so it is allowed to pull much further: up to nine degrees, and the
-     planes come apart along the drag. Both are clamped at the source, and the
-     release is a real spring, so it lands just past the mark once and stops. */
-  transform:perspective(1400px)
-            rotateY(calc(var(--px, 0) * 3deg + var(--grab-x, 0) * 9deg))
-            rotateX(calc(var(--py, 0) * -3deg + var(--grab-y, 0) * -9deg))
-            scale(calc(1 + var(--grab-mag, 0) * .02));
-  transition:transform 420ms var(--ease);
-}
-/* While the visitor is actually holding it, the object answers the hand
-   directly rather than easing toward it a third of a second late. */
-.ce.is-held{ transition:none; }
-.is-holdable{ cursor:grab; touch-action:none; }
-.is-holdable.is-held{ cursor:grabbing; }
-.ce__plane{
-  transition:opacity 520ms var(--ease), transform 620ms var(--ease-snap);
-}
-.ce__plane--care    { --plane-c:var(--care);    --sep:1;    opacity:.95; }
-.ce__plane--build   { --plane-c:var(--build);   --sep:-1.3; opacity:.9; }
-.ce__plane--compete { --plane-c:var(--compete); --sep:1.7;  opacity:.76; }
-.ce__plane{
-  transform:translate(calc(var(--px, 0) * var(--sep) * 7px + var(--grab-x, 0) * var(--sep) * 26px),
-                      calc(var(--py, 0) * var(--sep) * 5px + var(--grab-y, 0) * var(--sep) * 20px));
-}
 
-.ce__arc{
-  fill:none;
-  stroke:var(--care);
-  stroke-width:15;
-  stroke-linecap:round;
-}
-.ce__lead{ fill:var(--care); opacity:.7; }
+.holo{
+  /* The five properties holo.js writes, declared here so the object has a
+     resting pose before — and without — any script at all. */
+  --rx:-4deg;
+  --ry:-16deg;
+  --spin:0deg;
+  --tilt:-.6;
+  --px:.34;
+  --py:.3;
+  --grab:0;
 
-.ce__trunk,.ce__branch{
-  fill:none;
-  stroke:var(--build);
-  stroke-width:15;
-  stroke-linecap:round;
-}
-.ce__stub{
-  fill:none;
-  stroke:var(--build);
-  stroke-width:1.6;
-  opacity:.6;
-}
-.ce__node{ fill:var(--build); }
-.ce__node--sm{ opacity:.8; }
-.ce__node--tip{ opacity:.55; }
+  /* The depth of the extrusion, and the two ends of its hue ramp. */
+  --slices:18;
+  --gap:2.4px;
+  --h-front:178;
+  --h-back:288;
+  --holo-c:color-mix(in srgb, var(--accent) 45%, #5ce8ff);
 
-.ce__brk{
-  fill:none;
-  stroke:var(--compete);
-  stroke-width:2;
-  stroke-linecap:square;
-}
-.ce__seed{ fill:var(--compete); opacity:.85; }
-.ce__crown{ fill:var(--compete); }
-
-/* THE DOMAIN STATE. Choosing one brings its plane forward, sends the other two
-   back, and retunes the trace. It is one coordinated move, it is persistent,
-   and it is unambiguous — which is the whole difference between a control and
-   a hover effect. */
-/* The inactive planes recede; they never leave. A quarter-opacity plane is a
-   plane you have stopped drawing, and the CE has to hold as one object in
-   every one of the three states. */
-[data-domain="care"]    .ce__plane--build,
-[data-domain="care"]    .ce__plane--compete{ opacity:.5; }
-[data-domain="build"]   .ce__plane--care,
-[data-domain="build"]   .ce__plane--compete{ opacity:.5; }
-[data-domain="compete"] .ce__plane--care,
-[data-domain="compete"] .ce__plane--build{ opacity:.5; }
-
-[data-domain="care"]    .ce__plane--care,
-[data-domain="build"]   .ce__plane--build,
-[data-domain="compete"] .ce__plane--compete{ opacity:1; }
-
-/* THE PREVIEW. Reaching for a control lifts the plane it belongs to, before
-   anything is committed. It teaches the mapping between the three words and
-   the three pieces of geometry in the one gesture where a visitor is already
-   asking the question — and it commits nothing, so leaving takes it back.
-   Focus gets it too: this is a preview, not a mouse feature. */
-/* The section is the common ancestor of the controls and the object; the panel
-   that holds them is not. And the preview only ever shows a domain you have
-   *not* chosen: :has() out-specifies the committed state, so without the
-   :not() the act of reaching for the active control would dim its own plane. */
-.sig:not([data-domain="care"]):has(.dom__opt:hover > [data-dom="care"]) .ce__plane--care,
-.sig:not([data-domain="care"]):has(.dom__opt:focus-within > [data-dom="care"]) .ce__plane--care,
-.sig:not([data-domain="build"]):has(.dom__opt:hover > [data-dom="build"]) .ce__plane--build,
-.sig:not([data-domain="build"]):has(.dom__opt:focus-within > [data-dom="build"]) .ce__plane--build,
-.sig:not([data-domain="compete"]):has(.dom__opt:hover > [data-dom="compete"]) .ce__plane--compete,
-.sig:not([data-domain="compete"]):has(.dom__opt:focus-within > [data-dom="compete"]) .ce__plane--compete{
-  opacity:.86;
-}
-
-/* The active plane comes forward by a hair — enough to read as depth, far too
-   little to read as a toy. */
-[data-domain="build"] .ce__plane--build,
-[data-domain="compete"] .ce__plane--compete,
-[data-domain="care"] .ce__plane--care{
-  transform:translate(calc(var(--px, 0) * var(--sep) * 7px + var(--grab-x, 0) * var(--sep) * 26px),
-                      calc(var(--py, 0) * var(--sep) * 5px + var(--grab-y, 0) * var(--sep) * 20px))
-            scale(1.014);
-}
-
-/* --- the three domains, and the proof under each -------------------------- */
-
-.sig__panel{
-  border-top:1px solid var(--line);
-  padding-top:clamp(1.1rem, 2.6vh, 1.8rem);
-}
-
-/* The controls exist only where they can work. html.js is set synchronously in
-   <head>, so this is decided before the first paint rather than after it. */
-.dom{ display:none; border:0; margin:0; padding:0; min-width:0; }
-.js .dom{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.5rem;
-  margin-bottom:clamp(1rem, 2.4vh, 1.6rem);
-}
-.dom__opt{
   position:relative;
-  display:inline-flex;
-  align-items:baseline;
-  gap:.6rem;
-  min-height:44px;
-  padding:.55rem 1.1rem;
-  background:transparent;
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  cursor:pointer;
-  transition:border-color 200ms var(--ease), background 200ms var(--ease);
+  width:100%;
+  max-width:min(100%, 620px);
+  aspect-ratio:1;
+  display:grid;
+  place-items:center;
+  perspective:1100px;
+  perspective-origin:50% 44%;
+  /* Turning it is a pointer affordance and nothing more; a horizontal drag
+     rotates and a vertical one scrolls the page, because a hero that eats a
+     scroll is a hero nobody gets past. */
+  touch-action:pan-y;
 }
-/* The input stays in the accessibility tree and stays focusable; it is only
-   the browser's own square that is out of the way. */
-.dom__opt input{
+@media (pointer:fine){
+  .holo{ cursor:grab; }
+  .holo.is-held{ cursor:grabbing; }
+}
+.holo__defs{ position:absolute; width:0; height:0; overflow:hidden; }
+
+/* --- the room it is projected into ---------------------------------------- */
+
+/* The floor: a perspective grid, faded out before it reaches the horizon so
+   it reads as a surface rather than as graph paper. */
+.holo__grid{
   position:absolute;
-  width:1px; height:1px;
-  margin:0; padding:0;
-  opacity:0;
+  left:-14%; right:-14%; bottom:2%;
+  height:38%;
+  background:
+    repeating-linear-gradient(to right,
+      color-mix(in srgb, var(--holo-c) 26%, transparent) 0 1px, transparent 1px 44px),
+    repeating-linear-gradient(to bottom,
+      color-mix(in srgb, var(--holo-c) 26%, transparent) 0 1px, transparent 1px 26px);
+  transform:perspective(340px) rotateX(64deg);
+  transform-origin:50% 100%;
+  -webkit-mask-image:linear-gradient(to top, #000 0%, transparent 88%);
+          mask-image:linear-gradient(to top, #000 0%, transparent 88%);
+  opacity:.4;
   pointer-events:none;
 }
-.dom__k{
-  font-family:var(--mono);
-  font-size:.62rem;
-  letter-spacing:.14em;
-  color:var(--text-quiet);
-  transition:color 200ms var(--ease);
-}
-.dom__n{
-  font-family:var(--ui);
-  font-weight:500;
-  font-size:.86rem;
-  letter-spacing:.11em;
-  text-transform:uppercase;
-  color:var(--text-quiet);
-  transition:color 200ms var(--ease);
-}
-.dom__opt:hover{ border-color:var(--line-firm); }
-.dom__opt:hover .dom__n{ color:var(--text); }
-.dom__opt:has(input:checked){
-  border-color:var(--accent);
-  background:color-mix(in srgb, var(--accent) 10%, transparent);
-}
-.dom__opt:has(input:checked) .dom__n{ color:var(--text); }
-.dom__opt:has(input:checked) .dom__k{ color:var(--accent); }
-/* Focus is at least as clear as hover, and it is on the thing you can see. */
-.dom__opt:has(input:focus-visible){
-  outline:2px solid var(--accent);
-  outline-offset:3px;
+
+/* The cone: narrow at the emitter, open at the object. */
+.holo__beam{
+  position:absolute;
+  left:50%; bottom:6%;
+  width:74%; height:70%;
+  transform:translateX(-50%);
+  background:linear-gradient(to top,
+    color-mix(in srgb, var(--holo-c) 34%, transparent),
+    color-mix(in srgb, var(--holo-c) 6%, transparent) 62%,
+    transparent 88%);
+  clip-path:polygon(43% 100%, 57% 100%, 100% 0%, 0% 0%);
+  filter:blur(12px);
+  opacity:.55;
+  pointer-events:none;
 }
 
-.proofs{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(15rem, 1fr));
-  gap:clamp(1rem, 2.4vw, 2.25rem);
-}
-/* With a script running, one group stands at a time and the controls choose
-   which. Without one, all three stand open — which is the whole of the
-   information, laid out as a deliberate three-column row. */
-.js .proof:not([data-active]){ display:none; }
-.js .proofs{ grid-template-columns:1fr; }
-.js .proof[data-active]{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr));
-  gap:clamp(.9rem, 2.2vw, 2rem);
-  align-items:start;
-}
-.js .proof__h{ grid-column:1 / -1; }
-
-.proof__h{
-  display:flex;
-  align-items:center;
-  gap:.6rem;
-  font-family:var(--mono);
-  font-size:.68rem;
-  font-weight:400;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  color:var(--text-quiet);
-  margin-bottom:.7rem;
-}
-.proof__dot{
-  width:7px; height:7px;
+/* The emitter itself, breathing on its own clock. */
+.holo__plate{
+  position:absolute;
+  left:50%; bottom:5%;
+  width:34%;
+  aspect-ratio:5 / 1;
+  transform:translateX(-50%);
   border-radius:50%;
-  background:var(--accent);
-  box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+  background:radial-gradient(closest-side,
+    color-mix(in srgb, var(--holo-c) 80%, transparent),
+    color-mix(in srgb, var(--holo-c) 18%, transparent) 62%,
+    transparent 100%);
+  filter:blur(5px);
+  pointer-events:none;
 }
-[data-proof="care"]    .proof__dot{ background:var(--care); box-shadow:0 0 0 3px color-mix(in srgb, var(--care) 18%, transparent); }
-[data-proof="build"]   .proof__dot{ background:var(--build); box-shadow:0 0 0 3px color-mix(in srgb, var(--build) 18%, transparent); }
-[data-proof="compete"] .proof__dot{ background:var(--compete); box-shadow:0 0 0 3px color-mix(in srgb, var(--compete) 18%, transparent); }
 
-.proof__say{
-  font-family:var(--read);
-  font-size:1rem;
-  line-height:1.5;
-  color:var(--text);
-  max-width:30em;
+/* --- the object ----------------------------------------------------------- */
+
+/* The scene the pointer tilts. holo.js eases --rx/--ry itself, so once it has
+   taken over the transition here would be a second, slower ease on top of the
+   first — which is why .is-live drops it. */
+.holo__space{
+  position:relative;
+  width:min(74%, 430px);
+  aspect-ratio:1;
+  transform-style:preserve-3d;
+  transform:rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--spin)));
+  transition:transform 620ms var(--ease);
 }
-.proof__list{
-  margin-top:.85rem;
-  display:grid;
-  gap:.6rem;
-  font-size:.9rem;
-  line-height:1.5;
-  color:var(--text-quiet);
-  max-width:34em;
+.holo.is-live .holo__space{ transition:none; }
+
+/* The idle sway, on its own element so it composes with the pointer tilt
+   instead of fighting it for the same transform.
+
+   It sways rather than orbits, and the reason is that a mark turning a full
+   circle spends a third of every revolution edge-on or backwards, which is a
+   third of the time a visitor cannot tell what they are looking at. Forty-two
+   degrees of travel is enough to read as a volume turning in a beam and never
+   enough to hide the silhouette. A drag still throws it right round — that is
+   an explicit act, and it comes back. */
+.holo__spin{
+  position:absolute;
+  inset:0;
+  transform-style:preserve-3d;
 }
-.proof__list li{ padding-left:1rem; position:relative; }
-.proof__list li::before{
+.holo__body{
+  position:absolute;
+  inset:0;
+  transform-style:preserve-3d;
+  transform:scale(calc(1 + var(--grab) * .05));
+  transition:transform 320ms var(--ease-snap);
+}
+
+/* THE EXTRUSION. Eighteen references to one path, one behind the other, on a
+   hue ramp from cyan at the face to violet at the back. Nothing here is an
+   image and nothing here is a second copy of the artwork: the silhouette is
+   provably the same shape in every slice because it is literally the same
+   <path>. */
+.holo__slice{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  transform:translateZ(calc(var(--i) * var(--gap) * -1));
+  fill:hsl(
+    calc(var(--h-front) + (var(--h-back) - var(--h-front)) * var(--i) / var(--slices))
+    calc(96% - var(--i) * 1.2%)
+    calc(62% - var(--i) * 1.9%));
+  opacity:calc(.95 - var(--i) * .035);
+}
+
+/* The film on the front face: an oil-slick spectrum with a specular highlight
+   the pointer carries across it. Clipped to the silhouette, so the mark is the
+   only thing the light lands on. */
+.holo__film{
+  position:absolute;
+  inset:0;
+  transform:translateZ(2px);
+  clip-path:url(#ghm-clip);
+  background:
+    radial-gradient(58% 52% at calc(var(--px) * 100%) calc(var(--py) * 100%),
+      rgba(255,255,255,.92), rgba(255,255,255,.06) 58%, transparent 76%),
+    conic-gradient(from calc(var(--px) * 300deg) at 46% 42%,
+      hsl(184 100% 68%),
+      hsl(216 100% 74%),
+      hsl(272 100% 76%),
+      hsl(318 100% 72%),
+      hsl(44 100% 70%),
+      hsl(158 100% 64%),
+      hsl(184 100% 68%));
+}
+
+/* CHROMATIC SPLIT. Two more copies of the same silhouette, one cyan and one
+   magenta, pulled apart along whichever way the object is currently turned —
+   so the aberration answers the tilt rather than sitting at a fixed offset
+   pretending to. */
+.holo__ghost{
+  position:absolute;
+  inset:0;
+  clip-path:url(#ghm-clip);
+  mix-blend-mode:screen;
+  opacity:.5;
+  pointer-events:none;
+}
+.holo__ghost--c{
+  background:#2ff5e2;
+  transform:translate3d(calc(var(--tilt) * -9px), 0, 3px);
+}
+.holo__ghost--m{
+  background:#ff4fd8;
+  transform:translate3d(calc(var(--tilt) * 9px), 0, 1px);
+}
+
+/* The raster, and one bright bar travelling down through it. */
+.holo__scan{
+  position:absolute;
+  inset:0;
+  transform:translateZ(4px);
+  clip-path:url(#ghm-clip);
+  background:
+    linear-gradient(to bottom, transparent 44%, rgba(206,255,255,.9) 50%, transparent 57%),
+    repeating-linear-gradient(to bottom,
+      rgba(255,255,255,.2) 0 1px, transparent 1px 4px);
+  background-size:100% 240%, 100% 100%;
+  background-position:0 -80%, 0 0;
+  background-repeat:no-repeat, repeat;
+  mix-blend-mode:screen;
+  opacity:.55;
+  pointer-events:none;
+}
+
+/* THE RINGS. Three, each on its own axis, each with one bright arc so the
+   rotation is legible rather than implied. They are children of the tilting
+   scene and not of the spinning object, so they orbit it instead of with it. */
+.holo__ring{
+  position:absolute;
+  inset:-4%;
+  transform-style:preserve-3d;
+  transform:rotateX(calc(74deg + var(--r) * 7deg)) rotateY(calc(var(--r) * 42deg));
+  pointer-events:none;
+}
+.holo__ring::before{
   content:"";
   position:absolute;
-  left:0; top:.62em;
-  width:5px; height:1px;
-  background:var(--accent);
+  inset:0;
+  border-radius:50%;
+  border:1px solid color-mix(in srgb, var(--holo-c) 26%, transparent);
+  border-top-color:color-mix(in srgb, var(--holo-c) 92%, transparent);
+  box-shadow:0 0 18px color-mix(in srgb, var(--holo-c) 16%, transparent);
 }
-.proof__list b{ color:var(--text); font-weight:500; font-family:var(--ui); }
+.holo__ring:nth-child(2){ inset:4%; }
+.holo__ring:nth-child(3){ inset:-13%; }
 
-/* THE RETUNE. A domain change is not a crossfade: the trace is rewritten
-   across the viewport the way a monitor writes it, the sample head runs the
-   new signature once, and one refraction ring passes the object again. Visible
-   feedback starts inside 80 ms — the accent and the plane weights are plain
-   transitions and begin on the same frame as the press. */
+/* --- stillness ------------------------------------------------------------
+   Under a reduced-motion preference nothing on the object moves at all. It
+   keeps its resting three-quarter angle, its film, its ghosts and its rings —
+   the composition is the composition; only the movement goes. */
 @media (prefers-reduced-motion:no-preference){
-  html.js:not([data-motion="off"]) [data-signal].is-tuning .sig__sweep{
-    animation:sig-sweep 620ms cubic-bezier(.35,0,.2,1) both;
+  html:not([data-motion="off"]) .holo__spin{
+    animation:holo-orbit 19s ease-in-out infinite;
   }
-  html.js:not([data-motion="off"]) [data-signal].is-tuning .sig__ring{
-    animation:sig-ring 520ms 180ms cubic-bezier(.16,1,.3,1) both;
+  html:not([data-motion="off"]) .holo__ring::before{
+    animation:holo-arc 17s linear infinite;
+    animation-delay:calc(var(--r) * -5.5s);
   }
+  html:not([data-motion="off"]) .holo__scan{
+    animation:holo-scan 4.6s linear infinite;
+  }
+  html:not([data-motion="off"]) .holo__plate{
+    animation:holo-emit 3.6s ease-in-out infinite;
+  }
+  html:not([data-motion="off"]) .holo__beam{
+    animation:holo-emit 3.6s ease-in-out infinite;
+  }
+}
+/* A held object stops drifting: while somebody is turning it, the only thing
+   moving it is them. */
+.holo.is-held .holo__spin{ animation-play-state:paused; }
+
+@keyframes holo-orbit{
+  0%  { transform:rotateY(-21deg) rotateX(2.5deg); }
+  50% { transform:rotateY(21deg) rotateX(-2.5deg); }
+  100%{ transform:rotateY(-21deg) rotateX(2.5deg); }
+}
+@keyframes holo-arc{
+  from{ transform:rotateZ(0deg); }
+  to  { transform:rotateZ(360deg); }
+}
+@keyframes holo-scan{
+  from{ background-position:0 -80%, 0 0; }
+  to  { background-position:0 180%, 0 0; }
+}
+@keyframes holo-emit{
+  0%,100%{ opacity:.42; }
+  50%    { opacity:.72; }
 }
 
 /* ---------------------------------------------------------------------------
    3.1 · THE ARRIVAL
    ---------------------------------------------------------------------------
-   Roughly two seconds, once, and over. Nothing below gates a word: every
-   keyframe either starts from a partial opacity that is already legible, or
-   runs on something decorative. The whole sequence is transform, opacity and
-   one stroke-dashoffset — compositor work, and no main-thread cost at all.
+   Roughly a second and a half, once, and over. Nothing below gates a word:
+   every keyframe either starts from a partial opacity that is already legible,
+   or runs on the object, which says nothing. The whole sequence is transform,
+   opacity and one background-position — compositor work, and no main-thread
+   cost at all.
 
-     0–240 ms      the calibration line and the resting trace become visible
-     120–700 ms    a bright sample head crosses the viewport
-     ~420 ms       the QRS strikes; one refraction ring passes the object
-     420–1100 ms   the three planes come out of their exploded state into
-                   exact alignment and the CE resolves
+     0–420 ms      the floor, the cone and the emitter come up
+     180–1280 ms   the projection resolves: it arrives edge-on, small and
+                   transparent, and turns into its resting three-quarter view
      650–1250 ms   an ink edge travels the name, line by line
-     1000–1500 ms  the credentials and the actions settle
-     by ~1600 ms   still, and waiting
+     1000–1400 ms  the credentials and the actions settle
+     by ~1500 ms   still, and waiting
    --------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion:no-preference){
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__base{ animation:sig-calibrate 240ms var(--ease) both; }
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__wave{ animation:sig-rest 700ms 200ms var(--ease) both; }
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__sweep{ animation:sig-sweep 580ms 120ms cubic-bezier(.35,0,.2,1) both; }
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__ring{ animation:sig-ring 560ms 420ms cubic-bezier(.16,1,.3,1) both; }
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .ce__plane--care   { animation:ce-care    680ms 420ms var(--ease-snap) both; }
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .ce__plane--build  { animation:ce-build   680ms 500ms var(--ease-snap) both; }
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .ce__plane--compete{ animation:ce-compete 680ms 560ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .holo__grid { animation:detent 420ms 60ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .holo__beam { animation:holo-cast 520ms 120ms var(--ease) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .holo__plate{ animation:holo-cast 520ms 60ms var(--ease) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .holo__space{ animation:holo-boot 1100ms 180ms cubic-bezier(.16,1,.3,1) both; }
   html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__ln:nth-of-type(1)::after{ animation:ink 520ms 650ms var(--ease) both; }
   html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__ln:nth-of-type(2)::after{ animation:ink 520ms 800ms var(--ease) both; }
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__creed{ animation:detent 420ms 1000ms var(--ease-snap) both; }
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__lede { animation:detent 420ms 1080ms var(--ease-snap) both; }
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) /* The four credentials, in the first viewport and requiring nothing of the
-   visitor. The proof panel below expands each one; this states them. */
-.sig__stance{
-  margin-top:clamp(.9rem, 2vh, 1.3rem);
-  display:grid;
-  grid-template-columns:repeat(2, minmax(0, max-content));
-  gap:.3rem 1.75rem;
-  font-family:var(--ui);
-  font-size:.86rem;
-  color:var(--text);
-}
-.sig__stance li{ display:flex; align-items:baseline; gap:.55rem; }
-.sig__stance li::before{
-  content:"";
-  flex:0 0 auto;
-  width:5px; height:5px;
-  border-radius:50%;
-  background:var(--accent);
-  opacity:.75;
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__creed { animation:detent 420ms 1000ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__lede  { animation:detent 420ms 1080ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__stance{ animation:detent 420ms 1160ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__avail { animation:detent 420ms 1240ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__actions{ animation:detent 420ms 1320ms var(--ease-snap) both; }
 }
 
-.sig__avail{ animation:detent 420ms 1160ms var(--ease-snap) both; }
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__actions{ animation:detent 420ms 1240ms var(--ease-snap) both; }
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__links{ animation:detent 420ms 1320ms var(--ease-snap) both; }
-  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__panel{ animation:detent 460ms 1400ms var(--ease-snap) both; }
+/* The projection arrives the way one would: edge-on and transparent, resolving
+   into the object. A visitor who lands mid-sequence sees a hologram coming up,
+   not a blank rectangle waiting to be filled. */
+@keyframes holo-boot{
+  from{ opacity:0; transform:rotateX(16deg) rotateY(-92deg) scale(.74); }
+  55% { opacity:1; }
+  to  { opacity:1; transform:rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--spin))) scale(1); }
 }
-
-@keyframes sig-calibrate{ from{ opacity:0; } to{ opacity:.11; } }
-@keyframes sig-rest{ from{ opacity:0; } to{ opacity:.34; } }
-@keyframes sig-sweep{
-  from{ opacity:.9;  stroke-dashoffset:120; }
-  92% { opacity:.9; }
-  to  { opacity:0;   stroke-dashoffset:-1000; }
-}
-@keyframes sig-ring{
-  from{ opacity:0;   transform:translate(-50%, -50%) scale(.18); }
-  22% { opacity:.55; }
-  to  { opacity:0;   transform:translate(-50%, -50%) scale(1.9); }
-}
-/* The planes arrive from a controlled exploded state — never from nothing.
-   A visitor who lands mid-sequence sees a monogram coming together, not a
-   blank rectangle waiting to be filled. */
-@keyframes ce-care{
-  from{ opacity:.3; transform:translate(-30px, 16px) scale(.965); }
-  to  { opacity:.95; transform:translate(0,0) scale(1); }
-}
-@keyframes ce-build{
-  from{ opacity:.25; transform:translate(6px, -26px) scale(.95); }
-  to  { opacity:.9; transform:translate(0,0) scale(1); }
-}
-@keyframes ce-compete{
-  from{ opacity:.2; transform:translate(34px, 12px) scale(.94); }
-  to  { opacity:.76; transform:translate(0,0) scale(1); }
+@keyframes holo-cast{
+  from{ opacity:0; transform:translateX(-50%) scaleX(.4); }
+  to  { opacity:.55; transform:translateX(-50%) scaleX(1); }
 }
 @keyframes ink{
   from{ opacity:0;  transform:translateX(-104%); }
@@ -2577,10 +2494,11 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
 /* ===========================================================================
    7. THE HAND — composed for the width, not shrunk to it
    ---------------------------------------------------------------------------
-   The phone gets its own composition. The name arrives first and largest, the
-   assembled sculpture stands behind and slightly right of it as a field rather
-   than as an illustration, the three domains are a three-position touch
-   control, and both actions are above the fold at 390 x 844.
+   The phone gets its own composition. The name arrives first and largest, and
+   the projection stands behind and to the right of it as the field the
+   identity is lit by rather than as an illustration beside it — so both
+   actions are still above the fold at 390 x 844 and the object is still the
+   first thing in the frame that moves.
 
    Nothing below depends on a pointer. Every hover state in this stylesheet has
    a tap, focus or scroll equivalent here, and every target clears 44 px.
@@ -2590,58 +2508,35 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
 
   .sig__in{
     grid-template-columns:minmax(0,1fr);
-    grid-template-areas:
-      "copy"
-      "panel";
+    grid-template-areas:"copy";
     row-gap:clamp(1.5rem, 3.5vh, 2.5rem);
     padding-block:clamp(1.75rem, 4vh, 3rem) clamp(2rem, 5vh, 3.5rem);
     min-height:auto;
   }
 
-  /* Behind the name, and slightly to the right of it. It is the field the
-     identity stands in, so it never competes with a word. */
+  /* Behind the name and out past the right edge of it, where the section's
+     own overflow clip cuts it. It is the field the identity is lit by, so it
+     never competes with a word — and it is still the object, at more than
+     half strength, rather than a ghost of one. */
   .sig__stage{
     position:absolute;
-    right:0;
+    right:-14%;
     left:auto;
-    top:clamp(1rem, 4vh, 3.5rem);
-    width:min(62vw, 420px);
+    top:clamp(.5rem, 3vh, 3rem);
+    width:min(80vw, 460px);
     z-index:-1;
-    opacity:.42;
+    opacity:.58;
     pointer-events:none;
   }
-  .sig__trace{ height:clamp(120px, 22vh, 200px); }
-  .ce{ max-width:100%; }
+  .holo{ max-width:100%; }
+  /* No pointer to turn it with, so it never claims a press. holo.js gives it
+     the scroll instead. */
+  .holo__grid{ opacity:.28; }
 
   .sig__title{ font-size:clamp(3.1rem, 15vw, 5rem); }
   .sig__lede{ max-width:24em; font-size:1rem; }
   .sig__creed{ font-size:1.02rem; }
   .sig__actions{ gap:.6rem; }
-  .sig__panel{ padding-top:clamp(1rem, 2.5vh, 1.5rem); }
-
-  /* A three-position touch control: equal thirds, one row, thumb-sized. */
-  .js .dom{
-    display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap:0;
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    overflow:hidden;
-  }
-  .dom__opt{
-    border:0;
-    border-left:1px solid var(--line);
-    border-radius:0;
-    justify-content:center;
-    padding:.7rem .5rem;
-    min-height:48px;
-  }
-  .dom__opt:first-child{ border-left:0; }
-  .dom__k{ display:none; }
-  .dom__n{ font-size:.8rem; }
-
-  .proofs{ grid-template-columns:minmax(0,1fr); gap:1.4rem; }
-  .js .proof[data-active]{ grid-template-columns:minmax(0,1fr); }
 
   /* --- the theatre, as six stacked chapters --------------------------- */
 
@@ -2772,10 +2667,11 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
    =========================================================================== */
 
 @media (prefers-reduced-motion:reduce){
-  .sig__canvas{ display:none !important; }
-  /* The sweep is the one bright thing that exists only to move. Still, it is
-     the trace itself, at rest. */
-  .sig__sweep{ display:none; }
+  .atmos__canvas{ display:none !important; }
+  /* The object holds its resting three-quarter angle with every layer on it.
+     What goes is the movement, not the composition. */
+  .holo__spin,.holo__ring::before,.holo__scan,.holo__plate,.holo__beam{ animation:none !important; }
+  .holo__space{ transition:none !important; }
   .th__spinef{ transition:none; }
 
   /* The case studies keep their own compositions; only the movement goes. */
@@ -2797,8 +2693,13 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   [data-physics="grow"] .chapter::before{ height:100%; }
 }
 
-html[data-motion="off"] .sig__canvas{ display:none !important; }
-html[data-motion="off"] .sig__sweep{ display:none; }
+html[data-motion="off"] .atmos__canvas{ display:none !important; }
+html[data-motion="off"] .holo__spin,
+html[data-motion="off"] .holo__ring::before,
+html[data-motion="off"] .holo__scan,
+html[data-motion="off"] .holo__plate,
+html[data-motion="off"] .holo__beam{ animation:none !important; }
+html[data-motion="off"] .holo__space{ transition:none !important; }
 html[data-motion="off"] [data-motion],
 html[data-motion="off"] [data-motion] > *{ opacity:1 !important; transform:none !important; clip-path:none !important; animation:none !important; }
 html[data-motion="off"] .work__shot img,
@@ -2811,12 +2712,12 @@ html[data-motion="off"] .sechead .eyebrow .tick{ animation:none !important; }
 html[data-motion="off"] [data-physics="grow"] .chapter::before{ height:100%; }
 html[data-motion="off"] .progress{ display:none; }
 
-/* With no script the three domains stand open as a row, the sculpture is
-   assembled, the trace is a complete static path, and every scene is its
-   composed final frame. Nothing here is a fallback; it is the same design
-   with one fewer layer on it. */
-html:not(.js) .sig__sweep{ display:none; }
-html:not(.js) .sig__ring{ display:none; }
+/* With no script the projection still stands, still orbits, still scans and
+   still catches the light — every one of those is a keyframe — and every scene
+   below is its composed final frame. Nothing here is a fallback; it is the
+   same design with one fewer layer on it. What a script would have added is
+   the pointer, and a hero nobody can reach with a pointer is not a hero
+   missing anything a visitor needed. */
 
 
 /* ===========================================================================
@@ -2924,7 +2825,7 @@ html:not(.js) .sig__ring{ display:none; }
   height:22%;
   border-radius:50%;
   background:radial-gradient(closest-side, rgba(0,0,0,.72), transparent 78%);
-  filter:blur(calc(18px + var(--grab-mag, 0) * 6px));
+  filter:blur(18px);
   transform:translate3d(calc(var(--px, 0) * -22px), calc(var(--py, 0) * -8px), 0);
   transition:transform 420ms var(--ease), opacity 420ms var(--ease);
   opacity:.8;
@@ -3387,45 +3288,7 @@ html.is-beat .progress::after{
 }
 
 /* ---------------------------------------------------------------------------
-   9.3 · SOUND — off until somebody asks for it
-   ---------------------------------------------------------------------------
-   Every tone on this site is synthesised in the browser from an oscillator and
-   an envelope. Nothing is downloaded, nothing is a file, and nothing makes a
-   sound until the visitor presses the control that says it will. The promise
-   on the Manifester page — that nothing here autoplays sound — is still
-   literally true.
-   --------------------------------------------------------------------------- */
-
-.soundbtn{
-  display:inline-flex; align-items:center; gap:.5rem;
-  padding:.45rem .7rem; border:1px solid var(--line);
-  border-radius:var(--radius); background:transparent;
-  font-family:var(--mono); font-size:.63rem; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--text-quiet); cursor:pointer;
-  transition:border-color 260ms var(--ease), color 260ms var(--ease);
-}
-.soundbtn:hover{ color:var(--text); border-color:var(--line-firm); }
-/* The markup hides it until a script un-hides it, and a class selector beats
-   the user-agent rule that [hidden] relies on — so the attribute has to be
-   honoured explicitly or the control appears on a page that cannot operate it. */
-.soundbtn[hidden]{ display:none; }
-/* Same threshold the motion control uses: past it, the masthead is a wordmark
-   and a menu, and both switches live inside the menu. */
-@media (max-width:1120px){ .masthead .soundbtn{ display:none !important; } }
-.navmob__panel .soundbtn{ width:100%; justify-content:center; margin-top:.75rem; min-height:48px; }
-.soundbtn[aria-pressed="true"]{ color:var(--accent); border-color:var(--accent-line); }
-.soundbtn .bars{ display:flex; align-items:flex-end; gap:2px; height:.7rem; }
-.soundbtn .bars i{
-  display:block; width:2px; height:30%; background:currentColor; border-radius:1px;
-  transition:height 240ms var(--ease-snap);
-}
-.soundbtn[aria-pressed="true"] .bars i:nth-child(1){ height:55%; }
-.soundbtn[aria-pressed="true"] .bars i:nth-child(2){ height:100%; }
-.soundbtn[aria-pressed="true"] .bars i:nth-child(3){ height:70%; }
-@media (hover:none),(pointer:coarse){ .soundbtn{ min-height:44px; } }
-
-/* ---------------------------------------------------------------------------
-   9.4 · STILLNESS
+   9.3 · STILLNESS
    ---------------------------------------------------------------------------
    A heartbeat that will not stop is the single worst thing this page could do
    to somebody with a vestibular disorder. Under reduced motion the monitor
@@ -3456,6 +3319,6 @@ html[data-motion="off"] .rail__path{ opacity:.5 !important; }
 html:not(.js) .rail__head{ display:none; }
 
 @media print{
-  .progress,.soundbtn{ display:none !important; }
+  .progress{ display:none !important; }
 }
 

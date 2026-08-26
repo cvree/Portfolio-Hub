@@ -40,11 +40,24 @@ const TARGETS = [
       'the shader so that exactly one mechanism puts JavaScript on this site.',
   },
   {
+    entry: 'assets/src/holo.js',
+    file: 'holo.js',
+    packages: [],
+    why:
+      'The driver behind the projected mark in the hero. It has no dependency ' +
+      'either: the hologram is eighteen CSS depth slices of one path, and it ' +
+      'stands, drifts and reads with this file absent. What the module adds is ' +
+      'the part a stylesheet cannot know — where the pointer is and whether ' +
+      'somebody has taken hold of the object — which it writes onto the host ' +
+      'as five custom properties before getting out of the way.',
+  },
+  {
     entry: 'assets/src/atmosphere.js',
     file: 'atmosphere.js',
     packages: ['ogl'],
     why:
-      'One full-screen triangle and one fragment shader behind the hero. OGL ' +
+      'One full-screen triangle and one fragment shader, on the fixed ' +
+      'atmosphere plane every page already carries. OGL ' +
       'supplies the WebGL context, program compilation and resize plumbing in ' +
       'a few kilobytes and tree-shakes down to the four classes actually ' +
       'imported. Three.js was measured against it and rejected: it is an order ' +
@@ -130,9 +143,9 @@ node tools/build_vendor.mjs --check  # CI: fail if the committed output drifted
 No bundle here is in the critical path. \`site.js\` imports them dynamically,
 after first paint, and only when the device, the motion preference, Save-Data
 and the pointer type all pass. Neither is ever required for a page to be
-complete: the hero's arrival, its three domain states, the six Selected Work
-scenes and every control on the site are CSS, markup and the critical
-\`site.js\` — none of which is behind a lazy request.
+complete: the hero's arrival, the projected mark it is built around, the six
+Selected Work scenes and every control on the site are CSS, markup and the
+critical \`site.js\` — none of which is behind a lazy request.
 
 | Package | Version | Source | License | Bundle | Raw | Gzip |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -140,8 +153,9 @@ ${rows.map((r) => `| \`${r.pkg}\` | ${r.version} | ${r.repo} | ${r.license} | \`
 
 Total lazy payload: **${(rows.reduce((a, r) => a + r.gz, 0) / 1024).toFixed(1)} KB gzip**, against a
 budget of 100 KB. None of it is requested until after the useful site has
-rendered, and the shader additionally requires WebGL, a fine pointer, a
-viewport of at least 1000 px and at least 4 GB of reported memory.
+rendered, and the shader additionally requires WebGL and a device that does not
+report under 4 GB of memory — a browser that declines to report at all is not
+read as a small device.
 
 ## Why each one is here
 

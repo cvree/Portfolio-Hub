@@ -3,11 +3,16 @@ import { PAGES } from './pages';
 
 /* THE PULSE LAYER.
    ---------------------------------------------------------------------------
-   One signal, on every page, answering the visitor. It writes four custom
-   properties onto <html> and nothing else, so what follows checks the four
-   values themselves rather than the pixels they happen to move: that they rise
-   from a real cause, that they come back to rest on their own, and that not one
-   of them is ever written on a page that asked for less. */
+   One signal, on every page, answering the visitor. It writes three custom
+   properties onto <html> and nothing else, so what follows checks the values
+   themselves rather than the pixels they happen to move: that they rise from a
+   real cause, that they come back to rest on their own, and that not one of
+   them is ever written on a page that asked for less.
+
+   The hold it used to own — taking the sculpture in hand — belongs to the
+   hologram now, and is asserted in hero.spec.ts against the object that
+   actually answers it. Two modules reaching for the same pointer was one
+   module too many. */
 
 const read = (page: Page, prop: string) =>
   page.evaluate(
@@ -91,95 +96,58 @@ test('the resting page writes no movement at all', async ({ page }) => {
   await loaded(page);
   await page.waitForTimeout(1200);
   expect(await read(page, '--pulse')).toBe(0);
-  expect(Math.abs(await read(page, '--grab-x'))).toBeLessThan(0.01);
 });
 
-/* --- 3. the hold, and the spring that ends it ---------------------------- */
-
-test.describe('taking the sculpture in hand', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto('index.html', { waitUntil: 'load' });
-    await loaded(page);
-    await expect(page.locator('.ce.is-holdable')).toHaveCount(1);
-  });
-
-  test('dragging pulls the planes apart, and letting go springs them back', async ({ page }) => {
-    const box = (await page.locator('.ce').boundingBox())!;
-    const cx = box.x + box.width / 2;
-    const cy = box.y + box.height / 2;
-
-    await page.mouse.move(cx, cy);
-    await page.mouse.down();
-    await page.mouse.move(cx + 170, cy + 70, { steps: 10 });
-    await expect.poll(() => read(page, '--grab-x'), { timeout: 3000 }).toBeGreaterThan(0.4);
-    await expect(page.locator('.ce.is-held')).toHaveCount(1);
-
-    /* However hard it is pulled, it has an end. */
-    await page.mouse.move(cx + 4000, cy + 4000, { steps: 6 });
-    await page.waitForTimeout(320);
-    expect(await read(page, '--grab-x')).toBeLessThanOrEqual(1.001);
-    expect(await read(page, '--grab-y')).toBeLessThanOrEqual(1.001);
-
-    await page.mouse.up();
-    await expect(page.locator('.ce.is-held')).toHaveCount(0);
-    await expect
-      .poll(async () => Math.abs(await read(page, '--grab-x')), { timeout: 4000 })
-      .toBeLessThan(0.02);
-  });
-
-  test('a press that never travelled strikes it instead of dragging it', async ({ page }) => {
-    const box = (await page.locator('.ce').boundingBox())!;
-    const struck = page.evaluate(
-      () => new Promise((r) => document.addEventListener('ce:strike', () => r(true), { once: true }))
-    );
-    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-    expect(await struck).toBe(true);
-    /* And the strike re-runs the sweep across the viewport. */
-    await expect(page.locator('.sig.is-tuning')).toHaveCount(1);
-  });
-
-  test('a real drag is not mistaken for a press', async ({ page }) => {
-    const box = (await page.locator('.ce').boundingBox())!;
-    const cx = box.x + box.width / 2;
-    const cy = box.y + box.height / 2;
-    let strikes = 0;
-    await page.exposeFunction('__struck', () => { strikes++; });
-    await page.evaluate(() => document.addEventListener('ce:strike', () => (window as any).__struck()));
-    await page.mouse.move(cx, cy);
-    await page.mouse.down();
-    await page.mouse.move(cx + 120, cy, { steps: 8 });
-    await page.mouse.up();
-    await page.waitForTimeout(300);
-    expect(strikes).toBe(0);
-  });
-});
-
-/* --- 4. one beat, on a real activation ------------------------------------ */
+/* --- 3. one beat, on a real activation ------------------------------------ */
 
 test('pressing a control sends one beat, and only one', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('index.html', { waitUntil: 'load' });
   await loaded(page);
 
-  await page.locator('.dom__opt').nth(1).click();
-  await expect(page.locator('html.is-beat')).toHaveCount(1);
+  /* A real activation on a real control. The navigation is cancelled from a
+     capture listener registered after the module's own, so the beat still
+     fires and the test stays on the page to watch it clear.
+
+     The beat is deliberately short — it clears itself inside 760 ms — so it is
+     recorded as it happens rather than polled for afterwards. A poll that
+     arrives late on a busy machine cannot tell a beat that already finished
+     from a beat that never fired, and the difference is the whole test. */
+  await page.evaluate(() => {
+    const w = window as unknown as { __beats: number };
+    w.__beats = 0;
+    new MutationObserver(() => {
+      if (document.documentElement.classList.contains('is-beat')) w.__beats++;
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    document.addEventListener('click', (e) => e.preventDefault(), true);
+  });
+  await page.locator('.sig__actions a').first().click();
+  await expect
+    .poll(() => page.evaluate(() => (window as unknown as { __beats: number }).__beats), { timeout: 8000 })
+    .toBe(1);
   /* It is finite: the class clears itself rather than leaving the trace lit. */
-  await expect(page.locator('html.is-beat')).toHaveCount(0, { timeout: 3000 });
+  await expect(page.locator('html.is-beat')).toHaveCount(0, { timeout: 4000 });
 });
 
 test('scrolling and hovering never send a beat', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('index.html', { waitUntil: 'load' });
   await loaded(page);
+  await page.evaluate(() => {
+    const w = window as unknown as { __beats: number };
+    w.__beats = 0;
+    new MutationObserver(() => {
+      if (document.documentElement.classList.contains('is-beat')) w.__beats++;
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  });
   await exert(page, 12);
   await page.mouse.move(700, 400);
   await page.mouse.move(900, 500);
-  await page.waitForTimeout(200);
-  expect(await page.locator('html.is-beat').count()).toBe(0);
+  await page.waitForTimeout(400);
+  expect(await page.evaluate(() => (window as unknown as { __beats: number }).__beats)).toBe(0);
 });
 
-/* --- 5. the gates ---------------------------------------------------------- */
+/* --- 4. the gates ---------------------------------------------------------- */
 
 test.describe('when the visitor asked for less', () => {
   test('reduced motion never fetches it and never writes a property', async ({ page }) => {
@@ -193,7 +161,6 @@ test.describe('when the visitor asked for less', () => {
       getComputedStyle(document.documentElement).getPropertyValue('--reach').trim()
     );
     expect(written).toBe('');
-    expect(await page.locator('.ce.is-holdable').count()).toBe(0);
   });
 
   test('Save-Data never fetches it', async ({ browser }) => {
@@ -221,11 +188,10 @@ test.describe('when the visitor asked for less', () => {
         getComputedStyle(document.documentElement).getPropertyValue('--reach').trim()
       ), { timeout: 4000 })
       .toBe('');
-    expect(await page.locator('.ce.is-holdable').count()).toBe(0);
   });
 });
 
-/* --- 6. a phone has no pointer, and still gets the part that matters ------- */
+/* --- 5. a phone has no pointer, and still gets the part that matters ------- */
 
 test.describe('on a phone', () => {
   test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
@@ -236,29 +202,31 @@ test.describe('on a phone', () => {
     const peak = await exert(page, 20);
     expect(peak).toBeGreaterThan(0.25);
     /* And nothing on a touch screen is draggable out from under the scroll. */
-    expect(await page.locator('.ce.is-holdable').count()).toBe(0);
+    const stage = await page.locator('.sig__stage').evaluate((e) => getComputedStyle(e).pointerEvents);
+    expect(stage).toBe('none');
   });
 });
 
-/* --- 7. it costs the page nothing it cannot give -------------------------- */
+/* --- 6. it costs the page nothing it cannot give -------------------------- */
 
 test('it never changes the height or the width of the document', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('index.html', { waitUntil: 'load' });
   await loaded(page);
+  /* Walk the whole document first, so every lazily-decoded capture below the
+     fold has arrived and every entrance has finished. Measuring before that is
+     measuring the page still loading, not measuring the pulse. */
+  await exert(page, 24);
+  await page.waitForTimeout(1500);
   const before = await page.evaluate(() => [
     document.documentElement.scrollHeight,
     document.documentElement.scrollWidth,
   ]);
   await exert(page, 20);
-  const box = (await page.locator('.ce').boundingBox())!;
-  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(box.x + box.width / 2 + 200, box.y + box.height / 2 + 90, { steps: 8 });
+  await page.waitForTimeout(400);
   const after = await page.evaluate(() => [
     document.documentElement.scrollHeight,
     document.documentElement.scrollWidth,
   ]);
-  await page.mouse.up();
   expect(after).toEqual(before);
 });

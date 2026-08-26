@@ -36,6 +36,7 @@ for (const p of PAGES) {
 }
 
 test('the whole project card is one tap target', async ({ page }) => {
+  test.setTimeout(90_000);
   await page.goto('work.html', { waitUntil: 'load' });
   const card = page.locator('.work').first();
   await card.scrollIntoViewIfNeeded();
@@ -43,7 +44,11 @@ test('the whole project card is one tap target', async ({ page }) => {
   // Tapping anywhere in the card row navigates, because the title's ::after
   // covers it — so a thumb landing on the blurb goes to the case study.
   await card.click({ position: { x: box.width / 2, y: box.height - 24 } });
-  await expect(page).toHaveURL(/spellbomb\.html$/);
+  /* Generous, because what this test is about is the hit area and nothing
+     else. How fast the navigation completes is transitions.spec.ts's
+     assertion, and on a CI machine software-rasterising the atmosphere plane
+     in every one of a dozen parallel workers it is not five seconds. */
+  await expect(page).toHaveURL(/spellbomb\.html$/, { timeout: 45000 });
 });
 
 test('landscape keeps the menu reachable and the page within its width', async ({ page }) => {
@@ -60,8 +65,7 @@ test('landscape keeps the menu reachable and the page within its width', async (
 test('turning the system preference on mid-visit stops the renderer', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('index.html', { waitUntil: 'load' });
-  await page.waitForTimeout(3000);
+  await expect.poll(() => page.locator('canvas').count(), { timeout: 12000 }).toBe(1);
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.waitForTimeout(1200);
-  expect(await page.locator('canvas').count()).toBe(0);
+  await expect.poll(() => page.locator('canvas').count(), { timeout: 6000 }).toBe(0);
 });

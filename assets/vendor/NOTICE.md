@@ -13,19 +13,21 @@ node tools/build_vendor.mjs --check  # CI: fail if the committed output drifted
 No bundle here is in the critical path. `site.js` imports them dynamically,
 after first paint, and only when the device, the motion preference, Save-Data
 and the pointer type all pass. Neither is ever required for a page to be
-complete: the hero's arrival, its three domain states, the six Selected Work
-scenes and every control on the site are CSS, markup and the critical
-`site.js` — none of which is behind a lazy request.
+complete: the hero's arrival, the projected mark it is built around, the six
+Selected Work scenes and every control on the site are CSS, markup and the
+critical `site.js` — none of which is behind a lazy request.
 
 | Package | Version | Source | License | Bundle | Raw | Gzip |
 | --- | --- | --- | --- | --- | --- | --- |
-| `—` | — | this repository | MIT (this repository) | `assets/vendor/pulse.js` | 3.3 KB | 1.3 KB |
-| `ogl` | 1.0.11 | https://github.com/oframe/ogl | Unlicense | `assets/vendor/atmosphere.js` | 49.5 KB | 15.1 KB |
+| `—` | — | this repository | MIT (this repository) | `assets/vendor/pulse.js` | 2.0 KB | 0.9 KB |
+| `—` | — | this repository | MIT (this repository) | `assets/vendor/holo.js` | 2.8 KB | 1.1 KB |
+| `ogl` | 1.0.11 | https://github.com/oframe/ogl | Unlicense | `assets/vendor/atmosphere.js` | 52.9 KB | 16.5 KB |
 
-Total lazy payload: **16.5 KB gzip**, against a
+Total lazy payload: **18.5 KB gzip**, against a
 budget of 100 KB. None of it is requested until after the useful site has
-rendered, and the shader additionally requires WebGL, a fine pointer, a
-viewport of at least 1000 px and at least 4 GB of reported memory.
+rendered, and the shader additionally requires WebGL and a device that does not
+report under 4 GB of memory — a browser that declines to report at all is not
+read as a small device.
 
 ## Why each one is here
 
@@ -33,9 +35,13 @@ viewport of at least 1000 px and at least 4 GB of reported memory.
 
 The pulse layer, on every page. It has no dependency at all — it is here because it is main-thread work the critical path must not carry, not because it needed a library. Everything the site says is CSS and markup that has painted before this file is requested; what is left for a script is the handful of things CSS cannot know — where the pointer is, how hard somebody is scrolling, and when they have taken hold of the sculpture. It writes four custom properties onto <html> and gets out of the way. It is bundled and committed through the same path as the shader so that exactly one mechanism puts JavaScript on this site.
 
+### `assets/vendor/holo.js` — no dependency
+
+The driver behind the projected mark in the hero. It has no dependency either: the hologram is eighteen CSS depth slices of one path, and it stands, drifts and reads with this file absent. What the module adds is the part a stylesheet cannot know — where the pointer is and whether somebody has taken hold of the object — which it writes onto the host as five custom properties before getting out of the way.
+
 ### `ogl` 1.0.11 — Unlicense
 
-One full-screen triangle and one fragment shader behind the hero. OGL supplies the WebGL context, program compilation and resize plumbing in a few kilobytes and tree-shakes down to the four classes actually imported. Three.js was measured against it and rejected: it is an order of magnitude larger for a plane that draws no geometry.
+One full-screen triangle and one fragment shader, on the fixed atmosphere plane every page already carries. OGL supplies the WebGL context, program compilation and resize plumbing in a few kilobytes and tree-shakes down to the four classes actually imported. Three.js was measured against it and rejected: it is an order of magnitude larger for a plane that draws no geometry.
 
 ### `esbuild` 0.28.2 — MIT
 

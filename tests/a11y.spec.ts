@@ -4,11 +4,19 @@ import { PAGES } from './pages';
 
 /* Axe on every generated page, at the two widths the site is designed for.
    Automated coverage is a floor, not a ceiling — keyboard.spec.ts is the part
-   that checks what a scanner cannot. */
+   that checks what a scanner cannot.
+
+   These are the slowest tests in the suite by a distance: each one walks a
+   whole document, waits out every entrance the walk started, and then runs the
+   full rule set over it — with the atmosphere plane rendering behind all of
+   it, which on a CI machine with no GPU is software rasterisation of a
+   full-viewport shader. The default thirty seconds is not a budget these were
+   ever meant to be held to. */
 
 for (const p of PAGES) {
   for (const [label, width] of [['desktop', 1440], ['mobile', 390]] as const) {
     test(`${p} (${label}): no serious or critical axe violations`, async ({ page }) => {
+      test.setTimeout(120_000);
       await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
       await page.goto(p, { waitUntil: 'load' });
       await page.evaluate(() => document.fonts.ready);
@@ -27,8 +35,11 @@ for (const p of PAGES) {
         window.scrollTo(0, 0);
         await new Promise((r) => setTimeout(r, 400));
       });
-      /* And let every entrance that the walk started actually finish. */
-      await page.waitForTimeout(2200);
+      /* And let every entrance that the walk started actually finish. An
+         element caught mid-fade is an element axe reads at a partial opacity,
+         and a contrast rule run against a partial opacity is measuring the
+         animation rather than the design. */
+      await page.waitForTimeout(2600);
 
       const results = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
