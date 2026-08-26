@@ -854,7 +854,7 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
   body{ overflow:visible; }
 
   .atmos,.grain,.masthead,.foot,.skip,.progress,.no-print,.nextup,
-  .ap__field,.ap__canvas,.ap__blade,.ap__marks,.motionbtn{ display:none !important; }
+  .sig__field,.sig__canvas,.sig__stage,.th__rail,.scene,.motionbtn{ display:none !important; }
 
   /* No transition, no shader, no scroll timeline, and every collapsed detail
      opened — paper gets the document, in full and in order. */
@@ -941,7 +941,6 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
 
 /* --- animatable custom properties ----------------------------------------- */
 
-@property --ap-iris   { syntax: '<percentage>'; inherits: false; initial-value: 0%; }
 @property --fuse-burn { syntax: '<percentage>'; inherits: false; initial-value: 100%; }  /* burnt through */
 @property --grow-run  { syntax: '<percentage>'; inherits: false; initial-value: 100%; }
 @property --lift      { syntax: '<length>';     inherits: false; initial-value: 0px; }
@@ -1055,183 +1054,622 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
 .navmob__panel .motionbtn{ width:100%; justify-content:center; margin-top:1rem; min-height:48px; }
 
 /* ===========================================================================
-   3. THE EVIDENCE APERTURE
+   3. ONE SIGNAL — the identity hero
    ---------------------------------------------------------------------------
-   The home hero. Five things compose it, and all five are drawn by CSS and
-   inline SVG before a single script runs:
+   Care. Code. Competition. One signal.
 
-     · a thin medical-teal biological signal
-     · a cobalt competitive bracket structure
-     · a restrained solar-gold current
-     · warm-ivory editorial typography
-     · a dark atmosphere derived from the active project accent
+   The hero is a monogram assembled out of three planes, each of which is a
+   real part of Connor's working life drawn as geometry rather than pictured:
 
-   The aperture is open in the static frame. The desktop timeline closes it at
-   the start of the pinned sequence and opens it again as you scroll — so the
-   thing you see with no JavaScript is the thing the animation lands on.
+     CARE     a clinical arc with a three-beat rhythm strip inside its bowl,
+              running out through its mouth into the trace that crosses the
+              page. It is the C.
+     BUILD    a node topology whose trunk and three branches are the E, with
+              the short stubs a real module graph grows.
+     COMPETE  a tournament bracket whose champion's seat is the tip of the E's
+              middle branch. It does not decorate the monogram; it finishes it.
+
+   Three rules govern every line below, and they are the same three the rest of
+   this stylesheet answers to:
+
+     1. Nothing a visitor needs is drawn into existence by an animation. Every
+        word, action and link in this hero is at full opacity in the first
+        frame; the arrival adds meaning to type that is already readable.
+     2. The whole arrival is CSS. It is compositor work, it costs the main
+        thread nothing, it plays exactly once, and the first input of any kind
+        ends it. There is no loader, no gate and no "enter".
+     3. Every enhanced starting state is applied through html.js, which is set
+        by a synchronous statement in <head>. So there is no frame in which the
+        assembled sculpture is visible before it explodes, and no frame in
+        which a control that cannot work is on screen.
    =========================================================================== */
 
-.ap{ position:relative; padding:0; border:0; }
-.ap__stage{
-  position:relative;
-  /* The hero carries four things now, and the fourth is the one a visitor is
-     meant to reach for — so the rhythm is tightened until the instrument and
-     the evidence share a screen. Composed for the height, as the rest of the
-     page is composed for the width. */
-  min-height:min(88svh, 980px);
-  display:flex; align-items:center;
-  padding-block:clamp(1.4rem,3vh,2.5rem) clamp(1rem,2.2vh,1.8rem);
-  overflow:clip;
-}
-@media (max-width:999px){
-  .ap__stage{ min-height:auto; padding-block:clamp(2rem,6vw,3.5rem) clamp(2rem,5vw,3rem); }
+/* The three domains, as colour. Teal and cobalt are the site's own; the solar
+   gold is the warm end of the same family, lifted just enough to hold its own
+   against near-black. */
+:root{
+  --care:    #17a08f;
+  --build:   #5b7cf0;
+  --compete: #d9a94a;
 }
 
-/* the shader plane, when it is allowed to exist at all */
-.ap__canvas{
-  position:absolute; inset:0; z-index:0;
-  width:100%; height:100%; display:block;
-  pointer-events:none; opacity:0;
+.sig{
+  position:relative;
+  border:0;
+  padding:0;
+  isolation:isolate;
+  /* The trace is deliberately wider than the section that anchors it. This is
+     where it gets clipped, so it can never make the document wider than the
+     screen it is on. */
+  overflow-x:clip;
+}
+[data-signal][data-domain="care"]    { --accent:var(--care); }
+[data-signal][data-domain="build"]   { --accent:var(--build); }
+[data-signal][data-domain="compete"] { --accent:var(--compete); }
+
+/* --- the field: the trace, and the one canvas that may sit behind it ------- */
+
+.sig__field{
+  position:absolute;
+  inset:0;
+  overflow:clip;
+  pointer-events:none;
+  z-index:0;
+}
+.sig__glass{ position:absolute; inset:0; }
+.sig__canvas{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  opacity:0;
   transition:opacity 900ms var(--ease);
 }
-.ap__canvas.is-live{ opacity:.72; }
+.sig__canvas.is-live{ opacity:.66; }
 
-/* the drawn field: signal, bracket, current. Never interactive, never read. */
-.ap__field{
-  position:absolute; inset:0; z-index:1; pointer-events:none;
-  overflow:hidden;
+/* THE SIGNAL. Anchored to the sculpture, not to a measured percentage of the
+   section: left:41.4% of the stage is the mouth of the C, and the QRS sits at
+   the centre of the trace — so the event lands in the mouth at every width the
+   site supports, with nothing to re-measure when the copy changes length. */
+.sig__trace{
+  position:absolute;
+  top:50%;
+  left:41.4%;
+  /* The reset caps every svg at its container. This one is deliberately wider
+     than the stage that anchors it: it is the page's signal, not the
+     sculpture's decoration. */
+  width:100vw;
+  max-width:none;
+  height:clamp(180px, 32vh, 330px);
+  transform:translate(-50%, -50%);
+  z-index:-1;
+  overflow:visible;
 }
-.ap__field svg{ position:absolute; inset:0; width:100%; height:100%; }
-/* The shader mounts in here, underneath the drawn field, so the SVG signal and
-   the bracket always read even when the plane behind them is live — and so the
-   canvas can never end up above anything a visitor can click. */
-.ap__glass{ position:absolute; inset:0; z-index:0; pointer-events:none; }
-.ap__field .ap__sig{ z-index:1; }
-/* There is one trace now, and it is composed for the frame it is in rather
-   than duplicated for it. See THE PULSE in section 9. */
-/* The bracket belongs behind the evidence, not across the headline. */
-.ap__field .ap__brk{ z-index:1; left:auto; right:0; width:min(54%, 660px); opacity:.85; }
-@media (max-width:999px){ .ap__field .ap__brk{ width:min(78%, 420px); opacity:.6; } }
-.ap__frame{ position:relative; }
-.ap__signal{
-  fill:none; stroke-width:1.35;
-  /* Still the medical-teal biological signal — it is one of the five colours
-     this site is built from and it does not stop being that. It just carries
-     some of whatever channel the room is tuned to, so the trace belongs to the
-     same move as everything else rather than sitting outside it. */
-  stroke:color-mix(in srgb, var(--accent) 52%, var(--teal));
+.sig__base{
+  fill:none;
+  stroke:var(--text);
+  stroke-width:1;
   vector-effect:non-scaling-stroke;
-  opacity:.62;
-  filter:drop-shadow(0 0 6px color-mix(in srgb, var(--teal) 45%, transparent));
+  opacity:.11;
 }
-.ap__signal--ghost{ stroke:var(--teal); opacity:.14; stroke-width:1; }
-.ap__bracket{ fill:none; stroke:var(--cobalt); stroke-width:1; vector-effect:non-scaling-stroke; opacity:.36; }
-.ap__bracket-node{ fill:var(--cobalt); opacity:.5; }
-.ap__current{
-  position:absolute; left:0; right:0; top:auto; bottom:22%;
-  height:1px; background:linear-gradient(90deg, transparent, var(--gold) 22%, var(--gold) 62%, transparent);
-  opacity:.5;
+.sig__wave{
+  fill:none;
+  stroke:var(--accent);
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+  opacity:.34;
+  transition:stroke 520ms var(--ease), opacity 420ms var(--ease);
+}
+/* Only the sample under the head is bright. A whole line at full strength is
+   a neon tube, not a monitor. */
+.sig__sweep{
+  fill:none;
+  stroke:var(--accent);
+  stroke-width:2.6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+  opacity:0;
+  filter:drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 55%, transparent));
+}
+/* One compact refraction ring, passing through the object as the QRS lands. */
+.sig__ring{
+  position:absolute;
+  left:41.4%;
+  top:50%;
+  width:clamp(180px, 22vw, 330px);
+  aspect-ratio:1;
+  transform:translate(-50%, -50%) scale(.2);
+  border:1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+  border-radius:50%;
+  opacity:0;
+  z-index:-1;
+  pointer-events:none;
 }
 
-.ap__in{
-  position:relative; z-index:2;
+/* --- the composition ------------------------------------------------------ */
+
+.sig__in{
+  position:relative;
+  z-index:1;
   display:grid;
-  gap:clamp(1rem,2.2vh,1.8rem) clamp(2rem,4vw,4rem);
-  grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);
-  align-items:center; width:100%;
+  grid-template-columns:minmax(0, 47fr) minmax(0, 53fr);
+  grid-template-areas:
+    "copy  stage"
+    "panel panel";
+  align-items:center;
+  column-gap:clamp(1.5rem, 3.4vw, 3.5rem);
+  row-gap:clamp(1.75rem, 4vh, 3rem);
+  padding-block:clamp(2.5rem, 7vh, 5.5rem) clamp(2rem, 5vh, 4rem);
+  min-height:min(88svh, 880px);
 }
-@media (max-width:999px){ .ap__in{ grid-template-columns:1fr; align-items:start; } }
+.sig__copy{ grid-area:copy; min-width:0; }
+.sig__stage{ grid-area:stage; min-width:0; }
+.sig__panel{ grid-area:panel; min-width:0; }
 
-.ap__copy{ min-width:0; }
-.ap__title{ margin-top:clamp(.8rem,1.8vh,1.4rem); }
-.ap__title .line{ display:block; }
-.ap__title .line--2{ font-style:italic; color:var(--accent); }
-.ap__ch{ display:inline-block; will-change:transform, opacity; }
+/* --- the identity --------------------------------------------------------- */
 
-/* The evidence: one real screenshot, framed like an instrument read-out.
-   No laptop, no phone bezel, no floating browser chrome — the product is
-   shown as the product. */
-.ap__ev{ margin:0; position:relative; min-width:0; }
-.ap__iris{
-  position:relative; overflow:hidden;
-  border:1px solid var(--line-firm);
-  border-radius:var(--radius);
-  background:var(--ink-card);
-  box-shadow:0 50px 90px -60px rgba(0,0,0,.95), 0 0 0 1px color-mix(in srgb, var(--accent) 16%, transparent);
-  /* Registered above with an initial value of 0%, i.e. open. A registered
-     custom property resolves to its initial value rather than to a var()
-     fallback, so the resting state has to be the finished one — otherwise a
-     page whose script never runs clips its own evidence away. */
-  clip-path:inset(var(--ap-iris) 0 var(--ap-iris) 0 round var(--radius));
-}
-.ap__iris img{
-  width:100%; aspect-ratio:16/10; object-fit:cover; object-position:top center;
-  display:block;
-}
-/* The blades. In the static frame they are parked outside the opening, so a
-   page with no JavaScript shows the screenshot, not a shutter. */
-.ap__blade{
-  position:absolute; left:0; right:0; height:52%;
-  background:linear-gradient(var(--ink), color-mix(in srgb, var(--ink) 82%, var(--accent)));
-  z-index:2; pointer-events:none;
-}
-/* Parked by position, not by transform, so the timeline owns the transform
-   outright and never composes itself on top of a resting offset. */
-.ap__blade--t{ bottom:100%; border-bottom:1px solid var(--accent-line); }
-.ap__blade--b{ top:100%; border-top:1px solid var(--accent-line); }
-
-/* corner brackets — the instrument's registration marks */
-.ap__marks{ position:absolute; inset:-9px; pointer-events:none; z-index:3; }
-.ap__marks span{
-  position:absolute; width:16px; height:16px;
-  border:1px solid var(--accent); opacity:.55;
-}
-.ap__marks span:nth-child(1){ top:0; left:0; border-right:0; border-bottom:0; }
-.ap__marks span:nth-child(2){ top:0; right:0; border-left:0; border-bottom:0; }
-.ap__marks span:nth-child(3){ bottom:0; left:0; border-right:0; border-top:0; }
-.ap__marks span:nth-child(4){ bottom:0; right:0; border-left:0; border-top:0; }
-
-.ap__cap{
-  margin-top:1rem;
-  display:flex; flex-wrap:wrap; gap:.5rem 1.1rem; align-items:baseline;
-  font-family:var(--mono); font-size:.7rem; letter-spacing:.08em; line-height:1.7;
+.sig__where{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:.55rem .85rem;
+  font-family:var(--mono);
+  font-size:.7rem;
+  letter-spacing:.15em;
+  text-transform:uppercase;
   color:var(--text-quiet);
 }
-.ap__cap .go{
-  font-weight:500; color:var(--accent); text-decoration:none;
-  border-bottom:1px solid var(--accent-line);
-  display:inline-flex; align-items:center; padding-block:.3rem;
+.sig__handle{
+  color:var(--accent);
+  text-decoration:none;
+  border-bottom:1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  padding-bottom:1px;
+  transition:border-color 200ms var(--ease);
 }
-@media (hover:none),(pointer:coarse){ .ap__cap .go{ min-height:44px; } }
-.ap__cap .go:hover{ border-bottom-color:var(--accent); }
+.sig__handle:hover{ border-bottom-color:var(--accent); }
 
-/* Where the pinned sequence lets go: the composition stops moving and what is
-   left on screen is prose you can read and links you can use. */
-.ap__after{ position:relative; z-index:2; padding-block:clamp(1.5rem,4vw,3rem) clamp(2rem,5vw,3.5rem); }
-.ap__afterin{
-  display:grid; gap:clamp(1.25rem,3vw,2.5rem);
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,18em),1fr));
-  padding-top:clamp(1.25rem,3vw,2rem);
+.sig__title{
+  margin-top:clamp(.7rem, 1.8vh, 1.3rem);
+  font-family:var(--display);
+  font-size:clamp(3.4rem, 8.4vw, 7.6rem);
+  line-height:.9;
+  letter-spacing:-.015em;
+}
+.sig__ln{ display:block; position:relative; overflow:hidden; }
+.sig__ln--2{ font-style:italic; color:var(--accent); }
+.sig__lnt{ display:inline-block; }
+/* THE INK EDGE. The name is opaque from the first frame; what travels is a
+   narrow bright edge *over* it. Nothing here can hide a letter, because
+   nothing here is what makes the letter visible. */
+.sig__ln::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(100deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 0%, transparent) 38%,
+    color-mix(in srgb, var(--accent) 72%, transparent) 50%,
+    transparent 62%,
+    transparent 100%);
+  mix-blend-mode:screen;
+  opacity:0;
+  transform:translateX(-104%);
+}
+
+.sig__creed{
+  margin-top:clamp(1rem, 2.2vh, 1.6rem);
+  font-family:var(--ui);
+  font-weight:500;
+  font-size:clamp(1rem, .93rem + .34vw, 1.2rem);
+  letter-spacing:.01em;
+  color:var(--text);
+}
+.sig__creed em{ font-style:normal; color:var(--accent); }
+
+.sig__lede{
+  margin-top:.7rem;
+  color:var(--text-quiet);
+  font-size:clamp(1.02rem, .96rem + .3vw, 1.16rem);
+  line-height:1.55;
+  max-width:26em;
+}
+
+/* The four credentials, in the first viewport and requiring nothing of the
+   visitor. The proof panel below expands each one; this states them. */
+.sig__stance{
+  margin-top:clamp(.9rem, 2vh, 1.3rem);
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, max-content));
+  gap:.3rem 1.75rem;
+  font-family:var(--ui);
+  font-size:.86rem;
+  color:var(--text);
+}
+.sig__stance li{ display:flex; align-items:baseline; gap:.55rem; }
+.sig__stance li::before{
+  content:"";
+  flex:0 0 auto;
+  width:5px; height:5px;
+  border-radius:50%;
+  background:var(--accent);
+  opacity:.75;
+}
+
+.sig__avail{
+  margin-top:clamp(1rem, 2.2vh, 1.5rem);
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  font-family:var(--mono);
+  font-size:.72rem;
+  letter-spacing:.06em;
+  color:var(--text-quiet);
+}
+
+.sig__actions{ margin-top:clamp(1.2rem, 2.6vh, 1.9rem); }
+
+.sig__links{
+  margin-top:clamp(1rem, 2.2vh, 1.5rem);
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem 1.6rem;
+  font-family:var(--mono);
+  font-size:.72rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.sig__links a{
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
+  color:var(--text-quiet);
+  text-decoration:none;
+  border-bottom:1px solid transparent;
+  transition:color 200ms var(--ease), border-color 200ms var(--ease);
+}
+.sig__links a:hover{ color:var(--text); border-bottom-color:var(--accent); }
+
+/* --- the sculpture -------------------------------------------------------- */
+
+.sig__stage{
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.ce{
+  width:100%;
+  max-width:min(100%, 660px);
+  height:auto;
+  aspect-ratio:560 / 400;
+  overflow:visible;
+  /* The pointer separates the planes; it never replaces the cursor and never
+     drags the object around. Both values are clamped by the module that sets
+     them, and the whole tilt is capped at three degrees. */
+  transform:perspective(1400px)
+            rotateY(calc(var(--px, 0) * 3deg))
+            rotateX(calc(var(--py, 0) * -3deg));
+  transition:transform 420ms var(--ease);
+}
+.ce__plane{
+  transition:opacity 520ms var(--ease), transform 620ms var(--ease-snap);
+}
+.ce__plane--care    { --plane-c:var(--care);    --sep:1;    opacity:.95; }
+.ce__plane--build   { --plane-c:var(--build);   --sep:-1.3; opacity:.9; }
+.ce__plane--compete { --plane-c:var(--compete); --sep:1.7;  opacity:.76; }
+.ce__plane{
+  transform:translate(calc(var(--px, 0) * var(--sep) * 7px),
+                      calc(var(--py, 0) * var(--sep) * 5px));
+}
+
+.ce__arc{
+  fill:none;
+  stroke:var(--care);
+  stroke-width:15;
+  stroke-linecap:round;
+}
+.ce__lead{ fill:var(--care); opacity:.7; }
+
+.ce__trunk,.ce__branch{
+  fill:none;
+  stroke:var(--build);
+  stroke-width:15;
+  stroke-linecap:round;
+}
+.ce__stub{
+  fill:none;
+  stroke:var(--build);
+  stroke-width:1.6;
+  opacity:.6;
+}
+.ce__node{ fill:var(--build); }
+.ce__node--sm{ opacity:.8; }
+.ce__node--tip{ opacity:.55; }
+
+.ce__brk{
+  fill:none;
+  stroke:var(--compete);
+  stroke-width:2;
+  stroke-linecap:square;
+}
+.ce__seed{ fill:var(--compete); opacity:.85; }
+.ce__crown{ fill:var(--compete); }
+
+/* THE DOMAIN STATE. Choosing one brings its plane forward, sends the other two
+   back, and retunes the trace. It is one coordinated move, it is persistent,
+   and it is unambiguous — which is the whole difference between a control and
+   a hover effect. */
+/* The inactive planes recede; they never leave. A quarter-opacity plane is a
+   plane you have stopped drawing, and the CE has to hold as one object in
+   every one of the three states. */
+[data-domain="care"]    .ce__plane--build,
+[data-domain="care"]    .ce__plane--compete{ opacity:.5; }
+[data-domain="build"]   .ce__plane--care,
+[data-domain="build"]   .ce__plane--compete{ opacity:.5; }
+[data-domain="compete"] .ce__plane--care,
+[data-domain="compete"] .ce__plane--build{ opacity:.5; }
+
+[data-domain="care"]    .ce__plane--care,
+[data-domain="build"]   .ce__plane--build,
+[data-domain="compete"] .ce__plane--compete{ opacity:1; }
+
+/* The active plane comes forward by a hair — enough to read as depth, far too
+   little to read as a toy. */
+[data-domain="build"] .ce__plane--build,
+[data-domain="compete"] .ce__plane--compete,
+[data-domain="care"] .ce__plane--care{
+  transform:translate(calc(var(--px, 0) * var(--sep) * 7px),
+                      calc(var(--py, 0) * var(--sep) * 5px))
+            scale(1.014);
+}
+
+/* --- the three domains, and the proof under each -------------------------- */
+
+.sig__panel{
   border-top:1px solid var(--line);
+  padding-top:clamp(1.1rem, 2.6vh, 1.8rem);
 }
 
-/* The read-out strip that the sequence resolves into: the aperture stops
-   moving and what is left is somewhere to go. */
-/* Directly under the six positions, in the same box, so an input and the thing
-   it changes are never more than a hairline apart. */
-.ap__readout{
-  position:relative; z-index:2;
-  display:grid; gap:1px;
-  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-  border-block:1px solid var(--line);
-  background:var(--ink);
+/* The controls exist only where they can work. html.js is set synchronously in
+   <head>, so this is decided before the first paint rather than after it. */
+.dom{ display:none; border:0; margin:0; padding:0; min-width:0; }
+.js .dom{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+  margin-bottom:clamp(1rem, 2.4vh, 1.6rem);
 }
-.ap__readout li{ background:var(--ink); padding:1rem 1.15rem; box-shadow:0 0 0 1px var(--line); }
-.ap__readout .k{ font-family:var(--mono); font-size:.63rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); display:block; }
-.ap__readout .v{ display:block; font-family:var(--ui); font-weight:500; font-size:.95rem; line-height:1.4; margin-top:.4rem; }
+.dom__opt{
+  position:relative;
+  display:inline-flex;
+  align-items:baseline;
+  gap:.6rem;
+  min-height:44px;
+  padding:.55rem 1.1rem;
+  background:transparent;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  cursor:pointer;
+  transition:border-color 200ms var(--ease), background 200ms var(--ease);
+}
+/* The input stays in the accessibility tree and stays focusable; it is only
+   the browser's own square that is out of the way. */
+.dom__opt input{
+  position:absolute;
+  width:1px; height:1px;
+  margin:0; padding:0;
+  opacity:0;
+  pointer-events:none;
+}
+.dom__k{
+  font-family:var(--mono);
+  font-size:.62rem;
+  letter-spacing:.14em;
+  color:var(--text-quiet);
+  transition:color 200ms var(--ease);
+}
+.dom__n{
+  font-family:var(--ui);
+  font-weight:500;
+  font-size:.86rem;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  color:var(--text-quiet);
+  transition:color 200ms var(--ease);
+}
+.dom__opt:hover{ border-color:var(--line-firm); }
+.dom__opt:hover .dom__n{ color:var(--text); }
+.dom__opt:has(input:checked){
+  border-color:var(--accent);
+  background:color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.dom__opt:has(input:checked) .dom__n{ color:var(--text); }
+.dom__opt:has(input:checked) .dom__k{ color:var(--accent); }
+/* Focus is at least as clear as hover, and it is on the thing you can see. */
+.dom__opt:has(input:focus-visible){
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+}
 
-/* The timeline animates the blades, not the clip; the iris stays open the whole
-   time so the evidence is never hidden behind a shutter waiting on a script. */
+.proofs{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(15rem, 1fr));
+  gap:clamp(1rem, 2.4vw, 2.25rem);
+}
+/* With a script running, one group stands at a time and the controls choose
+   which. Without one, all three stand open — which is the whole of the
+   information, laid out as a deliberate three-column row. */
+.js .proof:not([data-active]){ display:none; }
+.js .proofs{ grid-template-columns:1fr; }
+.js .proof[data-active]{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr));
+  gap:clamp(.9rem, 2.2vw, 2rem);
+  align-items:start;
+}
+.js .proof__h{ grid-column:1 / -1; }
+
+.proof__h{
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  font-family:var(--mono);
+  font-size:.68rem;
+  font-weight:400;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--text-quiet);
+  margin-bottom:.7rem;
+}
+.proof__dot{
+  width:7px; height:7px;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+[data-proof="care"]    .proof__dot{ background:var(--care); box-shadow:0 0 0 3px color-mix(in srgb, var(--care) 18%, transparent); }
+[data-proof="build"]   .proof__dot{ background:var(--build); box-shadow:0 0 0 3px color-mix(in srgb, var(--build) 18%, transparent); }
+[data-proof="compete"] .proof__dot{ background:var(--compete); box-shadow:0 0 0 3px color-mix(in srgb, var(--compete) 18%, transparent); }
+
+.proof__say{
+  font-family:var(--read);
+  font-size:1rem;
+  line-height:1.5;
+  color:var(--text);
+  max-width:30em;
+}
+.proof__list{
+  margin-top:.85rem;
+  display:grid;
+  gap:.6rem;
+  font-size:.9rem;
+  line-height:1.5;
+  color:var(--text-quiet);
+  max-width:34em;
+}
+.proof__list li{ padding-left:1rem; position:relative; }
+.proof__list li::before{
+  content:"";
+  position:absolute;
+  left:0; top:.62em;
+  width:5px; height:1px;
+  background:var(--accent);
+}
+.proof__list b{ color:var(--text); font-weight:500; font-family:var(--ui); }
+
+/* THE RETUNE. A domain change is not a crossfade: the trace is rewritten
+   across the viewport the way a monitor writes it, the sample head runs the
+   new signature once, and one refraction ring passes the object again. Visible
+   feedback starts inside 80 ms — the accent and the plane weights are plain
+   transitions and begin on the same frame as the press. */
+@media (prefers-reduced-motion:no-preference){
+  html.js:not([data-motion="off"]) [data-signal].is-tuning .sig__sweep{
+    animation:sig-sweep 620ms cubic-bezier(.35,0,.2,1) both;
+  }
+  html.js:not([data-motion="off"]) [data-signal].is-tuning .sig__ring{
+    animation:sig-ring 520ms 180ms cubic-bezier(.16,1,.3,1) both;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   3.1 · THE ARRIVAL
+   ---------------------------------------------------------------------------
+   Roughly two seconds, once, and over. Nothing below gates a word: every
+   keyframe either starts from a partial opacity that is already legible, or
+   runs on something decorative. The whole sequence is transform, opacity and
+   one stroke-dashoffset — compositor work, and no main-thread cost at all.
+
+     0–240 ms      the calibration line and the resting trace become visible
+     120–700 ms    a bright sample head crosses the viewport
+     ~420 ms       the QRS strikes; one refraction ring passes the object
+     420–1100 ms   the three planes come out of their exploded state into
+                   exact alignment and the CE resolves
+     650–1250 ms   an ink edge travels the name, line by line
+     1000–1500 ms  the credentials and the actions settle
+     by ~1600 ms   still, and waiting
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion:no-preference){
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__base{ animation:sig-calibrate 240ms var(--ease) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__wave{ animation:sig-rest 700ms 200ms var(--ease) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__sweep{ animation:sig-sweep 580ms 120ms cubic-bezier(.35,0,.2,1) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__ring{ animation:sig-ring 560ms 420ms cubic-bezier(.16,1,.3,1) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .ce__plane--care   { animation:ce-care    680ms 420ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .ce__plane--build  { animation:ce-build   680ms 500ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .ce__plane--compete{ animation:ce-compete 680ms 560ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__ln:nth-of-type(1)::after{ animation:ink 520ms 650ms var(--ease) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__ln:nth-of-type(2)::after{ animation:ink 520ms 800ms var(--ease) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__creed{ animation:detent 420ms 1000ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__lede { animation:detent 420ms 1080ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) /* The four credentials, in the first viewport and requiring nothing of the
+   visitor. The proof panel below expands each one; this states them. */
+.sig__stance{
+  margin-top:clamp(.9rem, 2vh, 1.3rem);
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, max-content));
+  gap:.3rem 1.75rem;
+  font-family:var(--ui);
+  font-size:.86rem;
+  color:var(--text);
+}
+.sig__stance li{ display:flex; align-items:baseline; gap:.55rem; }
+.sig__stance li::before{
+  content:"";
+  flex:0 0 auto;
+  width:5px; height:5px;
+  border-radius:50%;
+  background:var(--accent);
+  opacity:.75;
+}
+
+.sig__avail{ animation:detent 420ms 1160ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__actions{ animation:detent 420ms 1240ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__links{ animation:detent 420ms 1320ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) [data-signal]:not(.is-settled) .sig__panel{ animation:detent 460ms 1400ms var(--ease-snap) both; }
+}
+
+@keyframes sig-calibrate{ from{ opacity:0; } to{ opacity:.11; } }
+@keyframes sig-rest{ from{ opacity:0; } to{ opacity:.34; } }
+@keyframes sig-sweep{
+  from{ opacity:.9;  stroke-dashoffset:120; }
+  92% { opacity:.9; }
+  to  { opacity:0;   stroke-dashoffset:-1000; }
+}
+@keyframes sig-ring{
+  from{ opacity:0;   transform:translate(-50%, -50%) scale(.18); }
+  22% { opacity:.55; }
+  to  { opacity:0;   transform:translate(-50%, -50%) scale(1.9); }
+}
+/* The planes arrive from a controlled exploded state — never from nothing.
+   A visitor who lands mid-sequence sees a monogram coming together, not a
+   blank rectangle waiting to be filled. */
+@keyframes ce-care{
+  from{ opacity:.3; transform:translate(-30px, 16px) scale(.965); }
+  to  { opacity:.95; transform:translate(0,0) scale(1); }
+}
+@keyframes ce-build{
+  from{ opacity:.25; transform:translate(6px, -26px) scale(.95); }
+  to  { opacity:.9; transform:translate(0,0) scale(1); }
+}
+@keyframes ce-compete{
+  from{ opacity:.2; transform:translate(34px, 12px) scale(.94); }
+  to  { opacity:.76; transform:translate(0,0) scale(1); }
+}
+@keyframes ink{
+  from{ opacity:0;  transform:translateX(-104%); }
+  18% { opacity:1; }
+  to  { opacity:0;  transform:translateX(104%); }
+}
+/* Anticipation, action, settle — and the settle is a mechanical detent rather
+   than a drift. It never starts from nothing: .55 is readable. */
+@keyframes detent{
+  from{ opacity:.55; transform:translateY(9px); }
+  74% { transform:translateY(-1.5px); }
+  to  { opacity:1;   transform:translateY(0); }
+}
 
 /* ===========================================================================
    4. NATIVE SCROLL-DRIVEN MOTION
@@ -1276,24 +1714,6 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
     @keyframes mast-firm{
       from{ border-bottom-color:transparent; }
       to  { border-bottom-color:var(--line); }
-    }
-  }
-}
-
-/* --- the native aperture reveal (no GSAP, no pin) -------------------------- */
-/* Below the cinematic threshold — and on any browser without GSAP loaded —
-   the aperture still opens, driven by the scroll position of the section
-   itself. It starts open, so it is never a shutter over the evidence. */
-@supports (animation-timeline: view()) and (clip-path: inset(0% 0 0% 0)){
-  @media (prefers-reduced-motion:no-preference) and (max-width:999px){
-    .ap__iris{
-      animation:iris-open linear both;
-      animation-timeline:view();
-      animation-range:entry 12% cover 22%;
-    }
-    @keyframes iris-open{
-      from{ --ap-iris:19%; }
-      to  { --ap-iris:0%; }
     }
   }
 }
@@ -1433,33 +1853,837 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
 [data-physics="sequence"] .chapter:last-of-type .chapter__label .n::after{ display:none; }
 
 /* ===========================================================================
-   6. MOBILE ART DIRECTION
+   6. THE THEATRE — six living specimens
    ---------------------------------------------------------------------------
-   Composed for the width, not shrunk to it. No WebGL, no pins, no pointer
-   dependency — and every hover behaviour above has a tap, focus or scroll
-   equivalent below.
+   The layout is a grid and nothing more. Each article is its own two-column
+   room: the reading column on the left, the scene on the right, and the scene
+   is `position: sticky` *inside its own article*. So the stage holds while you
+   read its project and hands off physically to the next one when you leave it.
+
+   That hand-off is the browser's own scrolling. There is no pin, no wheel
+   listener, no snap, no forced horizontal travel and no scroll jail. The
+   scrollbar means exactly what it has always meant. At one column the grid
+   collapses and every scene sits with its own copy, which is the mobile
+   design rather than a fallback for it.
+
+   Every law below is written the house way: the state with no .is-in on it is
+   the *finished* composition, and only html.js sets a starting state. A page
+   with no script, a failed observer or a browser that never fires it all land
+   on the composed frame.
+   =========================================================================== */
+
+.th{ border:0; padding-block:clamp(2rem,5vw,4rem) clamp(3rem,7vw,6rem); }
+
+.th__wrap{
+  display:grid;
+  grid-template-columns:max-content minmax(0,1fr);
+  column-gap:clamp(1.5rem, 3.2vw, 3.25rem);
+  align-items:start;
+  margin-top:clamp(1.5rem,4vw,3rem);
+}
+
+/* --- the rail: the signal, continued as a progress spine ------------------ */
+
+.th__rail{
+  position:sticky;
+  top:clamp(5rem, 16vh, 9rem);
+  align-self:start;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:start;
+  column-gap:.9rem;
+  max-width:16rem;
+}
+.th__count{
+  grid-column:1 / -1;
+  font-family:var(--mono);
+  font-size:.66rem;
+  letter-spacing:.16em;
+  color:var(--text-quiet);
+  margin-bottom:.85rem;
+}
+.th__count [data-rail-n]{ color:var(--accent); }
+.th__rail ol{ grid-column:2; display:grid; gap:.1rem; }
+.th__rail a{
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+  min-height:44px;
+  padding:.25rem .4rem;
+  text-decoration:none;
+  color:var(--text-quiet);
+  transition:color 220ms var(--ease);
+}
+.th__rail a:hover{ color:var(--text-quiet); }
+.th__rn{ font-family:var(--mono); font-size:.66rem; letter-spacing:.1em; }
+.th__rt{
+  font-family:var(--ui);
+  font-size:.78rem;
+  letter-spacing:.01em;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.th__rail a[aria-current="true"]{ color:var(--text); }
+.th__rail a[aria-current="true"] .th__rn{ color:var(--accent); }
+
+.th__spine{
+  grid-column:1;
+  grid-row:2;
+  width:12px;
+  height:100%;
+  min-height:14rem;
+  align-self:stretch;
+  overflow:visible;
+}
+.th__spineb{ fill:none; stroke:var(--line); stroke-width:1; vector-effect:non-scaling-stroke; }
+.th__spinef{
+  fill:none;
+  stroke:var(--accent);
+  stroke-width:1.6;
+  vector-effect:non-scaling-stroke;
+  /* pathLength is declared in the markup, so the fill is a plain percentage
+     of the spine regardless of how tall the rail has ended up. */
+  stroke-dasharray:1000;
+  stroke-dashoffset:calc(1000 - (var(--spine, 0) * 1000));
+  transition:stroke-dashoffset 320ms var(--ease), stroke 420ms var(--ease);
+  filter:drop-shadow(0 0 5px color-mix(in srgb, var(--accent) 45%, transparent));
+}
+
+/* --- the rooms ------------------------------------------------------------ */
+
+.th__rooms{ min-width:0; }
+
+.wk{
+  display:grid;
+  grid-template-columns:minmax(0, 43fr) minmax(0, 57fr);
+  column-gap:clamp(1.5rem, 3.2vw, 3.5rem);
+  align-items:start;
+  min-height:min(72vh, 680px);
+  padding-block:clamp(2rem, 6vh, 4.5rem);
+  border-top:1px solid var(--line);
+  scroll-margin-top:clamp(4rem, 12vh, 7rem);
+}
+.wk:first-child{ border-top:0; padding-top:0; }
+
+.wk__body{ position:relative; min-width:0; padding-top:clamp(0rem, 4vh, 3rem); }
+.wk__idx{
+  font-family:var(--mono);
+  font-size:.68rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--text-quiet);
+}
+.wk__idx span{ color:var(--accent); margin-right:.7rem; }
+.wk__t{
+  margin-top:.7rem;
+  font-family:var(--display);
+  font-size:clamp(2.1rem, 3.6vw, 3.4rem);
+  line-height:1.02;
+  letter-spacing:-.01em;
+}
+.wk__t a{ text-decoration:none; }
+/* One click target over the whole room, and the real link is still the thing
+   that carries it. */
+.wk__t a::after{ content:""; position:absolute; inset:0; z-index:1; }
+.wk__say{
+  margin-top:.85rem;
+  font-family:var(--ui);
+  font-weight:500;
+  font-size:.98rem;
+  color:var(--accent);
+}
+.wk__blurb{
+  margin-top:.8rem;
+  color:var(--text-quiet);
+  font-size:1rem;
+  line-height:1.55;
+  max-width:29em;
+}
+.wk__proof{
+  margin-top:1.35rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.35rem 2rem;
+}
+.wk__proof li{ display:grid; }
+.wk__proof .n{
+  font-family:var(--display);
+  font-size:clamp(1.6rem, 2.4vw, 2.1rem);
+  line-height:1;
+  color:var(--text);
+}
+.wk__proof .k{
+  font-family:var(--mono);
+  font-size:.6rem;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--text-quiet);
+  margin-top:.35rem;
+}
+.wk__meta{ margin-top:1.35rem; display:flex; flex-wrap:wrap; gap:.5rem; }
+.wk__go{
+  margin-top:1.5rem;
+  font-family:var(--mono);
+  font-size:.68rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+}
+.wk__go .arrow{ transition:transform 300ms var(--ease-snap); }
+.wk:hover .wk__go .arrow{ transform:translateX(4px); }
+.wk:focus-within .wk__go .arrow{ transform:translateX(4px); }
+.wk:focus-within{ outline:none; }
+.wk:has(.wk__t a:focus-visible) .wk__t a{ outline:2px solid var(--accent); outline-offset:4px; border-radius:2px; }
+.wk__t a:focus-visible{ outline:none; }
+
+/* --- the stage ------------------------------------------------------------ */
+
+.scene{
+  position:sticky;
+  top:clamp(4.5rem, 14vh, 8rem);
+  min-width:0;
+  isolation:isolate;
+}
+.scene__plate{ position:relative; overflow:hidden; border-radius:var(--radius); }
+.scene__shot{
+  width:100%;
+  height:auto;
+  border-radius:var(--radius);
+  box-shadow:0 0 0 1px var(--line), 0 24px 60px -30px rgba(0,0,0,.85);
+}
+.scene__shot--tall{ object-fit:cover; object-position:top center; }
+
+/* ---------------------------------------------------------------------------
+   6.1 · 01 SPELLBOMB — the fuse law
+   ---------------------------------------------------------------------------
+   A fuse burns once toward the bomb, and the eleven tray slots take the seven
+   letters the capture actually holds. It lands, and then it is over: no
+   explosion, no loop, no sparks.
+   --------------------------------------------------------------------------- */
+
+.scene__fuse{
+  position:absolute;
+  left:2%; bottom:4%;
+  width:56%;
+  height:58%;
+  overflow:visible;
+  pointer-events:none;
+}
+.scene__fusetrack{ fill:none; stroke:var(--line-firm); stroke-width:1.4; vector-effect:non-scaling-stroke; }
+.scene__fuseburn{
+  fill:none;
+  stroke:#f0a23c;
+  stroke-width:2.4;
+  stroke-linecap:round;
+  vector-effect:non-scaling-stroke;
+  filter:drop-shadow(0 0 5px color-mix(in srgb, #f0a23c 60%, transparent));
+}
+/* A spark that rides a fuse and a scan line that crosses a timeline exist only
+   to move. Where nothing moves they are not dimmed, they are absent — a
+   permanently invisible element is a contrast failure waiting to be found. */
+.scene__spark,.cmp__scan{ display:none; }
+@media (prefers-reduced-motion:no-preference){
+  html.js:not([data-motion="off"]) .scene__spark,
+  html.js:not([data-motion="off"]) .cmp__scan{ display:block; }
+}
+.scene__spark{
+  position:absolute;
+  left:2%; bottom:4%;
+  width:7px; height:7px;
+  margin:-3.5px 0 0 -3.5px;
+  border-radius:50%;
+  background:#ffd9a0;
+  box-shadow:0 0 10px 2px color-mix(in srgb, #f0a23c 75%, transparent);
+  opacity:0;
+}
+
+.tray{
+  margin-top:.9rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.3rem;
+}
+.tray__t{
+  width:clamp(1.6rem, 2.6vw, 2.15rem);
+  aspect-ratio:1;
+  display:grid;
+  place-items:center;
+  font-family:var(--mono);
+  font-size:.78rem;
+  color:#0b0c0e;
+  background:#f0a23c;
+  border-radius:2px;
+}
+.tray__t--empty{ background:transparent; box-shadow:inset 0 0 0 1px var(--line-firm); }
+
+@media (prefers-reduced-motion:no-preference){
+/* Guarded as one block: under reduce, or with the site's motion control
+   off, none of the starting states below is ever applied and none of
+   these keyframes exists — so the composed final frame is what renders,
+   with no override layer needed to put it back. */
+  html.js:not([data-motion="off"]) .scene--fuse .scene__fuseburn{ stroke-dasharray:1000; stroke-dashoffset:1000; }
+  html.js:not([data-motion="off"]) .scene--fuse.is-in .scene__fuseburn{ animation:burn 1000ms 120ms cubic-bezier(.5,0,.5,1) both; }
+  html.js:not([data-motion="off"]) .scene--fuse .tray__t{ opacity:0; transform:translateY(-16px) rotate(-4deg); }
+  html.js:not([data-motion="off"]) .scene--fuse.is-in .tray__t{
+    animation:letter-snap 420ms cubic-bezier(.16,1,.3,1) both;
+    animation-delay:calc(760ms + var(--i) * 55ms);
+  }
+  @keyframes burn{ from{ stroke-dashoffset:1000; } to{ stroke-dashoffset:0; } }
+  @keyframes letter-snap{
+    from{ opacity:0; transform:translateY(-16px) rotate(-4deg); }
+    70% { transform:translateY(2px) rotate(.5deg); }
+    to  { opacity:1; transform:translateY(0) rotate(0); }
+  }
+  /* The spark rides the fuse it burns, where the browser can put it there. */
+  @supports (offset-path: path("M0 0 L1 1")){
+    html.js:not([data-motion="off"]) .scene--fuse.is-in .scene__spark{
+      offset-path:path("M8 240 C 90 236, 118 190, 148 158 S 196 108, 236 104");
+      animation:spark 1000ms 120ms cubic-bezier(.5,0,.5,1) both;
+    }
+    @keyframes spark{
+      from{ offset-distance:0%;   opacity:0; }
+      10% { opacity:1; }
+      90% { opacity:1; }
+      to  { offset-distance:100%; opacity:0; }
+    }
+  }
+}
+/* ---------------------------------------------------------------------------
+   6.2 · 02 HEALTH JOURNAL — the accumulation law
+   ---------------------------------------------------------------------------
+   The stage opens from a wide slice to the full tall record as the days
+   accumulate, one real chart line is drawn, and the solar arc the product
+   actually computes runs once behind it.
+   --------------------------------------------------------------------------- */
+
+.scene--accumulate{ display:grid; }
+.scene__arc{
+  grid-area:1 / 1;
+  width:100%;
+  align-self:start;
+  overflow:visible;
+  opacity:.5;
+}
+.scene__arcline{
+  fill:none;
+  stroke:color-mix(in srgb, #f0c46a 55%, transparent);
+  stroke-width:1;
+  stroke-dasharray:2 5;
+  vector-effect:non-scaling-stroke;
+}
+.scene__sun{ fill:#f0c46a; filter:drop-shadow(0 0 8px color-mix(in srgb, #f0c46a 70%, transparent)); }
+
+.scene__stack{
+  grid-area:1 / 1;
+  display:grid;
+  grid-template-columns:minmax(0, 46fr) minmax(0, 54fr);
+  gap:clamp(.75rem, 1.6vw, 1.5rem);
+  align-items:end;
+}
+.scene--accumulate .scene__shot--tall{ max-height:min(58vh, 520px); }
+.scene__chart{ width:100%; height:auto; align-self:end; margin-bottom:.5rem; }
+.scene__grid{ fill:none; stroke:var(--line); stroke-width:1; vector-effect:non-scaling-stroke; }
+.scene__line{
+  fill:none;
+  stroke:#7fa6f0;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+  filter:drop-shadow(0 0 6px color-mix(in srgb, #7fa6f0 45%, transparent));
+}
+
+@media (prefers-reduced-motion:no-preference){
+/* Guarded as one block: under reduce, or with the site's motion control
+   off, none of the starting states below is ever applied and none of
+   these keyframes exists — so the composed final frame is what renders,
+   with no override layer needed to put it back. */
+  html.js:not([data-motion="off"]) .scene--accumulate .scene__shot--tall{ clip-path:inset(0 0 62% 0); }
+  html.js:not([data-motion="off"]) .scene--accumulate.is-in .scene__shot--tall{ animation:accumulate 900ms 160ms var(--ease) both; }
+  html.js:not([data-motion="off"]) .scene--accumulate .scene__line{ stroke-dasharray:1000; stroke-dashoffset:1000; }
+  html.js:not([data-motion="off"]) .scene--accumulate.is-in .scene__line{ animation:draw 1100ms 420ms var(--ease) both; }
+  html.js:not([data-motion="off"]) .scene--accumulate .scene__sun{ opacity:0; }
+  @keyframes accumulate{ from{ clip-path:inset(0 0 62% 0); } to{ clip-path:inset(0 0 0 0); } }
+  @keyframes draw{ from{ stroke-dashoffset:1000; } to{ stroke-dashoffset:0; } }
+  @supports (offset-path: path("M0 0 L1 1")){
+    html.js:not([data-motion="off"]) .scene--accumulate.is-in .scene__sun{
+      offset-path:path("M12 188 A 188 188 0 0 1 388 188");
+      animation:solar 1600ms 200ms var(--ease) both;
+    }
+    @keyframes solar{
+      from{ offset-distance:6%;  opacity:0; }
+      20% { opacity:1; }
+      to  { offset-distance:74%; opacity:1; }
+    }
+  }
+}
+/* ---------------------------------------------------------------------------
+   6.3 · 03 PHLEBOTOMY — the order law
+   ---------------------------------------------------------------------------
+   This is the first place the Order of Draw appears on this site, and the one
+   place it belongs. Six real cards, in the six CLSI collection positions, with
+   the additive each one carries. They arrive in the wrong seats, travel to the
+   right ones, and lock.
+
+   --from is the seat a card starts in; --i is the seat it belongs in. The
+   card physically crosses the distance between the two, which is the whole
+   point: a promise of sorting has to be made of things that can be sorted.
+   --------------------------------------------------------------------------- */
+
+.tubes{ display:grid; gap:.3rem; margin-bottom:clamp(.9rem, 2vw, 1.4rem); }
+.tube{
+  display:grid;
+  grid-template-columns:auto auto 1fr auto;
+  align-items:center;
+  gap:.75rem;
+  padding:.5rem .8rem;
+  background:var(--ink-raised);
+  box-shadow:inset 0 0 0 1px var(--line);
+  border-radius:2px;
+  border-left:3px solid var(--cap);
+}
+.tube__cap{
+  width:12px; height:18px;
+  border-radius:2px 2px 4px 4px;
+  background:var(--cap);
+  box-shadow:0 0 0 1px rgba(0,0,0,.4);
+}
+.tube__n{ font-family:var(--mono); font-size:.66rem; color:var(--text-quiet); }
+.tube__l{ font-family:var(--ui); font-size:.82rem; color:var(--text); }
+.tube__a{ font-family:var(--mono); font-size:.62rem; letter-spacing:.06em; color:var(--text-quiet); }
+
+@media (prefers-reduced-motion:no-preference){
+/* Guarded as one block: under reduce, or with the site's motion control
+   off, none of the starting states below is ever applied and none of
+   these keyframes exists — so the composed final frame is what renders,
+   with no override layer needed to put it back. */
+  html.js:not([data-motion="off"]) .scene--order .tube{
+    opacity:0;
+    transform:translateY(calc((var(--from) - var(--i)) * 118%)) translateX(-10px);
+  }
+  html.js:not([data-motion="off"]) .scene--order.is-in .tube{
+    animation:seat 620ms cubic-bezier(.16,1,.3,1) both;
+    animation-delay:calc(var(--i) * 90ms);
+  }
+  @keyframes seat{
+    from{ opacity:0; transform:translateY(calc((var(--from) - var(--i)) * 118%)) translateX(-10px); }
+    78% { transform:translateY(2%) translateX(0); }
+    to  { opacity:1;   transform:translateY(0) translateX(0); }
+  }
+  /* The graded capture is the payoff, and it arrives only once the sequence is
+     correct — because being right is the reward this product actually gives. */
+  html.js:not([data-motion="off"]) .scene--order .scene__plate--graded{ opacity:0; transform:translateY(14px); }
+  html.js:not([data-motion="off"]) .scene--order.is-in .scene__plate--graded{
+    animation:resolve 620ms 900ms var(--ease-snap) both;
+  }
+  @keyframes resolve{
+    from{ opacity:0; transform:translateY(14px); }
+    to  { opacity:1; transform:translateY(0); }
+  }
+}
+/* ---------------------------------------------------------------------------
+   6.4 · 04 MANIFESTER — the fold law
+   ---------------------------------------------------------------------------
+   The builder and the player fold toward one another, the orb takes exactly
+   one breath, and then the scene is still. Nothing here loops, and nothing
+   here makes a sound.
+   --------------------------------------------------------------------------- */
+
+.fold{
+  position:relative;
+  perspective:1600px;
+  padding-top:6%;
+}
+.fold__leaf{ transform-style:preserve-3d; }
+/* The two states fold toward one another and overlap, rather than sitting in
+   two half-width cells where neither is legible. */
+.fold__leaf--a{
+  position:absolute;
+  left:0; top:0;
+  width:58%;
+  transform-origin:right center;
+  z-index:0;
+}
+.fold__leaf--a .scene__shot{ opacity:.62; }
+.fold__leaf--b{
+  width:76%;
+  margin-left:24%;
+  transform-origin:left center;
+  z-index:1;
+}
+.fold__orb{
+  position:absolute;
+  left:56%; top:54%;
+  width:clamp(56px, 9vw, 92px);
+  aspect-ratio:1;
+  margin:calc(clamp(56px, 9vw, 92px) / -2) 0 0 calc(clamp(56px, 9vw, 92px) / -2);
+  border-radius:50%;
+  background:radial-gradient(circle at 38% 34%,
+    color-mix(in srgb, #c99189 70%, transparent),
+    color-mix(in srgb, #c99189 12%, transparent) 62%,
+    transparent 74%);
+  box-shadow:0 0 40px -6px color-mix(in srgb, #c99189 55%, transparent);
+  pointer-events:none;
+}
+.fold__line{
+  margin-top:.9rem;
+  font-family:var(--read);
+  font-style:italic;
+  font-size:.95rem;
+  color:var(--text-quiet);
+  text-align:center;
+}
+
+@media (prefers-reduced-motion:no-preference){
+/* Guarded as one block: under reduce, or with the site's motion control
+   off, none of the starting states below is ever applied and none of
+   these keyframes exists — so the composed final frame is what renders,
+   with no override layer needed to put it back. */
+  html.js:not([data-motion="off"]) .scene--fold .fold__leaf--a{ transform:rotateY(26deg) translateX(9%); opacity:.5; }
+  html.js:not([data-motion="off"]) .scene--fold .fold__leaf--b{ transform:rotateY(-26deg) translateX(-9%); opacity:.5; }
+  html.js:not([data-motion="off"]) .scene--fold.is-in .fold__leaf--a{ animation:fold-a 780ms 120ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) .scene--fold.is-in .fold__leaf--b{ animation:fold-b 780ms 120ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) .scene--fold .fold__orb{ transform:scale(.72); opacity:.35; }
+  html.js:not([data-motion="off"]) .scene--fold.is-in .fold__orb{ animation:one-breath 4200ms 700ms var(--ease) both; }
+  html.js:not([data-motion="off"]) .scene--fold .fold__line{ opacity:0; }
+  html.js:not([data-motion="off"]) .scene--fold.is-in .fold__line{ animation:resolve 560ms 1500ms var(--ease) both; }
+  @keyframes fold-a{
+    from{ transform:rotateY(26deg) translateX(9%); opacity:.5; }
+    to  { transform:rotateY(0) translateX(0); opacity:1; }
+  }
+  @keyframes fold-b{
+    from{ transform:rotateY(-26deg) translateX(-9%); opacity:.5; }
+    to  { transform:rotateY(0) translateX(0); opacity:1; }
+  }
+  /* In for two seconds, out for two. Once — the count the product actually
+     shows — and then it rests, because a room that breathes forever behind a
+     portfolio is an idle animation with a story attached. */
+  @keyframes one-breath{
+    from{ transform:scale(.72); opacity:.35; }
+    48% { transform:scale(1.06); opacity:.9; }
+    to  { transform:scale(.86); opacity:.6; }
+  }
+}
+/* ---------------------------------------------------------------------------
+   6.5 · 05 OWCS COMP TRACKER — the scan law
+   ---------------------------------------------------------------------------
+   One scan line down the detected timeline, then the detected rows arrive out
+   of order and snap into the reviewed one. The row under the confidence gate
+   stays marked, because in the product it is the one a human still has to
+   answer for.
+   --------------------------------------------------------------------------- */
+
+/* Not two half-width halves: at this stage width that makes both captures
+   texture rather than evidence. The reviewed read is the point of the product,
+   so it is the one you can actually read; the detected pass sits behind it as
+   the thing it corrects. */
+.cmp{ position:relative; padding:1.5rem 0 2rem; }
+.cmp__side{ position:relative; min-width:0; }
+.cmp__side--raw{
+  position:absolute;
+  left:0; top:0;
+  width:60%;
+  z-index:0;
+}
+.cmp__side--rev{ width:88%; margin:7% 0 0 12%; z-index:1; }
+.cmp__side--raw .scene__shot{ opacity:.55; }
+/* Each label belongs to its own capture rather than to a shared row, so the
+   one behind is never printed over the one in front. */
+.cmp__k{
+  position:absolute;
+  margin:0;
+  font-family:var(--mono);
+  font-size:.6rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--text-quiet);
+}
+.cmp__side--raw .cmp__k{ top:-1.35rem; left:0; color:var(--text-quiet); }
+.cmp__side--rev .cmp__k{ bottom:-1.4rem; right:0; color:var(--accent); }
+.cmp__scan{
+  position:absolute;
+  left:0; right:0; top:1.4rem;
+  height:2px;
+  background:linear-gradient(90deg, transparent, #b9e24d, transparent);
+  box-shadow:0 0 12px 1px color-mix(in srgb, #b9e24d 60%, transparent);
+  opacity:0;
+  pointer-events:none;
+}
+
+.rows{ margin-top:.75rem; display:grid; gap:.28rem; }
+.rows__r{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding:.42rem .75rem;
+  font-family:var(--mono);
+  font-size:.66rem;
+  letter-spacing:.06em;
+  color:var(--text-quiet);
+  background:var(--ink-raised);
+  box-shadow:inset 0 0 0 1px var(--line);
+  border-radius:2px;
+}
+.rows__c{ color:#b9e24d; }
+.rows__r--gate{ box-shadow:inset 0 0 0 1px color-mix(in srgb, #b9e24d 45%, transparent); }
+.rows__r--gate .rows__c{ color:#f0a23c; }
+
+@media (prefers-reduced-motion:no-preference){
+/* Guarded as one block: under reduce, or with the site's motion control
+   off, none of the starting states below is ever applied and none of
+   these keyframes exists — so the composed final frame is what renders,
+   with no override layer needed to put it back. */
+  html.js:not([data-motion="off"]) .scene--scan .rows__r{
+    opacity:0;
+    transform:translateY(calc((var(--from) - var(--i)) * 132%)) translateX(12px);
+  }
+  html.js:not([data-motion="off"]) .scene--scan.is-in .rows__r{
+    animation:snap 560ms cubic-bezier(.16,1,.3,1) both;
+    animation-delay:calc(620ms + var(--i) * 80ms);
+  }
+  html.js:not([data-motion="off"]) .scene--scan.is-in .cmp__scan{ animation:scan 1100ms 100ms cubic-bezier(.4,0,.4,1) both; }
+  @keyframes snap{
+    from{ opacity:0; transform:translateY(calc((var(--from) - var(--i)) * 132%)) translateX(12px); }
+    76% { transform:translateY(-2%) translateX(0); }
+    to  { opacity:1;  transform:translateY(0) translateX(0); }
+  }
+  @keyframes scan{
+    from{ opacity:0;  transform:translateY(0); }
+    12% { opacity:.95; }
+    88% { opacity:.95; }
+    to  { opacity:0;  transform:translateY(calc(100% - 2px)); }
+  }
+}
+/* ---------------------------------------------------------------------------
+   6.6 · 06 PAPERANIMATOR — the citation law
+   ---------------------------------------------------------------------------
+   A highlight is drawn on the page, a curved tether runs from it to the scene
+   it produced, and the page performs one shallow fold. The highlight *is* the
+   citation, so the tether is the whole argument of the product.
+   --------------------------------------------------------------------------- */
+
+.cite{
+  position:relative;
+  perspective:1800px;
+  padding-bottom:14%;
+}
+.cite__page{
+  position:relative;
+  width:76%;
+  transform-origin:left center;
+  transform-style:preserve-3d;
+}
+.cite__scene{
+  position:absolute;
+  right:0; bottom:0;
+  width:52%;
+  z-index:2;
+}
+.cite__mark{
+  position:absolute;
+  left:7%; top:34%;
+  width:31%;
+  height:1.1em;
+  background:color-mix(in srgb, #9fe2c8 34%, transparent);
+  border-radius:1px;
+  transform-origin:left center;
+  transform:scaleX(0);
+  pointer-events:none;
+}
+.cite__tether{
+  position:absolute;
+  left:24%; top:30%;
+  width:56%;
+  height:56%;
+  max-width:none;
+  z-index:1;
+  overflow:visible;
+}
+.cite__thread{
+  fill:none;
+  stroke:#7fa6f0;
+  stroke-width:1.6;
+  stroke-linecap:round;
+  vector-effect:non-scaling-stroke;
+  filter:drop-shadow(0 0 5px color-mix(in srgb, #7fa6f0 55%, transparent));
+}
+
+@media (prefers-reduced-motion:no-preference){
+/* Guarded as one block: under reduce, or with the site's motion control
+   off, none of the starting states below is ever applied and none of
+   these keyframes exists — so the composed final frame is what renders,
+   with no override layer needed to put it back. */
+  html.js:not([data-motion="off"]) .scene--cite .cite__thread{ stroke-dasharray:1000; stroke-dashoffset:1000; }
+  html.js:not([data-motion="off"]) .scene--cite.is-in .cite__mark{ animation:highlight 520ms 200ms var(--ease) both; }
+  html.js:not([data-motion="off"]) .scene--cite.is-in .cite__thread{ animation:draw 780ms 620ms var(--ease) both; }
+  html.js:not([data-motion="off"]) .scene--cite .cite__page{ transform:rotateY(9deg); }
+  html.js:not([data-motion="off"]) .scene--cite.is-in .cite__page{ animation:leaf 900ms var(--ease-snap) both; }
+  html.js:not([data-motion="off"]) .scene--cite .cite__scene{ opacity:.3; transform:translateX(14px); }
+  html.js:not([data-motion="off"]) .scene--cite.is-in .cite__scene{ animation:arrive 620ms 1180ms var(--ease-snap) both; }
+  @keyframes highlight{ from{ transform:scaleX(0); } to{ transform:scaleX(1); } }
+  @keyframes leaf{
+    from{ transform:rotateY(9deg); }
+    62% { transform:rotateY(-2.5deg); }
+    to  { transform:rotateY(0); }
+  }
+  @keyframes arrive{
+    from{ opacity:.3; transform:translateX(14px); }
+    to  { opacity:1;  transform:translateX(0); }
+  }
+}
+
+/* ===========================================================================
+   7. THE HAND — composed for the width, not shrunk to it
+   ---------------------------------------------------------------------------
+   The phone gets its own composition. The name arrives first and largest, the
+   assembled sculpture stands behind and slightly right of it as a field rather
+   than as an illustration, the three domains are a three-position touch
+   control, and both actions are above the fold at 390 x 844.
+
+   Nothing below depends on a pointer. Every hover state in this stylesheet has
+   a tap, focus or scroll equivalent here, and every target clears 44 px.
    =========================================================================== */
 
 @media (max-width:999px){
-  .ap__field .ap__bracket-group{ opacity:.5; }
-  .ap__current{ bottom:auto; top:calc(100% - 30%); }
-  .ap__ev{ margin-top:clamp(1.75rem,5vw,2.5rem); }
-  .ap__cap{ font-size:.68rem; }
-}
-@media (max-width:640px){
-  .ap__iris img{ aspect-ratio:4/3; }
-  .ap__readout{ grid-template-columns:1fr 1fr; }
+
+  .sig__in{
+    grid-template-columns:minmax(0,1fr);
+    grid-template-areas:
+      "copy"
+      "panel";
+    row-gap:clamp(1.5rem, 3.5vh, 2.5rem);
+    padding-block:clamp(1.75rem, 4vh, 3rem) clamp(2rem, 5vh, 3.5rem);
+    min-height:auto;
+  }
+
+  /* Behind the name, and slightly to the right of it. It is the field the
+     identity stands in, so it never competes with a word. */
+  .sig__stage{
+    position:absolute;
+    right:0;
+    left:auto;
+    top:clamp(1rem, 4vh, 3.5rem);
+    width:min(62vw, 420px);
+    z-index:-1;
+    opacity:.42;
+    pointer-events:none;
+  }
+  .sig__trace{ height:clamp(120px, 22vh, 200px); }
+  .ce{ max-width:100%; }
+
+  .sig__title{ font-size:clamp(3.1rem, 15vw, 5rem); }
+  .sig__lede{ max-width:24em; font-size:1rem; }
+  .sig__creed{ font-size:1.02rem; }
+  .sig__actions{ gap:.6rem; }
+  .sig__panel{ padding-top:clamp(1rem, 2.5vh, 1.5rem); }
+
+  /* A three-position touch control: equal thirds, one row, thumb-sized. */
+  .js .dom{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:0;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .dom__opt{
+    border:0;
+    border-left:1px solid var(--line);
+    border-radius:0;
+    justify-content:center;
+    padding:.7rem .5rem;
+    min-height:48px;
+  }
+  .dom__opt:first-child{ border-left:0; }
+  .dom__k{ display:none; }
+  .dom__n{ font-size:.8rem; }
+
+  .proofs{ grid-template-columns:minmax(0,1fr); gap:1.4rem; }
+  .js .proof[data-active]{ grid-template-columns:minmax(0,1fr); }
+
+  /* --- the theatre, as six stacked chapters --------------------------- */
+
+  .th__wrap{ grid-template-columns:minmax(0,1fr); row-gap:1.25rem; }
+
+  /* The rail stops being a spine and becomes a chapter index you can swipe.
+     It is not sticky: on a phone a sticky index is a permanent tax on the
+     shortest dimension the visitor has. */
+  .th__rail{
+    position:static;
+    max-width:none;
+    display:block;
+    margin-inline:calc(var(--gutter) * -1);
+    padding-inline:var(--gutter);
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scrollbar-width:none;
+  }
+  .th__rail::-webkit-scrollbar{ display:none; }
+  .th__rail ol{
+    display:flex;
+    gap:.4rem;
+    padding-bottom:.35rem;
+  }
+  .th__rail li{ flex:0 0 auto; }
+  .th__rail a{
+    padding:.4rem .85rem;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+  }
+  .th__rail a[aria-current="true"]{ border-color:var(--accent); }
+  .th__rt{ max-width:11rem; }
+  .th__spine{ display:none; }
+
+  /* Every scene sits with its own copy, and nothing is pinned. */
+  .wk{
+    grid-template-columns:minmax(0,1fr);
+    row-gap:clamp(1.25rem, 4vw, 2rem);
+    min-height:0;
+    padding-block:clamp(2rem, 7vw, 3rem);
+  }
+  .wk__body{ padding-top:0; }
+  .scene{ position:static; top:auto; }
+
+  /* Interface captures stay legible: a screenshot shrunk until its text is
+     texture is not evidence of anything. */
+  .scene--accumulate .scene__shot--tall{ max-height:52vh; }
+  .cite{ grid-template-columns:minmax(0,1fr); gap:.75rem; }
+  .cite__tether{ display:none; }
+  .tray__t{ width:clamp(1.7rem, 7vw, 2.2rem); }
 }
 
-/* Tap targets, pressed states, and a card that is one target rather than
-   three overlapping ones.
+@media (max-width:560px){
+  /* Below this the side-by-side comparisons stop being readable, so they
+     become one above the other rather than two illegible halves. */
+  .cmp{ grid-template-columns:minmax(0,1fr); }
+  .fold{ grid-template-columns:minmax(0,1fr); }
+  .fold__leaf--a,.fold__leaf--b{ transform-origin:center top; }
+  .scene--accumulate .scene__stack{ grid-template-columns:minmax(0,1fr); }
+  .scene--accumulate .scene__shot--tall{ max-height:46vh; justify-self:center; }
+  .sig__stage{ width:min(70vw, 340px); opacity:.34; }
+  .tube{ grid-template-columns:auto auto 1fr; gap:.55rem; }
+  .tube__a{ grid-column:3; font-size:.58rem; }
+  .tube__l{ font-size:.78rem; }
+}
 
+
+/* ---------------------------------------------------------------------------
+   7.1 · TAP TARGETS AND PRESSED STATES
+   ---------------------------------------------------------------------------
    A link sitting inside a sentence is deliberately left alone: padding it out
    to 44 px would break the leading of the paragraph around it, and an inline
    link in a block of text is exempt from the target-size guidance for exactly
-   that reason. Everything that is a *control* rather than a phrase is sized. */
+   that reason. Everything that is a *control* rather than a phrase is sized.
+   --------------------------------------------------------------------------- */
+
 @media (hover:none),(pointer:coarse){
   .wordmark,
+  .sig__handle,
   .foot a,
   .cv__contact a,
   .card__t a,
@@ -1479,15 +2703,17 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   .work:active{ background:var(--ink-raised); }
   .on-paper .work:active{ background:var(--paper-sunk); }
   .work:active .work__go .arrow{ transform:translateX(4px); }
+  .wk:active{ background:var(--ink-raised); }
+  .wk:active .wk__go .arrow{ transform:translateX(4px); }
   .contact-list a:active,
   .nextup a:active{ background:var(--ink-raised); }
   .on-paper .contact-list a:active,
   .on-paper .nextup a:active{ background:var(--paper-sunk); }
   .btn:active{ transform:translateY(1px); background:var(--accent-soft); }
-  .work__go{ min-height:44px; align-items:center; }
+  .work__go,.wk__go{ min-height:44px; align-items:center; }
 }
-/* The whole card is the target: the title's ::after already covers the row,
-   so nothing inside it may be a second, competing link. */
+/* The whole row is the target: the title's ::after already covers it, so
+   nothing inside it may be a second, competing link. */
 .work__body a:not(.work__title a){ position:relative; z-index:2; }
 .work:focus-within{ background:var(--ink-raised); }
 .on-paper .work:focus-within{ background:var(--paper-sunk); }
@@ -1497,20 +2723,30 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
 }
 
 /* ===========================================================================
-   7. REDUCED MOTION AND THE MOTION-OFF CONTROL
+   8. STILLNESS, NO SCRIPT, AND SAVE-DATA
    ---------------------------------------------------------------------------
-   Stillness is not a stripped version of the page. Every composition below
-   still holds its final, art-directed state; only the movement is gone.
+   Every enhanced starting state in sections 3, 6 and 7 is written inside
+   `@media (prefers-reduced-motion:no-preference)` and behind
+   `html.js:not([data-motion="off"])`. So stillness needs almost nothing here:
+   when motion is refused those rules simply never apply, and the composed
+   final frame is the frame — not a stripped version of one.
+
+   What is left is the handful of things that are not starting states.
    =========================================================================== */
 
 @media (prefers-reduced-motion:reduce){
-  .ap__canvas{ display:none !important; }
-  .ap__iris{ --ap-iris:0% !important; animation:none !important; }
-  .ap__blade{ display:none !important; }
+  .sig__canvas{ display:none !important; }
+  /* The sweep is the one bright thing that exists only to move. Still, it is
+     the trace itself, at rest. */
+  .sig__sweep{ display:none; }
+  .th__spinef{ transition:none; }
+
+  /* The case studies keep their own compositions; only the movement goes. */
   .js [data-motion="impact"],
   .js [data-motion="sort-in"],
   .js [data-motion="sequence-in"],
   .js [data-motion="materialise"] > *,
+  .js [data-motion="sort"] > *,
   .js [data-motion="breathe"]{ opacity:1 !important; transform:none !important; }
   .js [data-motion="breathe"].is-in{ animation:none !important; }
   .work__shot img,
@@ -1524,9 +2760,8 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   [data-physics="grow"] .chapter::before{ height:100%; }
 }
 
-html[data-motion="off"] .ap__canvas{ display:none !important; }
-html[data-motion="off"] .ap__iris{ --ap-iris:0% !important; animation:none !important; }
-html[data-motion="off"] .ap__blade{ display:none !important; }
+html[data-motion="off"] .sig__canvas{ display:none !important; }
+html[data-motion="off"] .sig__sweep{ display:none; }
 html[data-motion="off"] [data-motion],
 html[data-motion="off"] [data-motion] > *{ opacity:1 !important; transform:none !important; clip-path:none !important; animation:none !important; }
 html[data-motion="off"] .work__shot img,
@@ -1539,552 +2774,12 @@ html[data-motion="off"] .sechead .eyebrow .tick{ animation:none !important; }
 html[data-motion="off"] [data-physics="grow"] .chapter::before{ height:100%; }
 html[data-motion="off"] .progress{ display:none; }
 
-/* With no script at all there is nothing to pause, nothing hidden, and no
-   shutter — the composed final frame is simply what the document is. */
-html:not(.js) .ap__blade{ display:none; }
-html:not(.js) .ap__canvas{ display:none; }
-
-/* ===========================================================================
-   ===========================================================================
-   8. THE INSTRUMENT
-   ---------------------------------------------------------------------------
-   The home page is one machine and the visitor operates it. Six channels, one
-   per product; picking one retunes the accent, the signal, the bracket, the
-   evidence, the read-out, the caption, the link and the shader in one move.
-
-   The three rules from section 3 govern every line below. All six compositions
-   are real markup and real CSS state, so the selector only ever moves between
-   states the stylesheet already holds. With no script the strip is six links
-   to six case studies, and that is the design. Ignoring the instrument
-   entirely still leaves the whole page: same prose, same two actions, same six
-   projects, same résumé, one scroll away.
-   =========================================================================== */
-
-/* --- registered properties the retune interpolates ------------------------ */
-
-/* Registering --accent makes a channel change a real interpolation rather than
-   a jump. Declared with the value the token block already gave it, so nothing
-   about the resting site moves. */
-@property --accent    { syntax:'<color>';   inherits:true;  initial-value:#4c6fe8; }
-/* The two counters. Each user declares its own final value, so a browser with
-   no @property support substitutes that value and prints the finished number. */
-@property --count     { syntax:'<integer>'; inherits:false; initial-value:0; }
-@property --count-frac{ syntax:'<integer>'; inherits:false; initial-value:0; }
-
-/* --- 8.1 · THE VITALS — an instrument read-out, not a paragraph -------------
-   The number or the certification is the loudest thing in the cell, in
-   Instrument Serif at display size. The label is mono and small. The sentence
-   is third. Three cells are larger than the other five, because three of these
-   facts are larger than the other five. */
-
-.vitals{
-  display:grid; gap:1px;
-  grid-template-columns:repeat(12, minmax(0,1fr));
-  background:var(--line);
-  border-block:1px solid var(--line);
-  position:relative;
-}
-.on-paper .vitals{ background:var(--paper); }
-
-.vitals__cell{
-  background:var(--ink);
-  padding:clamp(1.15rem,2vw,1.6rem) clamp(1.15rem,1.8vw,1.5rem) clamp(1.3rem,2.2vw,1.75rem);
-  box-shadow:0 0 0 1px var(--line);
-  display:flex; flex-direction:column;
-  grid-column:span 4;
-  min-width:0;
-  position:relative;
-}
-.on-paper .vitals__cell{ background:var(--paper); }
-
-/* The connective structure: the sequence law from the phlebotomy case study.
-   One node per cell on the panel's top rule, with a hairline dropping into the
-   cell it belongs to. Eight tiles become one machine. */
-.vitals__cell::before{
-  content:""; position:absolute; left:clamp(1.15rem,1.8vw,1.5rem); top:-1px;
-  width:5px; height:5px; background:var(--accent); transform:translateY(-2px);
-}
-.vitals__cell::after{
-  content:""; position:absolute; left:calc(clamp(1.15rem,1.8vw,1.5rem) + 2px); top:3px;
-  width:1px; height:calc(clamp(1.15rem,2vw,1.6rem) - 6px);
-  background:linear-gradient(var(--accent), transparent);
-  opacity:.5;
-}
-
-.vitals__k{
-  font-family:var(--mono); font-size:.63rem; letter-spacing:.15em;
-  text-transform:uppercase; color:var(--text-quiet);
-}
-.vitals__v{
-  font-family:var(--display);
-  font-size:clamp(2.1rem, 1.3rem + 2.2vw, 3.1rem);
-  line-height:.98; letter-spacing:-.015em;
-  color:var(--accent);
-  margin-top:.55rem;
-  font-variant-numeric:tabular-nums lining-nums;
-  overflow-wrap:anywhere;
-}
-.vitals__s{
-  margin-top:.75rem; font-size:.9rem; line-height:1.5; color:var(--text-quiet);
-}
-
-/* The three that are bigger, because they are bigger. */
-.vitals__cell--lg .vitals__v{ font-size:clamp(2.7rem, 1.5rem + 3.6vw, 4.4rem); }
-.vitals__cell--lg .vitals__s{ font-size:.98rem; color:var(--text); }
-
-/* Eight cells tile 5+4+3, 4+3+5, 5+7. Auto-placement does the rest: no cell is
-   positioned by index, so reordering the list cannot break the panel. */
-.vitals__cell--w5{ grid-column:span 5; }
-.vitals__cell--w4{ grid-column:span 4; }
-.vitals__cell--w3{ grid-column:span 3; }
-.vitals__cell--w7{ grid-column:span 7; }
-.vitals__cell--w12{ grid-column:span 12; }
-.vitals__cell--w12 .vitals__v{ font-size:clamp(1.8rem, 1.2rem + 1.6vw, 2.5rem); }
-.vitals__cell--w12 .vitals__s{ max-width:var(--measure); }
-
-@media (max-width:999px){
-  .vitals{ grid-template-columns:repeat(6, minmax(0,1fr)); }
-  .vitals__cell,
-  .vitals__cell--w5,.vitals__cell--w4,.vitals__cell--w3,.vitals__cell--w7{ grid-column:span 3; }
-.vitals__cell--w7{ grid-column:span 7; }
-  .vitals__cell--lg{ grid-column:span 6; }
-  .vitals__cell--w12{ grid-column:span 6; }
-}
-@media (max-width:560px){
-  .vitals{ grid-template-columns:minmax(0,1fr); }
-  .vitals__cell,
-  .vitals__cell--lg,
-  .vitals__cell--w5,.vitals__cell--w4,.vitals__cell--w3,.vitals__cell--w7,.vitals__cell--w12{ grid-column:span 1; }
-}
-
-/* --- the counters ----------------------------------------------------------
-   No tick loop, no interval, no script: a registered integer animated by the
-   compositor and printed through counter(). The literal digits in the markup
-   are what a browser without either feature shows, which is the finished
-   number, immediately. Because counter() is outside the text layer, this is
-   used only where prose beside it states the same number. */
-
-.num{ font-variant-numeric:tabular-nums lining-nums; }
-
-@supports (animation-timeline: view()) and (counter-reset: n var(--count)){
-  @media (prefers-reduced-motion:no-preference){
-    .num{
-      counter-reset:n var(--count) nfrac var(--count-frac);
-      animation:count-up linear both;
-      animation-timeline:view();
-      animation-range:entry 16% entry 82%;
-    }
-    .num > .num__t{ display:none; }
-    .num::after{ content:counter(n); }
-    .num--frac::after{ content:counter(n) "." counter(nfrac); }
-    @keyframes count-up{ from{ --count:0; --count-frac:0; } }
-  }
-}
-
-.ap__copy .hero__stance{ margin-top:clamp(1.1rem,2.4vh,2rem); }
-.ap__copy .lede{ margin-top:clamp(1.2rem,2.6vh,2.25rem); }
-.ap__copy .hero__actions{ margin-top:clamp(1.2rem,2.8vh,2.2rem); }
-
-/* One row of the hero grid, spanning both columns under the evidence and the
-   copy. Inside the composition, so it is on the first screen and inside the
-   pinned sequence: the instrument and the thing it drives are never on two
-   different screens. */
-.ap__panel{ grid-column:1 / -1; min-width:0; }
-@media (max-width:999px){ .ap__panel{ grid-column:auto; } }
-
-/* --- 8.2 · THE CHANNEL STRIP ------------------------------------------------
-   Six labelled positions under the evidence, as a broadcast channel strip. It
-   ships as six links to six case studies; the module upgrades it in place to a
-   radio group and marks the section wired. Until then — and forever, if the
-   module never arrives — every position is a working link to the thing it
-   names. There is no state in which this control is dead. */
-
-.ch{
-  position:relative; z-index:2;
-  border-top:1px solid var(--line);
-  padding-top:clamp(.85rem,1.6vw,1.1rem);
-}
-.ch__top{
-  display:flex; flex-wrap:wrap; gap:.35rem 1.1rem; align-items:baseline;
-  margin-bottom:.6rem;
-}
-@media (max-width:840px){ .ch__top{ margin-bottom:.9rem; } }
-.ch__label{
-  font-family:var(--mono); font-size:.63rem; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--text-quiet);
-  display:inline-flex; align-items:center; gap:.5rem;
-}
-.ch__label .led{
-  width:.4rem; height:.4rem; border-radius:50%; background:var(--accent);
-  flex:none; box-shadow:0 0 8px var(--accent);
-}
-.ch__hint{ font-family:var(--mono); font-size:.63rem; letter-spacing:.08em; color:var(--text-quiet); }
-
-.ch__list{
-  display:grid; gap:1px;
-  grid-template-columns:repeat(6, minmax(0,1fr));
-  background:var(--line);
-  border:1px solid var(--line);
-  border-radius:var(--radius) var(--radius) 0 0;
-  overflow:hidden;
-}
-.ch__list > li{ display:flex; min-height:4.1rem; background:var(--ink); }
-.on-paper .ch__list > li{ background:var(--paper); }
-
-/* One box, anchor or button. The grid row owns the height, so replacing one
-   with the other cannot shift a pixel. */
-.ch__opt{
-  flex:1; min-width:0;
-  display:flex; flex-direction:column; justify-content:flex-end; gap:.2rem;
-  padding:.7rem .8rem .75rem;
-  background:none; border:0; margin:0; width:100%;
-  font:inherit; color:inherit; text-align:left; text-decoration:none;
-  cursor:pointer; position:relative;
-  transition:background 260ms var(--ease), color 260ms var(--ease);
-}
-.ch__opt::before{
-  content:""; position:absolute; left:0; right:0; top:0; height:2px;
-  background:var(--accent); transform:scaleX(0); transform-origin:0 50%;
-  transition:transform 420ms var(--ease-snap);
-}
-.ch__n{
-  font-family:var(--mono); font-size:.63rem; letter-spacing:.14em;
-  color:var(--text-quiet); transition:color 260ms var(--ease);
-}
-.ch__name{
-  font-family:var(--ui); font-weight:700; font-size:.92rem; line-height:1.15;
-  letter-spacing:-.008em; overflow-wrap:anywhere;
-}
-.ch__kind{ font-family:var(--mono); font-size:.6rem; letter-spacing:.1em; color:var(--text-quiet); line-height:1.3; }
-
-.ch__opt:hover{ background:var(--ink-raised); }
-.on-paper .ch__opt:hover{ background:var(--paper-sunk); }
-.ch__opt:hover .ch__n{ color:var(--accent); }
-
-/* Committed: the one position the whole page is tuned to, and the only one
-   that says so. */
-.ch__opt[aria-checked="true"],
-.ch__opt[aria-current="true"]{
-  background:color-mix(in srgb, var(--accent) 10%, var(--ink));
-}
-.on-paper .ch__opt[aria-checked="true"],
-.on-paper .ch__opt[aria-current="true"]{ background:color-mix(in srgb, var(--accent) 12%, var(--paper)); }
-.ch__opt[aria-checked="true"]::before,
-.ch__opt[aria-current="true"]::before{ transform:none; }
-.ch__opt[aria-checked="true"] .ch__n,
-.ch__opt[aria-current="true"] .ch__n{ color:var(--accent); }
-
-@media (max-width:840px){
-  .ch__list{ grid-template-columns:repeat(3, minmax(0,1fr)); }
-  .ch__list > li{ min-height:4.8rem; }
-}
-@media (max-width:430px){
-  .ch__list{ grid-template-columns:repeat(2, minmax(0,1fr)); }
-}
-@media (hover:none),(pointer:coarse){
-  .ch__opt{ min-height:44px; }
-  .ch__opt:active{ background:var(--ink-raised); }
-  .on-paper .ch__opt:active{ background:var(--paper-sunk); }
-}
-
-/* --- 8.3 · THE SIX COMPOSITIONS ---------------------------------------------
-   data-tune is what is showing; a hover preview writes it and so does a
-   commit. data-channel is what is committed, and it is the only thing the
-   evidence, the read-out, the caption and the link answer to. So a pointer
-   drifting across the strip retunes the room without moving the record. */
-
-/* The accent, interpolated rather than switched. Scoped to the hero: the rest
-   of the page keeps the accent its own section declared. */
-.ap{ transition:--accent 620ms var(--ease); }
-
-.ap[data-tune="spellbomb"]      { --accent:#f0a23c; }
-.ap[data-tune="health-journal"] { --accent:#7fa6f0; }
-.ap[data-tune="phlebotomy"]     { --accent:#17a08f; }
-.ap[data-tune="manifester"]     { --accent:#c99189; }
-.ap[data-tune="owcs"]           { --accent:#b9e24d; }
-.ap[data-tune="paper-animator"] { --accent:#ded7c6; }
-
-/* --- the signal ------------------------------------------------------------
-   Six waveforms, each meaning something about its product: a fuse that spikes
-   and drops, a circadian rise, a clinical trace, a breath, a square-wave swap
-   timeline, a page fold. All six carry the same twenty-five points, so the
-   module interpolates one into the next; with no module they cross-fade. */
-.ap__signal{
-  fill:none; stroke-width:1.35;
-  /* Still the medical-teal biological signal — it is one of the five colours
-     this site is built from and it does not stop being that. It just carries
-     some of whatever channel the room is tuned to, so the trace belongs to the
-     same move as everything else rather than sitting outside it. */
-  stroke:color-mix(in srgb, var(--accent) 52%, var(--teal));
-  stroke-linejoin:round; stroke-linecap:round;
-  vector-effect:non-scaling-stroke;
-  opacity:0;
-  filter:drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 40%, transparent));
-  transition:opacity 520ms var(--ease), stroke 620ms var(--ease);
-}
-.ap__signal--ghost{ stroke:var(--teal); opacity:.14; stroke-width:1; filter:none; transition:none; }
-
-.ap[data-tune="spellbomb"]      .ap__signal[data-sig="spellbomb"],
-.ap[data-tune="health-journal"] .ap__signal[data-sig="health-journal"],
-.ap[data-tune="phlebotomy"]     .ap__signal[data-sig="phlebotomy"],
-.ap[data-tune="manifester"]     .ap__signal[data-sig="manifester"],
-.ap[data-tune="owcs"]           .ap__signal[data-sig="owcs"],
-.ap[data-tune="paper-animator"] .ap__signal[data-sig="paper-animator"]{ opacity:.62; }
-
-/* Wired, the module drives one live path and interpolates its geometry, so the
-   six state paths step out of the way. */
-.ap.is-wired .ap__signal[data-sig]{ display:none; }
-.ap .ap__signal[data-sig="live"]{ display:none; }
-.ap.is-wired .ap__signal[data-sig="live"]{ display:block; }
-
-/* The rail composes the trace now — see section 9. Nothing transforms the
-   group any more, because the viewBox is already cropped to the waveform. */
-
-/* --- the bracket -----------------------------------------------------------
-   Reseeded per channel: different branch depth, different node positions,
-   converging on the evidence every time. */
-.ap__bracket-group{ opacity:0; transition:opacity 520ms var(--ease); }
-.ap[data-tune="spellbomb"]      .ap__bracket-group[data-brk="spellbomb"],
-.ap[data-tune="health-journal"] .ap__bracket-group[data-brk="health-journal"],
-.ap[data-tune="phlebotomy"]     .ap__bracket-group[data-brk="phlebotomy"],
-.ap[data-tune="manifester"]     .ap__bracket-group[data-brk="manifester"],
-.ap[data-tune="owcs"]           .ap__bracket-group[data-brk="owcs"],
-.ap[data-tune="paper-animator"] .ap__bracket-group[data-brk="paper-animator"]{ opacity:1; }
-
-/* --- the evidence, moving through the aperture ------------------------------
-   The blades close a little, the new capture arrives behind them, the blades
-   open. One product leaves the frame before the next is in it: a screenshot is
-   never cross-faded into another screenshot. */
-.ap__iris.is-swap{ animation:ap-swap 620ms var(--ease) both; }
-@keyframes ap-swap{
-  0%  { --ap-iris:0%; }
-  42% { --ap-iris:23%; }
-  100%{ --ap-iris:0%; }
-}
-.ap__iris.is-swap .ap__blade--t{ animation:ap-blade-t 620ms var(--ease) both; }
-.ap__iris.is-swap .ap__blade--b{ animation:ap-blade-b 620ms var(--ease) both; }
-@keyframes ap-blade-t{ 0%,100%{ transform:translateY(0); } 42%{ transform:translateY(62%); } }
-@keyframes ap-blade-b{ 0%,100%{ transform:translateY(0); } 42%{ transform:translateY(-62%); } }
-/* The blades exist to move; while they are moving they are not display:none.
-   Outside a swap they are parked beyond the opening exactly as before. */
-.ap.is-wired .ap__iris.is-swap .ap__blade{ display:block; }
-
-.ap__iris img{ transition:opacity 200ms linear; }
-.ap__iris.is-swap img{ opacity:.55; }
-
-/* --- the read-out, the caption and the link --------------------------------
-   One set has no hidden attribute; the other five have one. With no script the
-   first is the page's read-out and the other five are not rendered at all —
-   not dimmed, not collapsed, not present. */
-/* Directly under the six positions, in the same box, so an input and the thing
-   it changes are never more than a hairline apart. */
-.ap__readout{
-  position:relative; z-index:2;
-  display:grid; gap:1px;
-  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-  border:1px solid var(--line); border-top:0;
-  border-radius:0 0 var(--radius) var(--radius);
-  background:var(--line);
-  overflow:hidden;
-  margin-top:-1px;
-}
-.ap__readout li{ padding:.55rem .85rem .65rem; }
-.ap__readout .v{ font-size:.88rem; margin-top:.3rem; }
-.ap__readout[hidden]{ display:none; }
-.ap__cap > [hidden], .ap__notes > [hidden]{ display:none; }
-
-.ap__readout .n{
-  display:block; font-family:var(--display); font-size:1.55rem; line-height:1;
-  color:var(--accent); margin-top:.15rem;
-  font-variant-numeric:tabular-nums lining-nums;
-}
-
-/* --- the specimen: hotspots ------------------------------------------------
-   Real buttons over the real capture, in normalised coordinates so they hold
-   their place at every width. Each names a part of the interface visibly in
-   the frame; each panel appears beside the picture, never over the thing it
-   describes. They render only once the module has wired them, because an
-   unwired hotspot is a dead control and this site does not ship those. */
-/* Hotspots live on the specimen and the blades are in front of it, so they
-   emerge as the aperture opens rather than floating over a shutter. */
-.ap__spots{ position:absolute; inset:0; z-index:1; pointer-events:none; display:none; }
-.ap.is-wired .ap__spots[data-spots]{ display:none; }
-.ap.is-wired[data-channel="spellbomb"]      .ap__spots[data-spots="spellbomb"],
-.ap.is-wired[data-channel="health-journal"] .ap__spots[data-spots="health-journal"],
-.ap.is-wired[data-channel="phlebotomy"]     .ap__spots[data-spots="phlebotomy"],
-.ap.is-wired[data-channel="manifester"]     .ap__spots[data-spots="manifester"],
-.ap.is-wired[data-channel="owcs"]           .ap__spots[data-spots="owcs"],
-.ap.is-wired[data-channel="paper-animator"] .ap__spots[data-spots="paper-animator"]{ display:block; }
-
-.ap__spot{
-  position:absolute; pointer-events:auto;
-  left:calc(var(--x) * 100%); top:calc(var(--y) * 100%);
-  transform:translate(-50%,-50%);
-  width:2rem; height:2rem; min-width:32px; min-height:32px;
-  border-radius:50%; border:1px solid var(--accent);
-  background:color-mix(in srgb, #0b0c0e 84%, transparent);
-  color:var(--accent); cursor:pointer;
-  display:grid; place-items:center;
-  font-family:var(--mono); font-weight:600; font-size:.7rem; letter-spacing:0;
-  transition:background 240ms var(--ease), transform 340ms var(--ease-snap);
-}
-.ap__spot::after{
-  content:""; position:absolute; inset:-6px; border-radius:50%;
-  border:1px solid var(--accent); opacity:.28;
-  transition:transform 420ms var(--ease-snap), opacity 300ms var(--ease);
-}
-.ap__spot:hover,
-.ap__spot[aria-expanded="true"]{ background:var(--accent); color:var(--ink); }
-.ap__spot:hover::after{ transform:scale(1.22); opacity:.5; }
-.ap__spot[aria-expanded="true"]::after{ transform:scale(1.3); opacity:.7; }
-@media (hover:none),(pointer:coarse){
-  .ap__spot{ width:44px; height:44px; min-width:44px; min-height:44px; }
-}
-
-.ap__notes{ margin-top:.85rem; }
-.ap__note{
-  border-left:2px solid var(--accent);
-  padding:.7rem 0 .7rem .9rem;
-  font-size:.92rem; line-height:1.5; color:var(--text-quiet);
-  max-width:var(--measure);
-}
-.ap__note b{ color:var(--text); font-weight:600; font-family:var(--ui); }
-
-/* --- 8.4 · THE RIG — six rows that are six kinds of thing -------------------
-   Rhythm, not decoration. A wide row, an offset row, a tall row, a flipped
-   row: scrolling the index moves through six rooms rather than down six
-   drawers. Every row is still exactly one link, and none is a bento tile. */
-
-/* Wide: the evidence takes the room and the copy sits against it. */
-.work--wide{ grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr); }
-/* Flipped: the evidence leads and the reading order does not change, because
-   the order in the document is the order it is read in. */
-.work--flip{ grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); }
-.work--flip .work__body{ order:2; }
-.work--flip .work__shot{ order:1; }
-/* Offset: the frame drops out of alignment with its neighbours, so the eye
-   registers a change of room rather than another row. */
-.work--offset .work__shot{ transform:translateY(clamp(0rem,1.6vw,1.4rem)); }
-/* Narrow: one product that is quieter than the others, framed that way. */
-.work--narrow{ grid-template-columns:minmax(0,1.16fr) minmax(0,.84fr); }
-.work--narrow .work__shot{ max-width:34rem; margin-left:auto; }
-
-@media (max-width:840px){
-  .work--wide,.work--flip,.work--narrow{ grid-template-columns:1fr; }
-  .work--flip .work__body{ order:0; }
-  .work--flip .work__shot{ order:0; }
-  .work--offset .work__shot{ transform:none; }
-  .work--narrow .work__shot{ max-width:none; margin-left:0; }
-}
-
-/* The frame clips its own overflow, so the fuse the case studies draw a pixel
-   outside the box has to sit inside it here. */
-.work__shot[data-motion="fuse"]::after{ bottom:0; }
-
-/* The spec line: the checkable numbers each product actually has — the same
-   ones the hero's read-out shows when that channel is tuned, because there is
-   one set of facts on this page, not two. */
-.work__spec{
-  margin-top:1.1rem; display:flex; flex-wrap:wrap; gap:.35rem 1.6rem;
-  border-top:1px solid var(--line); padding-top:.9rem;
-}
-.work__spec > span{ display:flex; flex-direction:column; gap:.15rem; }
-.work__spec .n{
-  font-family:var(--display); font-size:1.65rem; line-height:1; color:var(--accent);
-  font-variant-numeric:tabular-nums lining-nums;
-}
-.work__spec .k{
-  font-family:var(--mono); font-size:.6rem; letter-spacing:.13em;
-  text-transform:uppercase; color:var(--text-quiet);
-}
-
-/* The live row. One page, one state: tuning the hero lights the row whose
-   product it is tuned to. With no script the default channel is lit, which is
-   the channel the hero is composed on. */
-html:not([data-channel])            .works--rig .work[data-accent="phlebotomy"],
-html[data-channel="spellbomb"]      .works--rig .work[data-accent="spellbomb"],
-html[data-channel="health-journal"] .works--rig .work[data-accent="health-journal"],
-html[data-channel="phlebotomy"]     .works--rig .work[data-accent="phlebotomy"],
-html[data-channel="manifester"]     .works--rig .work[data-accent="manifester"],
-html[data-channel="owcs"]           .works--rig .work[data-accent="owcs"],
-html[data-channel="paper-animator"] .works--rig .work[data-accent="paper-animator"]{
-  background:color-mix(in srgb, var(--accent) 7%, var(--ink));
-}
-
-html:not([data-channel])            .works--rig .work[data-accent="phlebotomy"]     .work__idx::before,
-html[data-channel="spellbomb"]      .works--rig .work[data-accent="spellbomb"]      .work__idx::before,
-html[data-channel="health-journal"] .works--rig .work[data-accent="health-journal"] .work__idx::before,
-html[data-channel="phlebotomy"]     .works--rig .work[data-accent="phlebotomy"]     .work__idx::before,
-html[data-channel="manifester"]     .works--rig .work[data-accent="manifester"]     .work__idx::before,
-html[data-channel="owcs"]           .works--rig .work[data-accent="owcs"]           .work__idx::before,
-html[data-channel="paper-animator"] .works--rig .work[data-accent="paper-animator"] .work__idx::before{
-  opacity:1; box-shadow:0 0 10px var(--accent);
-}
-.work__idx::before{
-  content:""; display:inline-block; vertical-align:middle;
-  width:.42rem; height:.42rem; border-radius:50%;
-  background:var(--accent); opacity:.22; margin-right:.55rem;
-  transition:opacity 420ms var(--ease), box-shadow 420ms var(--ease);
-}
-
-/* A wide, short screen — a phone held sideways, 844×390 and its neighbours —
-   is a different composition from a tall narrow one, not a squashed version of
-   it. Two columns come back, the name is set to the height rather than the
-   width, and the instrument stays on the first screen. */
-@media (max-width:999px) and (max-height:560px) and (orientation:landscape){
-  .ap__stage{ min-height:auto; padding-block:1.1rem .9rem; }
-  .ap__in{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center; gap:.9rem 1.6rem; }
-  .ap__panel{ grid-column:1 / -1; }
-  .ap__title{ font-size:clamp(1.9rem, 7.4vh, 3rem); margin-top:.45rem; }
-  .ap__copy .eyebrow{ font-size:.62rem; }
-  .ap__copy .hero__stance{ margin-top:.6rem; gap:.15rem; font-size:.92rem; }
-  .ap__copy .lede{ margin-top:.7rem; font-size:.98rem; }
-  .ap__copy .hero__actions{ margin-top:.85rem; }
-  .ap__ev{ margin-top:0; }
-  .ap__iris img{ aspect-ratio:16/10; }
-  .ch__list{ grid-template-columns:repeat(6, minmax(0,1fr)); }
-  .ch__list > li{ min-height:3.4rem; }
-  .ap__readout{ grid-template-columns:repeat(4, minmax(0,1fr)); }
-}
-
-/* --- 8.5 · STILLNESS, NO SCRIPT, AND PAPER ---------------------------------
-   Reduced motion is the same state change arriving instantly, with the
-   composition intact. Nothing is withheld: the selector still selects, the
-   evidence still swaps, the read-out still retunes. Only the travel is gone. */
-@media (prefers-reduced-motion:reduce){
-  .ap{ transition:none !important; }
-  .ap__signal,.ap__bracket-group,.ap__iris img,.ch__opt,.ap__spot{ transition:none !important; }
-  .ap__iris.is-swap,
-  .ap__iris.is-swap .ap__blade{ animation:none !important; }
-  .ap.is-wired .ap__iris.is-swap .ap__blade{ display:none !important; }
-  .ap__iris.is-swap img{ opacity:1; }
-  .num{ animation:none !important; }
-  .num > .num__t{ display:revert !important; }
-  .num::after{ content:none !important; }
-}
-html[data-motion="off"] .ap{ transition:none !important; }
-html[data-motion="off"] .ap__iris.is-swap,
-html[data-motion="off"] .ap__iris.is-swap .ap__blade{ animation:none !important; }
-html[data-motion="off"] .ap.is-wired .ap__iris.is-swap .ap__blade{ display:none !important; }
-html[data-motion="off"] .ap__iris.is-swap img{ opacity:1; }
-html[data-motion="off"] .num{ animation:none !important; }
-html[data-motion="off"] .num > .num__t{ display:revert !important; }
-html[data-motion="off"] .num::after{ content:none !important; }
-
-/* With no script the strip is six links, the hotspots are not rendered, and
-   the frame holds the composition the document declares. Not a fallback. */
-html:not(.js) .ap__spots{ display:none !important; }
-
-@media print{
-  .ch,.ap__spots,.ap__notes{ display:none !important; }
-  .vitals{ border:0; background:none; }
-  .vitals__cell{ box-shadow:none; border-bottom:.5pt solid #999; padding:5pt 0; }
-  .vitals__cell::before,.vitals__cell::after{ display:none; }
-  .vitals__v{ color:#000 !important; font-size:13pt; }
-  .work__spec .n{ color:#000 !important; font-size:12pt; }
-  .num > .num__t{ display:revert !important; }
-  .num::after{ content:none !important; }
-}
+/* With no script the three domains stand open as a row, the sculpture is
+   assembled, the trace is a complete static path, and every scene is its
+   composed final frame. Nothing here is a fallback; it is the same design
+   with one fewer layer on it. */
+html:not(.js) .sig__sweep{ display:none; }
+html:not(.js) .sig__ring{ display:none; }
 
 /* ===========================================================================
    ===========================================================================
@@ -2115,36 +2810,24 @@ html:not(.js) .ap__spots{ display:none !important; }
 [data-accent="manifester"]     { --rate:6.4s; }
 [data-accent="owcs"]           { --rate:2.0s; }
 [data-accent="paper-animator"] { --rate:4.6s; }
-.ap{ --sig-len:3000; }
-.ap[data-tune="spellbomb"]      { --rate:1.45s; }
-.ap[data-tune="health-journal"] { --rate:5.2s; }
-.ap[data-tune="phlebotomy"]     { --rate:2.6s; }
-.ap[data-tune="manifester"]     { --rate:6.4s; }
-.ap[data-tune="owcs"]           { --rate:2.0s; }
-.ap[data-tune="paper-animator"] { --rate:4.6s; }
+[data-signal],[data-pulse]{ --sig-len:3000; }
 
 /* The trace at rest is the history: what the monitor has already drawn. It is
    quieter than it was bright, because the bright part is now a moving edge. */
-.ap__signal{
+.rail__path{
   stroke-width:2.1;
   opacity:0;
   filter:drop-shadow(0 0 7px color-mix(in srgb, var(--accent) 30%, transparent));
   transition:opacity 520ms var(--ease), stroke 620ms var(--ease);
 }
-.ap[data-tune="spellbomb"]      .ap__signal[data-sig="spellbomb"],
-.ap[data-tune="health-journal"] .ap__signal[data-sig="health-journal"],
-.ap[data-tune="phlebotomy"]     .ap__signal[data-sig="phlebotomy"],
-.ap[data-tune="manifester"]     .ap__signal[data-sig="manifester"],
-.ap[data-tune="owcs"]           .ap__signal[data-sig="owcs"],
-.ap[data-tune="paper-animator"] .ap__signal[data-sig="paper-animator"],
-[data-pulse] .ap__signal[data-sig="live"]{ opacity:.5; }
+[data-pulse] .rail__path[data-sig="live"]{ opacity:.5; }
 
 /* THE SWEEP. A patient monitor draws a bright leading edge that travels and
    leaves a dimmer trail behind it. But a bright line looping forever behind
    somebody's name is decoration with a heartbeat painted on it — so this one
    does not loop. It runs once on arrival, and then only ever again when you
    touch the instrument. The pulse answers you; it does not perform at you. */
-.ap__sweep{
+.rail__sweep{
   fill:none;
   stroke:color-mix(in srgb, var(--accent) 70%, var(--teal));
   stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round;
@@ -2154,7 +2837,7 @@ html:not(.js) .ap__spots{ display:none !important; }
   opacity:0;
   transition:stroke 620ms var(--ease);
 }
-.ap__rail.is-sweeping .ap__sweep{
+.rail.is-sweeping .rail__sweep{
   opacity:1;
   animation:sweep var(--rate) cubic-bezier(.28,0,.18,1) 1 both;
 }
@@ -2166,21 +2849,21 @@ html:not(.js) .ap__spots{ display:none !important; }
 /* The cursor a monitor puts at the live edge. It rides the same geometry as
    the line it is drawing, so it can never be out of step with it — and it
    exists only while something is actually being drawn. */
-.ap__head{
+.rail__head{
   fill:var(--accent);
   offset-path:path("M0 560 L206 547 L228 560 L250 578 L260 468 L272 620 L302 543 L338 560 L640 560 L666 547 L688 560 L710 578 L720 468 L732 620 L762 543 L798 560 L1100 560 L1126 547 L1148 560 L1170 578 L1180 468 L1192 620 L1222 543 L1258 560 L1440 560");
   offset-rotate:0deg;
   opacity:0;
   filter:drop-shadow(0 0 14px var(--accent));
 }
-[data-accent="spellbomb"] .ap__head{ offset-path:path("M0 560 L60 549 L120 535 L180 519 L220 505 L240 500 L252 587 L300 560 L480 560 L540 543 L600 520 L660 495 L700 472 L720 464 L732 603 L780 560 L960 560 L1020 533 L1080 497 L1140 458 L1180 422 L1200 410 L1212 628 L1260 560 L1440 560"); }
-[data-accent="health-journal"] .ap__head{ offset-path:path("M0 580 L60 572 L120 555 L180 534 L240 513 L300 494 L360 480 L420 472 L480 470 L540 472 L600 477 L660 480 L720 482 L780 480 L840 477 L900 472 L960 470 L1020 472 L1080 480 L1140 494 L1200 513 L1260 534 L1320 555 L1380 572 L1440 580"); }
-[data-accent="phlebotomy"] .ap__head{ offset-path:path("M0 560 L206 547 L228 560 L250 578 L260 468 L272 620 L302 543 L338 560 L640 560 L666 547 L688 560 L710 578 L720 468 L732 620 L762 543 L798 560 L1100 560 L1126 547 L1148 560 L1170 578 L1180 468 L1192 620 L1222 543 L1258 560 L1440 560"); }
-[data-accent="manifester"] .ap__head{ offset-path:path("M0 560 L60 556 L120 537 L180 508 L240 494 L300 508 L360 537 L420 556 L480 560 L540 564 L600 583 L660 612 L720 626 L780 612 L840 583 L900 564 L960 560 L1020 556 L1080 537 L1140 508 L1200 494 L1260 508 L1320 537 L1380 556 L1440 560"); }
-[data-accent="owcs"] .ap__head{ offset-path:path("M0 560 L120 560 L120 486 L260 486 L260 608 L420 608 L420 520 L540 520 L540 470 L680 470 L680 600 L820 600 L820 530 L940 530 L940 644 L1060 644 L1060 486 L1180 486 L1180 572 L1300 572 L1300 500 L1380 500 L1380 560 L1420 560 L1440 560"); }
-[data-accent="paper-animator"] .ap__head{ offset-path:path("M0 560 L60 560 L120 560 L180 560 L240 560 L300 560 L360 560 L420 560 L480 560 L540 558 L600 552 L660 540 L700 520 L720 428 L740 470 L760 540 L800 596 L860 616 L920 608 L980 590 L1040 574 L1100 564 L1200 560 L1320 560 L1440 560"); }
+[data-accent="spellbomb"] .rail__head{ offset-path:path("M0 560 L60 549 L120 535 L180 519 L220 505 L240 500 L252 587 L300 560 L480 560 L540 543 L600 520 L660 495 L700 472 L720 464 L732 603 L780 560 L960 560 L1020 533 L1080 497 L1140 458 L1180 422 L1200 410 L1212 628 L1260 560 L1440 560"); }
+[data-accent="health-journal"] .rail__head{ offset-path:path("M0 580 L60 572 L120 555 L180 534 L240 513 L300 494 L360 480 L420 472 L480 470 L540 472 L600 477 L660 480 L720 482 L780 480 L840 477 L900 472 L960 470 L1020 472 L1080 480 L1140 494 L1200 513 L1260 534 L1320 555 L1380 572 L1440 580"); }
+[data-accent="phlebotomy"] .rail__head{ offset-path:path("M0 560 L206 547 L228 560 L250 578 L260 468 L272 620 L302 543 L338 560 L640 560 L666 547 L688 560 L710 578 L720 468 L732 620 L762 543 L798 560 L1100 560 L1126 547 L1148 560 L1170 578 L1180 468 L1192 620 L1222 543 L1258 560 L1440 560"); }
+[data-accent="manifester"] .rail__head{ offset-path:path("M0 560 L60 556 L120 537 L180 508 L240 494 L300 508 L360 537 L420 556 L480 560 L540 564 L600 583 L660 612 L720 626 L780 612 L840 583 L900 564 L960 560 L1020 556 L1080 537 L1140 508 L1200 494 L1260 508 L1320 537 L1380 556 L1440 560"); }
+[data-accent="owcs"] .rail__head{ offset-path:path("M0 560 L120 560 L120 486 L260 486 L260 608 L420 608 L420 520 L540 520 L540 470 L680 470 L680 600 L820 600 L820 530 L940 530 L940 644 L1060 644 L1060 486 L1180 486 L1180 572 L1300 572 L1300 500 L1380 500 L1380 560 L1420 560 L1440 560"); }
+[data-accent="paper-animator"] .rail__head{ offset-path:path("M0 560 L60 560 L120 560 L180 560 L240 560 L300 560 L360 560 L420 560 L480 560 L540 558 L600 552 L660 540 L700 520 L720 428 L740 470 L760 540 L800 596 L860 616 L920 608 L980 590 L1040 574 L1100 564 L1200 560 L1320 560 L1440 560"); }
 
-.ap__rail.is-sweeping .ap__head{
+.rail.is-sweeping .rail__head{
   animation:head var(--rate) cubic-bezier(.28,0,.18,1) 1 both;
 }
 @keyframes head{
@@ -2196,26 +2879,26 @@ html:not(.js) .ap__spots{ display:none !important; }
    edge — and the hero's background gets quiet again, which is what a
    background is for. The viewBox is cropped to the waveform's own range, so
    the amplitude fills the rail instead of being a tenth of it. */
-.ap__rail{
+.rail{
   position:relative; z-index:2;
   --sig-len:3000;
   height:clamp(58px, 8.4vh, 104px);
   border-top:1px solid var(--line);
   overflow:hidden;
 }
-.ap__rail::before{
+.rail::before{
   content:""; position:absolute; inset:0; pointer-events:none;
   background:
     repeating-linear-gradient(90deg, color-mix(in srgb, var(--text) 7%, transparent) 0 1px, transparent 1px 72px),
     linear-gradient(color-mix(in srgb, var(--accent) 4%, transparent), transparent 62%);
   opacity:.7;
 }
-.ap__rail .ap__sig{ position:absolute; inset:0; width:100%; height:100%; }
-@media (max-width:999px){ .ap__rail{ height:clamp(52px, 8vh, 78px); } }
+.rail .rail__svg{ position:absolute; inset:0; width:100%; height:100%; }
+@media (max-width:999px){ .rail{ height:clamp(52px, 8vh, 78px); } }
 
 /* On a case study the rail is the page's own heartbeat, standing between the
    hero and the evidence — the same instrument, tuned to one product. */
-.ap__rail--solo{
+.rail--solo{
   border-bottom:1px solid var(--line);
   margin-block:clamp(1.25rem,3vw,2.25rem) 0;
 }
@@ -2226,8 +2909,8 @@ html:not(.js) .ap__spots{ display:none !important; }
    it takes about a second and a quarter, and any input at all cuts it short. */
 /* Arrival is the same sweep, run once at a fixed pace, with the trail written
    in behind it rather than already there. */
-.ap__rail.is-acquiring{ --rate:1.5s; }
-.ap__rail.is-acquiring .ap__signal{ animation:acquire-trail 1.5s linear 1 both; }
+.rail.is-acquiring{ --rate:1.5s; }
+.rail.is-acquiring .rail__path{ animation:acquire-trail 1.5s linear 1 both; }
 @keyframes acquire-trail{ from{ opacity:0; } 30%{ opacity:.06; } to{ opacity:.34; } }
 
 /* ---------------------------------------------------------------------------
@@ -2313,6 +2996,10 @@ html:not(.js) .ap__spots{ display:none !important; }
   transition:border-color 260ms var(--ease), color 260ms var(--ease);
 }
 .soundbtn:hover{ color:var(--text); border-color:var(--line-firm); }
+/* The markup hides it until a script un-hides it, and a class selector beats
+   the user-agent rule that [hidden] relies on — so the attribute has to be
+   honoured explicitly or the control appears on a page that cannot operate it. */
+.soundbtn[hidden]{ display:none; }
 /* Same threshold the motion control uses: past it, the masthead is a wordmark
    and a menu, and both switches live inside the menu. */
 @media (max-width:1120px){ .masthead .soundbtn{ display:none !important; } }
@@ -2337,118 +3024,29 @@ html:not(.js) .ap__spots{ display:none !important; }
    --------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion:reduce){
-  .ap__sweep,.ap__head,.ap__rail.is-sweeping .ap__sweep,.ap__rail.is-sweeping .ap__head,
-  .ap__rail.is-acquiring .ap__signal{ animation:none !important; }
-  .ap__sweep{ stroke-dasharray:none !important; stroke-dashoffset:0 !important; opacity:.72 !important; }
-  .ap__head{ display:none !important; }
-  .ap__signal{ opacity:.5 !important; }
+  .rail__sweep,.rail__head,.rail.is-sweeping .rail__sweep,.rail.is-sweeping .rail__head,
+  .rail.is-acquiring .rail__path{ animation:none !important; }
+  .rail__sweep{ stroke-dasharray:none !important; stroke-dashoffset:0 !important; opacity:.72 !important; }
+  .rail__head{ display:none !important; }
+  .rail__path{ opacity:.5 !important; }
   .progress__fill{ transition:none !important; }
   ::view-transition-old(root),::view-transition-new(root){ animation:none !important; }
 }
-html[data-motion="off"] .ap__sweep,
-html[data-motion="off"] .ap__head,
-html[data-motion="off"] .ap__rail.is-sweeping .ap__sweep,
-html[data-motion="off"] .ap__rail.is-sweeping .ap__head,
-html[data-motion="off"] .ap__rail.is-acquiring .ap__signal{ animation:none !important; }
-html[data-motion="off"] .ap__sweep{ stroke-dasharray:none !important; stroke-dashoffset:0 !important; opacity:.72 !important; }
-html[data-motion="off"] .ap__head{ display:none !important; }
-html[data-motion="off"] .ap__signal{ opacity:.5 !important; }
+html[data-motion="off"] .rail__sweep,
+html[data-motion="off"] .rail__head,
+html[data-motion="off"] .rail.is-sweeping .rail__sweep,
+html[data-motion="off"] .rail.is-sweeping .rail__head,
+html[data-motion="off"] .rail.is-acquiring .rail__path{ animation:none !important; }
+html[data-motion="off"] .rail__sweep{ stroke-dasharray:none !important; stroke-dashoffset:0 !important; opacity:.72 !important; }
+html[data-motion="off"] .rail__head{ display:none !important; }
+html[data-motion="off"] .rail__path{ opacity:.5 !important; }
 
 /* With no script the monitor is still running — the sweep is a CSS animation
    and the trace is markup. What is absent is only what a script would have
    had to draw. */
-html:not(.js) .ap__head{ display:none; }
+html:not(.js) .rail__head{ display:none; }
 
 @media print{
   .progress,.soundbtn{ display:none !important; }
 }
 
-/* ---------------------------------------------------------------------------
-   9.45 · THE COMPOSITION AT 390
-   ---------------------------------------------------------------------------
-   Composed for the width, not shrunk to it. The name arrives immediately, the
-   evidence is the next thing you meet rather than the fifth, and the whole
-   instrument stack — rail, channels, read-out — still sits together at the
-   foot of the composition rather than scattered down a column.
-   --------------------------------------------------------------------------- */
-
-@media (max-width:999px){
-  .ap__stage{ padding-block:clamp(1rem,3vh,1.75rem) clamp(.75rem,2vh,1.25rem); }
-  .ap__copy .eyebrow{ font-size:.66rem; line-height:1.7; }
-  .ap__title{ margin-top:clamp(.6rem,1.4vh,1rem); font-size:clamp(3rem,14vw,4.6rem); line-height:.94; }
-  .ap__copy .hero__stance{ margin-top:clamp(.9rem,2vh,1.4rem); gap:.3rem; }
-  .ap__copy .lede{ margin-top:clamp(.9rem,2vh,1.4rem); }
-  .ap__copy .hero__actions{ margin-top:clamp(1rem,2.4vh,1.6rem); }
-  .ap__ev{ margin-top:clamp(1.25rem,3.4vh,2rem); }
-  .ap__iris img{ aspect-ratio:4/3.2; }
-
-  /* A forty-four pixel target on a three-hundred-and-fifty pixel frame covers
-     a lot of the thing it is pointing at. The target stays; the fill gets out
-     of the way and the ring does the pointing. */
-  .ap__spot{ background:color-mix(in srgb, #0b0c0e 46%, transparent); border-width:1.5px; }
-  .ap__spot[aria-expanded="true"]{ background:var(--accent); }
-}
-
-/* ---------------------------------------------------------------------------
-   9.5 · THE FRAME BREAKS
-   ---------------------------------------------------------------------------
-   A screenshot inside a rounded card, beside a column of text, is the shape of
-   every product page on the internet, and no amount of line-work behind it
-   changes that silhouette. So the evidence stops being a card: it runs off the
-   right edge of the screen the way a frame of film does, the name is set at the
-   scale of a title card rather than a heading, and the channel strip becomes a
-   broadcast strip across the foot of the composition.
-
-   The measure, the reading order, the tap targets and the link are all exactly
-   what they were. What changed is the shape of the thing.
-   --------------------------------------------------------------------------- */
-
-@media (min-width:1000px){
-  /* The inset the shell would have given us, computed once and applied to the
-     things that still want it. The stage clips its own overflow, so bleeding
-     past the viewport edge can never produce a horizontal scrollbar. */
-  .ap__in{
-    --inset:calc((100vw - min(100vw, var(--shell))) / 2 + var(--gutter));
-    max-width:none; padding-inline:0;
-    grid-template-columns:minmax(0,1fr) minmax(0,1.06fr);
-    gap:clamp(1rem,2.2vh,1.8rem) clamp(2rem,3.4vw,3.4rem);
-  }
-  .ap__copy{ padding-left:var(--inset); }
-  /* The strip runs the full width of the screen — that is what makes it a
-     broadcast strip rather than a row of buttons — and only the label above it
-     is inset to the copy's own margin. */
-  .ap__panel{ padding-inline:0; }
-  .ch__top{ padding-inline:var(--inset); }
-
-
-
-  /* Off the edge. No radius, no right border, no corner marks on an edge that
-     does not exist — an instrument's registration marks belong on the corners
-     it actually has. */
-  .ap__ev{ margin-right:0; }
-  .ap__iris{
-    border-radius:0; border-right:0;
-    box-shadow:0 60px 120px -70px rgba(0,0,0,.98), 0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent);
-  }
-  .ap__iris img{ aspect-ratio:16/9.4; }
-  .ap__marks{ inset:-9px -1px -9px -9px; }
-  .ap__marks span:nth-child(2),
-  .ap__marks span:nth-child(4){ display:none; }
-  .ap__cap,.ap__notes{ padding-right:var(--gutter); }
-
-  /* Title-card scale. The name is the composition, not a heading above one. */
-  .ap__title{
-    font-size:clamp(3.2rem, .4rem + 6.6vw, 7.6rem);
-    line-height:.92; letter-spacing:-.026em;
-  }
-  .ap__copy .lede{ font-size:clamp(1.05rem,.98rem+.3vw,1.24rem); max-width:22em; }
-}
-
-/* The strip runs the width of the screen, as a broadcast strip does, and only
-   its contents are inset. */
-@media (min-width:1000px){
-  .ch{ border-top:1px solid var(--line); padding-top:0; }
-  .ch__top{ padding-block:clamp(.7rem,1.4vw,1rem) 0; margin-bottom:.55rem; }
-  .ch__list{ border-left:0; border-right:0; border-radius:0; }
-  .ap__readout{ border-left:0; border-right:0; border-radius:0; }
-}

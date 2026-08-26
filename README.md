@@ -7,14 +7,16 @@ Twelve static pages, four self-hosted typefaces, one stylesheet and one small
 script. No framework, no CDN in the critical path, and no third-party runtime
 dependency in the path of anything a visitor needs.
 
-Above that sits a cinematic layer — the **Evidence Aperture** on the home page,
-cross-document view transitions across all twelve, native scroll-driven motion,
-and one product-physics law per case study. Every part of it is an escalation of
-the page underneath it, and every part of it can fail without taking that page
-with it.
+Above that sits a cinematic layer — the **CE Signal Sculpture** on the home
+page, six living Selected Work scenes, cross-document view transitions across
+all twelve pages, native scroll-driven motion, and one product-physics law per
+case study. Every part of it is an escalation of the page underneath it, and
+every part of it can fail without taking that page with it.
+
+The design system it answers to is written down in [`DESIGN.md`](DESIGN.md).
 
 ```
-index.html                  Home — the ten seconds
+index.html                  Home — one signal
 work.html                   Selected Work — the index
 spellbomb.html              ┐
 health-journal.html         │
@@ -31,7 +33,8 @@ assets/site.css             The design system: tokens, layout, type, motion, pri
 assets/site.js              Progressive enhancement, ~330 lines, five jobs
 assets/fonts/               Self-hosted latin subsets (SIL OFL)
 assets/projects/            Real screenshots of the six products (WebP)
-assets/src/                 Sources for the two lazy cinematic bundles
+assets/src/                 Sources for the two lazy bundles
+DESIGN.md                   The ONE SIGNAL design system: tokens, motion laws, anti-patterns
 assets/vendor/              Those bundles, built and committed — plus NOTICE.md
 
 pages/*.html                Page bodies + front-matter
@@ -143,94 +146,141 @@ taken from that repository's Pages configuration. SpellBomb is the exception: it
 is a private repository with no public deployment today, and its case study says
 exactly that rather than linking anywhere.
 
-## The Evidence Aperture
+## ONE SIGNAL — the identity hero
 
-The home page opens on one composed frame: a medical-teal biological signal, a
-cobalt competitive bracket, a restrained solar-gold current, warm-ivory
-editorial typography, and one real screenshot of a running product — the Order
-of Draw drill in Phlebotomy Exam Prep. All five are drawn in HTML, CSS and
-inline SVG before any script runs, so that frame is what a visitor gets with
-JavaScript off, with reduced motion on, on a phone, and on a laptop that does
-not qualify for the rest of it.
+> **Care. Code. Competition. One signal.**
 
-That frame is also **one of six**, and the visitor picks which. See *The
-instrument*, below.
+The home page opens on a monogram assembled out of three planes of aligned SVG
+geometry, each of which is a real part of Connor's working life drawn rather
+than pictured:
 
-On a desktop with a fine pointer and no reduced-motion preference, one short
-pinned sequence animates *into* that frame rather than out of nothing. Across
-roughly three-quarters of a viewport of ordinary scrolling, the signal extends
-and the bracket converges on the evidence, the aperture opens from a slit to the
-full screenshot, and the sequence ends on the caption naming the product and the
-link into its case study. Behind it, an OGL fragment shader draws a directional
-key, a fine interference signal and one aperture ring, in the page's own accent.
+| Plane | Colour | Geometry | What it is |
+| --- | --- | --- | --- |
+| **CARE** | medical teal | an open arc — the **C** — drawn as a monitor lead | the clinical work |
+| **BUILD** | controlled cobalt | a trunk and three branches — the **E** — with nodes at every junction | the product work, as the module graph it is |
+| **COMPETE** | warm solar gold | four entrants, two semifinals, one final, converging on the tip of the E's middle branch | the competitive work |
+
+Aligned, they read as **CE**. One ECG trace crosses the whole first viewport and
+runs straight through the mouth of the C: the clinical plane does not carry a
+picture of a heartbeat, it reads the one the page is already drawing. That same
+trace becomes the Selected Work progress spine further down, and the
+reading-progress line at the top of every page.
+
+There is **no raster image anywhere above Selected Works**. The hero is
+geometry, type, and one optional shader plane behind it.
+
+### The arrival
+
+All of it is CSS keyframes, so it starts at first paint, costs the main thread
+nothing, and is over inside about a second and a half:
+
+```
+0–240 ms      the calibration line and the resting trace become visible
+120–700 ms    a bright sample head crosses the viewport
+~420 ms       the QRS strikes; one refraction ring passes the object
+420–1100 ms   the three planes come out of a controlled exploded state into
+              exact alignment, and the CE resolves
+650–1250 ms   an ink edge travels the name, line by line
+1000–1500 ms  the credentials and the actions settle on a mechanical detent
+by ~1600 ms   still, and waiting
+```
+
+`site.js` has exactly one job in that sequence: **ending it**. The first
+pointer, touch, key, wheel or scroll event adds `.is-settled`, which drops every
+animation and leaves the composed final frame — the frame the page was designed
+around anyway.
+
+Nothing in the sequence gates a word. Every keyframe either runs on something
+decorative or starts from a partial opacity that is already legible. The name is
+opaque in the first frame; what travels across it is a bright edge *over* type
+that was readable before the edge arrived.
 
 What it never does:
 
-- No loader, no gate, no blank canvas, and no empty hero.
+- No loader, no gate, no blank canvas, no empty hero.
 - No wheel or touch interception, no scroll velocity changes, no scroll jail.
-  The pin is the browser's own scroll position; there is no smooth-scroll
-  library in this repository and there never will be.
+  There is no smooth-scroll library in this repository and there never will be.
 - Nothing above the interactive content, nothing focusable, nothing that delays
-  a link. The name, the navigation, both hero actions and the case-study link
-  are readable and clickable at every scroll position, including the first.
+  a link.
 
-The shader is loaded last and only when **all** of these pass:
-`prefers-reduced-motion: no-preference`, a fine pointer, a viewport of at least
-1000 px, `navigator.deviceMemory` reporting at least 4 GB, Save-Data off, WebGL
-available, and the site's own Motion control not switched off. A capability the
-browser declines to report is read as a no. It is capped at 1.5× device pixel
-ratio, pauses when the hero scrolls away or the tab is hidden, and releases its
-context on exit or on context loss.
+### The three domains
 
-## The instrument
+CARE, BUILD and COMPETE are three radio inputs in a fieldset. They are real form
+controls, so the arrow keys, the roving focus, the group semantics and the
+announced position within the group all come from the browser rather than from a
+re-implementation of them.
 
-The hero is a six-position control — one channel per shipped product — and
-picking a position retunes the whole page in one connected move: the accent
-(interpolated through a registered `--accent`, not switched), the waveform of
-the signal, the seed of the bracket, the screenshot in the aperture, the
-read-out beneath it, the caption, the case-study link, the light and
-interference in the shader, and the row that lights up in Selected Work. One
-input, one machine answering across every layer at once.
+Choosing one is a single coordinated state change: its plane comes forward, the
+other two recede (they never leave — the CE has to hold as one object in every
+state), the accent retunes, the trace is *rewritten* across the viewport rather
+than dissolved, one refraction ring passes the object, and its proof group
+stands. Feedback begins inside 80 ms; the whole change is over in about 600 ms.
 
-Each of the six waveforms means something about its product — a fuse that
-spikes and drops, a slow circadian rise, a clean clinical trace, a breath, a
-square-wave swap timeline, a page fold. All six are authored with the same
-twenty-five points, so one is interpolated into the next rather than dissolved
-through it.
+- **With no script** all three proof groups stand open as a deliberate
+  three-column row, and no control is on screen at all — there is nothing on the
+  page that cannot work. Every fact is present; the controls only decide how
+  many are on screen at once.
+- **With a script** the enhanced state is applied through `html.js`, set by a
+  synchronous statement in `<head>`. There is no frame in which the row jumps
+  and no frame in which a dead control is visible.
+- **Under reduced motion or with the Motion control off**, the change is
+  instant. Withholding a control is not the same as withholding an effect.
 
-**All six compositions are real markup and real CSS state.** Nothing draws a
-composition into existence; the selector only moves between states the
-stylesheet already holds. Which means:
+### The shader
 
-- **With no JavaScript** the strip is six ordinary links to six case studies,
-  standing under the composition the document declares. That is the design, not
-  a fallback. There is no state in which this control is dead.
-- **With JavaScript** `assets/vendor/channel.js` (2.4 KB gzip, no dependency)
-  replaces the six links with a `role="radiogroup"` of six radios in the same
-  boxes — a link that does not navigate would be a lie, so it stops being a
-  link. Arrow keys move between positions with a roving `tabindex`; `Home` and
-  `End` jump. Hovering previews on a fine pointer and never commits; commit
-  takes a click, a tap, `Enter`, `Space` or an arrow key.
-- **The URL never changes and history is never touched.** This is a hero, not a
-  route.
-- **Under reduced motion** the retune is the same state change arriving
-  instantly. Nothing is withheld: the selector still selects, the evidence
-  still swaps, the read-out still retunes. Only the travel is gone.
-- **Under Save-Data** the module is not fetched at all and the six links stand.
-  It is the one gate the instrument answers to — a control is not an effect,
-  and the rest of the cinematic gates would withhold it from a phone.
+One OGL fragment plane, behind the sculpture, loaded last and only when **all**
+of these pass: `prefers-reduced-motion: no-preference`, a fine pointer, a
+viewport of at least 1000 px, `navigator.deviceMemory` reporting at least 4 GB,
+Save-Data off, WebGL available, and the site's own Motion control not switched
+off. A capability the browser declines to report is read as a no. It is capped
+at 1.5× device pixel ratio, pauses when the hero scrolls away or the tab is
+hidden, and releases its context on exit or on context loss.
 
-The evidence in the frame carries **two or three hotspots** — real buttons with
-real accessible names, positioned in normalised coordinates, each naming a part
-of the interface visibly in the picture, in words taken from the alt text and
-the case study. Panels open beside the frame, never over the thing they
-describe. They render only once the module has wired them, because an unwired
-hotspot is a dead control. Nothing that only a hotspot says is a fact the page
-needs: the figcaption carries the meaning and the case study carries the rest.
+## Selected Work — six living specimens
 
-The read-out and the Selected Work spec lines state the same numbers, because
-there is one set of facts on this page and not two. Every one of them is
-checkable against the repository it describes.
+Six rooms, six motion laws, one spine.
+
+The layout is a grid and nothing more. Each article is its own two-column room:
+the reading column on the left, the scene on the right, and the scene is
+`position: sticky` **inside its own article**. The stage holds while you read
+its project and hands off physically to the next one when you leave. That
+hand-off is the browser's own scrolling — no pin, no wheel listener, no snap, no
+forced horizontal travel. At one column the grid collapses and every scene sits
+with its own copy, which is the mobile design rather than a fallback for it.
+
+| # | Project | Law | What actually moves |
+| --- | --- | --- | --- |
+| 01 | SpellBomb | **fuse** | a fuse burns once toward the bomb with a spark riding it; eleven real tray slots take the seven letters the capture holds |
+| 02 | Health Journal | **accumulate** | the stage opens from a wide slice to the full tall record; one real chart line draws; the solar arc the product computes runs once |
+| 03 | Phlebotomy Exam Prep | **order** | six real tube cards, in the six CLSI positions with their real additives, arrive in the wrong seats and lock into the right ones |
+| 04 | Manifester | **fold** | builder and player fold together; the orb takes exactly one breath; one real line of interface text arrives |
+| 05 | OWCS Comp Tracker | **scan** | one scan line crosses the detected timeline; five detected rows snap into the reviewed one, the row under the confidence gate still marked |
+| 06 | PaperAnimator | **cite** | a highlight is drawn, a curved tether runs from it to the scene it produced, and the page performs one shallow fold |
+
+No transition is fade-only or scale-only, and no two rooms share a law.
+
+**The rule that made the difference.** If a scene promises ordering, sequencing,
+cards, rows or nodes, the things being ordered have to exist as real, separately
+addressable elements. The previous design applied `data-motion="sort"` and
+`data-motion="sequence"` to wrappers containing exactly one `<img>`: code that
+staggers children was animating one raster layer. Here `--from` is the seat a
+card starts in and `--i` is the seat it belongs in, and the card physically
+crosses the distance between them. `tests/hero.spec.ts` asserts it — six cards,
+six wrong seats, six correct destinations.
+
+The reconstructions are `aria-hidden`: the article beside them already states
+every fact they show. Every capture that *is* in the accessibility tree carries
+a real description of what is in it, and no capture appears twice.
+
+**The Order of Draw appears here and nowhere earlier.** It is the payoff of
+project 03, not the site's opening image.
+
+The rail is six ordinary same-page anchors before anything enhances them.
+JavaScript only reports which room you are in — `aria-current` on the matching
+link, the room's accent on the rail, and how far through the six you have read
+as a stroke length on the spine. It never converts the articles into tabs, never
+hides an inactive one, and never competes with the scroll position for
+authority.
 
 ## The pulse
 
@@ -238,10 +288,10 @@ Connor is an NREMT-certified EMT. A heartbeat is the one signal every human
 being reads without being taught, and this site had been drawing one at
 fourteen per cent opacity behind everything else.
 
-It is the protagonist now. **The trace has a rail of its own** — edge to edge,
-on a faint graticule, directly above the channels it answers to — and the same
-rail stands on each of the six case studies, tuned to that one product. Six
-waveforms, six rhythms, and each means something about the thing it belongs to:
+It is the protagonist now. On the home page it crosses the entire first
+viewport and its QRS lands in the mouth of the C; on each of the six case
+studies the same rail stands tuned to that one product. Six waveforms, six
+rhythms, and each means something about the thing it belongs to:
 
 | | Waveform | Rate |
 | --- | --- | --- |
@@ -259,12 +309,12 @@ into the next rather than dissolved through it.
 decoration with a heartbeat painted on it. It sweeps once on arrival — the
 monitor acquiring signal, about a second and a half, non-blocking, and the
 first input of any kind cuts it short — and then it rests, complete and still,
-until you touch the instrument. Changing channel makes it re-acquire at the new
-product's rate. The pulse answers you; it does not perform at you.
+until you touch something. Choosing a domain rewrites it across the viewport at
+that domain's own signature rather than dissolving one line into another. The
+pulse answers you; it does not perform at you.
 
-`--rate` is a custom property, so it inherits: the home page's tuned channel
-writes it and a case study's own accent writes it, and neither has to know the
-other exists.
+`--rate` is a custom property, so it inherits: a case study's own accent writes
+it, and nothing else has to know.
 
 ## The spine
 
@@ -280,11 +330,11 @@ clip does not care what the coordinate system is doing.
 
 ## The cut
 
-Every navigation is the aperture blinking. The outgoing document closes to a
-horizontal slit and the incoming one opens out of it — the same aperture the
-hero is built around, at the scale of the whole viewport, on the browser's own
-cross-document view transition. Two `clip-path` animations, no router, and a
-browser without the feature navigates instantly and loses nothing.
+Every navigation is the trace flattening and opening again. The outgoing
+document closes to a horizontal line and the incoming one opens out of it — the
+same signal the hero is built around, at the scale of the whole viewport, on the
+browser's own cross-document view transition. Two `clip-path` animations, no
+router, and a browser without the feature navigates instantly and loses nothing.
 
 ## Sound
 
@@ -293,9 +343,9 @@ Off until somebody asks for it, on every page, beside the motion control.
 Every tone is an oscillator and an envelope built in the browser when it is
 first needed — nothing is downloaded, nothing is a file, and the AudioContext
 is not even constructed until the first press. There are three sounds and only
-three: the monitor's blip when the trace reaches the QRS, the detent of a
-channel committing, and the aperture on a navigation. Anything else would be
-decoration with a volume control.
+three: the monitor's blip answering the QRS, the detent of a domain committing,
+and the trace flattening on a navigation. Scrolling through a project boundary
+makes no sound at all. Anything else would be decoration with a volume control.
 
 A stored "on" is deliberately not honoured on load. A page that starts making
 noise because of something you did on a previous visit is a page that autoplays
@@ -321,11 +371,10 @@ shell, and — per project — the screenshot, the title and the accent marker. 
 project card's screenshot becomes that project's case-study hero.
 
 Durations are 180–300 ms, opacity, transform and clipping only, no blur. No name
-appears twice in one document; on the home page the aperture *is* the active
-project screenshot, so the card below it deliberately does not claim the same
-name a second time. When the hero is tuned off its default channel it is
-borrowing a picture the work index owns, so it gives the name back rather than
-claiming it twice. Browsers without the feature navigate normally and lose
+appears twice in one document: the identity hero holds no raster at all, so each
+of the six Selected Work scenes claims its project's names exactly once, and the
+transition carries the active title, accent and capture into the case-study hero
+it opens. Browsers without the feature navigate normally and lose
 nothing, reduced motion collapses every transition to an instant state change,
 and back and forward are unaffected.
 
@@ -365,11 +414,18 @@ Six layers, and each one can fail without taking the one below it with it.
    *unanimated* state is the readable one, and all of it sits inside
    `@supports`, so an unsupported browser is never handed content at
    `opacity: 0`.
-6. **The lazy cinematic bundles.** GSAP with ScrollTrigger for the one sequence
-   that genuinely exceeds CSS, and OGL for the one shader plane. Both are
+6. **The lazy bundles.** `signal.js` — the hero's pointer parallax, 0.5 KB
+   gzip and no dependency — and OGL for the one shader plane. Both are
    dynamically imported after `load`, only on the page that asks for them, only
    when the gates pass, and both are destroyed completely when they stop
-   applying. See `assets/vendor/NOTICE.md`.
+   applying.
+
+   GSAP was removed by this redesign. It earned its 44.8 KB gzip when the hero
+   was a pinned, scrubbed ScrollTrigger timeline; the hero is no longer a
+   scrubbed timeline, and every motion in the current design is a finite
+   transition that plays once and settles — which is exactly what CSS keyframes
+   express, off the main thread and with the composed final frame as the state
+   that renders when motion is refused. See `assets/vendor/NOTICE.md`.
 
 `prefers-reduced-motion: reduce` stops all of it: the renderer is never created,
 neither cinematic bundle is even fetched, scroll-linked transforms and the
@@ -419,13 +475,18 @@ Three changes fixed it, and together they took mobile CLS to 0.000:
   memory, or when the browser reports no memory at all
 - the motion control's name, pressed state, effect and persistence
 - sound: silent until pressed, silent again the moment it is switched off
-- the instrument, against all five inputs: six working links with no script,
-  a named radio group with a roving `tabindex` and arrow, `Home` and `End`
-  keys, hover that previews without committing, tap that commits on a target of
-  at least 44 px, the same instant state change under reduced motion and under
-  the site's own Motion control, and no module fetched at all under Save-Data —
-  plus the three hard limits: nothing learnable-before-usable, no fact reachable
-  only through an interaction, and no interaction that delays a link
+- the identity hero against all five inputs: three open proof groups and no
+  dead control with no script, a labelled group of real radios with the
+  browser's own arrow-key behaviour, tap that commits on a target of at least
+  44 px, the same instant state change under reduced motion and under the site's
+  own Motion control, and no module fetched at all under Save-Data — plus the
+  hard limits: no raster above Selected Works, every credential in the first
+  viewport at 1440 and at 390, no fact reachable only through an interaction,
+  an arrival that ends on the first input, and no interaction that delays a link
+- the six rooms: one distinct motion law each made of elements that can
+  genuinely move, six tube cards that start in the wrong seats and end in the
+  right ones, a rail that reports position without turning articles into tabs,
+  no capture under 150 px wide on a phone, and one focusable target per room
 - keyboard order, focus rings on everything tabbable, the skip link, the mobile
   menu's Escape behaviour, and reaching a case study from the hero by keyboard
 - the résumé printing to exactly two pages on Letter and on A4
@@ -474,12 +535,14 @@ deploys on its own.
 ## Third-party code
 
 Nothing third-party is in the critical path, and nothing is fetched from another
-origin at any point. Two audited, pinned packages are bundled into
-`assets/vendor/` at author time and lazily imported after first paint — GSAP
-with ScrollTrigger for the Evidence Aperture timeline, and OGL for the single
-shader plane. A third bundle, `channel.js`, goes through the same path with no
-dependency at all: it is there because it is main-thread work the critical path
-must not carry, not because it needed a library.
+origin at any point. **One** audited, pinned package is bundled into
+`assets/vendor/` at author time and lazily imported after first paint: OGL, for
+the single shader plane. A second bundle, `signal.js`, goes through the same
+path with no dependency at all — it is there because it is main-thread work the
+critical path must not carry, not because it needed a library.
+
+GSAP and Lenis are absent by design, and `assets/vendor/NOTICE.md` records why
+each was removed or declined rather than simply listing what is present.
 `assets/vendor/NOTICE.md` records the exact version, source,
 licence, generated filename, raw and gzip weight, and the reason each one
 exists; `node tools/build_vendor.mjs --check` fails CI if the committed output

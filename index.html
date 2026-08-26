@@ -12,11 +12,11 @@
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Connor Eppolito" />
-<meta property="og:title" content="Connor Eppolito" />
+<meta property="og:title" content="Connor Eppolito — Care. Code. Competition." />
 <meta property="og:description" content="Connor Eppolito is a senior Health Science student at CSU Channel Islands, an NREMT-certified EMT, a phlebotomy technician in training, president of the CSUCI Esports Club, and the builder behind six shipped health, research and multiplayer products." />
 <meta property="og:url" content="https://cvree.github.io/Portfolio-Hub/" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="og:image" content="https://cvree.github.io/Portfolio-Hub/assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp" />
+<meta property="og:image" content="https://cvree.github.io/Portfolio-Hub/assets/og/one-signal.webp" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230b0c0e'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='38' fill='%23f4f0e8' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E" />
 
 <!-- Fonts and styles are served from this repository. Nothing in the critical
@@ -132,7 +132,7 @@
 }</style>
 <link rel="stylesheet" href="assets/site.css" />
 <script>document.documentElement.classList.add('js');</script>
-<link rel="preload" as="image" fetchpriority="high" href="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp" imagesrcset="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-720.webp 720w, assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp 1280w, assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp 2400w" imagesizes="(max-width: 999px) 92vw, 46vw" />
+
 </head>
 
 <body class="on-ink" data-accent="research">
@@ -208,342 +208,241 @@
 
 <main id="main">
 <!-- ===================================================================== -->
-<!-- THE EVIDENCE APERTURE — the instrument, and the ten seconds            -->
+<!-- ONE SIGNAL — the identity hero                                        -->
 <!-- ===================================================================== -->
 <!--
-  The hero is a six-position instrument. One channel per shipped product;
-  picking one retunes the accent, the signal, the bracket, the evidence, the
-  read-out, the caption, the link and the shader in one connected move.
+  Care. Code. Competition. One signal.
 
-  Every one of the six compositions below is real markup and real CSS state.
-  Nothing here is drawn into existence by a script: the selector only ever
-  moves between six states the stylesheet already holds. With no script it is
-  six ordinary links to six case studies, standing under the composition the
-  document declares — and that is the design, not a fallback.
+  The hero is not a picture of a product. It is a monogram assembled out of
+  three planes, each of which is a real piece of Connor's working life drawn
+  as geometry:
 
-  Channel 03 is the one the document is composed on: it is the accent this
-  page declares, the capture it preloads, and the image it shares when it is
-  linked. Nothing arrives blank, ever.
+    CARE     a clinical arc with a rhythm strip inside it — the C
+    BUILD    a node topology whose trunk and branches are the E
+    COMPETE  a tournament bracket that converges on the E's middle arm
+
+  Aligned, they read as CE. Separated — by a small pointer parallax, or by
+  choosing a domain — they show what the identity is made of.
+
+  Everything a visitor needs is in this markup at first paint: the name, the
+  place, the availability, the three domains with their proof, both actions
+  and every link. The arrival choreography is CSS, it plays once, it is over
+  inside two and a half seconds, and the first input of any kind ends it. No
+  fact on this page waits on an animation, a module, a shader or a gesture.
+
+  With no script the three domains are a static proof row — all three, all
+  visible, nothing hidden behind a control that could not work. Script
+  upgrades that row into a radio group; the facts do not change, only how
+  many are on screen at once.
 -->
-<section class="ap" data-aperture data-channel="phlebotomy" data-tune="phlebotomy" aria-labelledby="hero-h">
-  <div class="ap__stage" data-ap="stage">
+<section class="sig" data-signal data-domain="care" aria-labelledby="hero-h">
 
-    <div class="ap__field" aria-hidden="true">
-      <!-- the shader plane, if the device ever earns one, mounts in here -->
-      <div class="ap__glass" data-atmos-slot></div>
-
-
-      <!-- THE BRACKET. Reseeded per channel: a different branch depth and
-           different node positions, converging on the evidence every time. -->
-      <svg class="ap__brk" viewBox="0 0 620 620" preserveAspectRatio="xMaxYMid meet" focusable="false" aria-hidden="true">
-        <g data-ap="grid">
-        <g class="ap__bracket-group" data-brk="spellbomb">
-          <path class="ap__bracket" d="M24 120 H120 V196 H252" />
-          <path class="ap__bracket" d="M24 272 H120 V196" />
-          <path class="ap__bracket" d="M24 348 H120 V424 H252" />
-          <path class="ap__bracket" d="M24 500 H120 V424" />
-          <path class="ap__bracket" d="M252 196 V310 H392" />
-          <path class="ap__bracket" d="M252 424 V310" />
-          <path class="ap__bracket" d="M392 310 H480" />
-          <circle class="ap__bracket-node" cx="252" cy="196" r="3.5" />
-          <circle class="ap__bracket-node" cx="252" cy="424" r="3.5" />
-          <circle class="ap__bracket-node" cx="392" cy="310" r="5" />
-        </g>
-        <g class="ap__bracket-group" data-brk="health-journal">
-          <path class="ap__bracket" d="M24 310 H140" />
-          <path class="ap__bracket" d="M140 150 V470" />
-          <path class="ap__bracket" d="M140 150 H300" />
-          <path class="ap__bracket" d="M140 470 H300" />
-          <path class="ap__bracket" d="M300 70 V226" />
-          <path class="ap__bracket" d="M300 400 V560" />
-          <path class="ap__bracket" d="M300 70 H452" />
-          <path class="ap__bracket" d="M300 226 H452" />
-          <path class="ap__bracket" d="M300 400 H452" />
-          <path class="ap__bracket" d="M300 560 H452" />
-          <circle class="ap__bracket-node" cx="140" cy="310" r="5" />
-          <circle class="ap__bracket-node" cx="300" cy="150" r="3.5" />
-          <circle class="ap__bracket-node" cx="300" cy="470" r="3.5" />
-        </g>
-        <g class="ap__bracket-group" data-brk="phlebotomy">
-          <path class="ap__bracket" d="M24 84 H132 V186 H244" />
-          <path class="ap__bracket" d="M24 288 H132 V186" />
-          <path class="ap__bracket" d="M24 396 H132 V498 H244" />
-          <path class="ap__bracket" d="M24 600 H132 V498" />
-          <path class="ap__bracket" d="M244 186 V342 H352" />
-          <path class="ap__bracket" d="M244 498 V342" />
-          <path class="ap__bracket" d="M352 342 H452" />
-          <circle class="ap__bracket-node" cx="244" cy="186" r="3.5" />
-          <circle class="ap__bracket-node" cx="244" cy="498" r="3.5" />
-          <circle class="ap__bracket-node" cx="352" cy="342" r="4.5" />
-        </g>
-        <g class="ap__bracket-group" data-brk="manifester">
-          <path class="ap__bracket" d="M24 200 H240 V310 H470" />
-          <path class="ap__bracket" d="M24 470 H240 V310" />
-          <circle class="ap__bracket-node" cx="240" cy="200" r="3.5" />
-          <circle class="ap__bracket-node" cx="240" cy="470" r="3.5" />
-          <circle class="ap__bracket-node" cx="470" cy="310" r="5.5" />
-        </g>
-        <g class="ap__bracket-group" data-brk="owcs">
-          <path class="ap__bracket" d="M24 30 H110 V70 H210" />
-          <path class="ap__bracket" d="M24 110 H110 V70" />
-          <path class="ap__bracket" d="M24 190 H110 V230 H210" />
-          <path class="ap__bracket" d="M24 270 H110 V230" />
-          <path class="ap__bracket" d="M24 350 H110 V390 H210" />
-          <path class="ap__bracket" d="M24 430 H110 V390" />
-          <path class="ap__bracket" d="M24 510 H110 V550 H210" />
-          <path class="ap__bracket" d="M24 590 H110 V550" />
-          <path class="ap__bracket" d="M210 70 V150 H330" />
-          <path class="ap__bracket" d="M210 230 V150" />
-          <path class="ap__bracket" d="M210 390 V470 H330" />
-          <path class="ap__bracket" d="M210 550 V470" />
-          <path class="ap__bracket" d="M330 150 V310 H470" />
-          <path class="ap__bracket" d="M330 470 V310" />
-          <circle class="ap__bracket-node" cx="330" cy="150" r="3.5" />
-          <circle class="ap__bracket-node" cx="330" cy="470" r="3.5" />
-          <circle class="ap__bracket-node" cx="470" cy="310" r="5" />
-        </g>
-        <g class="ap__bracket-group" data-brk="paper-animator">
-          <path class="ap__bracket" d="M24 90 H300" />
-          <path class="ap__bracket" d="M24 250 H300" />
-          <path class="ap__bracket" d="M24 390 H300" />
-          <path class="ap__bracket" d="M24 550 H300" />
-          <path class="ap__bracket" d="M300 90 V550" />
-          <path class="ap__bracket" d="M300 320 H470" />
-          <circle class="ap__bracket-node" cx="300" cy="90" r="3" />
-          <circle class="ap__bracket-node" cx="300" cy="250" r="3" />
-          <circle class="ap__bracket-node" cx="300" cy="390" r="3" />
-          <circle class="ap__bracket-node" cx="300" cy="550" r="3" />
-          <circle class="ap__bracket-node" cx="470" cy="320" r="5" />
-        </g>
-        </g>
-      </svg>
-
-      <!-- the current -->
-      <span class="ap__current" data-ap="current"></span>
-    </div>
-
-    <div class="shell ap__in">
-
-      <div class="ap__copy">
-        <p class="eyebrow">
-          <span class="tick" aria-hidden="true"></span>Camarillo, California<span class="u">Available December 2026</span>
-        </p>
-
-        <h1 class="display ap__title" id="hero-h" data-ap="title">
-          <span class="line" data-ap-line>Connor</span>
-          <span class="line line--2" data-ap-line>Eppolito</span>
-        </h1>
-
-        <ul class="hero__stance">
-          <li>Health Science Student</li>
-          <li>NREMT-Certified EMT</li>
-          <li>Product Builder</li>
-          <li>Esports Leader</li>
-        </ul>
-
-        <p class="lede mt-3">
-          I work at the seam between <em>patient care</em> and <em>the tools that
-          support it</em> — and I build the tools.
-        </p>
-
-        <div class="btn-row hero__actions">
-          <a class="btn btn--primary" href="work.html">
-            View projects <span class="arrow" aria-hidden="true">&rarr;</span>
-          </a>
-          <a class="btn" href="resume.html">
-            View / download résumé <span class="arrow" aria-hidden="true">&rarr;</span>
-          </a>
-        </div>
-      </div>
-
-      <figure class="ap__ev">
-        <div class="ap__frame">
-          <div class="ap__iris">
-            <span class="ap__blade ap__blade--t" data-ap="blade-a" aria-hidden="true"></span>
-            <span class="ap__blade ap__blade--b" data-ap="blade-b" aria-hidden="true"></span>
-            <img data-ap="shot" data-vt="shot-phlebotomy"
-                 src="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp"
-                 srcset="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-720.webp 720w,
-                         assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp 1280w,
-                         assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp 2400w"
-                 sizes="(max-width: 999px) 92vw, 46vw"
-                 width="2400" height="1629" loading="eager" decoding="async" fetchpriority="high"
-                 alt="The Order of Draw drill running in Phlebotomy Exam Prep: four drill modes across the top with Arrange selected, six draggable tube cards each illustrated in its real cap colour and named by additive, and a side panel carrying the mnemonic, an explanation of the mode, and a note reading read the label, not the cap." />
-
-            <!-- THE SPECIMEN. Each hotspot names a part of the interface that
-                 is visibly in the frame, in words taken from the alt text and
-                 the case study. Nothing that only exists in a hotspot is
-                 information a visitor needs: the figcaption carries the
-                 meaning, and the case study carries the rest. They render only
-                 once the module has wired them — an unwired hotspot would be a
-                 dead control, and this site does not ship those. -->
-            <span class="ap__spots" data-spots="spellbomb">
-              <button class="ap__spot" type="button" style="--x:.5;--y:.33" aria-expanded="false" aria-controls="sp-sb-1"><span aria-hidden="true">1</span><span class="vh">The lit bomb, and whose turn it is</span></button>
-              <button class="ap__spot" type="button" style="--x:.5;--y:.65" aria-expanded="false" aria-controls="sp-sb-2"><span aria-hidden="true">2</span><span class="vh">The letter tray and the answer box</span></button>
-            </span>
-            <span class="ap__spots" data-spots="health-journal">
-              <button class="ap__spot" type="button" style="--x:.17;--y:.67" aria-expanded="false" aria-controls="sp-hj-1"><span aria-hidden="true">1</span><span class="vh">Today&rsquo;s severity, rated 5</span></button>
-              <button class="ap__spot" type="button" style="--x:.76;--y:.48" aria-expanded="false" aria-controls="sp-hj-2"><span aria-hidden="true">2</span><span class="vh">The eleven-day streak</span></button>
-            </span>
-            <span class="ap__spots" data-spots="phlebotomy">
-              <button class="ap__spot" type="button" style="--x:.5;--y:.368" aria-expanded="false" aria-controls="sp-ph-1"><span aria-hidden="true">1</span><span class="vh">The drill mode</span></button>
-              <button class="ap__spot" type="button" style="--x:.155;--y:.6" aria-expanded="false" aria-controls="sp-ph-2"><span aria-hidden="true">2</span><span class="vh">The six tube cards</span></button>
-              <button class="ap__spot" type="button" style="--x:.8;--y:.565" aria-expanded="false" aria-controls="sp-ph-3"><span aria-hidden="true">3</span><span class="vh">The side panel</span></button>
-            </span>
-            <span class="ap__spots" data-spots="manifester">
-              <button class="ap__spot" type="button" style="--x:.49;--y:.37" aria-expanded="false" aria-controls="sp-mf-1"><span aria-hidden="true">1</span><span class="vh">The breathing orb</span></button>
-              <button class="ap__spot" type="button" style="--x:.2;--y:.66" aria-expanded="false" aria-controls="sp-mf-2"><span aria-hidden="true">2</span><span class="vh">The line, spoken</span></button>
-            </span>
-            <span class="ap__spots" data-spots="owcs">
-              <button class="ap__spot" type="button" style="--x:.49;--y:.33" aria-expanded="false" aria-controls="sp-ow-1"><span aria-hidden="true">1</span><span class="vh">The match, and its round boundaries</span></button>
-              <button class="ap__spot" type="button" style="--x:.84;--y:.6" aria-expanded="false" aria-controls="sp-ow-2"><span aria-hidden="true">2</span><span class="vh">The human review gate</span></button>
-            </span>
-            <span class="ap__spots" data-spots="paper-animator">
-              <button class="ap__spot" type="button" style="--x:.35;--y:.4" aria-expanded="false" aria-controls="sp-pa-1"><span aria-hidden="true">1</span><span class="vh">The marked passage</span></button>
-              <button class="ap__spot" type="button" style="--x:.63;--y:.33" aria-expanded="false" aria-controls="sp-pa-2"><span aria-hidden="true">2</span><span class="vh">The thread to the scene</span></button>
-            </span>
-          </div>
-          <span class="ap__marks" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
-        </div>
-
-        <div class="ap__notes">
-          <p class="ap__note" id="sp-sb-1" hidden><b>The bomb, lit.</b> It hangs in the middle of the arena with an arrow pointing at the player it is on — here, sam. The five other players are ringed around it with the hearts they have left.</p>
-          <p class="ap__note" id="sp-sb-2" hidden><b>The tray, mid-word.</b> Eleven letters reading I-N-A-L-I-E-N with four slots still empty, and the answer box carrying what has been typed so far.</p>
-          <p class="ap__note" id="sp-hj-1" hidden><b>Today, rated.</b> Overall skin severity at 5, sitting beside a seven-day average of 5 and a thirty-day average of 6 — one day next to the window that gives it meaning.</p>
-          <p class="ap__note" id="sp-hj-2" hidden><b>Eleven days running.</b> Sunday 9 August — and the line under the title says where the entry lives: private, on this device.</p>
-          <p class="ap__note" id="sp-ph-1" hidden><b>Four drill modes.</b> Arrange, What next, Spot the error, Fill the gaps — four different ways to be wrong about the same six tubes. Arrange is the one running here.</p>
-          <p class="ap__note" id="sp-ph-2" hidden><b>Six CLSI positions.</b> Each tube card is drawn in its real cap colour and named by the additive it carries, and they are dragged into order.</p>
-          <p class="ap__note" id="sp-ph-3" hidden><b>The side panel.</b> The mnemonic — <i>Boys Love Ravishing Girls Like Gary</i> — what this mode is asking for, and the warning that decides the whole exercise in practice: read the label, not the cap.</p>
-          <p class="ap__note" id="sp-mf-1" hidden><b>The breathing orb.</b> Reading <i>Breathe in</i> on a two-second count, over the spoken line: <i>I trust myself to handle what comes.</i></p>
-          <p class="ap__note" id="sp-mf-2" hidden><b>Your own words, read back.</b> <i>I trust myself to handle what comes.</i> Under it: 9:38 remaining on pass 8 of a session called Evening steadiness, over the Moon Garden ambience.</p>
-          <p class="ap__note" id="sp-ow-1" hidden><b>Three rounds, bounded.</b> Al Qadsiah versus Twisted Minds — fourteen detected slots, and the three round boundaries the pipeline found, drawn across the timeline as time bars.</p>
-          <p class="ap__note" id="sp-ow-2" hidden><b>The review gate.</b> Every detected hero sits beside the frame it was read from and the confidence it was read at, with Approve, Correct and Flag on each one.</p>
-          <p class="ap__note" id="sp-pa-1" hidden><b>The paper, marked.</b> One sentence is selected and an earlier passage is washed in mint — the highlight is the citation, so there is no later step where a source gets attached.</p>
-          <p class="ap__note" id="sp-pa-2" hidden><b>The thread.</b> A curved line runs from the marked sentence to the scene it produced — two scenes, two pages, and every one of them carrying the exact words it came from.</p>
-        </div>
-
-        <figcaption class="ap__cap">
-          <span data-cap="spellbomb" hidden>SpellBomb — a live six-player round, the fuse running</span>
-          <span data-cap="health-journal" hidden>Health Journal — the dashboard on day eleven of a streak</span>
-          <span data-ap="lift" data-cap="phlebotomy">Phlebotomy Exam Prep — the Order of Draw drill, running</span>
-          <span data-cap="manifester" hidden>Manifester — a session playing, pass 8 of Evening steadiness</span>
-          <span data-cap="owcs" hidden>OWCS Comp Tracker — the human review gate, mid-match</span>
-          <span data-cap="paper-animator" hidden>PaperAnimator — a marked passage and the scene it produced</span>
-
-          <a class="go" data-link="spellbomb" href="spellbomb.html" hidden>Read the case study — SpellBomb &rarr;</a>
-          <a class="go" data-link="health-journal" href="health-journal.html" hidden>Read the case study — Health Journal &rarr;</a>
-          <a class="go" data-ap="lift" data-link="phlebotomy" href="phlebotomy-exam-prep.html">Read the case study — Phlebotomy Exam Prep &rarr;</a>
-          <a class="go" data-link="manifester" href="manifester.html" hidden>Read the case study — Manifester &rarr;</a>
-          <a class="go" data-link="owcs" href="owcs-comp-tracker.html" hidden>Read the case study — OWCS Comp Tracker &rarr;</a>
-          <a class="go" data-link="paper-animator" href="paper-animator.html" hidden>Read the case study — PaperAnimator &rarr;</a>
-        </figcaption>
-
-      </figure>
-
-      <!-- THE INSTRUMENT PANEL: the six positions, and the read-out
-           that answers to whichever one is committed. One row of the hero
-           grid, under the evidence, on the first screen. -->
-      <div class="ap__panel">
-        <!-- THE RAIL. The pulse gets a band of its own, unobstructed,
-             directly above the channels it answers to. -->
-        <div class="ap__rail" data-pulse aria-hidden="true">
-        <!-- THE SIGNAL. Six waveforms, one per product, and each one means
-             something about the product it belongs to: a fuse that spikes and
-             drops, a slow circadian rise, a clean clinical trace, a breath, a
-             square-wave swap timeline, a page fold. All six are drawn with the
-             same twenty-five points, so one can be interpolated into the next
-             rather than dissolved through it. -->
-        <svg class="ap__sig" viewBox="0 430 1440 260" preserveAspectRatio="none" focusable="false" aria-hidden="true">
-          <g class="ap__sigwrap">
-            <path class="ap__signal--ghost" d="M0 596 L1440 596" />
-            <path class="ap__signal" data-ap="signal" data-sig="live" d="M0 560 L206 547 L228 560 L250 578 L260 468 L272 620 L302 543 L338 560 L640 560 L666 547 L688 560 L710 578 L720 468 L732 620 L762 543 L798 560 L1100 560 L1126 547 L1148 560 L1170 578 L1180 468 L1192 620 L1222 543 L1258 560 L1440 560" />
-            <path class="ap__signal" data-sig="spellbomb" d="M0 560 L60 549 L120 535 L180 519 L220 505 L240 500 L252 587 L300 560 L480 560 L540 543 L600 520 L660 495 L700 472 L720 464 L732 603 L780 560 L960 560 L1020 533 L1080 497 L1140 458 L1180 422 L1200 410 L1212 628 L1260 560 L1440 560" />
-            <path class="ap__signal" data-sig="health-journal" d="M0 580 L60 572 L120 555 L180 534 L240 513 L300 494 L360 480 L420 472 L480 470 L540 472 L600 477 L660 480 L720 482 L780 480 L840 477 L900 472 L960 470 L1020 472 L1080 480 L1140 494 L1200 513 L1260 534 L1320 555 L1380 572 L1440 580" />
-            <path class="ap__signal" data-sig="phlebotomy" d="M0 560 L206 547 L228 560 L250 578 L260 468 L272 620 L302 543 L338 560 L640 560 L666 547 L688 560 L710 578 L720 468 L732 620 L762 543 L798 560 L1100 560 L1126 547 L1148 560 L1170 578 L1180 468 L1192 620 L1222 543 L1258 560 L1440 560" />
-            <path class="ap__signal" data-sig="manifester" d="M0 560 L60 556 L120 537 L180 508 L240 494 L300 508 L360 537 L420 556 L480 560 L540 564 L600 583 L660 612 L720 626 L780 612 L840 583 L900 564 L960 560 L1020 556 L1080 537 L1140 508 L1200 494 L1260 508 L1320 537 L1380 556 L1440 560" />
-            <path class="ap__signal" data-sig="owcs" d="M0 560 L120 560 L120 486 L260 486 L260 608 L420 608 L420 520 L540 520 L540 470 L680 470 L680 600 L820 600 L820 530 L940 530 L940 644 L1060 644 L1060 486 L1180 486 L1180 572 L1300 572 L1300 500 L1380 500 L1380 560 L1420 560 L1440 560" />
-            <path class="ap__signal" data-sig="paper-animator" d="M0 560 L60 560 L120 560 L180 560 L240 560 L300 560 L360 560 L420 560 L480 560 L540 558 L600 552 L660 540 L700 520 L720 428 L740 470 L760 540 L800 596 L860 616 L920 608 L980 590 L1040 574 L1100 564 L1200 560 L1320 560 L1440 560" />
-
-            <!-- THE SWEEP: the bright leading edge a monitor draws, and the
-                 cursor sitting at the head of it. Both ride the live path. -->
-            <path class="ap__sweep" data-sig="sweep" d="M0 560 L206 547 L228 560 L250 578 L260 468 L272 620 L302 543 L338 560 L640 560 L666 547 L688 560 L710 578 L720 468 L732 620 L762 543 L798 560 L1100 560 L1126 547 L1148 560 L1170 578 L1180 468 L1192 620 L1222 543 L1258 560 L1440 560" />
-            <circle class="ap__head" data-sig="head" r="4.5" />
-          </g>
-        </svg>
-        </div>
-        <div class="ch" data-channel-strip>
-          <div class="ch__top">
-            <p class="ch__label" id="ch-h"><span class="led" aria-hidden="true"></span>The instrument</p>
-            <p class="ch__hint" data-ch-hint>Six products. Six case studies.</p>
-          </div>
-          <ul class="ch__list">
-            <li><a class="ch__opt" href="spellbomb.html" data-ch="spellbomb"><span class="ch__n">01</span><span class="ch__name">SpellBomb</span><span class="ch__kind">Live multiplayer</span></a></li>
-            <li><a class="ch__opt" href="health-journal.html" data-ch="health-journal"><span class="ch__n">02</span><span class="ch__name">Health Journal</span><span class="ch__kind">Health tooling</span></a></li>
-            <li><a class="ch__opt" href="phlebotomy-exam-prep.html" data-ch="phlebotomy" aria-current="true"><span class="ch__n">03</span><span class="ch__name">Phlebotomy Exam Prep</span><span class="ch__kind">Certification study</span></a></li>
-            <li><a class="ch__opt" href="manifester.html" data-ch="manifester"><span class="ch__n">04</span><span class="ch__name">Manifester</span><span class="ch__kind">Guided audio</span></a></li>
-            <li><a class="ch__opt" href="owcs-comp-tracker.html" data-ch="owcs"><span class="ch__n">05</span><span class="ch__name">OWCS Comp Tracker</span><span class="ch__kind">Computer vision</span></a></li>
-            <li><a class="ch__opt" href="paper-animator.html" data-ch="paper-animator"><span class="ch__n">06</span><span class="ch__name">PaperAnimator</span><span class="ch__kind">Research tooling</span></a></li>
-          </ul>
-        </div>
-
-        <!-- THE READ-OUT. Real facts, checkable against the case study and the
-             repository each one comes from. One set is in the document without a
-             hidden attribute; with no script the other five are not rendered. -->
-        <ul class="ap__readout" data-readout="spellbomb" hidden>
-          <li><span class="k">Status</span><span class="v">In development</span></li>
-          <li><span class="k">Runtime</span><span class="v">Node 18+ · Express · Socket.IO</span></li>
-          <li><span class="k">Rush puzzles</span><span class="n">260</span></li>
-          <li><span class="k">Version</span><span class="n">9.3.0</span></li>
-        </ul>
-        <ul class="ap__readout" data-readout="health-journal" hidden>
-          <li><span class="k">Status</span><span class="v">Live</span></li>
-          <li><span class="k">Stack</span><span class="v">React · Vite · installable PWA</span></li>
-          <li><span class="k">Storage</span><span class="v">On-device. No account required</span></li>
-          <li><span class="k">Export formats</span><span class="n">4</span></li>
-        </ul>
-        <ul class="ap__readout" data-readout="phlebotomy">
-          <li><span class="k">Status</span><span class="v">Live</span></li>
-          <li><span class="k">Original questions</span><span class="n">513</span></li>
-          <li><span class="k">Vocabulary terms</span><span class="n">181</span></li>
-          <li><span class="k">Tests</span><span class="n">257</span></li>
-        </ul>
-        <ul class="ap__readout" data-readout="manifester" hidden>
-          <li><span class="k">Status</span><span class="v">Live</span></li>
-          <li><span class="k">Studio voices</span><span class="n">2</span></li>
-          <li><span class="k">Visualiser rooms</span><span class="n">6</span></li>
-          <li><span class="k">Export</span><span class="v">Real MP3, rendered on-device</span></li>
-        </ul>
-        <ul class="ap__readout" data-readout="owcs" hidden>
-          <li><span class="k">Status</span><span class="v">Live</span></li>
-          <li><span class="k">Detection</span><span class="v">Python · OpenCV, ranked template match</span></li>
-          <li><span class="k">Test modules</span><span class="n">107</span></li>
-          <li><span class="k">Hosting cost</span><span class="v">$0 — GitHub Pages</span></li>
-        </ul>
-        <ul class="ap__readout" data-readout="paper-animator" hidden>
-          <li><span class="k">Status</span><span class="v">Live</span></li>
-          <li><span class="k">Stack</span><span class="v">React 19 · TypeScript · Vite</span></li>
-          <li><span class="k">Entrance animations</span><span class="n">21</span></li>
-          <li><span class="k">Network calls</span><span class="v">None. No account, no API key</span></li>
-        </ul>
-      </div>
-    </div>
+  <!-- THE SIGNAL. One line across the whole first viewport, resting at the
+       baseline, with the QRS event placed where the sculpture stands. This is
+       the same line that becomes the Selected Work spine further down the
+       page, and the reading-progress trace at the top of every page. -->
+  <div class="sig__field" aria-hidden="true">
+    <div class="sig__glass" data-atmos-slot></div>
   </div>
 
-  <div class="shell ap__after">
-    <div class="ap__afterin">
-      <p class="prose quiet" data-rise style="font-size:1.02rem">
-        Six products, shipped and shown running: a real-time multiplayer word
-        game, a private health journal with a living timeline, a phlebotomy
-        certification platform I built while studying for the exam myself, a
-        guided-audio session builder, a computer-vision pipeline that reads an
-        esports broadcast, and an editor that turns a research paper into a
-        cited visual talk.
+  <div class="shell sig__in">
+
+    <!-- ---------------------------------------------------------------- -->
+    <!-- the identity                                                      -->
+    <!-- ---------------------------------------------------------------- -->
+    <div class="sig__copy">
+
+      <p class="sig__where">
+        <span class="tick" aria-hidden="true"></span>
+        <span>Camarillo, California</span>
+        <a class="sig__handle" href="https://github.com/cvree" rel="me noopener">@cvree</a>
       </p>
-      <p class="prose quiet" data-rise style="font-size:1.02rem">
-        Everything here is described from the repository, the running build and
-        the record it comes from. Nothing is a mockup.
+
+      <h1 class="display sig__title" id="hero-h">
+        <span class="sig__ln"><span class="sig__lnt">Connor</span></span>
+        <span class="sig__ln sig__ln--2"><span class="sig__lnt">Eppolito</span></span>
+      </h1>
+
+      <p class="sig__creed">
+        Care. Code. Competition. <em>One signal.</em>
       </p>
+
+      <p class="sig__lede">
+        I build calm, high-signal systems for people under pressure — and I am
+        in the room those systems are for.
+      </p>
+
+      <ul class="sig__stance">
+        <li>NREMT-Certified EMT</li>
+        <li>Health Science</li>
+        <li>Product Builder</li>
+        <li>CSUCI Esports President</li>
+      </ul>
+
+      <p class="sig__avail">
+        <span class="led" aria-hidden="true"></span>
+        Available December 2026 · health informatics, clinical, research and product
+      </p>
+
+      <div class="btn-row sig__actions">
+        <a class="btn btn--primary" href="work.html">
+          Explore the work <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        <a class="btn" href="resume.html">
+          View résumé <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+
+      <ul class="sig__links">
+        <li><a href="https://github.com/cvree" rel="me noopener">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/connor-eppolito-2aba63310/" rel="me noopener">LinkedIn</a></li>
+        <li><a href="mailto:connor.eppolito803@myci.csuci.edu">Email</a></li>
+      </ul>
+
     </div>
+
+    <!-- ---------------------------------------------------------------- -->
+    <!-- the sculpture                                                     -->
+    <!-- ---------------------------------------------------------------- -->
+    <!--
+      Decorative, and correctly so: every fact it stands for is written in
+      the copy beside it and in the proof row below it. There is nothing in
+      here for a screen reader to be walked through.
+    -->
+    <div class="sig__stage" aria-hidden="true">
+
+      <!-- THE SIGNAL. One line across the whole viewport, anchored to the
+           sculpture rather than to a measured percentage of the section, so
+           its QRS event lands in the mouth of the C at every width. This is
+           the same trace that becomes the Selected Work spine further down the
+           page and the reading-progress line at the top of every page. -->
+      <svg class="sig__trace" viewBox="0 0 1440 200" preserveAspectRatio="none" focusable="false">
+        <path class="sig__base" d="M0 100 H1440" />
+        <path class="sig__wave" data-trace d="M0 100 H360 L372 100 L380 86 L390 114 L398 100 L412 100 H660 L674 100 L682 78 L690 100 L700 100 L710 18 L722 182 L732 84 L742 100 H980 L992 100 L1000 86 L1010 114 L1018 100 L1032 100 H1440" />
+        <path class="sig__sweep" data-sweep pathLength="1000" d="M0 100 H360 L372 100 L380 86 L390 114 L398 100 L412 100 H660 L674 100 L682 78 L690 100 L700 100 L710 18 L722 182 L732 84 L742 100 H980 L992 100 L1000 86 L1010 114 L1018 100 L1032 100 H1440" />
+      </svg>
+      <span class="sig__ring"></span>
+
+      <svg class="ce" viewBox="0 0 560 400" fill="none" focusable="false" data-ce>
+
+        <!-- CARE — the clinical plane. The C is a monitor lead, open to the
+             right, and the trace that crosses the whole viewport runs straight
+             through its mouth. The C does not carry a picture of a heartbeat;
+             it reads the one the page is already drawing. -->
+        <g class="ce__plane ce__plane--care" data-plane="care">
+          <path class="ce__arc" d="M225.9 109.6 A118 118 0 1 0 225.9 290.4" />
+          <circle class="ce__lead" cx="225.9" cy="109.6" r="5" />
+          <circle class="ce__lead" cx="225.9" cy="290.4" r="5" />
+        </g>
+
+        <!-- BUILD — the topology plane. The E is a trunk and three branches;
+             the branches carry the nodes, and three short stubs hang off them
+             the way a real module graph does. -->
+        <g class="ce__plane ce__plane--build" data-plane="build">
+          <path class="ce__trunk" d="M330 110 V290" />
+          <path class="ce__branch" d="M330 110 H470" />
+          <path class="ce__branch" d="M330 200 H428" />
+          <path class="ce__branch" d="M330 290 H470" />
+          <path class="ce__stub" d="M396 110 V82" />
+          <path class="ce__stub" d="M372 200 V226" />
+          <path class="ce__stub" d="M440 290 V318" />
+          <circle class="ce__node" cx="330" cy="110" r="6" />
+          <circle class="ce__node" cx="330" cy="200" r="6" />
+          <circle class="ce__node" cx="330" cy="290" r="6" />
+          <circle class="ce__node ce__node--sm" cx="470" cy="110" r="4.5" />
+          <circle class="ce__node ce__node--sm" cx="428" cy="200" r="4.5" />
+          <circle class="ce__node ce__node--sm" cx="470" cy="290" r="4.5" />
+          <circle class="ce__node ce__node--tip" cx="396" cy="82" r="3.5" />
+          <circle class="ce__node ce__node--tip" cx="372" cy="226" r="3.5" />
+          <circle class="ce__node ce__node--tip" cx="440" cy="318" r="3.5" />
+        </g>
+
+        <!-- COMPETE — the competition plane. Four entrants, two semifinals,
+             one final, and the champion's seat is the tip of the E's middle
+             branch. The bracket does not decorate the monogram; it finishes
+             it. -->
+        <g class="ce__plane ce__plane--compete" data-plane="compete">
+          <path class="ce__brk" d="M544 150 H512 V172" />
+          <path class="ce__brk" d="M544 194 H512 V172" />
+          <path class="ce__brk" d="M544 206 H512 V228" />
+          <path class="ce__brk" d="M544 250 H512 V228" />
+          <path class="ce__brk" d="M512 172 H484 V200" />
+          <path class="ce__brk" d="M512 228 H484 V200" />
+          <path class="ce__brk" d="M484 200 H432" />
+          <circle class="ce__seed" cx="512" cy="172" r="3" />
+          <circle class="ce__seed" cx="512" cy="228" r="3" />
+          <circle class="ce__crown" cx="484" cy="200" r="4.5" />
+        </g>
+
+      </svg>
+    </div>
+
+    <!-- ---------------------------------------------------------------- -->
+    <!-- the three domains, and the proof under each                       -->
+    <!-- ---------------------------------------------------------------- -->
+    <!--
+      The controls appear only where they can work: the stylesheet shows them
+      to a document that has already declared it is running a script, in the
+      same <head> statement that sets html.js, so there is no frame in which
+      a dead control is on screen and no frame in which the proof row jumps.
+
+      Without a script all three groups stand open, which is the whole of the
+      information and reads as a deliberate three-column row rather than as a
+      collapsed widget.
+    -->
+    <div class="sig__panel">
+
+      <fieldset class="dom" data-domains>
+        <legend class="vh">Choose a domain</legend>
+        <label class="dom__opt">
+          <input type="radio" name="ce-domain" value="care" data-dom="care" checked />
+          <span class="dom__k" aria-hidden="true">01</span><span class="dom__n">Care</span>
+        </label>
+        <label class="dom__opt">
+          <input type="radio" name="ce-domain" value="build" data-dom="build" />
+          <span class="dom__k" aria-hidden="true">02</span><span class="dom__n">Build</span>
+        </label>
+        <label class="dom__opt">
+          <input type="radio" name="ce-domain" value="compete" data-dom="compete" />
+          <span class="dom__k" aria-hidden="true">03</span><span class="dom__n">Compete</span>
+        </label>
+      </fieldset>
+
+      <div class="proofs" data-proofs>
+
+        <section class="proof" data-proof="care" data-active aria-labelledby="pf-care">
+          <h2 class="proof__h" id="pf-care"><span class="proof__dot" aria-hidden="true"></span>Care</h2>
+          <p class="proof__say">Patient contact first, tooling second. The clinical work is the reason the software is the shape it is.</p>
+          <ul class="proof__list">
+            <li><b>NREMT-Certified EMT</b> — patient assessment, vitals, transport and clinical documentation in the field.</li>
+            <li><b>B.S. Health Science</b>, CSU Channel Islands — senior, December 2026, 3.813 GPA.</li>
+            <li><b>Phlebotomy (CPT) in training</b> — coursework completed July 2026, preparing for the NHA exam.</li>
+          </ul>
+        </section>
+
+        <section class="proof" data-proof="build" aria-labelledby="pf-build">
+          <h2 class="proof__h" id="pf-build"><span class="proof__dot" aria-hidden="true"></span>Build</h2>
+          <p class="proof__say">Six products shipped and shown running — health, research and multiplayer, described from the repository each one comes from.</p>
+          <ul class="proof__list">
+            <li><b>Six shipped products</b> — multiplayer, health, certification, guided audio, computer vision and research tooling.</li>
+            <li><b>Tested, not asserted</b> — 257 tests behind the phlebotomy platform, 107 test modules behind the OWCS pipeline.</li>
+            <li><b>Health informatics in coursework and in code</b> — Health Care Informatics, Biostatistics, Research Methods.</li>
+          </ul>
+        </section>
+
+        <section class="proof" data-proof="compete" aria-labelledby="pf-compete">
+          <h2 class="proof__h" id="pf-compete"><span class="proof__dot" aria-hidden="true"></span>Compete</h2>
+          <p class="proof__say">Running a club is mostly reducing what people have to hold in their heads. One schedule, one place to ask, one obvious next step.</p>
+          <ul class="proof__list">
+            <li><b>President, CSUCI Esports Club</b> — previously Vice President at CSUCI and at Santa Barbara City College.</li>
+            <li><b>Three titles played competitively</b> — Overwatch, Deadlock and Marvel&nbsp;Rivals — with the team and event operations around them.</li>
+            <li><b>105 participants surveyed</b> in a collaborative study on Alzheimer&rsquo;s and dementia education, with measured gains in confidence.</li>
+          </ul>
+        </section>
+
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -620,235 +519,398 @@
 </section>
 
 <!-- ===================================================================== -->
-<!-- SELECTED WORK                                                          -->
+<!-- SELECTED WORK — six living specimens                                  -->
 <!-- ===================================================================== -->
-<section aria-labelledby="work-h">
-  <div class="shell">
+<!--
+  Six rooms, six motion laws, one spine.
 
+  The layout is a two-column grid and nothing more: the article sits in the
+  reading column, its scene sits in the stage column on the same grid row, and
+  the scene is `position: sticky` inside that row. So the stage holds while you
+  read its project and hands off physically to the next one when you leave —
+  with the browser's own scrolling, no pin, no wheel listener, no snap and no
+  jail. At one column the grid collapses and every scene sits with its own
+  copy, which is the mobile design rather than a fallback for it.
+
+  Each scene is built from the real capture plus real reconstructed layers —
+  actual tube cards, actual letters, actual detected rows — because a promise
+  of sorting has to be made of things that can be sorted. The reconstructions
+  are aria-hidden: the article beside them already states every fact they show,
+  and walking a screen reader through a decorative rebuild of a screenshot is
+  not access, it is noise.
+-->
+<section class="th" data-theatre aria-labelledby="work-h">
+  <div class="shell">
     <div class="sechead">
       <div>
         <p class="eyebrow" data-rise><span class="tick" aria-hidden="true"></span>Selected work</p>
         <h2 class="h2" id="work-h" data-rise>Six things I built,<br />shown running.</h2>
       </div>
       <p class="quiet" data-rise>
-        Each one opens on the most interesting thing it actually does. The
-        screenshots are captures of the real application with real data in it —
-        no mockups, no invented numbers, no imaginary users.
+        Real captures of the real applications, with real data in them. Each
+        scene is assembled from the same evidence the case study is written
+        from.
       </p>
     </div>
+  </div>
 
-    <ol class="works works--rig">
+  <div class="shell th__wrap">
 
-      <li class="work work--wide" data-accent="spellbomb" data-rise>
-        <div class="work__body">
-          <p class="work__idx">01 / Live multiplayer</p>
-          <h3 class="work__title" data-vt="title-spellbomb"><a href="spellbomb.html">SpellBomb</a></h3>
-          <p class="work__kicker">The bomb is on you. Spell it, or it goes off.</p>
-          <p class="work__blurb">
-            One host, a four-letter room code, and everyone else on their own
-            phone. An authoritative Node server owns the fuse, the hearts and the
-            word; two modes, a shared economy, and the whole thing runs as a
-            Discord Activity in a voice channel without becoming a second game.
+    <!-- THE RAIL. Six ordinary same-page links before anything enhances
+         them; script only marks which one you are in. -->
+    <nav class="th__rail" aria-label="Selected work index">
+      <p class="th__count"><span data-rail-n>01</span> / 06</p>
+      <ol>
+        <li><a href="#w-spellbomb" data-rail="spellbomb"><span class="th__rn">01</span><span class="th__rt">SpellBomb</span></a></li>
+        <li><a href="#w-health-journal" data-rail="health-journal"><span class="th__rn">02</span><span class="th__rt">Health Journal</span></a></li>
+        <li><a href="#w-phlebotomy" data-rail="phlebotomy"><span class="th__rn">03</span><span class="th__rt">Phlebotomy Exam Prep</span></a></li>
+        <li><a href="#w-manifester" data-rail="manifester"><span class="th__rn">04</span><span class="th__rt">Manifester</span></a></li>
+        <li><a href="#w-owcs" data-rail="owcs"><span class="th__rn">05</span><span class="th__rt">OWCS Comp Tracker</span></a></li>
+        <li><a href="#w-paper-animator" data-rail="paper-animator"><span class="th__rn">06</span><span class="th__rt">PaperAnimator</span></a></li>
+      </ol>
+      <!-- the same signal, continued: the spine fills as the six are read -->
+      <svg class="th__spine" viewBox="0 0 12 400" preserveAspectRatio="none" focusable="false" aria-hidden="true">
+        <path class="th__spineb" d="M6 0 V400" />
+        <path class="th__spinef" data-spine pathLength="1000" d="M6 0 V400" />
+      </svg>
+    </nav>
+
+    <div class="th__rooms">
+
+      <!-- ============================== 01 — FUSE ====================== -->
+      <article class="wk" id="w-spellbomb" data-wk="spellbomb" data-accent="spellbomb">
+        <div class="wk__body">
+          <p class="wk__idx"><span>01</span> Live multiplayer</p>
+          <h3 class="wk__t" data-vt="title-spellbomb"><a href="spellbomb.html">SpellBomb</a></h3>
+          <p class="wk__say">The bomb is on you. Spell it, or it goes off.</p>
+          <p class="wk__blurb">
+            One host, a four-letter room code, everyone else on their own phone.
+            An authoritative Node server owns the fuse, the hearts and the word.
           </p>
-          <p class="work__meta">
+          <ul class="wk__proof">
+            <li><span class="n">260</span><span class="k">Rush puzzles</span></li>
+            <li><span class="n">9.3.0</span><span class="k">Version</span></li>
+            <li><span class="n">6</span><span class="k">Players a round</span></li>
+          </ul>
+          <p class="wk__meta">
             <span data-vt="accent-spellbomb" class="chip chip--dev"><span class="led" aria-hidden="true"></span>In development</span>
             <span class="chip">Node · Socket.IO</span>
-            <span class="chip">v9.3.0</span>
           </p>
-          <p class="work__spec">
-            <span><span class="n">260</span><span class="k">Rush puzzles</span></span>
-            <span><span class="n">9.3.0</span><span class="k">Version</span></span>
-          </p>
-          <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
+          <p class="wk__go"><span>Read the case study</span> <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
-        <div data-motion="fuse" class="work__shot">
-          <img data-vt="shot-spellbomb" src="assets/projects/spellbomb/hero-spellbomb-game-1280.webp"
-               srcset="assets/projects/spellbomb/hero-spellbomb-game-720.webp 720w,
-               assets/projects/spellbomb/hero-spellbomb-game-1280.webp 1280w,
-               assets/projects/spellbomb/hero-spellbomb-game.webp 2400w"
-               sizes="(max-width: 840px) 92vw, 46vw"
-               width="2400" height="1500" loading="lazy" decoding="async"
-               alt="A live six-player SpellBomb round: the bomb hangs lit in the middle of the arena with an arrow pointing at the player named sam, five other players ringed around it with their remaining hearts, an eleven-letter word tray reading I-N-A-L-I-E-N with four empty slots, and the answer box mid-word." />
-        </div>
-      </li>
 
-      <li class="work work--offset" data-accent="health-journal" data-rise>
-        <div class="work__body">
-          <p class="work__idx">02 / Health tooling</p>
-          <h3 class="work__title" data-vt="title-health-journal"><a href="health-journal.html">Health Journal</a></h3>
-          <p class="work__kicker">A minute a day, and the pattern comes out over weeks.</p>
-          <p class="work__blurb">
-            A private daily health journal that never leaves the device. You design
-            the check-in around what you are actually tracking; it gives you back a
-            timeline, sunlight sessions computed from the real solar arithmetic,
-            personal experiments graded on evidence, and lab results that arrive
-            into their own history.
+        <div class="scene scene--fuse" data-scene="spellbomb">
+          <div class="scene__plate">
+            <img class="scene__shot" data-vt="shot-spellbomb"
+                 src="assets/projects/spellbomb/hero-spellbomb-game-1280.webp"
+                 srcset="assets/projects/spellbomb/hero-spellbomb-game-720.webp 720w,
+                         assets/projects/spellbomb/hero-spellbomb-game-1280.webp 1280w,
+                         assets/projects/spellbomb/hero-spellbomb-game.webp 2400w"
+                 sizes="(max-width: 899px) 92vw, 50vw"
+                 width="2400" height="1500" loading="lazy" decoding="async"
+                 alt="A live six-player SpellBomb round: the bomb hangs lit in the middle of the arena with an arrow pointing at the player named sam, five other players ringed around it with their remaining hearts, an eleven-letter word tray reading I-N-A-L-I-E-N with four empty slots, and the answer box mid-word." />
+
+            <!-- the fuse, burning once toward the bomb -->
+            <svg class="scene__fuse" viewBox="0 0 400 260" preserveAspectRatio="none" focusable="false" aria-hidden="true">
+              <path class="scene__fusetrack" d="M8 240 C 90 236, 118 190, 148 158 S 196 108, 236 104" />
+              <path class="scene__fuseburn" data-fuse pathLength="1000" d="M8 240 C 90 236, 118 190, 148 158 S 196 108, 236 104" />
+            </svg>
+            <span class="scene__spark" aria-hidden="true"></span>
+          </div>
+
+          <!-- the tray, as eleven real slots: seven letters and four empty -->
+          <ol class="tray" aria-hidden="true">
+            <li class="tray__t" style="--i:0">I</li>
+            <li class="tray__t" style="--i:1">N</li>
+            <li class="tray__t" style="--i:2">A</li>
+            <li class="tray__t" style="--i:3">L</li>
+            <li class="tray__t" style="--i:4">I</li>
+            <li class="tray__t" style="--i:5">E</li>
+            <li class="tray__t" style="--i:6">N</li>
+            <li class="tray__t tray__t--empty" style="--i:7"></li>
+            <li class="tray__t tray__t--empty" style="--i:8"></li>
+            <li class="tray__t tray__t--empty" style="--i:9"></li>
+            <li class="tray__t tray__t--empty" style="--i:10"></li>
+          </ol>
+        </div>
+      </article>
+
+      <!-- ============================== 02 — ACCUMULATE ================ -->
+      <article class="wk" id="w-health-journal" data-wk="health-journal" data-accent="health-journal">
+        <div class="wk__body">
+          <p class="wk__idx"><span>02</span> Health tooling</p>
+          <h3 class="wk__t" data-vt="title-health-journal"><a href="health-journal.html">Health Journal</a></h3>
+          <p class="wk__say">A minute a day, and the pattern comes out over weeks.</p>
+          <p class="wk__blurb">
+            A private daily journal that never leaves the device. You design the
+            check-in; it gives you back a timeline, sunlight computed from real
+            solar arithmetic, and experiments graded on evidence.
           </p>
-          <p class="work__meta">
+          <ul class="wk__proof">
+            <li><span class="n">0</span><span class="k">Network calls</span></li>
+            <li><span class="n">4</span><span class="k">Export formats</span></li>
+            <li><span class="n">30</span><span class="k">Day trend window</span></li>
+          </ul>
+          <p class="wk__meta">
             <span data-vt="accent-health-journal" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">React · Vite · PWA</span>
-            <span class="chip">Local-first</span>
           </p>
-          <p class="work__spec">
-            <span><span class="n">4</span><span class="k">Export formats</span></span>
-            <span><span class="n">0</span><span class="k">Network calls</span></span>
-          </p>
-          <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
+          <p class="wk__go"><span>Read the case study</span> <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
-        <div data-motion="grow" class="work__shot work__shot--tall">
-          <img data-vt="shot-health-journal" src="assets/projects/health-journal/hero-health-journal-dashboard-720.webp"
-               srcset="assets/projects/health-journal/hero-health-journal-dashboard-720.webp 720w,
-               assets/projects/health-journal/hero-health-journal-dashboard.webp 920w"
-               sizes="(max-width: 840px) 92vw, 46vw"
-               width="920" height="2480" loading="lazy" decoding="async"
-               alt="Health Journal on a phone: today's overall skin severity rated 5 with an eleven-day streak, quick-add tiles for check-in, food, bowel and photo, today's completed check-in with fourteen answers, and a thirty-day trend chart comparing four metrics as coloured lines." />
-        </div>
-      </li>
 
-      <li class="work work--flip" data-accent="phlebotomy" data-rise>
-        <div class="work__body">
-          <p class="work__idx">03 / Certification study</p>
-          <h3 class="work__title" data-vt="title-phlebotomy"><a href="phlebotomy-exam-prep.html">Phlebotomy Exam Prep</a></h3>
-          <p class="work__kicker">Know what to study before the exam, not after it.</p>
-          <p class="work__blurb">
-            The platform I wanted while training for the NHA CPT myself. 513
-            original questions, 181 vocabulary terms, four Order of Draw drill
-            modes, tube-and-additive mastery, and a results screen that leads with
-            the weak area rather than the score.
+        <div class="scene scene--accumulate" data-scene="health-journal">
+          <!-- the circadian arc the product actually computes, behind the record -->
+          <svg class="scene__arc" viewBox="0 0 400 200" focusable="false" aria-hidden="true">
+            <path class="scene__arcline" d="M12 188 A 188 188 0 0 1 388 188" />
+            <circle class="scene__sun" data-sun r="7" cx="12" cy="188" />
+          </svg>
+
+          <div class="scene__stack">
+            <img class="scene__shot scene__shot--tall" data-vt="shot-health-journal"
+                 src="assets/projects/health-journal/hero-health-journal-dashboard-720.webp"
+                 srcset="assets/projects/health-journal/hero-health-journal-dashboard-720.webp 720w,
+                         assets/projects/health-journal/hero-health-journal-dashboard.webp 920w"
+                 sizes="(max-width: 899px) 62vw, 26vw"
+                 width="920" height="2480" loading="lazy" decoding="async"
+                 alt="Health Journal on a phone: today's overall skin severity rated 5 with an eleven-day streak, quick-add tiles for check-in, food, bowel and photo, today's completed check-in with fourteen answers, and a thirty-day trend chart comparing four metrics as coloured lines." />
+
+            <!-- the record accumulating: one real chart line, drawn once -->
+            <svg class="scene__chart" viewBox="0 0 320 150" focusable="false" aria-hidden="true">
+              <path class="scene__grid" d="M0 38 H320 M0 75 H320 M0 112 H320" />
+              <path class="scene__line" data-chart pathLength="1000" d="M4 118 L30 110 L56 116 L82 96 L108 102 L134 82 L160 88 L186 66 L212 74 L238 54 L264 60 L290 42 L316 46" />
+            </svg>
+          </div>
+        </div>
+      </article>
+
+      <!-- ============================== 03 — ORDER ===================== -->
+      <article class="wk" id="w-phlebotomy" data-wk="phlebotomy" data-accent="phlebotomy">
+        <div class="wk__body">
+          <p class="wk__idx"><span>03</span> Certification study</p>
+          <h3 class="wk__t" data-vt="title-phlebotomy"><a href="phlebotomy-exam-prep.html">Phlebotomy Exam Prep</a></h3>
+          <p class="wk__say">Know what to study before the exam, not after it.</p>
+          <p class="wk__blurb">
+            The platform I wanted while training for the NHA CPT myself. Four
+            Order of Draw drill modes over the six CLSI collection positions,
+            and a results screen that leads with the weak area rather than the
+            score.
           </p>
-          <p class="work__meta">
+          <ul class="wk__proof">
+            <li><span class="n">513</span><span class="k">Original questions</span></li>
+            <li><span class="n">181</span><span class="k">Vocabulary terms</span></li>
+            <li><span class="n">257</span><span class="k">Tests</span></li>
+          </ul>
+          <p class="wk__meta">
             <span data-vt="accent-phlebotomy" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">Next.js · Static export</span>
-            <span class="chip">257 tests</span>
           </p>
-          <p class="work__spec">
-            <span>
-              <span aria-hidden="true"><span class="n num" style="--count:513"><span class="num__t">513</span></span><span class="k">Original questions</span></span>
-              <span class="vh">513 original questions</span>
-            </span>
-            <span>
-              <span aria-hidden="true"><span class="n num" style="--count:257"><span class="num__t">257</span></span><span class="k">Tests</span></span>
-              <span class="vh">257 tests</span>
-            </span>
-          </p>
-          <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
+          <p class="wk__go"><span>Read the case study</span> <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
-        <div data-motion="sequence" class="work__shot">
-          <img src="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp"
-               srcset="assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-720.webp 720w,
-               assets/projects/phlebotomy/hero-phlebotomy-order-of-draw-1280.webp 1280w,
-               assets/projects/phlebotomy/hero-phlebotomy-order-of-draw.webp 2400w"
-               sizes="(max-width: 840px) 92vw, 46vw"
-               width="2400" height="1629" loading="lazy" decoding="async"
-               alt="The Order of Draw drill: six draggable tube cards with their colour illustrations and additive names, four drill modes across the top, and a side panel carrying the mnemonic, an explanation of this mode, and a warning to read the label rather than the cap." />
-        </div>
-      </li>
 
-      <li class="work work--narrow" data-accent="manifester" data-rise>
-        <div class="work__body">
-          <p class="work__idx">04 / Guided audio</p>
-          <h3 class="work__title" data-vt="title-manifester"><a href="manifester.html">Manifester</a></h3>
-          <p class="work__kicker">Your own words, read back over a room that breathes.</p>
-          <p class="work__blurb">
-            Write the lines you want to hear, pick a voice, and the app loops them
-            over layered ambient sound for as long as you like. One written line is
-            one spoken line; a line heard once plays forever after with no network
-            at all; the background sound changes live without stopping the session.
+        <div class="scene scene--order" data-scene="phlebotomy">
+          <!-- The six CLSI positions, as six real cards. They arrive out of
+               order, find their place, and lock. The colours are the
+               conventional cap colours the drill illustrates; the case study
+               is where the warning lives — read the label, not the cap. -->
+          <ol class="tubes" aria-hidden="true">
+            <li class="tube" style="--i:0;--from:2;--cap:#d8b83a"><span class="tube__cap"></span><span class="tube__n">1</span><span class="tube__l">Blood culture</span><span class="tube__a">Sterile · SPS</span></li>
+            <li class="tube" style="--i:1;--from:5;--cap:#8fbfd8"><span class="tube__cap"></span><span class="tube__n">2</span><span class="tube__l">Coagulation</span><span class="tube__a">Sodium citrate</span></li>
+            <li class="tube" style="--i:2;--from:0;--cap:#b8433a"><span class="tube__cap"></span><span class="tube__n">3</span><span class="tube__l">Serum</span><span class="tube__a">Clot activator</span></li>
+            <li class="tube" style="--i:3;--from:4;--cap:#3f8f5a"><span class="tube__cap"></span><span class="tube__n">4</span><span class="tube__l">Heparin</span><span class="tube__a">Lithium / sodium</span></li>
+            <li class="tube" style="--i:4;--from:1;--cap:#9b86c4"><span class="tube__cap"></span><span class="tube__n">5</span><span class="tube__l">EDTA</span><span class="tube__a">Lavender</span></li>
+            <li class="tube" style="--i:5;--from:3;--cap:#8b8b8b"><span class="tube__cap"></span><span class="tube__n">6</span><span class="tube__l">Glycolytic inhibitor</span><span class="tube__a">Sodium fluoride</span></li>
+          </ol>
+
+          <div class="scene__plate scene__plate--graded">
+            <img class="scene__shot" data-vt="shot-phlebotomy"
+                 src="assets/projects/phlebotomy/phlebotomy-ood-graded-1280.webp"
+                 srcset="assets/projects/phlebotomy/phlebotomy-ood-graded-720.webp 720w,
+                         assets/projects/phlebotomy/phlebotomy-ood-graded-1280.webp 1280w,
+                         assets/projects/phlebotomy/phlebotomy-ood-graded.webp 2400w"
+                 sizes="(max-width: 899px) 92vw, 50vw"
+                 width="2400" height="1629" loading="lazy" decoding="async"
+                 alt="The Order of Draw drill after grading: each tube card is marked in green where it is in the correct collection position and in red where it is not, with the correct position stated beside every card that was placed wrongly." />
+          </div>
+        </div>
+      </article>
+
+      <!-- ============================== 04 — FOLD ====================== -->
+      <article class="wk" id="w-manifester" data-wk="manifester" data-accent="manifester">
+        <div class="wk__body">
+          <p class="wk__idx"><span>04</span> Guided audio</p>
+          <h3 class="wk__t" data-vt="title-manifester"><a href="manifester.html">Manifester</a></h3>
+          <p class="wk__say">Your own words, read back over a room that breathes.</p>
+          <p class="wk__blurb">
+            Write the lines you want to hear, pick a voice, and the app loops
+            them over layered ambient sound. A line heard once plays forever
+            after with no network at all.
           </p>
-          <p class="work__meta">
+          <ul class="wk__proof">
+            <li><span class="n">6</span><span class="k">Visualiser rooms</span></li>
+            <li><span class="n">2</span><span class="k">Studio voices</span></li>
+            <li><span class="n">0</span><span class="k">Autoplaying sound</span></li>
+          </ul>
+          <p class="wk__meta">
             <span data-vt="accent-manifester" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
-            <span class="chip">React · Vite · PWA</span>
             <span class="chip">Offline voice cache</span>
           </p>
-          <p class="work__spec">
-            <span><span class="n">6</span><span class="k">Visualiser rooms</span></span>
-            <span><span class="n">2</span><span class="k">Studio voices</span></span>
-          </p>
-          <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
+          <p class="wk__go"><span>Read the case study</span> <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
-        <div data-motion="breathe" class="work__shot">
-          <img data-vt="shot-manifester" src="assets/projects/manifester/hero-manifester-player-1280.webp"
-               srcset="assets/projects/manifester/hero-manifester-player-720.webp 720w,
-               assets/projects/manifester/hero-manifester-player-1280.webp 1280w,
-               assets/projects/manifester/hero-manifester-player.webp 2400w"
-               sizes="(max-width: 840px) 92vw, 46vw"
-               width="2400" height="1500" loading="lazy" decoding="async"
-               alt="The Manifester player expanded to fill the screen: a session titled Evening steadiness, a breathing orb reading Breathe in with a two-second count, the spoken line I trust myself to handle what comes, a pause control, 9:38 remaining on pass 8, and the Moon Garden ambience named at the foot." />
-        </div>
-      </li>
 
-      <li class="work work--wide" data-accent="owcs" data-rise>
-        <div class="work__body">
-          <p class="work__idx">05 / Computer vision</p>
-          <h3 class="work__title" data-vt="title-owcs"><a href="owcs-comp-tracker.html">OWCS Comp Tracker</a></h3>
-          <p class="work__kicker">A broadcast is a video of a match, not a record of one.</p>
-          <p class="work__blurb">
+        <div class="scene scene--fold" data-scene="manifester">
+          <div class="fold">
+            <div class="fold__leaf fold__leaf--a">
+              <img class="scene__shot"
+                   src="assets/projects/manifester/manifester-builder-1280.webp"
+                   srcset="assets/projects/manifester/manifester-builder-720.webp 720w,
+                           assets/projects/manifester/manifester-builder-1280.webp 1280w,
+                           assets/projects/manifester/manifester-builder.webp 2400w"
+                   sizes="(max-width: 899px) 46vw, 25vw"
+                   width="2400" height="1500" loading="lazy" decoding="async"
+                   alt="The Manifester session builder: the written affirmation lines listed in the order they will be spoken, with the voice, the pass count and the ambience chosen beside them." />
+            </div>
+            <div class="fold__leaf fold__leaf--b">
+              <img class="scene__shot" data-vt="shot-manifester"
+                   src="assets/projects/manifester/hero-manifester-player-1280.webp"
+                   srcset="assets/projects/manifester/hero-manifester-player-720.webp 720w,
+                           assets/projects/manifester/hero-manifester-player-1280.webp 1280w,
+                           assets/projects/manifester/hero-manifester-player.webp 2400w"
+                   sizes="(max-width: 899px) 46vw, 25vw"
+                   width="2400" height="1500" loading="lazy" decoding="async"
+                   alt="The Manifester player expanded to fill the screen: a session titled Evening steadiness, a breathing orb reading Breathe in with a two-second count, the spoken line I trust myself to handle what comes, 9:38 remaining on pass 8, and the Moon Garden ambience named at the foot." />
+            </div>
+            <span class="fold__orb" aria-hidden="true"></span>
+          </div>
+          <p class="fold__line" aria-hidden="true">&ldquo;I trust myself to handle what comes.&rdquo;</p>
+        </div>
+      </article>
+
+      <!-- ============================== 05 — SCAN ====================== -->
+      <article class="wk" id="w-owcs" data-wk="owcs" data-accent="owcs">
+        <div class="wk__body">
+          <p class="wk__idx"><span>05</span> Computer vision</p>
+          <h3 class="wk__t" data-vt="title-owcs"><a href="owcs-comp-tracker.html">OWCS Comp Tracker</a></h3>
+          <p class="wk__say">A broadcast is a video of a match, not a record of one.</p>
+          <p class="wk__blurb">
             A no-budget pipeline that turns an esports VOD into an auditable
-            composition timeline: HUD calibration, frame classification,
-            template-matched hero detection, a temporal swap model — then a human
-            review gate where every read sits beside the frame it was read from.
+            composition timeline — then a human review gate where every read
+            sits beside the frame it was read from.
           </p>
-          <p class="work__meta">
+          <ul class="wk__proof">
+            <li><span class="n">107</span><span class="k">Test modules</span></li>
+            <li><span class="n">14</span><span class="k">Detected slots</span></li>
+            <li><span class="n">$0</span><span class="k">Hosting cost</span></li>
+          </ul>
+          <p class="wk__meta">
             <span data-vt="accent-owcs" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">Python · OpenCV</span>
-            <span class="chip">Static site, no server</span>
           </p>
-          <p class="work__spec">
-            <span><span class="n">107</span><span class="k">Test modules</span></span>
-            <span><span class="n">$0</span><span class="k">Hosting cost</span></span>
-          </p>
-          <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
+          <p class="wk__go"><span>Read the case study</span> <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
-        <div data-motion="sort" class="work__shot">
-          <img data-vt="shot-owcs" src="assets/projects/owcs/hero-owcs-review-1280.webp"
-               srcset="assets/projects/owcs/hero-owcs-review-720.webp 720w,
-               assets/projects/owcs/hero-owcs-review-1280.webp 1280w,
-               assets/projects/owcs/hero-owcs-review.webp 2400w"
-               sizes="(max-width: 840px) 92vw, 46vw"
-               width="2400" height="1500" loading="lazy" decoding="async"
-               alt="The OWCS Comp Tracker review screen: Al Qadsiah versus Twisted Minds with fourteen detected slots, three round boundaries drawn as time bars, and a list of detected heroes each with the frame it was read from, a confidence percentage, and Approve, Correct and Flag buttons." />
-        </div>
-      </li>
 
-      <li class="work work--flip" data-accent="paper-animator" data-rise>
-        <div class="work__body">
-          <p class="work__idx">06 / Research tooling</p>
-          <h3 class="work__title" data-vt="title-paper-animator"><a href="paper-animator.html">PaperAnimator</a></h3>
-          <p class="work__kicker">Read the paper. Mark it up. That is the presentation.</p>
-          <p class="work__blurb">
-            Open a research paper and mark a passage; a scene appears on the
-            storyboard, already carrying the exact words it came from. The
-            highlight <em>is</em> the citation, so there is no later step where a
-            source gets attached — and therefore none that can be skipped.
+        <div class="scene scene--scan" data-scene="owcs">
+          <div class="cmp">
+            <div class="cmp__side cmp__side--raw">
+              <p class="cmp__k" aria-hidden="true">Detected</p>
+              <img class="scene__shot"
+                   src="assets/projects/owcs/owcs-swaps-1280.webp"
+                   srcset="assets/projects/owcs/owcs-swaps-720.webp 720w,
+                           assets/projects/owcs/owcs-swaps-1280.webp 1280w,
+                           assets/projects/owcs/owcs-swaps.webp 2400w"
+                   sizes="(max-width: 899px) 46vw, 25vw"
+                   width="2400" height="1500" loading="lazy" decoding="async"
+                   alt="The OWCS Comp Tracker swap view: the temporal model's reading of which hero occupied each slot across the match, drawn as bands along the timeline with the moments a swap was inferred marked between them." />
+              <!-- the scan line, sent once through the timeline -->
+              <span class="cmp__scan" aria-hidden="true"></span>
+            </div>
+            <div class="cmp__side cmp__side--rev">
+              <p class="cmp__k" aria-hidden="true">Reviewed</p>
+              <img class="scene__shot" data-vt="shot-owcs"
+                   src="assets/projects/owcs/hero-owcs-review-1280.webp"
+                   srcset="assets/projects/owcs/hero-owcs-review-720.webp 720w,
+                           assets/projects/owcs/hero-owcs-review-1280.webp 1280w,
+                           assets/projects/owcs/hero-owcs-review.webp 2400w"
+                   sizes="(max-width: 899px) 46vw, 25vw"
+                   width="2400" height="1500" loading="lazy" decoding="async"
+                   alt="The OWCS Comp Tracker review screen: Al Qadsiah versus Twisted Minds with fourteen detected slots, three round boundaries drawn as time bars, and a list of detected heroes each with the frame it was read from, a confidence percentage, and Approve, Correct and Flag buttons." />
+            </div>
+          </div>
+
+          <!-- the detected rows: they arrive out of order and snap into the
+               reviewed timeline behind the confidence gate -->
+          <ol class="rows" aria-hidden="true">
+            <li class="rows__r" style="--i:0;--from:3">R1 · slot 1<span class="rows__c">98%</span></li>
+            <li class="rows__r" style="--i:1;--from:0">R1 · slot 4<span class="rows__c">94%</span></li>
+            <li class="rows__r" style="--i:2;--from:4">R2 · slot 2<span class="rows__c">91%</span></li>
+            <li class="rows__r rows__r--gate" style="--i:3;--from:1">R2 · slot 5<span class="rows__c">72%</span></li>
+            <li class="rows__r" style="--i:4;--from:2">R3 · slot 3<span class="rows__c">96%</span></li>
+          </ol>
+        </div>
+      </article>
+
+      <!-- ============================== 06 — CITE ====================== -->
+      <article class="wk" id="w-paper-animator" data-wk="paper-animator" data-accent="paper-animator">
+        <div class="wk__body">
+          <p class="wk__idx"><span>06</span> Research tooling</p>
+          <h3 class="wk__t" data-vt="title-paper-animator"><a href="paper-animator.html">PaperAnimator</a></h3>
+          <p class="wk__say">Read the paper. Mark it up. That is the presentation.</p>
+          <p class="wk__blurb">
+            Mark a passage and a scene appears on the storyboard already carrying
+            the exact words it came from. The highlight <em>is</em> the citation,
+            so there is no later step where a source gets attached.
           </p>
-          <p class="work__meta">
+          <ul class="wk__proof">
+            <li><span class="n">21</span><span class="k">Entrance animations</span></li>
+            <li><span class="n">8</span><span class="k">Export formats</span></li>
+            <li><span class="n">0</span><span class="k">API keys</span></li>
+          </ul>
+          <p class="wk__meta">
             <span data-vt="accent-paper-animator" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
             <span class="chip">React 19 · TypeScript</span>
-            <span class="chip">Runs entirely in the browser</span>
           </p>
-          <p class="work__spec">
-            <span><span class="n">21</span><span class="k">Entrance animations</span></span>
-            <span><span class="n">8</span><span class="k">Export formats</span></span>
-          </p>
-          <p class="work__go">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></p>
+          <p class="wk__go"><span>Read the case study</span> <span class="arrow" aria-hidden="true">&rarr;</span></p>
         </div>
-        <div data-motion="unfold" class="work__shot">
-          <img data-vt="shot-paper-animator" src="assets/projects/paperanimator/hero-paperanimator-thread-1280.webp"
-               srcset="assets/projects/paperanimator/hero-paperanimator-thread-720.webp 720w,
-               assets/projects/paperanimator/hero-paperanimator-thread-1280.webp 1280w,
-               assets/projects/paperanimator/hero-paperanimator-thread.webp 2400w"
-               sizes="(max-width: 840px) 92vw, 46vw"
-               width="2400" height="1500" loading="lazy" decoding="async"
-               alt="The PaperAnimator editor: a rendered research paper on the left with one sentence selected and an earlier passage washed in mint, a curved blue thread running from that sentence to the scene it produced, and a storyboard of two scenes on the right." />
+
+        <div class="scene scene--cite" data-scene="paper-animator">
+          <div class="cite">
+            <div class="cite__page">
+              <img class="scene__shot" data-vt="shot-paper-animator"
+                   src="assets/projects/paperanimator/hero-paperanimator-thread-1280.webp"
+                   srcset="assets/projects/paperanimator/hero-paperanimator-thread-720.webp 720w,
+                           assets/projects/paperanimator/hero-paperanimator-thread-1280.webp 1280w,
+                           assets/projects/paperanimator/hero-paperanimator-thread.webp 2400w"
+                   sizes="(max-width: 899px) 92vw, 30vw"
+                   width="2400" height="1500" loading="lazy" decoding="async"
+                   alt="The PaperAnimator editor: a rendered research paper on the left with one sentence selected and an earlier passage washed in mint, a curved blue thread running from that sentence to the scene it produced, and a storyboard of two scenes on the right." />
+              <span class="cite__mark" aria-hidden="true"></span>
+            </div>
+
+            <!-- the tether: drawn once, from the marked passage to the scene -->
+            <svg class="cite__tether" viewBox="0 0 200 260" preserveAspectRatio="none" focusable="false" aria-hidden="true">
+              <path class="cite__thread" data-tether pathLength="1000" d="M4 96 C 70 96, 96 150, 196 168" />
+            </svg>
+
+            <div class="cite__scene">
+              <img class="scene__shot"
+                   src="assets/projects/paperanimator/paperanimator-studio-1280.webp"
+                   srcset="assets/projects/paperanimator/paperanimator-studio-720.webp 720w,
+                           assets/projects/paperanimator/paperanimator-studio-1280.webp 1280w,
+                           assets/projects/paperanimator/paperanimator-studio.webp 2400w"
+                   sizes="(max-width: 899px) 92vw, 26vw"
+                   width="2400" height="1500" loading="lazy" decoding="async"
+                   alt="The PaperAnimator scene studio: one generated scene open on the canvas with its entrance animation, timing and layout controls beside it, and the cited sentence from the paper shown attached to the scene." />
+            </div>
+          </div>
         </div>
-      </li>
+      </article>
 
-    </ol>
+    </div>
+  </div>
 
+  <div class="shell">
     <div class="btn-row mt-4" data-rise>
       <a class="btn" href="work.html">All work, including the smaller pieces <span class="arrow" aria-hidden="true">&rarr;</span></a>
     </div>
-
   </div>
 </section>
 
