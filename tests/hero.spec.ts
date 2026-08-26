@@ -1,19 +1,20 @@
 import { test, expect, Page } from '@playwright/test';
 
-/* ONE SIGNAL.
+/* THE PROJECTION.
    ---------------------------------------------------------------------------
-   The hero is a three-position control over a monogram, and a control has to
-   answer to all five inputs before it is allowed to exist: pointer, touch,
-   keyboard, reduced motion and no JavaScript. What follows is the proof, one
-   input at a time, plus the four hard limits — nothing that only an animation
-   can reveal, no fact that only an interaction can reach, no control on screen
-   that cannot work, and no interaction that delays a navigation. */
+   The hero is one object and no controls. That is the change this suite is
+   written against: what stood here before was a monogram with a three-position
+   tab set under it, and two thirds of that panel's content was only reachable
+   by pressing something. Every fact it held is now open, in the strip below
+   the hero, with nothing to press.
 
-const DOMAINS = [
-  { slug: 'care', name: 'Care', hex: '#17a08f', rgb: 'rgb(23, 160, 143)' },
-  { slug: 'build', name: 'Build', hex: '#5b7cf0', rgb: 'rgb(91, 124, 240)' },
-  { slug: 'compete', name: 'Compete', hex: '#d9a94a', rgb: 'rgb(217, 169, 74)' },
-];
+   So the assertions divide in two. The first half is what a hero owes a
+   visitor and owes it in every state — pointer, touch, keyboard, reduced
+   motion and no JavaScript. The second half is the promise that the
+   simplification actually happened and cannot quietly come back: no tab set,
+   no second switch in the masthead, no fact behind an interaction, and one
+   object that says nothing at all so that nobody who ignores it loses
+   anything. */
 
 /* Everything below the fold is a promise the first viewport already made. */
 const FIRST_VIEWPORT = [
@@ -28,77 +29,88 @@ const FIRST_VIEWPORT = [
   'CSUCI Esports President',
 ];
 
-/* The radio itself is visually hidden, so a visitor presses its label and so
-   does this suite. */
-async function pick(page: Page, slug: string) {
-  await page.locator(`.dom__opt:has([data-dom="${slug}"])`).click();
-}
+/* The three domains are gone as a control. These are the facts their panels
+   held, and every one of them has to be readable on the page with nothing
+   pressed, expanded or hovered. */
+const OPEN_FACTS = [
+  'NREMT',
+  '3.813',
+  'CPT',
+  'President',
+  '105',
+  'Health data',
+];
 
 async function ready(page: Page) {
   await page.evaluate(() => document.fonts.ready);
   await expect(page.locator('.sig.is-settled')).toHaveCount(1, { timeout: 10000 });
 }
 
+const cssVar = (page: Page, prop: string) =>
+  page.locator('.holo').evaluate((e, p) => getComputedStyle(e).getPropertyValue(p).trim(), prop);
+
 /* --- 1. no JavaScript ------------------------------------------------------
-   All three domains stand open as a proof row. Not a dead widget, not a
-   disabled control, not a placeholder — the design. */
+   The projection stands, turns, scans and catches the light — all of that is
+   keyframes. Not a placeholder, not a fallback: the design. */
 
 test.describe('with JavaScript disabled', () => {
   test.use({ javaScriptEnabled: false });
 
-  test('all three domains are open, and every proof is readable', async ({ page }) => {
+  test('the projection is a whole object, with every layer on it', async ({ page }) => {
     await page.goto('index.html');
-    await expect(page.locator('.proof')).toHaveCount(3);
-    for (const d of DOMAINS) {
-      const group = page.locator(`[data-proof="${d.slug}"]`);
-      await expect(group).toBeVisible();
-      await expect(group.locator('.proof__list li')).toHaveCount(3);
-      for (let i = 0; i < 3; i++) await expect(group.locator('.proof__list li').nth(i)).toBeVisible();
+
+    /* Eighteen depth slices, all referencing the one path, plus the film, the
+       two chromatic ghosts and the scan bar. */
+    await expect(page.locator('.holo__slice')).toHaveCount(18);
+    await expect(page.locator('.holo__slice use')).toHaveCount(18);
+    const targets = await page.$$eval('.holo__slice use', (us) =>
+      us.map((u) => u.getAttribute('href'))
+    );
+    expect(new Set(targets)).toEqual(new Set(['#ghm']));
+
+    for (const sel of ['.holo__film', '.holo__scan', '.holo__ghost--c', '.holo__ghost--m']) {
+      await expect(page.locator(sel)).toHaveCount(1);
+      const clip = await page.locator(sel).evaluate((e) => getComputedStyle(e).clipPath);
+      expect(clip, `${sel} must be cut to the silhouette`).toContain('ghm-clip');
     }
+    await expect(page.locator('.holo__ring')).toHaveCount(3);
+
+    /* And it is a volume rather than a stack of identical stickers: the slices
+       run a hue ramp and step back along Z. */
+    const depth = await page.$$eval('.holo__slice', (els) =>
+      els.map((e) => {
+        const m = new DOMMatrixReadOnly(getComputedStyle(e).transform);
+        return { z: m.m43, fill: getComputedStyle(e).fill };
+      })
+    );
+    expect(depth.every((d) => d.z < 0)).toBe(true);
+    expect(Math.min(...depth.map((d) => d.z))).toBeLessThan(-30);
+    expect(new Set(depth.map((d) => d.fill)).size).toBe(18);
+  });
+
+  test('the object is on screen at a size that reads, and is actually painted', async ({ page }) => {
+    await page.goto('index.html');
+    const box = (await page.locator('.holo').boundingBox())!;
+    expect(box.width).toBeGreaterThan(280);
+    expect(box.height).toBeGreaterThan(280);
+    const painted = await page.locator('.holo').screenshot();
+    expect(painted.byteLength).toBeGreaterThan(4000);
   });
 
   test('no control is on screen that could not work', async ({ page }) => {
     await page.goto('index.html');
-    await expect(page.locator('.dom')).toBeHidden();
-    expect(await page.locator('.dom__opt:visible').count()).toBe(0);
-    /* The same rule for the two switches in the masthead: a sound control with
-       no script behind it, and a motion control with no motion to stop. */
-    expect(await page.locator('[data-sound-toggle]:visible').count()).toBe(0);
+    /* The motion control has no motion to stop with no script running. */
     expect(await page.locator('[data-motion-toggle]:visible').count()).toBe(0);
-  });
-
-  test('the sculpture is assembled and the trace is a complete path', async ({ page }) => {
-    await page.goto('index.html');
-    /* Every plane is drawn, at a weight that reads, with no starting state
-       left applied by an absent script. */
-    for (const plane of ['care', 'build', 'compete']) {
-      const g = page.locator(`[data-plane="${plane}"]`);
-      await expect(g).toBeVisible();
-      const style = await g.evaluate((e) => {
-        const c = getComputedStyle(e);
-        const m = new DOMMatrixReadOnly(c.transform === 'none' ? undefined : c.transform);
-        return { o: Number(c.opacity), x: m.e, y: m.f, sx: m.a };
-      });
-      expect(style.o).toBeGreaterThan(0.45);
-      /* Nothing is left translated out of place by a script that never ran.
-         The active plane's 1.4% lift is a declared state, not a start state. */
-      expect(Math.abs(style.x)).toBeLessThan(0.5);
-      expect(Math.abs(style.y)).toBeLessThan(0.5);
-      expect(style.sx).toBeGreaterThan(0.99);
-    }
-    const box = (await page.locator('.ce').boundingBox())!;
-    expect(box.width).toBeGreaterThan(200);
-    expect(box.height).toBeGreaterThan(140);
-    /* And the pixels are actually there: a fully clipped object is
-       indistinguishable from an assembled one in the DOM but not on screen. */
-    const painted = await page.locator('.ce').screenshot();
-    expect(painted.byteLength).toBeGreaterThan(4000);
+    /* And the two things that used to be here are gone from the markup
+       entirely rather than merely hidden. */
+    expect(await page.locator('[data-sound-toggle]').count()).toBe(0);
+    expect(await page.locator('[data-domains]').count()).toBe(0);
   });
 
   test('the name and both actions are readable without any animation', async ({ page }) => {
     await page.goto('index.html');
     await expect(page.locator('h1')).toContainText('Connor');
-    for (const sel of ['.sig__title', '.sig__creed', '.sig__stance', '.sig__actions', '.sig__links']) {
+    for (const sel of ['.sig__title', '.sig__creed', '.sig__stance', '.sig__actions']) {
       const o = await page.locator(sel).evaluate((e) => Number(getComputedStyle(e).opacity));
       expect(o, `${sel} must be legible with no script`).toBeGreaterThan(0.99);
     }
@@ -168,7 +180,7 @@ test.describe('the first viewport', () => {
     });
   }
 
-  test('no Order of Draw capture appears above Selected Works', async ({ page }) => {
+  test('no capture of any kind appears above Selected Work', async ({ page }) => {
     await page.goto('index.html', { waitUntil: 'load' });
     const worksTop = await page.locator('[data-theatre]').evaluate((e) => e.getBoundingClientRect().top + window.scrollY);
     const early = await page.$$eval('img', (imgs, top) =>
@@ -177,162 +189,145 @@ test.describe('the first viewport', () => {
         .map((i) => i.getAttribute('src') || ''),
       worksTop
     );
-    expect(early.filter((s) => /order-of-draw|phlebotomy/.test(s))).toEqual([]);
-    /* Nothing at all is a raster above the work — the hero is geometry. */
     expect(early).toEqual([]);
   });
 
-  test('the identity hero holds no raster image of any kind', async ({ page }) => {
+  test('the hero holds no raster image of any kind — it is geometry', async ({ page }) => {
     await page.goto('index.html', { waitUntil: 'load' });
     expect(await page.locator('.sig img').count()).toBe(0);
-    expect(await page.locator('.sig svg').count()).toBeGreaterThanOrEqual(2);
+    expect(await page.locator('.sig svg').count()).toBeGreaterThanOrEqual(18);
   });
 });
 
-/* --- 3. the keyboard ------------------------------------------------------
-   Real radio inputs in a real fieldset, so the arrow keys, the roving focus
-   and the announced state are the browser's rather than a re-implementation
-   of them. These assert that the browser's behaviour actually reaches the
-   page's state. */
+/* --- 3. the simplification, asserted so it cannot come back ---------------- */
 
-test.describe('the keyboard', () => {
+test.describe('what the hero no longer asks of anybody', () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('index.html', { waitUntil: 'load' });
     await ready(page);
   });
 
-  test('the domains are a labelled group of radios', async ({ page }) => {
-    /* A fieldset of radios is a group; the three inputs share a name, so the
-       browser gives them the radio-group behaviour and the announced position
-       within it. Nothing here re-implements either. */
-    const group = page.getByRole('group', { name: /choose a domain/i });
-    await expect(group).toHaveCount(1);
-    await expect(page.getByRole('radio')).toHaveCount(3);
-    for (const d of DOMAINS) {
-      await expect(page.getByRole('radio', { name: new RegExp(d.name, 'i') })).toHaveCount(1);
+  test('there is no tab set, no radio group and no hidden panel', async ({ page }) => {
+    expect(await page.getByRole('radio').count()).toBe(0);
+    expect(await page.locator('[role="tab"]').count()).toBe(0);
+    expect(await page.locator('.sig [hidden], .sig [aria-expanded]').count()).toBe(0);
+    /* Nothing inside the hero is display:none waiting for a press. */
+    const hiddenInHero = await page.$$eval('.sig__copy *', (els) =>
+      els.filter((e) => getComputedStyle(e).display === 'none').length
+    );
+    expect(hiddenInHero).toBe(0);
+  });
+
+  test('every fact the old panel held is open on the page, unpressed', async ({ page }) => {
+    const text = (await page.locator('main').innerText()).replace(/\s+/g, ' ');
+    for (const fact of OPEN_FACTS) expect(text).toContain(fact);
+  });
+
+  test('the masthead carries one control and four destinations', async ({ page }) => {
+    const nav = page.locator('.masthead nav[aria-label="Primary"] a');
+    await expect(nav).toHaveCount(4);
+    expect(await nav.allInnerTexts()).toEqual(['Selected Work', 'About', 'Résumé', 'Contact']);
+    expect(await page.locator('.masthead__in > button').count()).toBe(1);
+    await expect(page.locator('.masthead__in > [data-motion-toggle]')).toBeVisible();
+  });
+
+  test('no page anywhere on the site carries a sound control', async ({ page }) => {
+    for (const p of ['index.html', 'work.html', 'about.html', 'contact.html', 'resume.html']) {
+      await page.goto(p, { waitUntil: 'load' });
+      expect(await page.locator('[data-sound-toggle], .soundbtn').count(), p).toBe(0);
     }
-    await expect(page.getByRole('radio', { name: /care/i })).toBeChecked();
   });
 
-  test('arrow keys move between domains and commit as they go', async ({ page }) => {
-    await page.getByRole('radio', { name: /care/i }).focus();
-    await page.keyboard.press('ArrowRight');
-    await expect(page.locator('.sig')).toHaveAttribute('data-domain', 'build');
-    await expect(page.getByRole('radio', { name: /build/i })).toBeChecked();
-    await expect(page.locator('[data-proof="build"]')).toBeVisible();
-    await expect(page.locator('[data-proof="care"]')).toBeHidden();
+  test('the first viewport offers two actions and one aside, and no more', async ({ page }) => {
+    /* Counted rather than described, because "a couple of links" is how a hero
+       grows back to nine. Two buttons and the @cvree handle. */
+    const links = await page.locator('.sig__copy a').count();
+    expect(links).toBe(3);
+  });
+});
 
-    await page.keyboard.press('ArrowRight');
-    await expect(page.locator('.sig')).toHaveAttribute('data-domain', 'compete');
-    await page.keyboard.press('ArrowLeft');
-    await expect(page.locator('.sig')).toHaveAttribute('data-domain', 'build');
+/* --- 4. the object answers a hand, and changes nothing when it does -------- */
+
+test.describe('turning the projection', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('index.html', { waitUntil: 'load' });
+    await ready(page);
+    await expect(page.locator('.holo.is-live')).toHaveCount(1, { timeout: 15000 });
   });
 
-  test('the focused control shows a focus ring at least as clear as its hover', async ({ page }) => {
-    await page.getByRole('radio', { name: /build/i }).focus();
-    const outline = await page.locator('.dom__opt').nth(1).evaluate((e) => getComputedStyle(e).outlineWidth);
-    expect(parseFloat(outline)).toBeGreaterThanOrEqual(2);
+  test('the pointer leads the tilt', async ({ page }) => {
+    await page.mouse.move(300, 700);
+    await expect.poll(() => cssVar(page, '--tilt'), { timeout: 4000 }).not.toBe('');
+    const left = Number(await cssVar(page, '--tilt'));
+    await page.mouse.move(1300, 200);
+    await expect
+      .poll(async () => Number(await cssVar(page, '--tilt')), { timeout: 4000 })
+      .toBeGreaterThan(left + 0.3);
   });
 
-  test('the URL and the history are never touched', async ({ page }) => {
+  test('a drag throws it, and it comes back to rest rather than spinning forever', async ({ page }) => {
+    const box = (await page.locator('.holo').boundingBox())!;
+    const cx = box.x + box.width / 2;
+    const cy = box.y + box.height / 2;
+
+    await page.mouse.move(cx, cy);
+    await page.mouse.down();
+    await page.mouse.move(cx + 260, cy, { steps: 12 });
+    await expect(page.locator('.holo.is-held')).toHaveCount(1);
+    const thrown = parseFloat(await cssVar(page, '--spin'));
+    expect(Math.abs(thrown)).toBeGreaterThan(20);
+
+    await page.mouse.up();
+    await expect(page.locator('.holo.is-held')).toHaveCount(0);
+
+    /* Inertia, and then rest: the angle stops changing on its own. Polled
+       rather than timed, because how long the coast takes is a number of
+       frames and a CI machine with no GPU does not produce them at the rate a
+       laptop does. */
+    await expect
+      .poll(async () => {
+        const a = parseFloat(await cssVar(page, '--spin'));
+        await page.waitForTimeout(400);
+        return Math.abs(parseFloat(await cssVar(page, '--spin')) - a);
+      }, { timeout: 30000 })
+      .toBeLessThan(0.5);
+  });
+
+  test('turning it changes nothing else — no URL, no history, no page state', async ({ page }) => {
     const before = page.url();
     const len = await page.evaluate(() => history.length);
-    await page.getByRole('radio', { name: /compete/i }).focus();
-    await page.keyboard.press('ArrowLeft');
-    await page.keyboard.press('ArrowLeft');
+    const box = (await page.locator('.holo').boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(box.x + box.width / 2 + 200, box.y + box.height / 2 + 80, { steps: 8 });
+    await page.mouse.up();
     expect(page.url()).toBe(before);
     expect(await page.evaluate(() => history.length)).toBe(len);
   });
 
-  test('tabbing reaches every room and Enter opens the case study', async ({ page }) => {
-    const link = page.locator('.wk__t a').first();
-    await link.focus();
-    await expect(link).toBeFocused();
-    await page.keyboard.press('Enter');
-    await page.waitForURL(/spellbomb\.html$/, { timeout: 15000 });
-    await expect(page.locator('h1')).toBeVisible();
-  });
-});
-
-/* --- 4. the state change --------------------------------------------------- */
-
-test.describe('choosing a domain', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto('index.html', { waitUntil: 'load' });
-    await ready(page);
-  });
-
-  for (const d of DOMAINS) {
-    test(`${d.slug}: accent, plane, trace and proof all move together`, async ({ page }) => {
-      await pick(page, d.slug);
-      await expect(page.locator('.sig')).toHaveAttribute('data-domain', d.slug);
-
-      /* One accent, and it is the domain's own. */
-      const accent = await page.locator('.sig').evaluate((e) =>
-        getComputedStyle(e).getPropertyValue('--accent').trim()
-      );
-      expect(accent.toLowerCase()).toBe(d.hex);
-      /* The trace is retuned over about half a second, so this is what it
-         settles on rather than what it is passing through. */
-      await expect
-        .poll(() => page.locator('[data-trace]').evaluate((e) => getComputedStyle(e).stroke), { timeout: 4000 })
-        .toBe(d.rgb);
-
-      /* The chosen plane comes forward and the other two recede — but they are
-         still drawn, because the CE has to hold as one object in every state. */
-      const weights = await page.evaluate(() =>
-        ['care', 'build', 'compete'].map((n) =>
-          Number(getComputedStyle(document.querySelector(`[data-plane="${n}"]`)!).opacity)
-        )
-      );
-      const idx = DOMAINS.findIndex((x) => x.slug === d.slug);
-      expect(weights[idx]).toBeGreaterThan(0.95);
-      for (let i = 0; i < 3; i++) {
-        if (i === idx) continue;
-        expect(weights[i]).toBeLessThan(weights[idx]);
-        expect(weights[i], 'an inactive plane is still drawn').toBeGreaterThan(0.35);
-      }
-
-      /* Exactly one proof group stands, and it is the one that was chosen. */
-      await expect(page.locator('.proof[data-active]')).toHaveCount(1);
-      await expect(page.locator(`[data-proof="${d.slug}"]`)).toBeVisible();
-    });
-  }
-
-  test('the state is persistent and unambiguous, not a hover preview', async ({ page }) => {
-    await pick(page, 'compete');
-    await page.mouse.move(200, 700);
-    await page.mouse.move(1200, 300);
+  test('it never widens or lengthens the document, however hard it is turned', async ({ page }) => {
+    const before = await page.evaluate(() => [
+      document.documentElement.scrollHeight,
+      document.documentElement.scrollWidth,
+    ]);
+    const box = (await page.locator('.holo').boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(box.x + 4000, box.y + 4000, { steps: 8 });
+    await page.mouse.up();
     await page.waitForTimeout(400);
-    await expect(page.locator('.sig')).toHaveAttribute('data-domain', 'compete');
-    await expect(page.getByRole('radio', { name: /compete/i })).toBeChecked();
+    expect(await page.evaluate(() => [
+      document.documentElement.scrollHeight,
+      document.documentElement.scrollWidth,
+    ])).toEqual(before);
   });
 
-  test('nothing on the hero depends on hovering', async ({ page }) => {
-    const hoverOnly = await page.evaluate(() => {
-      const out: string[] = [];
-      for (const sheet of Array.from(document.styleSheets)) {
-        let rules: CSSRuleList;
-        try { rules = sheet.cssRules; } catch { continue; }
-        for (const rule of Array.from(rules)) {
-          const sel = (rule as CSSStyleRule).selectorText;
-          if (!sel || !/:hover/.test(sel)) continue;
-          if (!/\.sig|\.ce|\.dom|\.proof/.test(sel)) continue;
-          /* A hover rule is fine as long as the same selector has a focus or a
-             checked twin somewhere. */
-          const twin = sel.replace(/:hover/g, ':focus-visible');
-          const has = Array.from(rules).some((r) => (r as CSSStyleRule).selectorText === twin);
-          const stateful = /\[aria-checked|:has\(input:checked\)|\[data-domain/.test(sel);
-          if (!has && !stateful) out.push(sel);
-        }
-      }
-      return out;
-    });
-    /* Every remaining hover on the hero is a decorative colour shift on an
-       element whose real state is carried by the radio it belongs to. */
-    for (const sel of hoverOnly) expect(sel).toMatch(/\.dom__opt|\.sig__handle|\.sig__links/);
+  test('it is decorative, and says nothing to a screen reader', async ({ page }) => {
+    await expect(page.locator('.sig__stage')).toHaveAttribute('aria-hidden', 'true');
+    expect(await page.locator('.sig__stage [tabindex]:not([tabindex="-1"])').count()).toBe(0);
+    expect(await page.locator('.sig__stage a, .sig__stage button').count()).toBe(0);
   });
 });
 
@@ -341,17 +336,18 @@ test.describe('choosing a domain', () => {
 test.describe('on a phone', () => {
   test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
 
-  test('tap commits, and every domain target clears 44 px', async ({ page }) => {
+  test('the projection never takes the scroll away from the page', async ({ page }) => {
     await page.goto('index.html', { waitUntil: 'load' });
     await ready(page);
-    for (const d of DOMAINS) {
-      const label = page.locator(`.dom__opt:has([data-dom="${d.slug}"])`);
-      const box = (await label.boundingBox())!;
-      expect(box.height).toBeGreaterThanOrEqual(44);
-      await label.tap();
-      await expect(page.locator('.sig')).toHaveAttribute('data-domain', d.slug);
-      await expect(page.locator(`[data-proof="${d.slug}"]`)).toBeVisible();
-    }
+    /* It sits behind the copy as a field, so it cannot be the target of a
+       thumb that was aiming at a word. */
+    const events = await page.locator('.sig__stage').evaluate((e) => getComputedStyle(e).pointerEvents);
+    expect(events).toBe('none');
+
+    const before = await page.evaluate(() => window.scrollY);
+    await page.evaluate(() => window.scrollTo(0, 600));
+    await page.waitForTimeout(300);
+    expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(before);
   });
 
   test('the media stage is never pinned, and every scene sits with its copy', async ({ page }) => {
@@ -361,7 +357,6 @@ test.describe('on a phone', () => {
     );
     expect(sticky).toBe(0);
 
-    /* Each scene is inside the article whose facts it shows. */
     for (const slug of ['spellbomb', 'phlebotomy', 'owcs']) {
       const inside = await page.evaluate(
         (s) => !!document.querySelector(`[data-wk="${s}"] [data-scene="${s}"]`),
@@ -392,17 +387,43 @@ test.describe('the six rooms', () => {
   });
 
   test('the rail reports which room you are in, and how far through', async ({ page }) => {
+    /* Six sections, each with its own settling window. Thirty seconds is the
+       default for a test that clicks one thing, not for one that walks a whole
+       document while the atmosphere plane is being software-rasterised in
+       every parallel worker. */
+    test.setTimeout(120_000);
     for (const [i, slug] of ['spellbomb', 'health-journal', 'phlebotomy', 'manifester', 'owcs', 'paper-animator'].entries()) {
       await page.locator(`#w-${slug}`).scrollIntoViewIfNeeded();
       await page.mouse.wheel(0, 1);
       await expect(page.locator(`[data-rail="${slug}"]`)).toHaveAttribute('aria-current', 'true', { timeout: 6000 });
       await expect(page.locator('[data-rail-n]')).toHaveText(String(i + 1).padStart(2, '0'));
-      /* Exactly one at a time. */
       expect(await page.locator('[data-rail][aria-current="true"]').count()).toBe(1);
-      /* And the spine has filled to match. */
       const spine = await page.locator('[data-spine]').evaluate((e) => e.style.getPropertyValue('--spine'));
       expect(Number(spine)).toBeCloseTo((i + 1) / 6, 5);
     }
+  });
+
+  test('the room being read retunes the room the page is read in', async ({ page }) => {
+    /* The rail announces the project's own accent through the document, which
+       is the one wire between what you are reading and the atmosphere behind
+       it. Assert the announcement rather than the pixels: the shader is gated,
+       the wire is not. */
+    const ACCENTS = ['#f0a23c', '#7fa6f0', '#17a08f', '#c99189', '#b9e24d', '#ded7c6'];
+    const seen = await page.evaluate(async (ids) => {
+      const out: string[] = [];
+      document.addEventListener('ce:room', (e) => out.push((e as CustomEvent).detail.accent));
+      for (const id of ids) {
+        document.querySelector(id)!.scrollIntoView({ behavior: 'instant', block: 'center' });
+        await new Promise((r) => setTimeout(r, 900));
+      }
+      return out;
+    }, ['#w-health-journal', '#w-manifester', '#w-owcs', '#w-paper-animator']);
+
+    /* Several rooms, several colours, and every one of them a colour the site
+       actually owns. Which colour lands on which frame is the scroll's
+       business, not this test's. */
+    expect(new Set(seen).size).toBeGreaterThanOrEqual(2);
+    for (const hex of seen) expect(ACCENTS).toContain(hex.toLowerCase());
   });
 
   test('no inactive room is ever hidden — these are articles, not tabs', async ({ page }) => {
@@ -419,9 +440,6 @@ test.describe('the six rooms', () => {
   });
 
   test('each room has its own motion law, made of things that can move', async ({ page }) => {
-    /* The failure this replaces: a wrapper carrying one <img> was told to
-       sort and to sequence. If a scene promises ordering, the things being
-       ordered have to exist. */
     const laws = await page.evaluate(() => ({
       order: document.querySelectorAll('[data-scene="phlebotomy"] .tube').length,
       fuse: document.querySelectorAll('[data-scene="spellbomb"] .tray__t').length,
@@ -437,7 +455,6 @@ test.describe('the six rooms', () => {
     expect(laws.cite).toBe(1);
     expect(laws.accumulate).toBe(1);
 
-    /* The six cards that claim to sort actually start somewhere else. */
     const seats = await page.$$eval('[data-scene="phlebotomy"] .tube', (els) =>
       els.map((e) => [
         Number(getComputedStyle(e).getPropertyValue('--i')),
@@ -477,7 +494,6 @@ test.describe('the six rooms', () => {
       const el = page.locator(sel).first();
       await expect(el).toHaveAttribute('aria-hidden', 'true');
     }
-    /* Every capture that is in the tree carries a real description of itself. */
     const alts = await page.$$eval('.scene__shot', (els) => els.map((e) => (e.getAttribute('alt') || '').length));
     expect(alts.length).toBeGreaterThanOrEqual(8);
     expect(Math.min(...alts)).toBeGreaterThan(60);
@@ -489,7 +505,6 @@ test.describe('the six rooms', () => {
 test('the arrival is finite, and the first input ends it', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('index.html', { waitUntil: 'load' });
-  /* Not settled the instant the document loads — there is a sequence. */
   await page.waitForTimeout(120);
   await page.mouse.move(400, 400);
   await page.mouse.down();
@@ -501,30 +516,6 @@ test('the arrival is finite, and the first input ends it', async ({ page }) => {
   await p2.goto('/index.html', { waitUntil: 'load' });
   await expect(p2.locator('.sig.is-settled')).toHaveCount(1, { timeout: 5000 });
   await p2.close();
-});
-
-test('every fact in the proof panel is reachable without an interaction', async ({ page }) => {
-  /* With no script all three groups are open. This is the assertion that the
-     enhanced version never becomes the only way to reach one of them. */
-  await page.goto('index.html');
-  const home = page.url();
-  const ctx = await page.context().browser()!.newContext({ javaScriptEnabled: false });
-  const still = await ctx.newPage();
-  await still.goto(home);
-  const openText = (await still.locator('.proofs').innerText()).replace(/\s+/g, ' ');
-  await ctx.close();
-
-  await page.goto('index.html', { waitUntil: 'load' });
-  await ready(page);
-  let seen = '';
-  for (const d of DOMAINS) {
-    await pick(page, d.slug);
-    seen += ' ' + (await page.locator('.proof[data-active]').innerText());
-  }
-  seen = seen.replace(/\s+/g, ' ');
-  for (const sentence of openText.split('. ').filter((s) => s.trim().length > 24)) {
-    expect(seen).toContain(sentence.trim().slice(0, 40));
-  }
 });
 
 test('Save-Data gets the whole hero and no module at all', async ({ browser }) => {
@@ -540,28 +531,29 @@ test('Save-Data gets the whole hero and no module at all', async ({ browser }) =
   expect(asked).toEqual([]);
   expect(await page.locator('canvas').count()).toBe(0);
 
-  /* The control still works, because withholding a control is not the same as
-     withholding an effect. */
-  await page.locator('.dom__opt:has([data-dom="build"])').click();
-  await expect(page.locator('.sig')).toHaveAttribute('data-domain', 'build');
-  await expect(page.locator('[data-proof="build"]')).toBeVisible();
+  /* And the object is still standing, because nothing about it needed a
+     module in the first place. */
+  await expect(page.locator('.holo__slice')).toHaveCount(18);
+  const box = (await page.locator('.holo').boundingBox())!;
+  expect(box.width).toBeGreaterThan(280);
   await ctx.close();
 });
 
-test('with motion turned off by the site’s own control, the hero still works', async ({ page }) => {
+test('with motion turned off by the site’s own control, the hero still stands', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('index.html', { waitUntil: 'load' });
   await page.locator('.masthead__in > [data-motion-toggle]').click();
   await expect(page.locator('html')).toHaveAttribute('data-motion', 'off');
+  await page.waitForTimeout(600);
 
-  await pick(page, 'compete');
-  await expect(page.locator('.sig')).toHaveAttribute('data-domain', 'compete');
-  await expect(page.locator('[data-proof="compete"]')).toBeVisible();
-
-  /* Instant, not animated: no starting state is applied at all. */
-  const tuning = await page.locator('.sig').evaluate((e) => e.classList.contains('is-tuning'));
-  expect(tuning).toBe(false);
   expect(await page.locator('canvas').count()).toBe(0);
+  await expect(page.locator('.holo__slice')).toHaveCount(18);
+  /* The composition is intact; only the movement is gone. */
+  const running = await page.$$eval(
+    '.holo__spin, .holo__scan, .holo__plate, .holo__beam',
+    (els) => els.filter((e) => getComputedStyle(e).animationName !== 'none').length
+  );
+  expect(running).toBe(0);
 });
 
 test('a visitor who ignores the hero entirely still gets the whole page', async ({ page }) => {
