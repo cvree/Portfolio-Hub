@@ -67,7 +67,7 @@ test.describe('with prefers-reduced-motion: reduce', () => {
 
   test('no shader is created, and no cinematic bundle is fetched', async ({ page }) => {
     const asked: string[] = [];
-    page.on('request', (r) => /vendor\/(signal|atmosphere)\.js/.test(r.url()) && asked.push(r.url()));
+    page.on('request', (r) => /vendor\/(pulse|atmosphere)\.js/.test(r.url()) && asked.push(r.url()));
     await page.goto('index.html', { waitUntil: 'load' });
     await page.waitForTimeout(3000);
     expect(asked).toEqual([]);

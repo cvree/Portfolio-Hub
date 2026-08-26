@@ -19,19 +19,19 @@ scenes and every control on the site are CSS, markup and the critical
 
 | Package | Version | Source | License | Bundle | Raw | Gzip |
 | --- | --- | --- | --- | --- | --- | --- |
-| `—` | — | this repository | MIT (this repository) | `assets/vendor/signal.js` | 1.2 KB | 0.5 KB |
+| `—` | — | this repository | MIT (this repository) | `assets/vendor/pulse.js` | 3.3 KB | 1.3 KB |
 | `ogl` | 1.0.11 | https://github.com/oframe/ogl | Unlicense | `assets/vendor/atmosphere.js` | 49.5 KB | 15.1 KB |
 
-Total lazy payload: **15.7 KB gzip**, against a
+Total lazy payload: **16.5 KB gzip**, against a
 budget of 100 KB. None of it is requested until after the useful site has
 rendered, and the shader additionally requires WebGL, a fine pointer, a
 viewport of at least 1000 px and at least 4 GB of reported memory.
 
 ## Why each one is here
 
-### `assets/vendor/signal.js` — no dependency
+### `assets/vendor/pulse.js` — no dependency
 
-The hero's pointer layer. It has no dependency at all — it is here because it is main-thread work the critical path must not carry, not because it needed a library. Everything the hero actually does is CSS and markup that has painted before this file is requested; what is left for a script is the one thing CSS cannot do, which is read where the pointer is. It is bundled and committed through the same path as the shader so that exactly one mechanism puts JavaScript on this site.
+The pulse layer, on every page. It has no dependency at all — it is here because it is main-thread work the critical path must not carry, not because it needed a library. Everything the site says is CSS and markup that has painted before this file is requested; what is left for a script is the handful of things CSS cannot know — where the pointer is, how hard somebody is scrolling, and when they have taken hold of the sculpture. It writes four custom properties onto <html> and gets out of the way. It is bundled and committed through the same path as the shader so that exactly one mechanism puts JavaScript on this site.
 
 ### `ogl` 1.0.11 — Unlicense
 

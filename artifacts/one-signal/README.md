@@ -17,7 +17,7 @@ node tools/pack_evidence.mjs artifacts/one-signal/* # 2x PNG -> WebP
 | --- | --- |
 | `before/` | `999adaa` — the Evidence Aperture, before any change |
 | `after/` | this branch |
-| `states/` | the three hero domains and all six rooms, desktop and mobile |
+| `states/` | the three hero domains, all six rooms, the sculpture under the hand, the trace at rest and under load, and the card on both faces |
 
 Each set covers 1440×900, 1920×1080, 390×844 and 844×390 (landscape phone), and
 the fold plus the full page for every one of them — with normal motion,
@@ -53,3 +53,7 @@ No frame in this set was captured with that warning outstanding.
 | `after/home-desktop-reduced` | the composed final frame, with nothing stripped out to get there |
 | `states/room-phlebotomy-desktop` | six real CLSI tube cards resolved into the graded capture — the Order of Draw, in the one place it belongs |
 | `states/hero-arrival-mid` | ~520 ms in: the sample head mid-flight, the planes still coming together, every word already readable |
+| `states/hero-held-desktop` | the sculpture under the hand: the three planes pulled apart along the drag, which is what the identity is made of |
+| `states/spine-at-rest` → `states/spine-under-load` | the same trace, scrolling hard: amplitude, glow and weight all answer the effort |
+| `states/card-turning-desktop` | mid-turn — the one frame that proves the card is an object: the stock has a thickness and the foil rakes across it |
+| `states/card-front-nojs` | two complete panels, no turn control, nothing on screen that cannot work |

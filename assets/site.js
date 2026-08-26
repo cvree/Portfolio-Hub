@@ -12,9 +12,10 @@
      4. the global Motion On/Off control
      5. the hero's three domain controls — CARE, BUILD, COMPETE
      6. the Selected Work rail: which room you are in, and how far through
-     7. the two lazy layers, and far more often the decision not to load them
+     7. the contact card, which turns over
+     8. the two lazy layers, and far more often the decision not to load them
 
-   Jobs 1-6 are the site, and every one of them is small enough to live in the
+   Jobs 1-7 are the site, and every one of them is small enough to live in the
    critical file. The hero's whole arrival choreography is CSS — this file only
    ends it when you touch something. Job 7 is an escalation that happens only
    after the useful page has painted, and only when the device, the pointer,
@@ -60,7 +61,7 @@
   /* If the preference is turned on mid-visit, reveal everything immediately
      rather than leaving whatever had not scrolled into view hidden forever. */
   function revealAll() {
-    var all = document.querySelectorAll("[data-rise], [data-motion], [data-scene]");
+    var all = document.querySelectorAll("body [data-rise], body [data-motion], body [data-scene]");
     for (var i = 0; i < all.length; i++) all[i].classList.add("is-in");
   }
 
@@ -73,7 +74,7 @@
   /* --- 1. reveal on scroll ------------------------------------------------- */
 
   function reveals() {
-    var targets = document.querySelectorAll("[data-rise], [data-motion], [data-scene]");
+    var targets = document.querySelectorAll("body [data-rise], body [data-motion], body [data-scene]");
     if (!targets.length) return;
 
     if (still() || !("IntersectionObserver" in window)) {
@@ -237,6 +238,30 @@
     };
     var requick = 0;
 
+    /* One more sweep across the viewport and one more ring through the
+       object. Removing the class and forcing a reflow is what restarts a CSS
+       animation that has already played. */
+    function restrike() {
+      if (still()) return;
+      host.classList.remove("is-tuning");
+      void host.offsetWidth;
+      host.classList.add("is-tuning");
+      if (requick) window.clearTimeout(requick);
+      requick = window.setTimeout(function () {
+        host.classList.remove("is-tuning");
+      }, 760);
+    }
+
+    /* Taking hold of the sculpture pulls its planes apart; letting go without
+       having dragged anywhere strikes it instead. The pulse layer decides what
+       counts as a press rather than a drag, and says so through the document —
+       so this works when that module is there and simply never fires when it
+       is not. */
+    document.addEventListener("ce:strike", function () {
+      restrike();
+      play("beat");
+    });
+
     function commit(name) {
       if (!name || host.getAttribute("data-domain") === name) return;
       host.setAttribute("data-domain", name);
@@ -247,17 +272,8 @@
       }
 
       /* The trace is redrawn rather than dissolved: the new signature is
-         written across the viewport the way a monitor would write it. Removing
-         the class and forcing a reflow is what restarts the animation. */
-      if (!still()) {
-        host.classList.remove("is-tuning");
-        void host.offsetWidth;
-        host.classList.add("is-tuning");
-        if (requick) window.clearTimeout(requick);
-        requick = window.setTimeout(function () {
-          host.classList.remove("is-tuning");
-        }, 760);
-      }
+         written across the viewport the way a monitor would write it. */
+      restrike();
 
       /* One wire out, through the document rather than through an import, so
          the shader can answer without either module knowing the other is
@@ -344,13 +360,80 @@
     for (var i = 0; i < rooms.length; i++) io.observe(rooms[i]);
   }
 
+  /* --- 3e. the card, and turning it over -----------------------------------
+     Both faces are real content and both are in the document. All this does is
+     decide which one you are looking at, and — the part that actually matters —
+     take the other one out of the tab order while it is facing away. A link
+     that is invisible but still focusable is worse than no link at all: it
+     sends a keyboard visitor somewhere they cannot see.
+
+     `inert` does the whole job in one attribute where it exists. Where it does
+     not, the fallback is tabindex + aria-hidden, which is the same contract
+     spelled out longhand. */
+  function card() {
+    var stage = document.querySelector("[data-vcard]");
+    if (!stage) return;
+    var body = stage.querySelector("[data-vcard-body]");
+    var btn = document.querySelector("[data-vcard-flip]");
+    if (!body || !btn) return;
+
+    var faces = {
+      front: stage.querySelector('[data-vc-face="front"]'),
+      back: stage.querySelector('[data-vc-face="back"]')
+    };
+    var label = btn.querySelector("[data-vc-label]");
+    var supportsInert = "inert" in HTMLElement.prototype;
+    var turned = false;
+
+    function away(face, off) {
+      if (!face) return;
+      if (supportsInert) {
+        face.inert = off;
+      } else {
+        var links = face.querySelectorAll("a[href], button");
+        for (var i = 0; i < links.length; i++) {
+          if (off) links[i].setAttribute("tabindex", "-1");
+          else links[i].removeAttribute("tabindex");
+        }
+      }
+      face.setAttribute("aria-hidden", off ? "true" : "false");
+    }
+
+    function paint() {
+      body.style.setProperty("--turn", turned ? "1" : "0");
+      btn.setAttribute("aria-pressed", turned ? "true" : "false");
+      if (label) label.textContent = turned ? "Turn the card back" : "Turn the card over";
+      away(faces.front, turned);
+      away(faces.back, !turned);
+    }
+
+    btn.addEventListener("click", function () {
+      turned = !turned;
+      paint();
+      /* Focus follows the card: whichever face is now facing you is the one a
+         keyboard should be able to walk into next. */
+      if (turned && faces.back) {
+        var first = faces.back.querySelector("a[href]");
+        if (first && document.activeElement === btn) {
+          /* Only once the half-turn has actually shown it — moving focus onto
+             something the visitor cannot see yet is the same bug, early. */
+          window.setTimeout(function () {
+            if (turned) first.focus({ preventScroll: true });
+          }, still() ? 0 : 620);
+        }
+      }
+    });
+
+    paint();
+  }
+
   /* --- 4. the motion control ----------------------------------------------- */
 
   /* Any atmospheric movement on this site that runs longer than five seconds
      is the shader plane, and this is the switch that stops it. It is a real
      button with a real pressed state, it is reachable from the keyboard, and
      it is the same control on every page. */
-  var cinema = { atmos: null, parallax: null };
+  var cinema = { atmos: null, pulse: null };
 
   function motionControls() {
     var btns = document.querySelectorAll("[data-motion-toggle]");
@@ -383,9 +466,9 @@
 
   function teardown() {
     if (cinema.atmos && cinema.atmos.destroy) cinema.atmos.destroy();
-    if (cinema.parallax && cinema.parallax.destroy) cinema.parallax.destroy();
+    if (cinema.pulse && cinema.pulse.destroy) cinema.pulse.destroy();
     cinema.atmos = null;
-    cinema.parallax = null;
+    cinema.pulse = null;
     var c = document.querySelector("[data-atmos-slot] canvas");
     if (c && c.parentNode) c.parentNode.removeChild(c);
   }
@@ -555,31 +638,33 @@
     return !still() && fine() && window.innerWidth >= 1000 && !saveData();
   }
 
-  /* The pointer parallax is an effect, not a control, so it answers to the
-     effect gates: a fine pointer to move it with, a viewport wide enough for
-     the separation to read, and a visitor who has not asked for less data or
-     less movement. */
-  function mayMoveParallax() {
-    return !still() && fine() && window.innerWidth >= 1000 && !saveData();
+  /* The pulse layer is an effect, not a control, so it answers to the effect
+     gates — but only to the two that apply to every device. It runs on a
+     phone, because the part of it that matters most there is the part that
+     needs no pointer at all: the trace across the top of the page answering
+     how hard you are scrolling. The pointer-only features gate themselves
+     inside the module. */
+  function mayPulse() {
+    return !still() && !saveData();
   }
 
   function cinematics() {
-    var section = document.querySelector("[data-signal]");
-    if (!section || still()) return;
-
-    /* The sculpture separates under the pointer by a few pixels and the trace
-       bends locally by a few more. That is the whole module: no timeline, no
-       dependency, and nothing it does is load-bearing. */
-    if (mayMoveParallax() && !cinema.parallax) {
-      import(HERE + "vendor/signal.js")
+    /* THE PULSE. Every page, not just the home page — that is the whole point
+       of it. Roughly two kilobytes, no dependency, and it writes four custom
+       properties onto <html> and then gets out of the way. */
+    if (mayPulse() && !cinema.pulse) {
+      import(HERE + "vendor/pulse.js")
         .then(function (m) {
-          if (still() || !mayMoveParallax()) return;
-          cinema.parallax = m.mount(section);
+          if (still() || !mayPulse()) return;
+          cinema.pulse = m.mount(document.documentElement);
         })
         .catch(function () {
-          /* The assembled sculpture is already on screen, exactly as composed. */
+          /* Every page is already the composition it was designed to be. */
         });
     }
+
+    var section = document.querySelector("[data-signal]");
+    if (!section || still()) return;
 
     if (mayRenderShader() && !cinema.atmos) {
       var slot = section.querySelector("[data-atmos-slot]");
@@ -609,7 +694,7 @@
      so either can be absent without the other noticing. */
   document.addEventListener("ce:domain", function (ev) {
     if (cinema.atmos && cinema.atmos.tune) cinema.atmos.tune(ev.detail);
-    if (cinema.parallax && cinema.parallax.tune) cinema.parallax.tune(ev.detail);
+    if (cinema.pulse && cinema.pulse.tune) cinema.pulse.tune(ev.detail);
   });
 
   /* After the useful site. Never before it, and never during it. */
@@ -635,6 +720,7 @@
       arrival();
       domains();
       theatre();
+      card();
     } catch (err) {
       /* A failure in any of the above must never leave content hidden. */
       revealAll();

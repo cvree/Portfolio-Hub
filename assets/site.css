@@ -40,6 +40,13 @@
   --teal:   #17a08f;
   --gold:   #c79a3f;
 
+  /* The same three, drawn deeper, for type set on paper. Medical teal is
+     3.0:1 on ivory: enough for a rule or a mark, short of AA for small text.
+     These are the ink versions, and they are what the card is printed in. */
+  --teal-ink:   #0b6357;
+  --cobalt-ink: #2f47a8;
+  --gold-ink:   #7c5c14;
+
   /* per-page accent, overridden by [data-accent] */
   --accent:      var(--cobalt);
   --accent-soft: color-mix(in srgb, var(--accent) 16%, transparent);
@@ -1157,8 +1164,12 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   stroke-linecap:round;
   stroke-linejoin:round;
   vector-effect:non-scaling-stroke;
-  opacity:.34;
-  transition:stroke 520ms var(--ease), opacity 420ms var(--ease);
+  /* The same exertion the spine reports, on the trace the sculpture reads. */
+  opacity:calc(.34 + var(--pulse, 0) * .34);
+  transform-box:fill-box;
+  transform-origin:center;
+  transform:scaleY(calc(1 + var(--pulse, 0) * .42));
+  transition:stroke 520ms var(--ease);
 }
 /* Only the sample under the head is bright. A whole line at full strength is
    a neon tube, not a monitor. */
@@ -1346,14 +1357,22 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   height:auto;
   aspect-ratio:560 / 400;
   overflow:visible;
-  /* The pointer separates the planes; it never replaces the cursor and never
-     drags the object around. Both values are clamped by the module that sets
-     them, and the whole tilt is capped at three degrees. */
+  /* Two inputs, and they mean different things. The pointer *drifts* the
+     object — three degrees, ambient, never asked for. A hold is an explicit
+     act, so it is allowed to pull much further: up to nine degrees, and the
+     planes come apart along the drag. Both are clamped at the source, and the
+     release is a real spring, so it lands just past the mark once and stops. */
   transform:perspective(1400px)
-            rotateY(calc(var(--px, 0) * 3deg))
-            rotateX(calc(var(--py, 0) * -3deg));
+            rotateY(calc(var(--px, 0) * 3deg + var(--grab-x, 0) * 9deg))
+            rotateX(calc(var(--py, 0) * -3deg + var(--grab-y, 0) * -9deg))
+            scale(calc(1 + var(--grab-mag, 0) * .02));
   transition:transform 420ms var(--ease);
 }
+/* While the visitor is actually holding it, the object answers the hand
+   directly rather than easing toward it a third of a second late. */
+.ce.is-held{ transition:none; }
+.is-holdable{ cursor:grab; touch-action:none; }
+.is-holdable.is-held{ cursor:grabbing; }
 .ce__plane{
   transition:opacity 520ms var(--ease), transform 620ms var(--ease-snap);
 }
@@ -1361,8 +1380,8 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
 .ce__plane--build   { --plane-c:var(--build);   --sep:-1.3; opacity:.9; }
 .ce__plane--compete { --plane-c:var(--compete); --sep:1.7;  opacity:.76; }
 .ce__plane{
-  transform:translate(calc(var(--px, 0) * var(--sep) * 7px),
-                      calc(var(--py, 0) * var(--sep) * 5px));
+  transform:translate(calc(var(--px, 0) * var(--sep) * 7px + var(--grab-x, 0) * var(--sep) * 26px),
+                      calc(var(--py, 0) * var(--sep) * 5px + var(--grab-y, 0) * var(--sep) * 20px));
 }
 
 .ce__arc{
@@ -1416,13 +1435,31 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
 [data-domain="build"]   .ce__plane--build,
 [data-domain="compete"] .ce__plane--compete{ opacity:1; }
 
+/* THE PREVIEW. Reaching for a control lifts the plane it belongs to, before
+   anything is committed. It teaches the mapping between the three words and
+   the three pieces of geometry in the one gesture where a visitor is already
+   asking the question — and it commits nothing, so leaving takes it back.
+   Focus gets it too: this is a preview, not a mouse feature. */
+/* The section is the common ancestor of the controls and the object; the panel
+   that holds them is not. And the preview only ever shows a domain you have
+   *not* chosen: :has() out-specifies the committed state, so without the
+   :not() the act of reaching for the active control would dim its own plane. */
+.sig:not([data-domain="care"]):has(.dom__opt:hover > [data-dom="care"]) .ce__plane--care,
+.sig:not([data-domain="care"]):has(.dom__opt:focus-within > [data-dom="care"]) .ce__plane--care,
+.sig:not([data-domain="build"]):has(.dom__opt:hover > [data-dom="build"]) .ce__plane--build,
+.sig:not([data-domain="build"]):has(.dom__opt:focus-within > [data-dom="build"]) .ce__plane--build,
+.sig:not([data-domain="compete"]):has(.dom__opt:hover > [data-dom="compete"]) .ce__plane--compete,
+.sig:not([data-domain="compete"]):has(.dom__opt:focus-within > [data-dom="compete"]) .ce__plane--compete{
+  opacity:.86;
+}
+
 /* The active plane comes forward by a hair — enough to read as depth, far too
    little to read as a toy. */
 [data-domain="build"] .ce__plane--build,
 [data-domain="compete"] .ce__plane--compete,
 [data-domain="care"] .ce__plane--care{
-  transform:translate(calc(var(--px, 0) * var(--sep) * 7px),
-                      calc(var(--py, 0) * var(--sep) * 5px))
+  transform:translate(calc(var(--px, 0) * var(--sep) * 7px + var(--grab-x, 0) * var(--sep) * 26px),
+                      calc(var(--py, 0) * var(--sep) * 5px + var(--grab-y, 0) * var(--sep) * 20px))
             scale(1.014);
 }
 
@@ -2781,6 +2818,328 @@ html[data-motion="off"] .progress{ display:none; }
 html:not(.js) .sig__sweep{ display:none; }
 html:not(.js) .sig__ring{ display:none; }
 
+
+/* ===========================================================================
+   THE CARD — the contact page, as the thing you would be handed
+   ---------------------------------------------------------------------------
+   A real object: two faces, four edges, a thickness, and a shadow that answers
+   the tilt rather than sitting still underneath it. It is printed on the same
+   warm ivory the résumé is set on, because paper is what this site already
+   means by "the artefact you hand somebody".
+
+   Both faces carry real content and both are complete. With no script they are
+   two stacked panels and the turn control is not rendered at all; with one,
+   they are the two sides of one card and the face turned away is `inert`, so
+   it leaves the tab order with the pixels rather than lingering behind them.
+   =========================================================================== */
+
+.vc{ border:0; }
+
+.vc__stage{
+  position:relative;
+  width:100%;
+  max-width:660px;
+  margin:clamp(2rem, 5vw, 3.25rem) auto 0;
+  perspective:1500px;
+  perspective-origin:50% 42%;
+}
+
+/* --- no script: two panels, both complete --------------------------------- */
+
+.vc__card{ display:grid; gap:clamp(1rem, 2.5vw, 1.75rem); }
+.vc__face{
+  position:relative;
+  overflow:hidden;
+  border-radius:10px;
+  padding:clamp(1.4rem, 3.4vw, 2.4rem);
+  background:
+    radial-gradient(120% 90% at 12% 0%, #fbf8f1 0%, transparent 60%),
+    linear-gradient(158deg, #f6f2ea 0%, #ece6d8 100%);
+  color:var(--p-text);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.7) inset,
+    0 0 0 1px rgba(20,22,26,.10),
+    0 30px 60px -34px rgba(0,0,0,.9);
+}
+.vc__edge,.vc__sheen,.vc__turn{ display:none; }
+
+/* --- with a script: one card, in the hand --------------------------------- */
+
+.js .vc__card{
+  display:block;
+  position:relative;
+  width:100%;
+  aspect-ratio:1.72 / 1;
+  transform-style:preserve-3d;
+  /* The pointer drifts the card by a few degrees; turning it over adds the
+     half-rotation. Both live in one transform so they compose rather than
+     fight, and the turn carries a little lift so the card comes toward the
+     hand on the way round instead of pivoting flat. */
+  transform:
+    translateZ(calc(var(--turn, 0) * 34px))
+    rotateY(calc(var(--px, 0) * 11deg + var(--turn, 0) * 180deg))
+    rotateX(calc(var(--py, 0) * -7deg));
+  transition:transform 900ms cubic-bezier(.2,.8,.25,1);
+}
+.js .vc__face{
+  position:absolute;
+  inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  display:flex;
+  flex-direction:column;
+  border-radius:clamp(8px, 1.1vw, 14px);
+}
+.js .vc__face--front{ transform:translateZ(3px); }
+.js .vc__face--back{ transform:rotateY(180deg) translateZ(3px); }
+
+/* THE THICKNESS. A card with no edges is two rectangles pretending. Six
+   pixels of stock, in the ivory's own shadow, so it reads as one object the
+   moment it is off square. */
+.js .vc__edge{
+  display:block;
+  position:absolute;
+  background:linear-gradient(#e4ddcc, #cdc4ae);
+  box-shadow:0 0 0 1px rgba(20,22,26,.10);
+}
+/* Each strip starts three pixels proud of centre and then folds backwards
+   about its own outer edge, so it spans +3 to -3 and meets both faces exactly.
+   Getting the order wrong here is what makes a card look like two rectangles
+   with a stripe painted between them. */
+.js .vc__edge--t,.js .vc__edge--b{ left:0; right:0; height:6px; }
+.js .vc__edge--t{ top:0;    transform-origin:top center;    transform:translateZ(3px) rotateX(-90deg); }
+.js .vc__edge--b{ bottom:0; transform-origin:bottom center; transform:translateZ(3px) rotateX(90deg); }
+.js .vc__edge--l,.js .vc__edge--r{ top:0; bottom:0; width:6px; }
+.js .vc__edge--l{ left:0;  transform-origin:left center;  transform:translateZ(3px) rotateY(90deg); }
+.js .vc__edge--r{ right:0; transform-origin:right center; transform:translateZ(3px) rotateY(-90deg); }
+
+/* THE SHADOW. It travels opposite the tilt and softens as the card lifts,
+   which is the single detail that decides whether an object is floating or
+   painted on. */
+.js .vc__shadow{
+  display:block;
+  position:absolute;
+  left:6%; right:6%;
+  bottom:-3%;
+  height:22%;
+  border-radius:50%;
+  background:radial-gradient(closest-side, rgba(0,0,0,.72), transparent 78%);
+  filter:blur(calc(18px + var(--grab-mag, 0) * 6px));
+  transform:translate3d(calc(var(--px, 0) * -22px), calc(var(--py, 0) * -8px), 0);
+  transition:transform 420ms var(--ease), opacity 420ms var(--ease);
+  opacity:.8;
+  pointer-events:none;
+}
+
+/* THE FOIL. A specular band that rakes across the stock as the card turns.
+   It is a gradient, it is clipped to the face, and it moves against the tilt
+   the way a real highlight does — never with it. */
+.js .vc__sheen{
+  display:block;
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:linear-gradient(
+    calc(102deg + var(--py, 0) * 18deg),
+    transparent 38%,
+    rgba(255,255,255,.22) 46%,
+    rgba(255,255,255,.88) 50%,
+    rgba(255,255,255,.20) 54.5%,
+    transparent 62%);
+  transform:translateX(calc(var(--px, 0) * -42%));
+  opacity:.62;
+  mix-blend-mode:overlay;
+  transition:transform 420ms var(--ease);
+}
+
+/* --- the printing --------------------------------------------------------- */
+
+.vc__grain{
+  position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  opacity:.5;
+  background-image:radial-gradient(rgba(20,22,26,.16) .5px, transparent .5px);
+  background-size:3px 3px;
+}
+.vc__row{ display:flex; justify-content:space-between; gap:1rem; position:relative; }
+.vc__eyebrow{
+  font-family:var(--mono);
+  font-size:clamp(.56rem, .9vw, .68rem);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--p-text-quiet);
+}
+.vc__eyebrow--r{ color:var(--teal-ink); }
+
+.vc__mid{
+  position:relative;
+  flex:1;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:clamp(.75rem, 2vw, 1.5rem);
+  padding-block:clamp(.6rem, 1.6vw, 1.1rem);
+}
+.vc__name{
+  font-family:var(--display);
+  font-size:clamp(1.9rem, 5.4vw, 3.4rem);
+  line-height:.98;
+  letter-spacing:-.015em;
+  color:var(--p-text);
+}
+.vc__name em{ font-style:italic; color:#0f8877; }
+.vc__role{
+  margin-top:.6rem;
+  font-family:var(--ui);
+  font-size:clamp(.68rem, 1.35vw, .86rem);
+  line-height:1.5;
+  color:var(--p-text-quiet);
+}
+
+/* The monogram, struck in foil. Same geometry as the home page, at the weight
+   a card can actually hold. */
+.vc__mark{ width:clamp(88px, 19vw, 196px); height:auto; overflow:visible; }
+.vc__arc{ fill:none; stroke:var(--teal); stroke-width:17; stroke-linecap:round; }
+.vc__lead{ fill:var(--teal); opacity:.55; }
+.vc__trunk{ fill:none; stroke:#3b56b8; stroke-width:17; stroke-linecap:round; }
+.vc__node{ fill:#3b56b8; }
+.vc__brk{ fill:none; stroke:#a97f28; stroke-width:4; }
+.vc__crown{ fill:#a97f28; }
+.vc__plane--build{ opacity:.9; }
+.vc__plane--compete{ opacity:.85; }
+
+.vc__trace{
+  position:relative;
+  width:100%;
+  height:clamp(20px, 4vw, 34px);
+  overflow:visible;
+}
+.vc__trace path{
+  fill:none;
+  stroke:var(--teal);
+  stroke-width:1.6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+  opacity:.75;
+}
+.vc__foot{
+  position:relative;
+  margin-top:.7rem;
+  font-family:var(--mono);
+  font-size:clamp(.54rem, .95vw, .66rem);
+  letter-spacing:.11em;
+  color:var(--p-text-quiet);
+}
+
+/* --- the back ------------------------------------------------------------- */
+
+.vc__h{
+  position:relative;
+  font-family:var(--mono);
+  font-size:clamp(.58rem, .95vw, .7rem);
+  font-weight:400;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--p-text-quiet);
+  margin-bottom:clamp(.5rem, 1.4vw, 1rem);
+}
+.vc__ways{ position:relative; flex:1; display:grid; align-content:center; gap:0; }
+.vc__ways li + li{ border-top:1px solid rgba(20,22,26,.12); }
+.vc__ways a{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  grid-template-areas:"k arrow" "v arrow";
+  align-items:center;
+  gap:0 1rem;
+  min-height:44px;
+  padding:clamp(.5rem, 1.4vw, .85rem) 0;
+  text-decoration:none;
+  color:var(--p-text);
+  transition:color 200ms var(--ease), transform 260ms var(--ease-snap);
+}
+.vc__ways .k{
+  grid-area:k;
+  font-family:var(--mono);
+  font-size:clamp(.52rem, .9vw, .62rem);
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--p-text-quiet);
+}
+.vc__ways .v{
+  grid-area:v;
+  font-family:var(--ui);
+  font-size:clamp(.74rem, 1.5vw, .94rem);
+  overflow-wrap:anywhere;
+}
+.vc__ways .arrow{ grid-area:arrow; color:var(--teal-ink); transition:transform 260ms var(--ease-snap); }
+.vc__ways a:hover{ color:var(--teal-ink); }
+.vc__ways a:hover .arrow{ transform:translateX(4px); }
+.vc__ways a:focus-visible{ outline:2px solid var(--teal-ink); outline-offset:4px; border-radius:3px; }
+
+/* --- the turn ------------------------------------------------------------- */
+
+.js .vc__turn{
+  display:inline-flex;
+  align-items:center;
+  gap:.7rem;
+  margin-top:clamp(1.25rem, 3vw, 2rem);
+  min-height:44px;
+  padding:.6rem 1.15rem;
+  background:transparent;
+  border:1px solid var(--line-firm);
+  border-radius:var(--radius);
+  font-family:var(--mono);
+  font-size:.68rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--text-quiet);
+  cursor:pointer;
+  transition:color 200ms var(--ease), border-color 200ms var(--ease);
+}
+.js .vc__turn:hover{ color:var(--text); border-color:var(--accent); }
+.vc__turnicon{
+  width:13px; height:13px;
+  border:1.5px solid currentColor;
+  border-radius:2px;
+  transition:transform 620ms var(--ease-snap);
+}
+.js .vc__turn[aria-pressed="true"] .vc__turnicon{ transform:rotateY(180deg); }
+.js .vc__turn[aria-pressed="true"]{ color:var(--text); border-color:var(--accent); }
+
+/* --- stillness ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion:reduce){
+  .js .vc__card,.js .vc__shadow,.js .vc__sheen,.vc__turnicon{ transition:none; }
+}
+html[data-motion="off"] .vc__card,
+html[data-motion="off"] .vc__shadow,
+html[data-motion="off"] .vc__sheen,
+html[data-motion="off"] .vc__turnicon{ transition:none; }
+
+/* A card is 1.72:1 because that is what a card is — but at 350 px wide that
+   leaves 200 px of height for four lines of type and a signal, and the foot
+   ends up printed over the trace. On a phone the stock gets taller. It is
+   still one object; it is just held the way a phone is held. */
+@media (max-width:640px){
+  .js .vc__card{ aspect-ratio:1.24 / 1; }
+  .vc__mark{ width:clamp(64px, 22vw, 104px); }
+  .vc__mid{ gap:.7rem; padding-block:.7rem; }
+  .vc__role{ margin-top:.45rem; }
+  .vc__trace{ height:22px; }
+}
+@media (max-width:400px){
+  .js .vc__card{ aspect-ratio:1.05 / 1; }
+  .vc__mid{ grid-template-columns:minmax(0,1fr) auto; }
+}
+
+@media print{
+  .vc__stage{ perspective:none; }
+  .js .vc__card{ display:grid; gap:1rem; aspect-ratio:auto; transform:none; }
+  .js .vc__face{ position:relative; inset:auto; transform:none; }
+  .vc__edge,.vc__shadow,.vc__sheen,.vc__turn{ display:none !important; }
+}
+
 /* ===========================================================================
    ===========================================================================
    9. THE PULSE
@@ -2949,6 +3308,56 @@ html:not(.js) .sig__ring{ display:none; }
   filter:drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 65%, transparent));
 }
 @media (max-width:640px){ .progress{ height:16px; } }
+
+/* THE TRACE ANSWERS EFFORT.
+   ---------------------------------------------------------------------------
+   A heart rate rises with exertion and settles when the exertion stops, and
+   that is the one signal every visitor can already read without being taught.
+   So --pulse is scroll velocity, written onto <html> by the pulse layer and
+   decaying back to nothing within about a second: scroll hard and the trace
+   gains amplitude and light, stop and it comes back down to a resting rhythm.
+
+   It is a transform and a filter on two paths. No layout, no reflow, and the
+   loop that feeds it stops running the moment everything is at rest. */
+.progress svg path{
+  transform-box:fill-box;
+  transform-origin:center;
+  transform:scaleY(calc(1 + var(--pulse, 0) * .62));
+}
+.progress__fill path{
+  filter:drop-shadow(0 0 calc(6px + var(--pulse, 0) * 10px)
+    color-mix(in srgb, var(--accent) calc(65% + var(--pulse, 0) * 30%), transparent));
+}
+.progress__ghost path{ opacity:calc(.08 + var(--pulse, 0) * .06); }
+
+/* ONE BEAT, ON A REAL ACTIVATION.
+   Pressing something that does something sends a single QRS down the trace.
+   Never on a scroll, never on a hover, and never on load. */
+html.is-beat .progress__fill path{
+  animation:one-beat 720ms cubic-bezier(.2,.7,.3,1) 1;
+}
+@keyframes one-beat{
+  0%   { stroke-width:1.7; }
+  16%  { stroke-width:3.1; }
+  100% { stroke-width:1.7; }
+}
+html.is-beat .progress::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,
+    transparent,
+    color-mix(in srgb, var(--accent) 55%, transparent),
+    transparent);
+  width:22%;
+  animation:beat-travel 720ms cubic-bezier(.3,0,.4,1) 1;
+  pointer-events:none;
+}
+@keyframes beat-travel{
+  from{ transform:translateX(-30%); opacity:0; }
+  20% { opacity:.85; }
+  to  { transform:translateX(460%); opacity:0; }
+}
 
 /* ---------------------------------------------------------------------------
    9.2 · THE CUT — every navigation is the aperture blinking

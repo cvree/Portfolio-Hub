@@ -25,17 +25,19 @@ const check = process.argv.includes('--check');
 
 const TARGETS = [
   {
-    entry: 'assets/src/signal.js',
-    file: 'signal.js',
+    entry: 'assets/src/pulse.js',
+    file: 'pulse.js',
     packages: [],
     why:
-      "The hero's pointer layer. It has no dependency at all — it is here " +
-      'because it is main-thread work the critical path must not carry, not ' +
-      'because it needed a library. Everything the hero actually does is CSS ' +
-      'and markup that has painted before this file is requested; what is left ' +
-      'for a script is the one thing CSS cannot do, which is read where the ' +
-      'pointer is. It is bundled and committed through the same path as the ' +
-      'shader so that exactly one mechanism puts JavaScript on this site.',
+      'The pulse layer, on every page. It has no dependency at all — it is ' +
+      'here because it is main-thread work the critical path must not carry, ' +
+      'not because it needed a library. Everything the site says is CSS and ' +
+      'markup that has painted before this file is requested; what is left for ' +
+      'a script is the handful of things CSS cannot know — where the pointer ' +
+      'is, how hard somebody is scrolling, and when they have taken hold of ' +
+      'the sculpture. It writes four custom properties onto <html> and gets ' +
+      'out of the way. It is bundled and committed through the same path as ' +
+      'the shader so that exactly one mechanism puts JavaScript on this site.',
   },
   {
     entry: 'assets/src/atmosphere.js',
