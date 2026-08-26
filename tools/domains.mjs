@@ -1,5 +1,6 @@
-/* One frame per hero domain, desktop and mobile, plus the six Selected Work
-   rooms in the state a visitor actually reads them in.
+/* One frame per hero domain, desktop and mobile, the six Selected Work rooms
+   in the state a visitor actually reads them in, the sculpture under the hand,
+   and the contact card on both of its faces.
 
      node tools/domains.mjs artifacts/one-signal/states [baseUrl]
 */
@@ -67,6 +68,73 @@ for (const [label, vp, mobile] of VPS) {
     console.log('shot hero-focus-desktop');
   }
 
+  await ctx.close();
+}
+
+/* --- the sculpture, under the hand -------------------------------------- */
+{
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
+  const page = await ctx.newPage();
+  await page.goto(base, { waitUntil: 'load' });
+  await page.evaluate(() => document.fonts && document.fonts.ready);
+  await page.waitForTimeout(2600);
+
+  const box = await page.locator('.ce').boundingBox();
+  if (box) {
+    const cx = box.x + box.width / 2;
+    const cy = box.y + box.height / 2;
+    await page.mouse.move(cx, cy);
+    await page.mouse.down();
+    await page.mouse.move(cx + 170, cy + 70, { steps: 12 });
+    await page.waitForTimeout(320);
+    await page.screenshot({ path: path.join(out, 'hero-held-desktop.png') });
+    await page.mouse.up();
+    console.log('shot hero-held-desktop');
+  }
+
+  /* The trace across the top of the page, at rest and under load. */
+  const strip = { x: 0, y: 0, width: 1440, height: 120 };
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(1600);
+  await page.screenshot({ path: path.join(out, 'spine-at-rest.png'), clip: strip });
+  await page.evaluate(async () => {
+    for (let i = 0; i < 24; i++) {
+      window.scrollBy(0, 100);
+      await new Promise((r) => requestAnimationFrame(r));
+    }
+  });
+  await page.screenshot({ path: path.join(out, 'spine-under-load.png'), clip: strip });
+  console.log('shot spine-at-rest, spine-under-load');
+  await ctx.close();
+}
+
+/* --- the card ------------------------------------------------------------ */
+for (const [label, vp, js] of [
+  ['desktop', { width: 1440, height: 980 }, true],
+  ['mobile', { width: 390, height: 844 }, true],
+  ['nojs', { width: 1440, height: 980 }, false],
+]) {
+  const ctx = await browser.newContext({ viewport: vp, deviceScaleFactor: 2, javaScriptEnabled: js });
+  const page = await ctx.newPage();
+  await page.goto(base + 'contact.html', { waitUntil: 'load' });
+  await page.evaluate(() => document.fonts && document.fonts.ready);
+  await page.waitForTimeout(js ? 1100 : 500);
+
+  if (js) await page.mouse.move(vp.width * 0.68, vp.height * 0.45);
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: path.join(out, `card-front-${label}.png`) });
+  console.log(`shot card-front-${label}`);
+
+  if (js) {
+    /* Mid-turn is the frame that shows it is an object: the stock has a
+       thickness and the foil rakes across it. */
+    await page.locator('[data-vcard-flip]').click();
+    await page.waitForTimeout(330);
+    await page.screenshot({ path: path.join(out, `card-turning-${label}.png`) });
+    await page.waitForTimeout(1200);
+    await page.screenshot({ path: path.join(out, `card-back-${label}.png`) });
+    console.log(`shot card-turning-${label}, card-back-${label}`);
+  }
   await ctx.close();
 }
 

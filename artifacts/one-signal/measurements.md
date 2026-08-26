@@ -16,9 +16,9 @@ is the recorded state of `main` at `999adaa`.
 | Mobile TBT | 0 ms | **0 ms** | — |
 | Desktop LCP | — | **0.50 s** | |
 | Desktop TBT | — | **0 ms** | |
-| `index.html` transfer | 219 KB | **195 KB** | **−24 KB** |
-| Lazy bundles | 60.0 KB gzip | **15.6 KB gzip** | **−44.4 KB** |
-| Playwright | 207 (206 passing) | **209 passing** | +3, and green |
+| `index.html` transfer | 219 KB | **202 KB** | **−17 KB** |
+| Lazy bundles | 60.0 KB gzip | **16.4 KB gzip** | **−43.6 KB** |
+| Playwright | 207 (206 passing) | **244 passing** | +38, and green |
 | Axe, all 12 pages × 2 widths | 0 serious/critical | **0 serious/critical** | — |
 | Résumé print | exactly 2 pages | **exactly 2 pages** | — |
 | Horizontal overflow | none | **none at 390 / 768 / 1440 / 1920** | — |
@@ -35,7 +35,7 @@ is the recorded state of `main` at `999adaa`.
 | LCP | ≤ 2.5 s | **2.27 s** mobile · **0.50 s** desktop |
 | CLS | ≤ 0.10 | **0.000** |
 | Desktop TBT | ≤ 200 ms | **0 ms** |
-| Critical transfer + eager JS/CSS | ≤ +10% of baseline | **−11%** (195 KB vs 219 KB) |
+| Critical transfer + eager JS/CSS | ≤ +10% of baseline | **−8%** (202 KB vs 219 KB) |
 | No category more than 2 points below baseline | — | **none lost; mobile performance gained 1** |
 
 ## Why it got faster while doing more
@@ -48,16 +48,22 @@ and settles, which is what CSS keyframes express natively — off the main threa
 at no scripting cost, and with the composed final frame as the state that
 renders when motion is refused.
 
-That is the whole of the −44.4 KB on the lazy bundles. The −24 KB on the
+That is the whole of the −43.6 KB on the lazy bundles. The −17 KB on the
 critical transfer of `index.html` is the hero's raster: the old first viewport
 preloaded a 1280 px WebP of the Order of Draw drill at `fetchpriority="high"`.
 The new one is SVG geometry in the document, so the LCP element is text and the
 preload is gone.
 
+The pulse layer and the contact card put about 7 KB back onto that figure, all
+of it stylesheet — `assets/site.css` is render-blocking on every page. Nothing
+was added to the critical path in script: the pulse layer is a lazy bundle
+behind the same gates as the shader, and it builds nothing until after `load`.
+Mobile performance, LCP, FCP, TBT and CLS are all unchanged by it.
+
 | Bundle | Raw | Gzip | Gate |
 | --- | --- | --- | --- |
-| `assets/vendor/signal.js` | 1.2 KB | **0.5 KB** | fine pointer, ≥1000 px, not Save-Data, motion allowed |
-| `assets/vendor/atmosphere.js` | 49.5 KB | **15.1 KB** | the above, plus WebGL and ≥4 GB reported memory |
+| `assets/vendor/pulse.js` | 3.3 KB | **1.3 KB** | motion allowed, not Save-Data |
+| `assets/vendor/atmosphere.js` | 49.5 KB | **15.1 KB** | the above, plus a fine pointer, ≥1000 px, WebGL and ≥4 GB reported memory |
 
 Neither is requested until after `load`. Neither is required for any page to be
 complete.

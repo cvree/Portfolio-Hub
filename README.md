@@ -282,6 +282,63 @@ as a stroke length on the spine. It never converts the articles into tabs, never
 hides an inactive one, and never competes with the scroll position for
 authority.
 
+## The pulse layer
+
+The arrival plays once and settles. What persists across the whole site is a
+layer that answers the visitor, and it is built on the one signal every human
+being already knows how to read: **a heart rate answers effort, and then it
+settles.**
+
+`assets/vendor/pulse.js` — 1.3 KB gzip, no dependency — writes four custom
+properties onto `<html>` and then gets out of the way:
+
+| Property | Range | What it is |
+| --- | --- | --- |
+| `--pulse` | 0 → 1 | **Exertion.** Scroll velocity, decaying back to nothing in about a second. |
+| `--px`, `--py` | −1 → 1 | The pointer, eased. Fine pointers only. |
+| `--grab-x`, `--grab-y` | −1 → 1 | A deliberate hold on the sculpture, spring-returned. |
+
+Scroll hard and the trace across the top of every page gains amplitude, glow
+and weight; stop and it comes back down to a resting rhythm. It is not
+decoration with a heartbeat painted on it — it is the one piece of state a
+visitor is already generating, reported in the one language nobody has to be
+taught.
+
+**Taking hold of the sculpture.** The pointer *drifts* it — three degrees,
+ambient, never asked for. A hold is an explicit act, so it may pull much
+further: nine degrees of tilt and 26 px of plane separation, along the drag.
+Letting go runs a real spring, so the planes land just past alignment once and
+stop. A press that never travelled is a press rather than a drag: releasing
+without having moved six pixels **strikes** the object instead — one more QRS
+across the viewport, one more ring, and the planes snap back on the beat.
+
+**One beat, on a real activation.** Pressing something that does something
+sends a single QRS down the trace. Never on a scroll, never on a hover, never
+on load.
+
+It costs no layout and no reflow: one `requestAnimationFrame` loop that stops
+the moment everything is at rest, and stops entirely when the document is
+hidden. It answers the same gates as everything else — reduced motion, the
+site's own Motion control, Save-Data — and under any of them it is never
+fetched and not one property is ever written. On a phone it still loads,
+because the part that matters most there needs no pointer at all.
+
+## The card
+
+The contact page is a card: a real object with a front, a back, four edges and
+a thickness, printed on the same warm ivory the résumé is set on.
+
+Both faces carry real content — the front is the identity, the back is every
+route out of the page as four ordinary links. With a script it is one card that
+tilts under the pointer, catches the light on its foil, and turns over in
+900 ms. With no script it is two stacked panels, both complete, and the turn
+control is not rendered at all.
+
+The rule that shapes it: **a link that is invisible but still focusable is
+worse than no link at all.** The face turned away is `inert`, so it leaves the
+tab order with the pixels rather than lingering behind them, and focus follows
+the card once the half-turn has actually shown the face it is moving into.
+
 ## The pulse
 
 Connor is an NREMT-certified EMT. A heartbeat is the one signal every human
@@ -414,8 +471,8 @@ Six layers, and each one can fail without taking the one below it with it.
    *unanimated* state is the readable one, and all of it sits inside
    `@supports`, so an unsupported browser is never handed content at
    `opacity: 0`.
-6. **The lazy bundles.** `signal.js` — the hero's pointer parallax, 0.5 KB
-   gzip and no dependency — and OGL for the one shader plane. Both are
+6. **The lazy bundles.** `pulse.js` — the pulse layer, 1.3 KB gzip and no
+   dependency — and OGL for the one shader plane. Both are
    dynamically imported after `load`, only on the page that asks for them, only
    when the gates pass, and both are destroyed completely when they stop
    applying.
@@ -487,6 +544,16 @@ Three changes fixed it, and together they took mobile CLS to 0.000:
   genuinely move, six tube cards that start in the wrong seats and end in the
   right ones, a rail that reports position without turning articles into tabs,
   no capture under 150 px wide on a phone, and one focusable target per room
+- the pulse layer on all twelve pages: exertion that rises from a real scroll,
+  never exceeds its ceiling and returns to exactly zero on its own; a hold that
+  is clamped however hard it is pulled and springs back; a press distinguished
+  from a drag; one beat per activation and none from scrolling or hovering; not
+  one property written under reduced motion, the Motion control or Save-Data;
+  and no change to the height or the width of the document from any of it
+- the card: two complete panels with no script and nothing left inert by a
+  script that never ran, four routes that are ordinary links, a face turned
+  away that is out of the tab order, focus that follows the turn, and every
+  target over 44 px
 - keyboard order, focus rings on everything tabbable, the skip link, the mobile
   menu's Escape behaviour, and reaching a case study from the hero by keyboard
 - the résumé printing to exactly two pages on Letter and on A4
@@ -537,7 +604,7 @@ deploys on its own.
 Nothing third-party is in the critical path, and nothing is fetched from another
 origin at any point. **One** audited, pinned package is bundled into
 `assets/vendor/` at author time and lazily imported after first paint: OGL, for
-the single shader plane. A second bundle, `signal.js`, goes through the same
+the single shader plane. A second bundle, `pulse.js`, goes through the same
 path with no dependency at all — it is there because it is main-thread work the
 critical path must not carry, not because it needed a library.
 

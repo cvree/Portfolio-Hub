@@ -189,6 +189,116 @@ waiting to be filled.
 
 ---
 
+## 4b. The pulse layer — one signal, on every page
+
+The arrival plays once and settles. What persists across the whole site is a
+layer that answers the visitor, and it is built on the one signal every human
+being already knows how to read.
+
+**A heart rate answers effort, and then it settles.** So does this one. The
+pulse layer writes four custom properties onto `<html>` and then gets out of
+the way:
+
+| Property | Range | What it is |
+| --- | --- | --- |
+| `--pulse` | 0 → 1 | **Exertion.** Scroll velocity, decaying back to nothing in about a second. |
+| `--px`, `--py` | −1 → 1 | The pointer, eased. Fine pointers only. |
+| `--grab-x`, `--grab-y` | −1 → 1 | A deliberate hold on the sculpture, spring-returned. |
+
+Four things read them:
+
+1. **The trace across the top of every page** gains amplitude, glow and weight
+   with `--pulse`. Scroll hard and the signal rises; stop and it comes back
+   down to a resting rhythm. It is not decoration with a heartbeat painted on
+   it — it is the one piece of state a visitor is already generating, reported
+   in the one language nobody has to be taught.
+2. **The hero trace** does the same, behind the name.
+3. **The CE sculpture** separates under the pointer by ≤ 14 px and tilts by
+   ≤ 3°, ambient and unasked for.
+4. **The card on the contact page** tilts, and its foil rakes against the tilt
+   the way a real specular highlight does.
+
+### Taking hold of the object
+
+Two inputs, and they mean different things.
+
+The pointer *drifts* the sculpture — three degrees, ambient, never asked for. A
+**hold** is an explicit act, so it is allowed to pull much further: up to nine
+degrees of tilt and 26 px of plane separation, along the drag. Letting go runs
+a real spring — stiffness 0.13, damping 0.80 — so the planes land just past
+alignment once and stop. A hold that oozes back is a hold that felt like syrup.
+
+A press that never travelled is a press, not a drag. Releasing without having
+moved more than six pixels **strikes** the object instead: one more QRS across
+the viewport, one more refraction ring, and the planes snap back together on
+the beat. The module only reports that it happened; the page decides what it
+means.
+
+### One beat, on a real activation
+
+Pressing something that does something sends a single QRS down the trace at the
+top of the page. Never on a scroll, never on a hover, never on load. Cause,
+action, settle — 720 ms, once, and it clears itself.
+
+### What it costs
+
+**1.3 KB gzip, no dependency, and no layout.** One `requestAnimationFrame`
+loop that stops running the moment everything is at rest, and stops entirely
+when the document is hidden. Every value is clamped at the source rather than
+trusted downstream. It never changes the height or the width of the document —
+`tests/pulse.spec.ts` asserts exactly that.
+
+It answers the same three gates as everything else: reduced motion, the site's
+own motion control, and Save-Data. Under any of them it is never fetched, not
+one property is ever written, and the sculpture is not holdable. On a phone it
+still loads, because the part that matters most there is the part that needs no
+pointer at all.
+
+---
+
+## 4c. The card
+
+The contact page is a card — a real object with a front, a back, four edges and
+a thickness, printed on the same warm ivory the résumé is set on, because paper
+is what this site already means by *the artefact you hand somebody*.
+
+Both faces carry real content. The front is the identity: name, the four
+credentials, the monogram struck in foil, the signal across the foot, and the
+availability. The back is every route out of the page, as four ordinary links.
+
+| State | What the visitor gets |
+| --- | --- |
+| **With a script** | One card. It tilts under the pointer, the foil rakes across the stock, the shadow travels opposite the tilt, and the button turns it over in 900 ms. |
+| **No script** | Two panels, stacked, both complete and both readable. The turn control is not rendered at all — there is nothing on screen that cannot work. |
+| **Reduced motion** | The same card, and the turn is instant. |
+
+Three details decide whether it reads as an object or as two rectangles
+pretending:
+
+- **The edges.** Each of the four strips starts three pixels proud of centre
+  and then folds backwards about its own outer edge, so it spans +3 to −3 and
+  meets both faces exactly. Getting that order wrong is what puts a stripe
+  between two flat planes.
+- **The shadow.** It travels *opposite* the tilt and softens as the card lifts.
+  This is the single detail that decides whether an object is floating or
+  painted on.
+- **The foil.** A specular band that moves against the tilt, never with it.
+
+**The accessibility rule that shapes it:** a link that is invisible but still
+focusable is worse than no link at all — it sends a keyboard visitor somewhere
+they cannot see. So the face turned away is `inert`, and it leaves the tab
+order with the pixels rather than lingering behind them. Focus follows the
+card: turning it moves focus onto the first route on the face now facing you,
+but only once the half-turn has actually shown it.
+
+> **Contrast note.** Medical teal is 3.0:1 on ivory — enough for a rule or a
+> mark, short of AA for small text. The card sets its small type in
+> `--teal-ink` (`#0b6357`, 5.6:1). The tokens `--teal-ink`, `--cobalt-ink` and
+> `--gold-ink` exist for exactly this: the same three colours, drawn deeper,
+> for type set on paper.
+
+---
+
 ## 5. Selected Work: six living specimens
 
 Six rooms, six motion laws, one spine.
@@ -264,8 +374,8 @@ used.
 
 | Shipped | Gate | Cost |
 | --- | --- | --- |
-| `assets/vendor/signal.js` — pointer parallax, no dependency | fine pointer, ≥1000 px, not Save-Data, motion allowed | **0.5 KB gzip** |
-| `assets/vendor/atmosphere.js` — one OGL shader plane | the above, plus WebGL and ≥4 GB reported memory | **15.1 KB gzip** |
+| `assets/vendor/pulse.js` — the pulse layer, every page, no dependency | motion allowed, not Save-Data | **1.3 KB gzip** |
+| `assets/vendor/atmosphere.js` — one OGL shader plane | the above, plus a fine pointer, ≥1000 px, WebGL and ≥4 GB reported memory | **15.1 KB gzip** |
 
 Neither is in the critical path. Neither is ever required for a page to be
 complete.
@@ -336,7 +446,7 @@ is a page that autoplays sound, whatever the reason.
 | **`prefers-reduced-motion: reduce`** | The same, with the domain controls live and every change instant. No canvas, no sweep, no start states — because none of them is ever applied. |
 | **The site's motion control** | Identical to the above, and remembered. It can only ever make the site *stiller* than the operating system asked for. |
 | **Save-Data** | Native scrolling, no module requested at all, and the control still works — withholding a control is not the same as withholding an effect. |
-| **Coarse pointer** | State selection instead of hover depth. Every target ≥ 44 px. Nothing anywhere depends on hovering. |
+| **Coarse pointer** | State selection instead of hover depth. Every target ≥ 44 px. Nothing anywhere depends on hovering, and nothing is draggable out from under the scroll. The trace still answers the scroll, which is the part of the pulse layer that matters most on a phone. |
 | **Keyboard** | Real radio inputs in a real fieldset, so arrow keys, roving focus and announced position come from the browser rather than from a re-implementation. Focus indication at least as clear as hover. |
 
 **No fact exists only in an inactive enhanced state.** With no script every

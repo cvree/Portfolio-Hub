@@ -207,8 +207,31 @@
 </header>
 
 <main id="main">
-<section class="case-hero" aria-labelledby="page-h">
+<!-- ===================================================================== -->
+<!-- THE CARD — the thing you would actually be handed                     -->
+<!-- ===================================================================== -->
+<!--
+  A contact page is a card. So this one is a card: a real object with a front,
+  a back, four edges and a thickness, printed on the same warm ivory the résumé
+  is set on, because paper is what this site already means by "the artefact you
+  hand somebody".
+
+  It is built out of two faces that both carry real content. Turning it over is
+  an enhancement and never a gate:
+
+    with a script      one card, in the hand — it tilts under the pointer, the
+                       foil catches the light, and the button turns it over
+    with no script     two panels, stacked, both complete and both readable
+    reduced motion     the same two panels, and the turn is instant
+
+  Every route out of this page is an ordinary <a href> on the back face. There
+  is no state in which a link is in the document but unreachable: the face that
+  is turned away is marked `inert`, so it leaves the tab order with the pixels
+  rather than lingering behind them.
+-->
+<section class="vc" aria-labelledby="page-h">
   <div class="shell shell--narrow">
+
     <p class="eyebrow" data-rise><span class="tick" aria-hidden="true"></span>Contact</p>
     <h1 class="h1 mt-2" id="page-h" data-rise>Say hello.</h1>
     <p class="case-hero__lede" data-rise>
@@ -216,48 +239,122 @@
       recruiting, the résumé prints to a clean two-page PDF straight from the
       browser — no form, no download gate.
     </p>
-  </div>
-</section>
 
-<section style="padding-top:0;border:0" aria-labelledby="ways-h">
-  <div class="shell shell--narrow">
-    <h2 class="vh" id="ways-h">Ways to get in touch</h2>
+    <div class="vc__stage" data-vcard>
+      <span class="vc__shadow" aria-hidden="true"></span>
 
-    <div class="contact-list" data-motion="sequence">
+      <div class="vc__card" data-vcard-body>
 
-      <a href="mailto:connor.eppolito803@myci.csuci.edu">
-        <span>
-          <span class="k">Email — best</span>
-          <span class="v">connor.eppolito803@myci.csuci.edu</span>
-        </span>
-        <span class="arrow" aria-hidden="true">&rarr;</span>
-      </a>
+        <!-- FRONT -->
+        <div class="vc__face vc__face--front" data-vc-face="front">
+          <div class="vc__grain" aria-hidden="true"></div>
 
-      <a href="https://www.linkedin.com/in/connor-eppolito-2aba63310/" rel="me noopener">
-        <span>
-          <span class="k">LinkedIn</span>
-          <span class="v">linkedin.com/in/connor-eppolito-2aba63310</span>
-        </span>
-        <span class="arrow" aria-hidden="true">&rarr;</span>
-      </a>
+          <div class="vc__row">
+            <p class="vc__eyebrow">Camarillo, California</p>
+            <p class="vc__eyebrow vc__eyebrow--r">@cvree</p>
+          </div>
 
-      <a href="https://github.com/cvree" rel="me noopener">
-        <span>
-          <span class="k">GitHub</span>
-          <span class="v">github.com/cvree</span>
-        </span>
-        <span class="arrow" aria-hidden="true">&rarr;</span>
-      </a>
+          <div class="vc__mid">
+            <div>
+              <p class="vc__name">Connor <em>Eppolito</em></p>
+              <p class="vc__role">Health Science · NREMT-Certified EMT<br />Product Builder · CSUCI Esports President</p>
+            </div>
 
-      <a href="resume.html">
-        <span>
-          <span class="k">Résumé</span>
-          <span class="v">Read on screen, or print to PDF</span>
-        </span>
-        <span class="arrow" aria-hidden="true">&rarr;</span>
-      </a>
+            <!-- The same three planes the home page assembles, at card size
+                 and struck in foil rather than in light. -->
+            <svg class="vc__mark" viewBox="0 0 560 400" fill="none" focusable="false" aria-hidden="true">
+              <g class="vc__plane vc__plane--care">
+                <path class="vc__arc" d="M225.9 109.6 A118 118 0 1 0 225.9 290.4" />
+                <circle class="vc__lead" cx="225.9" cy="109.6" r="6" />
+                <circle class="vc__lead" cx="225.9" cy="290.4" r="6" />
+              </g>
+              <g class="vc__plane vc__plane--build">
+                <path class="vc__trunk" d="M330 110 V290" />
+                <path class="vc__trunk" d="M330 110 H470" />
+                <path class="vc__trunk" d="M330 200 H428" />
+                <path class="vc__trunk" d="M330 290 H470" />
+                <circle class="vc__node" cx="330" cy="110" r="7" />
+                <circle class="vc__node" cx="330" cy="200" r="7" />
+                <circle class="vc__node" cx="330" cy="290" r="7" />
+              </g>
+              <g class="vc__plane vc__plane--compete">
+                <path class="vc__brk" d="M544 150 H512 V172" />
+                <path class="vc__brk" d="M544 194 H512 V172" />
+                <path class="vc__brk" d="M544 206 H512 V228" />
+                <path class="vc__brk" d="M544 250 H512 V228" />
+                <path class="vc__brk" d="M512 172 H484 V200" />
+                <path class="vc__brk" d="M512 228 H484 V200" />
+                <path class="vc__brk" d="M484 200 H432" />
+                <circle class="vc__crown" cx="484" cy="200" r="5.5" />
+              </g>
+            </svg>
+          </div>
 
+          <!-- The signal, struck across the foot of the card. -->
+          <svg class="vc__trace" viewBox="0 0 900 60" preserveAspectRatio="none" focusable="false" aria-hidden="true">
+            <path d="M0 30 H210 L222 30 L230 20 L240 40 L248 30 L262 30 H430 L444 30 L452 14 L460 30 L468 30 L477 2 L488 58 L498 22 L508 30 H700 L712 30 L720 20 L730 40 L738 30 L752 30 H900" />
+          </svg>
+
+          <p class="vc__foot">Available December 2026 · health informatics, clinical, research and product</p>
+          <span class="vc__sheen" aria-hidden="true"></span>
+        </div>
+
+        <!-- BACK -->
+        <div class="vc__face vc__face--back" data-vc-face="back">
+          <div class="vc__grain" aria-hidden="true"></div>
+
+          <h2 class="vc__h" id="ways-h">Ways to get in touch</h2>
+
+          <ul class="vc__ways">
+            <li>
+              <a href="mailto:connor.eppolito803@myci.csuci.edu">
+                <span class="k">Email — best</span>
+                <span class="v">connor.eppolito803@myci.csuci.edu</span>
+                <span class="arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/connor-eppolito-2aba63310/" rel="me noopener">
+                <span class="k">LinkedIn</span>
+                <span class="v">linkedin.com/in/connor-eppolito-2aba63310</span>
+                <span class="arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/cvree" rel="me noopener">
+                <span class="k">GitHub</span>
+                <span class="v">github.com/cvree</span>
+                <span class="arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </li>
+            <li>
+              <a href="resume.html">
+                <span class="k">Résumé</span>
+                <span class="v">Read on screen, or print to PDF</span>
+                <span class="arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </li>
+          </ul>
+
+          <span class="vc__sheen" aria-hidden="true"></span>
+        </div>
+
+        <!-- The four edges. A card with no thickness is two rectangles. -->
+        <span class="vc__edge vc__edge--t" aria-hidden="true"></span>
+        <span class="vc__edge vc__edge--b" aria-hidden="true"></span>
+        <span class="vc__edge vc__edge--l" aria-hidden="true"></span>
+        <span class="vc__edge vc__edge--r" aria-hidden="true"></span>
+      </div>
     </div>
+
+    <!-- Only rendered where it can work, and it is the card's real state:
+         aria-pressed says which way up it is, and the label says what pressing
+         it will do next. -->
+    <button class="vc__turn" type="button" data-vcard-flip aria-pressed="false">
+      <span class="vc__turnicon" aria-hidden="true"></span>
+      <span data-vc-label>Turn the card over</span>
+    </button>
+
   </div>
 </section>
 
