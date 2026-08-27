@@ -25,7 +25,7 @@ for (const p of PAGES) {
             !e.classList.contains('btn');
           // A project title's ::after covers the whole card, so the card is the
           // target and the link's own box is not the hit area.
-          const card = !!e.closest('.work__title');
+          const card = !!e.closest('.wk__t');
           return { h: r.height, text: (e.textContent || '').trim().slice(0, 30), skip: e.classList.contains('skip'), inline, card };
         })
         .filter((x) => x.h > 0 && x.h < 44 && !x.skip && !x.inline && !x.card)
@@ -36,21 +36,27 @@ for (const p of PAGES) {
 }
 
 test('the whole project card is one tap target', async ({ page }) => {
-  await page.goto('work.html', { waitUntil: 'load' });
-  const card = page.locator('.work').first();
+  test.setTimeout(90_000);
+  await page.goto('index.html', { waitUntil: 'load' });
+  /* The room's reading column is the target: the title's ::after covers it, so
+     a thumb landing on the blurb or on the proof figures goes to the case
+     study. The scene beside it is a picture of the product and stays one. */
+  const card = page.locator('.wk .wk__body').first();
   await card.scrollIntoViewIfNeeded();
   const box = (await card.boundingBox())!;
-  // Tapping anywhere in the card row navigates, because the title's ::after
-  // covers it — so a thumb landing on the blurb goes to the case study.
   await card.click({ position: { x: box.width / 2, y: box.height - 24 } });
-  await expect(page).toHaveURL(/spellbomb\.html$/);
+  /* Generous, because what this test is about is the hit area and nothing
+     else. How fast the navigation completes is transitions.spec.ts's
+     assertion, and on a CI machine software-rasterising the atmosphere plane
+     in every one of a dozen parallel workers it is not five seconds. */
+  await expect(page).toHaveURL(/spellbomb\.html$/, { timeout: 45000 });
 });
 
 test('landscape keeps the menu reachable and the page within its width', async ({ page }) => {
   await page.setViewportSize({ width: 844, height: 390 });
   await page.goto('index.html', { waitUntil: 'load' });
   await page.locator('[data-menu] summary').click();
-  await expect(page.locator('.navmob__panel').getByRole('link', { name: 'Selected Work' })).toBeVisible();
+  await expect(page.locator('.navmob__panel').getByRole('link', { name: 'Projects' })).toBeVisible();
   const over = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth
   );
@@ -60,8 +66,7 @@ test('landscape keeps the menu reachable and the page within its width', async (
 test('turning the system preference on mid-visit stops the renderer', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('index.html', { waitUntil: 'load' });
-  await page.waitForTimeout(3000);
+  await expect.poll(() => page.locator('canvas').count(), { timeout: 12000 }).toBe(1);
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.waitForTimeout(1200);
-  expect(await page.locator('canvas').count()).toBe(0);
+  await expect.poll(() => page.locator('canvas').count(), { timeout: 6000 }).toBe(0);
 });
