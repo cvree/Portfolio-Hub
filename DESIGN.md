@@ -113,13 +113,14 @@ with no pointer at all the scroll turns it instead.
 
 ### Colour
 
-Two surfaces, and they mean different things:
+Three surfaces, and they mean different things:
 
 | Token | Value | Role |
 | --- | --- | --- |
 | `--ink` | `#0b0c0e` | The site proper — cinematic, atmospheric |
 | `--ink-raised` | `#121418` | A card, a row, a reconstructed layer |
-| `--paper` | `#f4f0e8` | The printed artefact: the résumé |
+| `--ink-deep` | `#07080a` | The record: the résumé, the same room one stop darker |
+| `--paper` | `#f4f0e8` | The printed artefact — what the print stylesheet makes |
 | `--text` | `#ece8df` | 15.9:1 on ink |
 | `--text-quiet` | `#9d9a90` | 7.0:1 on ink — the floor for anything under 18 px |
 | `--text-faint` | `#6f6d66` | 3.8:1. **Large text and non-text marks only.** |
@@ -379,8 +380,12 @@ Three decisions make it usable rather than merely present:
   frames are indistinguishable and cost exactly as much, and this is now the
   whole site's cost rather than one hero's.
 
-The résumé is the one page set on paper. A plane that draws light on black has
-nothing to say on it, so it is not asked to.
+The résumé is the one page set on the record surface, and the plane runs there
+too — at half its voice, over a floor one stop darker than the rest of the
+site. It used to be set on ivory, which made the one page a visitor is most
+likely to read the one page that did not look like this site. Paper is still
+where the résumé ends up; paper is what the print stylesheet makes, and the
+plane has nothing to say there, so on paper it is not asked to.
 
 ### The legibility floor
 
@@ -481,6 +486,48 @@ cut to — and any input at all ends the glide immediately.
 
 A masthead is a place to go, not an index. The complete map of the site is at
 the foot of every page, where a map belongs.
+
+---
+
+## 4f. The résumé: one record, one journey
+
+The résumé is the page the site exists to hand somebody, and for a long time it
+was the page that looked least like the site: warm ivory, a light colour scheme,
+a shader switched off — a sheet of paper photographed and hung in a dark room.
+The vibe did not survive the click.
+
+It is now set on **the record**: the same ink, the same atmosphere plane, the
+same ECG across the top, with the floor one stop darker (`--ink-deep`), the
+plane at 42 % and the grain at a tenth. Nothing about the language changes. The
+light is turned down, the way a room is dimmed for something that is going to be
+read rather than looked at.
+
+**The journey.** Experience and education used to be two lists, each in its own
+order, and a reader had to interleave them to answer the only question either
+of them is asked: what happened, and in what order. They are now one spine, read
+top to bottom, newest first:
+
+- **Study on one side of the line, work on the other**, so the kind of an entry
+  is legible before a word of it is. The icon on the node says it a second time,
+  the word is written in the card for anybody served by neither, and the key
+  above the timeline states it once in plain language.
+- **Boxes mirror; text does not.** A card left of the spine is still read from
+  its left edge. Right-ragged copy with the bullets hanging off the far side is
+  a picture of symmetry paid for in legibility.
+- **Four entries carry a relative date** — *Certified*, *Graduated*, *Earlier*,
+  *Prior* — because a month is not on the record for them. They are placed where
+  they belong in the order and labelled with what is actually known. Guessing the
+  position of an undated entry is editing; printing a month nobody has is a
+  claim.
+- **On paper the spine is deleted.** A page shows an order by being a page, so
+  print gets the same entries, in the same order, as one plain list: no line, no
+  nodes, no alternation, and the kind written out where the mark was.
+
+**The software is not on it.** Six shipped products with their own case studies
+were two of the résumé's five pages, and a reader who wants them is one line and
+one URL away. The résumé names them once, in the summary, and points at the
+site. What is left is the document a healthcare employer actually reads —
+experience, education, certifications, research, skills — on two pages.
 
 ---
 

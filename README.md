@@ -25,7 +25,8 @@ owcs-comp-tracker.html      │
 paper-animator.html         ┘
 experience.html             Roles, education, certifications, research
 about.html                  How I work, and what I want a screen to feel like
-resume.html                 The document — typeset for screen and for paper
+resume.html                 The document — one chronological journey on
+                            screen, a two-page record on paper
 contact.html                Email, LinkedIn, GitHub, and the practical details
 
 assets/site.css             The design system: tokens, layout, type, motion, print
@@ -87,7 +88,8 @@ Each page fragment opens with a small front-matter block:
 path: about.html
 title: About — Connor Eppolito
 nav: about                which navigation item is current
-surface: ink | paper      near-black, or the warm ivory document surface
+surface: ink | record     near-black, or the résumé's darker floor
+        | paper            the warm ivory document surface
 accent: spellbomb         the per-page accent colour
 desc: ...                 meta description and Open Graph description
 -->
@@ -111,11 +113,16 @@ interesting interaction · the problem being solved · current capabilities ·
 design and technical decisions · what changed across iterations · what comes
 next · where to find it.
 
-**A résumé that is a document.** `resume.html` is typeset twice — once for the
-screen on a warm ivory surface, and once in `@media print`, where the
-navigation, the atmosphere, the footer and the page's own instructions are
-removed and the type is re-set in points. Browser → Print → *Save as PDF*
-produces a clean two-page résumé with no separate PDF to keep in sync.
+**A résumé that is a document.** `resume.html` is typeset twice. On screen it
+is set on **the record** — the same ink, atmosphere and ECG as every other page,
+with the floor one stop darker and the plane at half voice — and experience and
+education are read as one timeline, newest first, study on one side of the spine
+and work on the other. In `@media print` the navigation, the atmosphere, the
+footer, the spine, the nodes and the page's own instructions are removed, the
+timeline collapses to one plain list in the same order, and the type is re-set in
+points. Browser → Print → *Save as PDF* produces a clean two-page résumé with no
+separate PDF to keep in sync. The six products are deliberately not on it: they
+are named once in the summary, with the URL that has the case studies.
 
 ## The screenshots
 
@@ -314,8 +321,8 @@ reports less than 4 GB is telling you it is small. Silence — a browser that
 declines to report at all — is none of those, and is no longer read as one. The
 plane is capped at device pixel ratio 1 below 900 px and 1.5 above it, stops
 when the tab is hidden, and releases its context on exit or on context loss. The
-résumé is set on paper and does not get it: a plane that draws light on black
-has nothing to say there.
+résumé runs it at 42 % over a darker floor, and paper does not get it at all:
+a plane that draws light on black has nothing to say on a printed sheet.
 
 ## Projects — six living specimens
 

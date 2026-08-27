@@ -8,8 +8,10 @@
    The system has two surfaces and they mean different things:
 
      .on-ink     near-black. The site proper — cinematic, atmospheric.
-     .on-paper   warm ivory. The printed artefact: the résumé, and anything
-                 that wants to read like a document rather than a screen.
+     .on-record  the same room, one stop darker. The résumé: the site's one
+                 document, read more slowly and therefore lit lower.
+     .on-paper   warm ivory. What the print stylesheet makes, and the surface
+                 anything set to read like a printed sheet inherits.
 
    Every page sets --accent once, from the product it is about. Chrome — the
    navigation, the rules, the type — never changes colour. Only the marks do.
@@ -22,6 +24,8 @@
   --ink:        #0b0c0e;
   --ink-raised: #121418;
   --ink-card:   #171a1f;
+  /* The résumé's floor. One stop under --ink: the same colour, less light. */
+  --ink-deep:   #07080a;
   --paper:      #f4f0e8;
   --paper-sunk: #e9e3d6;
 
@@ -161,6 +165,19 @@ a{ color:inherit; }
   color-scheme:light;
 }
 
+/* THE RECORD. The résumé is the one document on this site, and this is the
+   room it is read in: the same ink, the same atmosphere, the same trace across
+   the top — with the lights taken down one stop. A document is read more
+   slowly than a site is looked at, so it gets a quieter room, not a different
+   one. Paper has not gone anywhere; paper is what the print stylesheet makes,
+   and none of this survives into it. */
+.on-record{
+  background:var(--ink-deep);
+  --ink:var(--ink-deep);
+  --ink-raised:#0d0f12;
+  --ink-card:#101317;
+}
+
 /* THE ATMOSPHERE. One fixed plane, the whole viewport, every page.
 
    The wash below is the entire design with no script: two radial gradients,
@@ -208,6 +225,17 @@ a{ color:inherit; }
   mix-blend-mode:overlay;
 }
 .on-paper .grain{ opacity:.3; mix-blend-mode:multiply; }
+/* Same plane, same shader, half the voice. The atmosphere is the thing that
+   makes this page part of the site; the document is the thing being read on
+   it, and the document wins. */
+.on-record .atmos{
+  background:
+    radial-gradient(110vw 72vh at 86% -12%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 58%),
+    radial-gradient(78vw 58vh at -8% 6%, color-mix(in srgb, var(--cobalt) 6%, transparent), transparent 52%);
+  opacity:.5;
+}
+.on-record .atmos__canvas{ opacity:.42; }
+.on-record .grain{ opacity:.1; }
 
 /* --- layout --------------------------------------------------------------- */
 
@@ -649,37 +677,146 @@ figure.shot + figure.shot{ margin-top:1.5rem; }
 
 /* --- résumé --------------------------------------------------------------- */
 
+/* The document is written once and set twice: here, on the record surface, and
+   again in the print stylesheet. Everything below takes the surface's own
+   tokens rather than the paper ones, so the same markup is legible on ink, on
+   the record, and on a sheet of paper, without a second copy of it existing. */
 .cv{ --measure:43.2em; }
 .cv__head{
   display:grid; grid-template-columns:minmax(0,1fr) auto; gap:1.5rem; align-items:end;
-  padding-bottom:1.5rem; border-bottom:2px solid var(--p-text);
+  padding-bottom:1.5rem; border-bottom:1px solid var(--line-firm);
 }
 @media (max-width:760px){ .cv__head{ grid-template-columns:1fr; align-items:start; } }
 .cv__name{ font-family:var(--display); font-size:clamp(2.6rem,1.6rem+3.6vw,4.2rem); line-height:.98; letter-spacing:-.015em; }
-.cv__stance{ font-family:var(--ui); font-weight:500; font-size:1.02rem; margin-top:.7rem; }
+.cv__stance{ font-family:var(--ui); font-weight:500; font-size:1.02rem; margin-top:.7rem; color:var(--text-quiet); }
 .cv__contact{ font-family:var(--mono); font-size:.78rem; line-height:1.9; letter-spacing:.02em; text-align:right; }
 @media (max-width:760px){ .cv__contact{ text-align:left; } }
-.cv__contact a{ text-decoration:none; border-bottom:1px solid var(--p-line-firm); }
+.cv__contact a{ text-decoration:none; border-bottom:1px solid var(--line-firm); }
+.cv__contact a:hover{ border-bottom-color:var(--accent); }
 
-.cv__sec{ padding-block:clamp(1.6rem,3vw,2.4rem); border-bottom:1px solid var(--p-line); }
+.cv__sec{ padding-block:clamp(1.8rem,3.4vw,2.8rem); border-bottom:1px solid var(--line); }
 .cv__sec > h2{
   font-family:var(--mono); font-size:.74rem; letter-spacing:.18em; text-transform:uppercase;
-  color:var(--p-text-quiet); margin-bottom:1.3rem;
+  color:var(--text-quiet); margin-bottom:1.3rem;
 }
-.cv__entry + .cv__entry{ margin-top:1.6rem; padding-top:1.6rem; border-top:1px solid var(--p-line); }
+.cv__entry + .cv__entry{ margin-top:1.6rem; padding-top:1.6rem; border-top:1px solid var(--line); }
 .cv__row{ display:flex; flex-wrap:wrap; gap:.35rem 1rem; align-items:baseline; justify-content:space-between; }
 .cv__role{ font-family:var(--ui); font-weight:700; font-size:1.08rem; }
-.cv__org{ font-family:var(--ui); font-weight:500; font-size:.98rem; color:var(--p-text-quiet); margin-top:.2rem; }
-.cv__dates{ font-family:var(--mono); font-size:.74rem; letter-spacing:.08em; color:var(--p-text-quiet); white-space:nowrap; }
+.cv__org{ font-family:var(--ui); font-weight:500; font-size:.98rem; color:var(--text-quiet); margin-top:.2rem; }
+.cv__dates{ font-family:var(--mono); font-size:.74rem; letter-spacing:.08em; color:var(--text-quiet); white-space:nowrap; }
 .cv__points{ margin-top:.85rem; display:grid; gap:.5rem; }
-.cv__points li{ position:relative; padding-left:1.25rem; font-size:1rem; line-height:1.55; }
-.cv__points li::before{ content:""; position:absolute; left:0; top:.66em; width:.55rem; height:1px; background:var(--p-text-faint); }
+.cv__points li{ position:relative; padding-left:1.25rem; font-size:1rem; line-height:1.55; color:var(--text-quiet); }
+.cv__points li::before{ content:""; position:absolute; left:0; top:.66em; width:.55rem; height:1px; background:var(--accent); }
 
 .cv__skills{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
 .cv__skills dt{ font-family:var(--ui); font-weight:700; font-size:.94rem; margin-bottom:.3rem; }
-.cv__skills dd{ margin:0; font-size:.98rem; line-height:1.5; color:var(--p-text-quiet); }
+.cv__skills dd{ margin:0; font-size:.98rem; line-height:1.5; color:var(--text-quiet); }
 
-.cv__note{ font-size:.9rem; color:var(--p-text-quiet); margin-top:1rem; }
+.cv__note{ font-size:.9rem; color:var(--text-quiet); margin-top:1rem; }
+
+/* --- the journey ---------------------------------------------------------- */
+
+/* One spine, read top to bottom, newest first. Study leaves on one side of it,
+   work on the other, so which kind of thing an entry is can be read before a
+   word of it is — the icon says the same thing a second time, and the kind is
+   written out in the card for anybody who is served by neither.
+
+   The spine is a hairline, not a decorated rail: the site already has one
+   signal, and it runs across the top of every page. This is the document's own
+   structure showing through, and it prints as a plain list. */
+.jour{ --node:46px; position:relative; display:grid; gap:clamp(1.1rem,2.4vw,1.9rem); }
+
+/* The line itself. It is drawn behind the nodes, stops short at both ends, and
+   is one element rather than a border on every row — a border on every row
+   leaves a seam at each gap. */
+.jour::before{
+  content:""; position:absolute; top:.4rem; bottom:.4rem; width:1px;
+  left:calc(var(--node) / 2); transform:translateX(-.5px);
+  background:linear-gradient(to bottom,
+    transparent, var(--line-firm) 5%, var(--line-firm) 95%, transparent);
+}
+
+.jour__row{
+  position:relative;
+  display:grid; grid-template-columns:var(--node) minmax(0,1fr);
+  gap:0 clamp(.9rem,2vw,1.4rem);
+  align-items:start;
+}
+
+/* The node: a square on the line carrying the one mark that says which kind of
+   entry this is. It is decoration over text that already says so, which is why
+   it is aria-hidden in the markup. */
+.jour__node{
+  width:var(--node); height:var(--node);
+  display:grid; place-items:center;
+  border:1px solid var(--line-firm); border-radius:var(--radius);
+  background:var(--ink-raised);
+  position:relative; z-index:1;
+}
+.jour__node svg{ width:20px; height:20px; }
+.jour__row--edu .jour__node{ color:var(--accent); }
+.jour__row--work .jour__node{ color:var(--text); }
+
+.jour__card{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:color-mix(in srgb, var(--ink-card) 72%, transparent);
+  padding:clamp(1rem,2.2vw,1.35rem) clamp(1.1rem,2.4vw,1.5rem) clamp(1.1rem,2.4vw,1.45rem);
+  transition:border-color 260ms var(--ease), background 260ms var(--ease);
+}
+.jour__card:hover{
+  border-color:var(--accent-line);
+  background:color-mix(in srgb, var(--ink-card) 92%, transparent);
+}
+.jour__kind{
+  font-family:var(--mono); font-size:.66rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--text-faint); margin-bottom:.55rem;
+}
+.jour__when{
+  font-family:var(--mono); font-size:.74rem; letter-spacing:.08em;
+  color:var(--accent); margin-top:.55rem;
+}
+.jour__card .cv__points{ margin-top:.8rem; }
+
+/* A short rule from the node to the card, so the two read as one object rather
+   than as a box that happens to sit beside an icon. */
+.jour__row::after{
+  content:""; position:absolute; top:calc(var(--node) / 2); height:1px;
+  left:var(--node); width:clamp(.9rem,2vw,1.4rem);
+  background:var(--line-firm);
+}
+
+/* Wide: the spine moves to the middle, study goes right, work goes left. */
+@media (min-width:900px){
+  .jour{ --node:52px; }
+  .jour__row{
+    grid-template-columns:minmax(0,1fr) var(--node) minmax(0,1fr);
+    gap:0 clamp(1.1rem,2.2vw,1.8rem);
+  }
+  .jour::before{ left:50%; }
+  .jour__node{ grid-column:2; grid-row:1; }
+  .jour__row--edu .jour__card{ grid-column:3; grid-row:1; }
+  .jour__row--work .jour__card{ grid-column:1; grid-row:1; }
+  /* Mirrored boxes, not mirrored text. A card on the left of the spine is
+     still read from the left edge — right-ragged copy and bullets hanging off
+     their right side would be a picture of symmetry paid for in legibility. */
+  .jour__row::after{ left:auto; width:clamp(1.1rem,2.2vw,1.8rem); }
+  .jour__row--edu::after{ left:calc(50% + var(--node) / 2); }
+  .jour__row--work::after{ right:calc(50% + var(--node) / 2); }
+}
+
+/* The key. Two marks and two words, once, so the sides are stated rather than
+   inferred — and it is the same two icons the nodes carry. */
+.jour-key{
+  display:flex; flex-wrap:wrap; gap:.6rem 1.4rem; align-items:center;
+  margin-bottom:clamp(1.4rem,3vw,2.2rem);
+  font-family:var(--mono); font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--text-quiet);
+}
+.jour-key span{ display:inline-flex; align-items:center; gap:.5rem; }
+.jour-key svg{ width:15px; height:15px; }
+.jour-key .k-edu{ color:var(--accent); }
+.jour-key .k-work{ color:var(--text); }
 
 /* --- research card -------------------------------------------------------- */
 
@@ -890,7 +1027,7 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
 
   .cv__head{ border-bottom:1.2pt solid #000; padding-bottom:5pt; }
   .cv__name{ font-size:20pt; }
-  .cv__stance{ font-size:8pt; margin-top:2pt; }
+  .cv__stance{ font-size:8pt; margin-top:2pt; color:#333; }
   .cv__contact{ font-size:6.9pt; line-height:1.4; }
 
   .cv__sec{ padding-block:4.5pt 3pt; border-bottom:.5pt solid #999; break-inside:auto; }
@@ -901,7 +1038,7 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
   .cv__org{ font-size:7.5pt; color:#333; margin-top:0; }
   .cv__dates{ font-size:7.2pt; color:#333; }
   .cv__points{ margin-top:3pt; gap:1.5pt; }
-  .cv__points li{ font-size:8.5pt; line-height:1.26; padding-left:7pt; }
+  .cv__points li{ font-size:8.5pt; line-height:1.26; padding-left:7pt; color:#111; }
   .cv__points li::before{ background:#000; top:.62em; width:4.5pt; }
   .cv__row{ gap:1pt 8pt; }
   .cv__skills{ gap:5pt 14pt; grid-template-columns:1fr 1fr; }
@@ -909,15 +1046,29 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
   .cv__skills dd{ color:#222; font-size:7.4pt; line-height:1.26; }
   .cv__note{ color:#444; font-size:7.2pt; margin-top:5pt; }
 
-  /* The two long sections are the reason a full record ran to five pages. Set
-     in two columns they are the same words at the same size, read the way a
-     dense reference section is normally read — and the whole document lands on
-     two pages without a single claim being dropped for paper. */
-  .cv__sec--cols{ column-count:2; column-gap:14pt; }
-  .cv__sec--cols .cv__entry{ break-inside:avoid; }
-  .cv__sec--cols > h2{ column-span:all; }
-  .cv__sec--cols > p{ column-span:all; font-size:7.4pt; margin-bottom:3pt !important; }
-  .cv__sec--cols .cv__entry + .cv__entry{ margin-top:4pt; padding-top:4pt; }
+  /* THE JOURNEY, ON PAPER. A spine, two sides and an icon are how a screen
+     shows an order that a page shows for free by being a page. So paper gets
+     the same entries, in the same order, as one plain list: no line, no nodes,
+     no alternation, and the kind of each entry — study or work — written out
+     where the mark used to be. Nothing is dropped and nothing is re-ordered. */
+  .jour{ display:block; }
+  .jour::before,
+  .jour__row::after,
+  .jour__node,
+  .jour-key{ display:none !important; }
+  .jour__row{ display:block; break-inside:avoid; }
+  .jour__row + .jour__row{ margin-top:5pt; padding-top:5pt; border-top:.5pt solid #ccc; }
+  .jour__card{
+    border:0 !important; background:none !important; padding:0 !important;
+    text-align:left !important;
+  }
+  .jour__card .cv__points li{ padding-left:7pt !important; padding-right:0 !important; }
+  .jour__card .cv__points li::before{ left:0 !important; right:auto !important; }
+  .jour__kind{
+    font-size:6.6pt; letter-spacing:.14em; color:#555; margin-bottom:1pt;
+  }
+  .jour__when{ font-size:7.2pt; color:#333; margin-top:1pt; letter-spacing:.06em; }
+  .jour__card .cv__points{ margin-top:3pt; }
 
   .cv__sec > p{ font-size:7.9pt; line-height:1.3; }
 

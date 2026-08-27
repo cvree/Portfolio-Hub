@@ -78,6 +78,9 @@ REDIRECT = """<!DOCTYPE html>
 
 SURFACES = {
     "ink": ("on-ink", "#0b0c0e", "dark"),
+    # The résumé's own surface: the same room as the rest of the site, one stop
+    # darker, because a document is read more slowly than a site is looked at.
+    "record": ("on-record", "#07080a", "dark"),
     "paper": ("on-paper", "#f4f0e8", "light"),
 }
 
