@@ -4,22 +4,30 @@
    Enhancement only. Everything on every page is complete, readable, navigable
    and linkable with this file absent, blocked, or thrown out by an error.
 
-   Five small jobs:
-     1. reveal-on-scroll for anything carrying [data-rise] or [data-motion]
+   Eight small jobs:
+     1. reveal-on-scroll for anything carrying [data-rise], [data-motion] or
+        [data-scene]
      2. a hairline reading-progress bar
      3. closing the mobile menu on Escape, on outside click, and on navigation
-     4. the global Motion On/Off control
-     5. the cinematic layer — and, far more often, the decision not to load it
-     6. the home page's channel selector, which is a control rather than a
-        decoration and therefore has a much looser gate than the shader does
+     4. the global Motion On/Off control — the one switch in the masthead
+     5. the Projects rail: which room you are in, how far through, and
+        what colour the room the whole page is read in should be
+     6. the glide: an eased, interruptible scroll for same-page links, and the
+        composed arrival for a URL that turns up carrying a fragment
+     7. the contact card, which turns over
+     8. the three lazy layers, and far more often the decision not to load them,
+        and telling the atmosphere where on the screen the words currently are
 
-   Jobs 1-3 are the site. Job 5 is an escalation that is allowed to happen only
-   after the useful page has painted, and only when the device, the pointer,
-   the viewport, the reported memory, Save-Data and the visitor's own motion
-   preference all say yes. Neither cinematic bundle is in the critical path and
-   neither is ever required for the page to be complete.
+   Jobs 1-7 are the site, and every one of them is small enough to live in the
+   critical file. The hero's whole arrival choreography is CSS — this file only
+   ends it when you touch something. Job 8 is an escalation that happens only
+   after the useful page has painted, and only when the device, Save-Data and
+   the visitor's own motion preference all say yes. No lazy module is ever
+   required for a page to be complete.
 
-   Nothing here hijacks scrolling, and nothing here plays sound.
+   Nothing here holds the scroll against you, and nothing here plays sound. The
+   one thing that moves the page on its own is job 6; it runs only because a
+   link was followed, and the first wheel notch, touch or key ends it.
    =========================================================================== */
 
 (function () {
@@ -57,7 +65,7 @@
   /* If the preference is turned on mid-visit, reveal everything immediately
      rather than leaving whatever had not scrolled into view hidden forever. */
   function revealAll() {
-    var all = document.querySelectorAll("[data-rise], [data-motion]");
+    var all = document.querySelectorAll("body [data-rise], body [data-motion], body [data-scene]");
     for (var i = 0; i < all.length; i++) all[i].classList.add("is-in");
   }
 
@@ -70,7 +78,7 @@
   /* --- 1. reveal on scroll ------------------------------------------------- */
 
   function reveals() {
-    var targets = document.querySelectorAll("[data-rise], [data-motion]");
+    var targets = document.querySelectorAll("body [data-rise], body [data-motion], body [data-scene]");
     if (!targets.length) return;
 
     if (still() || !("IntersectionObserver" in window)) {
@@ -166,49 +174,407 @@
     });
   }
 
-  /* --- 3b. arrival: the monitor acquires signal ---------------------------- */
+  /* --- 3b. arrival, and the right to interrupt it ------------------------- */
 
-  /* Not a loader, and deliberately not shaped like one: the page is complete,
-     painted and clickable the entire time this runs. It is the trace catching
-     up to a document that is already there. It plays once, it takes about a
-     second and a quarter, and the first input of any kind cuts it short. */
-  function acquire() {
-    var rails = document.querySelectorAll("[data-pulse]");
-    if (!rails.length || still()) return;
-
-    for (var i = 0; i < rails.length; i++) {
-      rails[i].classList.add("is-acquiring");
-      rails[i].classList.add("is-sweeping");
-    }
+  /* The hero's whole entrance is CSS keyframes: it starts at first paint, it
+     costs the main thread nothing, and it is finished inside about a second
+     and a half. This function does exactly one thing — it ends the sequence
+     the moment the visitor does anything at all, because nobody should have to
+     wait out a piece of choreography to read a name. Adding .is-settled drops
+     every animation and leaves the composed final frame, which is the frame
+     the page was designed around anyway. */
+  function arrival() {
+    var scene = document.querySelector("[data-signal]");
+    if (!scene) return;
 
     var done = false;
     function settle() {
       if (done) return;
       done = true;
-      for (var j = 0; j < rails.length; j++) {
-        rails[j].classList.remove("is-acquiring");
-        rails[j].classList.remove("is-sweeping");
-      }
+      scene.classList.add("is-settled");
       window.removeEventListener("pointerdown", settle, true);
       window.removeEventListener("keydown", settle, true);
       window.removeEventListener("wheel", settle, true);
       window.removeEventListener("touchstart", settle, true);
+      window.removeEventListener("scroll", settle, true);
     }
 
-    window.setTimeout(settle, 1560);
+    if (still()) {
+      settle();
+      return;
+    }
+
+    window.setTimeout(settle, 2400);
     window.addEventListener("pointerdown", settle, true);
     window.addEventListener("keydown", settle, true);
     window.addEventListener("wheel", settle, { capture: true, passive: true });
     window.addEventListener("touchstart", settle, { capture: true, passive: true });
+    window.addEventListener("scroll", settle, { capture: true, passive: true });
+  }
+
+  /* --- 3d. the Projects rail ------------------------------------------------
+     Six rooms, one spine. The rail's links are ordinary same-page anchors and
+     stay that way: all this does is report which room you are in — aria-current
+     on the matching link, the room's accent on the rail, and how far through
+     the six you have read, as a stroke length on the spine.
+
+     It never converts the articles into tabs, never hides an inactive one and
+     never competes with the scroll position for authority. */
+  function theatre() {
+    var host = document.querySelector("[data-theatre]");
+    if (!host || !("IntersectionObserver" in window)) return;
+
+    var rooms = [].slice.call(host.querySelectorAll("[data-wk]"));
+    var links = [].slice.call(host.querySelectorAll("[data-rail]"));
+    var spine = host.querySelector("[data-spine]");
+    var counter = host.querySelector("[data-rail-n]");
+    if (!rooms.length) return;
+
+    var active = "";
+    function mark(name) {
+      if (name === active) return;
+      active = name;
+      var n = 0;
+      for (var i = 0; i < links.length; i++) {
+        var on = links[i].getAttribute("data-rail") === name;
+        if (on) {
+          links[i].setAttribute("aria-current", "true");
+          n = i + 1;
+        } else {
+          links[i].removeAttribute("aria-current");
+        }
+      }
+      var room = host.querySelector('[data-wk="' + name + '"]');
+      if (room) {
+        host.setAttribute("data-accent", room.getAttribute("data-accent") || "");
+        /* And the room the whole page is read in follows what you are reading.
+           The colour is taken from the room's own computed accent rather than
+           from a second list of hex values kept in step by hand, and it goes
+           out through the document so the shader can answer without either
+           side knowing the other is there. */
+        var hue = getComputedStyle(room).getPropertyValue("--accent");
+        if (hue) {
+          document.dispatchEvent(new CustomEvent("ce:room", {
+            detail: {
+              accent: hue.trim(),
+              optics: { interference: 0.8 + (n % 3) * 0.35, refraction: 0.78 + (n % 4) * 0.2 }
+            }
+          }));
+        }
+      }
+      if (counter) counter.textContent = n < 10 ? "0" + n : String(n);
+      if (spine) spine.style.setProperty("--spine", rooms.length ? n / rooms.length : 0);
+    }
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        /* The room whose middle is nearest the middle of the viewport wins.
+           Reading the DOM order rather than the entry order keeps the answer
+           stable when two rooms are on screen at once. */
+        var best = null;
+        var mid = window.innerHeight / 2;
+        for (var i = 0; i < rooms.length; i++) {
+          var b = rooms[i].getBoundingClientRect();
+          if (b.bottom < 0 || b.top > window.innerHeight) continue;
+          var d = Math.abs(b.top + b.height / 2 - mid);
+          if (!best || d < best.d) best = { d: d, el: rooms[i] };
+        }
+        if (best) mark(best.el.getAttribute("data-wk"));
+        void entries;
+      },
+      { rootMargin: "-20% 0px -20% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
+    for (var i = 0; i < rooms.length; i++) io.observe(rooms[i]);
+  }
+
+  /* --- 3d2. the glide -------------------------------------------------------
+     There is one page on this site now where "Projects" is a place rather than
+     a document, and a place has to be arrived at rather than cut to. This is
+     the whole of that: an eased scroll that any same-page link hands its
+     destination to, and that gives up the instant the visitor does anything
+     at all.
+
+     It is not a scroll hijack. It never listens to the wheel to decide where
+     the page goes, it never holds a position against you, and it owns the
+     scroll for at most a second — the first wheel notch, touch, key or click
+     cancels it mid-flight and hands the page straight back. With reduced
+     motion asked for, or with this file absent, `scroll-behavior:smooth` and
+     `scroll-padding-top` in the stylesheet do the same job in one hop, which
+     is why nothing below is required for a fragment link to work. */
+  var flight = null;
+
+  /* `window.scrollTo(x, y)` honours the CSS `scroll-behavior` of the scrolling
+     element, and this stylesheet sets that to `smooth` — so every frame of the
+     eased scroll below would kick off its own second, native, eased scroll
+     toward the same place, and the two would compound into something neither
+     of them meant. For exactly as long as a flight owns the scroll, the
+     document's own behaviour is `auto` and this file is the only thing easing
+     anything; the moment the flight ends, the stylesheet has it back. */
+  function ownScroll(on) {
+    root.style.scrollBehavior = on ? "auto" : "";
+  }
+
+  function landing() {
+    /* One number, and the stylesheet owns it: --land is what clears the
+       sticky masthead, and reading it back means this file never carries a
+       second copy of the masthead's height. */
+    var pad = parseFloat(getComputedStyle(root).scrollPaddingTop);
+    return isFinite(pad) ? pad : 0;
+  }
+
+  function restAt(el) {
+    var own = parseFloat(getComputedStyle(el).scrollMarginTop);
+    var y = el.getBoundingClientRect().top + (window.pageYOffset || root.scrollTop);
+    return y - landing() - (isFinite(own) ? own : 0);
+  }
+
+  function glideTo(y) {
+    var ceiling = Math.max(0, root.scrollHeight - window.innerHeight);
+    y = Math.max(0, Math.min(ceiling, y));
+    var from = window.pageYOffset || root.scrollTop;
+    var span = y - from;
+
+    if (still() || Math.abs(span) < 2 || !window.requestAnimationFrame) {
+      flight = null;
+      ownScroll(true);
+      window.scrollTo(0, y);
+      ownScroll(false);
+      return;
+    }
+
+    /* Long enough to read as travel, short enough never to be a wait. The
+       duration follows the distance and is bounded at both ends, so a hop to
+       the next section and a jump across the whole document both feel like
+       the same page moving at the same speed. */
+    var ms = Math.max(420, Math.min(1150, 280 + Math.abs(span) * 0.34));
+    var t0 = null;
+    var mine = (flight = {});
+
+    function frame(t) {
+      if (flight !== mine) return;
+      if (t0 === null) t0 = t;
+      var k = Math.min(1, (t - t0) / ms);
+      /* Leaves at rest and arrives at rest, symmetrically. Anything that
+         starts at speed reads as a jump that was slowed down. */
+      var e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      window.scrollTo(0, from + span * e);
+      if (k < 1) {
+        window.requestAnimationFrame(frame);
+      } else {
+        flight = null;
+        ownScroll(false);
+      }
+    }
+
+    ownScroll(true);
+    window.requestAnimationFrame(frame);
+  }
+
+  /* The page belongs to whoever is holding it. Any of these and the glide is
+     over — not paused, over. */
+  function release() {
+    if (!flight) return;
+    flight = null;
+    ownScroll(false);
+  }
+
+  function focusLanding(el) {
+    if (el.tabIndex < 0 && !el.hasAttribute("tabindex")) {
+      el.setAttribute("tabindex", "-1");
+      el.addEventListener(
+        "blur",
+        function () {
+          el.removeAttribute("tabindex");
+        },
+        { once: true }
+      );
+    }
+    try {
+      el.focus({ preventScroll: true });
+    } catch (e) {
+      /* a browser without the options bag would scroll; better not to focus */
+    }
+  }
+
+  function fragment(hash) {
+    if (!hash || hash.length < 2) return null;
+    var id;
+    try {
+      id = decodeURIComponent(hash.slice(1));
+    } catch (e) {
+      id = hash.slice(1);
+    }
+    return document.getElementById(id) || null;
+  }
+
+  function anchors() {
+    var quit = ["wheel", "touchstart", "pointerdown", "keydown"];
+    for (var i = 0; i < quit.length; i++) {
+      window.addEventListener(quit[i], release, { capture: true, passive: true });
+    }
+
+    document.addEventListener("click", function (ev) {
+      if (ev.defaultPrevented || ev.button !== 0) return;
+      if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+
+      var a = ev.target.closest ? ev.target.closest("a[href]") : null;
+      if (!a || a.hasAttribute("download") || (a.target && a.target !== "_self")) return;
+      /* The skip link is the one same-page link that must not travel: its
+         whole purpose is to be over before you notice it. */
+      if (a.classList.contains("skip")) return;
+      if (a.protocol !== location.protocol || a.host !== location.host) return;
+      if (a.pathname !== location.pathname || a.search !== location.search) return;
+
+      var el = fragment(a.hash);
+      if (!el) return;
+
+      ev.preventDefault();
+      /* The address bar is right immediately, so a link copied mid-glide is
+         the link to where the page is going. */
+      if (window.history && history.pushState) history.pushState(null, "", a.hash);
+      else location.hash = a.hash;
+      focusLanding(el);
+      glideTo(restAt(el));
+    });
+  }
+
+  /* --- 3d3. arriving on a fragment ------------------------------------------
+     Projects is a place on the home page, and every route to it — the
+     masthead, the footer, a case study's own way back — is a URL carrying
+     #work. A browser answers that by cutting straight to it, which tells a
+     visitor nothing about what they landed in the middle of.
+
+     So the arrival is composed: the page is put down a screenful above its
+     destination and glides the last stretch, which is exactly the amount of
+     travel that says "this is further down the same page" and not one pixel
+     more. It runs before anything else measures the document, so nothing has
+     to be re-measured after it. */
+  function arrive() {
+    var el = fragment(location.hash);
+    if (!el || still()) return;
+
+    if (window.history && "scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    var target = restAt(el);
+    var start = Math.max(0, target - window.innerHeight * 1.15);
+    if (target - start < 40) return;
+
+    ownScroll(true);
+    window.scrollTo(0, start);
+    window.requestAnimationFrame(function () {
+      glideTo(restAt(el));
+    });
+  }
+
+  /* --- 3e. the card, and turning it over -----------------------------------
+     Both faces are real content and both are in the document. All this does is
+     decide which one you are looking at, and — the part that actually matters —
+     take the other one out of the tab order while it is facing away. A link
+     that is invisible but still focusable is worse than no link at all: it
+     sends a keyboard visitor somewhere they cannot see.
+
+     `inert` does the whole job in one attribute where it exists. Where it does
+     not, the fallback is tabindex + aria-hidden, which is the same contract
+     spelled out longhand.
+
+     The card itself answers a click, because a card in a hand is turned over by
+     touching it and not by finding its label. That is layered on top of the
+     button rather than instead of it: the button is what a keyboard, a screen
+     reader and a visitor who has never met a flipping card all use, and it is
+     the only thing that ever claims to be a control. Clicks that land on a real
+     link — the address on the front, the four routes on the back — are the
+     link's, never the card's. */
+  function card() {
+    var stage = document.querySelector("[data-vcard]");
+    if (!stage) return;
+    var body = stage.querySelector("[data-vcard-body]");
+    var btn = document.querySelector("[data-vcard-flip]");
+    if (!body || !btn) return;
+
+    var faces = {
+      front: stage.querySelector('[data-vc-face="front"]'),
+      back: stage.querySelector('[data-vc-face="back"]')
+    };
+    var label = btn.querySelector("[data-vc-label]");
+    var supportsInert = "inert" in HTMLElement.prototype;
+    var turned = false;
+
+    function away(face, off) {
+      if (!face) return;
+      if (supportsInert) {
+        face.inert = off;
+      } else {
+        var links = face.querySelectorAll("a[href], button");
+        for (var i = 0; i < links.length; i++) {
+          if (off) links[i].setAttribute("tabindex", "-1");
+          else links[i].removeAttribute("tabindex");
+        }
+      }
+      face.setAttribute("aria-hidden", off ? "true" : "false");
+    }
+
+    function paint() {
+      body.style.setProperty("--turn", turned ? "1" : "0");
+      btn.setAttribute("aria-pressed", turned ? "true" : "false");
+      if (label) label.textContent = turned ? "Turn the card back" : "Turn the card over";
+      away(faces.front, turned);
+      away(faces.back, !turned);
+    }
+
+    function flip(fromButton) {
+      turned = !turned;
+      paint();
+      /* Focus follows the card: whichever face is now facing you is the one a
+         keyboard should be able to walk into next. Only when the turn was asked
+         for from the keyboard's own control — a pointer already knows where it
+         is, and moving its focus steals the scroll position out from under it. */
+      if (fromButton && turned && faces.back) {
+        var first = faces.back.querySelector("a[href]");
+        if (first && document.activeElement === btn) {
+          /* Only once the half-turn has actually shown it — moving focus onto
+             something the visitor cannot see yet is the same bug, early. */
+          window.setTimeout(function () {
+            if (turned) first.focus({ preventScroll: true });
+          }, still() ? 0 : 620);
+        }
+      }
+    }
+
+    btn.addEventListener("click", function () {
+      flip(true);
+    });
+
+    /* A press that travelled is a drag, a text selection or a scroll that
+       started on the card, and none of those asked for the card to turn. */
+    var from = null;
+    stage.addEventListener(
+      "pointerdown",
+      function (ev) {
+        from = { x: ev.clientX, y: ev.clientY };
+      },
+      { passive: true }
+    );
+
+    stage.addEventListener("click", function (ev) {
+      var hit = ev.target.closest ? ev.target.closest("a[href], button, [role='button']") : null;
+      if (hit) return;
+      if (from && Math.abs(ev.clientX - from.x) + Math.abs(ev.clientY - from.y) > 10) return;
+      flip(false);
+    });
+
+    paint();
   }
 
   /* --- 4. the motion control ----------------------------------------------- */
 
-  /* Any atmospheric movement on this site that runs longer than five seconds
-     is the shader plane, and this is the switch that stops it. It is a real
-     button with a real pressed state, it is reachable from the keyboard, and
-     it is the same control on every page. */
-  var cinema = { atmos: null, aperture: null, channel: null };
+  /* Two things on this site move for longer than five seconds — the atmosphere
+     plane and the projection in the hero — and this is the switch that stops
+     both. It is a real button with a real pressed state, it is reachable from
+     the keyboard, it is the same control on every page, and since the sound
+     control was removed it is the only one in the masthead. */
+  var cinema = { atmos: null, pulse: null, holo: null };
 
   function motionControls() {
     var btns = document.querySelectorAll("[data-motion-toggle]");
@@ -229,7 +595,6 @@
       if (off) {
         teardown();
         revealAll();
-        stopBeat();
       } else {
         cinematics();
       }
@@ -241,135 +606,14 @@
 
   function teardown() {
     if (cinema.atmos && cinema.atmos.destroy) cinema.atmos.destroy();
-    if (cinema.aperture && cinema.aperture.destroy) cinema.aperture.destroy();
+    if (cinema.pulse && cinema.pulse.destroy) cinema.pulse.destroy();
+    if (cinema.holo && cinema.holo.destroy) cinema.holo.destroy();
+    readingMask(null);
     cinema.atmos = null;
-    cinema.aperture = null;
-    /* The channel is a control, not a movement. Turning motion off makes the
-       retune instant; it does not take the instrument away. */
+    cinema.pulse = null;
+    cinema.holo = null;
     var c = document.querySelector("[data-atmos-slot] canvas");
     if (c && c.parentNode) c.parentNode.removeChild(c);
-  }
-
-  /* --- 4b. sound ------------------------------------------------------------
-     Every tone on this site is an oscillator and an envelope, built in the
-     browser when it is needed. Nothing is downloaded, nothing is a file, and
-     nothing makes a sound until somebody presses the control that says it
-     will — so the promise on the Manifester page, that nothing here autoplays
-     sound, stays literally true.
-
-     The context is not even constructed until the first press, because an
-     AudioContext created without a gesture is a context the browser is going
-     to suspend anyway. */
-
-  var SOUND_STORE = "ce-sound";
-  var audio = { ctx: null, on: false, bus: null };
-
-  function tone(freq, dur, type, peak, at) {
-    if (!audio.ctx || !audio.on) return;
-    var t = at || audio.ctx.currentTime;
-    var osc = audio.ctx.createOscillator();
-    var env = audio.ctx.createGain();
-    osc.type = type || "sine";
-    osc.frequency.setValueAtTime(freq, t);
-    env.gain.setValueAtTime(0.0001, t);
-    env.gain.exponentialRampToValueAtTime(peak || 0.06, t + 0.006);
-    env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    osc.connect(env);
-    env.connect(audio.bus);
-    osc.start(t);
-    osc.stop(t + dur + 0.02);
-  }
-
-  /* Three sounds, and only three. The monitor's blip, the detent of a channel
-     committing, and the aperture on a navigation. Anything else would be
-     decoration with a volume control. */
-  var SFX = {
-    beat: function () { tone(1180, 0.09, "sine", 0.05); tone(590, 0.06, "sine", 0.025); },
-    detent: function () { tone(320, 0.05, "triangle", 0.05); tone(1600, 0.03, "sine", 0.018); },
-    iris: function () { tone(190, 0.24, "sine", 0.05); tone(95, 0.3, "sine", 0.035); }
-  };
-
-  function play(name) {
-    if (!audio.on || still()) return;
-    try {
-      if (SFX[name]) SFX[name]();
-    } catch (e) {}
-  }
-
-  /* The blip lands when the sweep reaches the QRS — one beat per sweep, when
-     the trace is actually drawing. A metronome running under a portfolio is
-     not sound design, it is a smoke alarm. */
-  var beatTimer = 0;
-  function beatOnce(rate) {
-    if (!audio.on || still()) return;
-    if (beatTimer) window.clearTimeout(beatTimer);
-    beatTimer = window.setTimeout(function () {
-      play("beat");
-    }, (rate || 2.6) * 260);
-  }
-  function stopBeat() {
-    if (beatTimer) window.clearTimeout(beatTimer);
-    beatTimer = 0;
-  }
-
-  function sound() {
-    var btns = document.querySelectorAll("[data-sound-toggle]");
-    if (!btns.length) return;
-
-    /* The control only appears once a script is running, because with no
-       script there is nothing for it to switch on. */
-    for (var i = 0; i < btns.length; i++) btns[i].removeAttribute("hidden");
-
-    function paint() {
-      for (var j = 0; j < btns.length; j++) {
-        btns[j].setAttribute("aria-pressed", audio.on ? "true" : "false");
-      }
-    }
-
-    function toggle() {
-      audio.on = !audio.on;
-      try {
-        if (window.localStorage) localStorage.setItem(SOUND_STORE, audio.on ? "on" : "off");
-      } catch (e) {}
-
-      if (audio.on) {
-        try {
-          var AC = window.AudioContext || window.webkitAudioContext;
-          if (!audio.ctx && AC) {
-            audio.ctx = new AC();
-            audio.bus = audio.ctx.createGain();
-            audio.bus.gain.value = 0.5;
-            audio.bus.connect(audio.ctx.destination);
-          }
-          if (audio.ctx && audio.ctx.state === "suspended") audio.ctx.resume();
-        } catch (e) {
-          audio.on = false;
-        }
-        play("detent");
-      } else {
-        stopBeat();
-      }
-      paint();
-    }
-
-    for (var k = 0; k < btns.length; k++) btns[k].addEventListener("click", toggle);
-    paint();
-
-    /* A stored "on" is deliberately not honoured on load: a page that starts
-       making noise because of something you did on a previous visit is a page
-       that autoplays sound, whatever the reason. The stored value only decides
-       what the control looks like the moment you reach for it. */
-
-    document.addEventListener("ce:sweep", function (ev) {
-      play("detent");
-      beatOnce(ev.detail && ev.detail.rate);
-    });
-
-    /* Stop the moment the tab is not in front of somebody. */
-    document.addEventListener("visibilitychange", function () {
-      if (document.hidden) stopBeat();
-    });
-    window.addEventListener("pagehide", stopBeat);
   }
 
   /* --- 5. the cinematic layer ---------------------------------------------- */
@@ -388,105 +632,247 @@
     }
   }
 
-  function fine() {
-    return !!(window.matchMedia && window.matchMedia("(pointer: fine)").matches);
-  }
-
   /* Every gate, in one place, so what does and does not get a shader is a
-     matter of record rather than of guesswork. An unavailable capability is
-     read as a no: deviceMemory that a browser declines to report means the
-     static composition, not a gamble on the hardware. */
+     matter of record rather than of guesswork.
+
+     These are deliberately looser than they were. The plane used to require a
+     fine pointer, a viewport of at least 1000 px, and a browser that reports
+     `deviceMemory` at 4 GB or more — which withheld it from every phone, every
+     tablet, and from Safari on any machine at all, because Safari does not
+     implement `deviceMemory`. That is most of the visitors to this site, and
+     what they were being protected from was two radial gradients' worth of GPU
+     work: the module renders at device pixel ratio 1 below 900 px, stops when
+     the tab is behind something, and is one triangle either way.
+
+     So the gates that remain are the ones that mean something. Reduced motion
+     and Save-Data are somebody telling you not to. No WebGL is the browser
+     telling you it cannot. A browser that *does* report its memory and reports
+     less than 4 GB is a device telling you it is small, and that answer is
+     still honoured — what is no longer honoured is silence, because silence
+     from Safari is not a small device. */
   function mayRenderShader() {
+    var mem = navigator.deviceMemory;
     return (
       !still() &&
-      fine() &&
-      window.innerWidth >= 1000 &&
-      typeof navigator.deviceMemory === "number" &&
-      navigator.deviceMemory >= 4 &&
+      window.innerWidth >= 360 &&
+      (typeof mem !== "number" || mem >= 4) &&
       !saveData() &&
       webglOK()
     );
   }
 
-  function mayRunTimeline() {
-    return !still() && fine() && window.innerWidth >= 1000 && !saveData();
+  /* The pulse layer is an effect, not a control, so it answers to the effect
+     gates — but only to the two that apply to every device. It runs on a
+     phone, because the part of it that matters most there is the part that
+     needs no pointer at all: the trace across the top of the page answering
+     how hard you are scrolling. The pointer-only features gate themselves
+     inside the module. */
+  function mayPulse() {
+    return !still() && !saveData();
   }
 
-  /* The channel selector answers to one gate and one only: did the visitor
-     ask for less data? It runs on a phone, on a keyboard, on a slow machine
-     and under reduced motion, because it is the page's one real control and
-     withholding a control is not the same as withholding an effect. Somebody
-     who asked for Save-Data keeps the six links, which navigate to the same
-     six case studies and cost nothing extra at all. */
-  function mayWireChannel() {
-    return !saveData();
-  }
-
-  function channels() {
-    var section = document.querySelector("[data-aperture] [data-channel-strip]");
-    if (!section || cinema.channel || !mayWireChannel()) return;
-    var host = document.querySelector("[data-aperture]");
-    import(HERE + "vendor/channel.js")
-      .then(function (m) {
-        cinema.channel = m.mount(host);
-      })
-      .catch(function () {
-        /* Six links to six case studies, which is what the document already
-           holds. Nothing to undo and nothing to apologise for. */
-      });
+  /* Same two gates for the hologram driver. It is two kilobytes with no
+     dependency, and the object it drives is already standing, orbiting and
+     scanning before it is asked for — so the only thing this decides is
+     whether the projection answers a hand. */
+  function mayHolo() {
+    return !still() && !saveData();
   }
 
   function cinematics() {
-    var section = document.querySelector("[data-aperture]");
-    if (!section || still()) return;
-
-    if (mayRunTimeline() && !cinema.aperture) {
-      import(HERE + "vendor/aperture.js")
+    /* THE PULSE. Every page, not just the home page — that is the whole point
+       of it. Roughly two kilobytes, no dependency, and it writes three custom
+       properties onto <html> and then gets out of the way. */
+    if (mayPulse() && !cinema.pulse) {
+      import(HERE + "vendor/pulse.js")
         .then(function (m) {
-          if (still()) return;
-          cinema.aperture = m.mount(section);
+          if (still() || !mayPulse()) return;
+          cinema.pulse = m.mount(document.documentElement);
         })
         .catch(function () {
-          /* The static composition is the fallback, and it is already on screen. */
+          /* Every page is already the composition it was designed to be. */
         });
     }
 
+    /* THE HOLOGRAM. Only where there is one to drive, which is the home page. */
+    var holoHost = document.querySelector("[data-holo]");
+    if (holoHost && mayHolo() && !cinema.holo) {
+      import(HERE + "vendor/holo.js")
+        .then(function (m) {
+          if (still() || !mayHolo()) return;
+          cinema.holo = m.mount(holoHost);
+        })
+        .catch(function () {
+          /* The projection stands, orbits and scans on keyframes alone. */
+        });
+    }
+
+    /* THE ATMOSPHERE. The fixed plane every page already carries, for the
+       whole scroll rather than for one screenful behind one hero. */
     if (mayRenderShader() && !cinema.atmos) {
-      var slot = section.querySelector("[data-atmos-slot]");
+      var slot = document.querySelector("[data-atmos-slot]");
       if (!slot) return;
       import(HERE + "vendor/atmosphere.js")
         .then(function (m) {
           if (still() || !mayRenderShader()) return;
           var canvas = document.createElement("canvas");
-          canvas.className = "ap__canvas";
+          canvas.className = "atmos__canvas";
           canvas.setAttribute("aria-hidden", "true");
           /* Decorative, never focusable, never above the content it sits behind. */
           slot.appendChild(canvas);
           cinema.atmos = m.mount(canvas, {
+            /* The plane is the same on every page. What is not the same is how
+               loud it may be over the top of one: a page built around a hero
+               can carry the loud version for a screenful, and a page that opens
+               on a paragraph cannot. */
+            lift: document.querySelector("[data-signal]") ? 2.0 : 1,
             onLost: function () {
               cinema.atmos = null;
+              readingMask(null);
               if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
             }
           });
+          readingMask(cinema.atmos);
         })
         .catch(function () {});
     }
   }
 
-  /* One wire between the two, and it runs through the document rather than
-     through an import: the channel announces itself, and whoever is listening
-     — today, the shader plane — answers. Neither module knows the other is
-     there, so either can be absent without the other noticing. */
-  document.addEventListener("ce:channel", function (ev) {
+  /* --- 5b. where the words are --------------------------------------------- */
+
+  /* The plane draws light, the page is read over the top of it, and until now
+     neither of those two facts knew about the other. This is the wire between
+     them, and it runs in this direction on purpose: the module measures
+     nothing and this file names nothing the module has to understand. All that
+     crosses is a run of rectangles in the plane's own coordinates.
+
+     They are the LINES, not the elements. A block element is as wide as
+     whatever contains it however narrow its ink is, so measuring boxes would
+     have reported the tag strip at the top of a case study as full-bleed text
+     and dimmed the plane clean across the frame for four short chips. A range
+     over the element's contents gives back one rectangle per line actually
+     laid out, which is the same thing a reader sees, and it costs a layout
+     read the scroll handler was going to force anyway.
+
+     Nothing here is a constant somebody has to keep in step with the
+     stylesheet by hand — no shell width, no measure, no breakpoint. That
+     matters most on the page it is least obvious on: the home hero puts its
+     words down the left, so that is what gets covered, and the projection in
+     the empty half keeps the plane at full strength behind it. */
+  var READS = "p, li, dd, dt, h1, h2, h3, h4, blockquote, figcaption, td, th";
+  var readIO = null;
+  var onScreen = [];
+  var readPlane = null;
+  var queued = false;
+
+  function readingMask(plane) {
+    if (readIO) {
+      readIO.disconnect();
+      readIO = null;
+      onScreen = [];
+      readPlane = null;
+      window.removeEventListener("scroll", queueRead);
+      window.removeEventListener("resize", queueRead);
+    }
+    if (!plane || !plane.read || !("IntersectionObserver" in window)) return;
+
+    var main = document.getElementById("main") || document.body;
+    var text = main.querySelectorAll(READS);
+    if (!text.length) return;
+
+    readIO = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        var el = entries[i].target;
+        var at = onScreen.indexOf(el);
+        if (entries[i].isIntersecting) {
+          if (at < 0) onScreen.push(el);
+        } else if (at >= 0) {
+          onScreen.splice(at, 1);
+        }
+      }
+      measureRead(plane);
+    });
+    for (var i = 0; i < text.length; i++) readIO.observe(text[i]);
+
+    readPlane = plane;
+    readAt = -1;
+    window.addEventListener("scroll", queueRead, { passive: true });
+    window.addEventListener("resize", queueRead, { passive: true });
+    measureRead(plane);
+  }
+
+  /* One measurement per frame at most, and none at all while nothing moves.
+     Measuring is the single most expensive thing this file does during a
+     scroll — a range over every line of text on screen, which forces layout —
+     so it is also the thing most worth not doing. A frame that arrives at the
+     same scroll position and the same viewport as the last one has nothing new
+     to say, and inside a smooth scroll's deceleration that is most of them. */
+  var readAt = -1;
+  var readW = -1;
+  var readH = -1;
+
+  function queueRead() {
+    if (queued || !readPlane) return;
+    queued = true;
+    requestAnimationFrame(function () {
+      queued = false;
+      if (!readPlane) return;
+      var y = window.pageYOffset || root.scrollTop;
+      if (y === readAt && window.innerWidth === readW && window.innerHeight === readH) return;
+      readAt = y;
+      readW = window.innerWidth;
+      readH = window.innerHeight;
+      measureRead(readPlane);
+    });
+  }
+
+  /* One buffer, filled and refilled. Two hundred and fifty-six lines is more
+     than fits on any screen this site is read on; past that the mask is
+     already covering everything the extra lines would have covered. */
+  var LINES = 256;
+  var lineBuf = new Float32Array(LINES * 4);
+  var range = null;
+
+  function measureRead(plane) {
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var n = 0;
+
+    if (!range) range = document.createRange();
+
+    for (var i = 0; i < onScreen.length && n < LINES; i++) {
+      range.selectNodeContents(onScreen[i]);
+      var lines = range.getClientRects();
+      for (var j = 0; j < lines.length && n < LINES; j++) {
+        var r = lines[j];
+        if (r.width < 4 || r.height < 4) continue;
+        if (r.bottom <= 0 || r.top >= vh || r.right <= 0 || r.left >= vw) continue;
+        var o = n * 4;
+        /* Into the plane's uv, whose y runs up from the bottom of the
+           viewport, clipped to the frame it is drawn in. */
+        lineBuf[o] = Math.max(0, r.left) / vw;
+        lineBuf[o + 1] = 1 - Math.min(vh, r.bottom) / vh;
+        lineBuf[o + 2] = Math.min(vw, r.right) / vw;
+        lineBuf[o + 3] = 1 - Math.max(0, r.top) / vh;
+        n++;
+      }
+    }
+
+    plane.read(lineBuf, n);
+  }
+
+  /* One wire between what is being read and the room it is read in, and it
+     runs through the document rather than through an import: the rail
+     announces which project you are in and whoever is listening answers.
+     Neither side knows the other is there, so either can be absent without the
+     other noticing. */
+  document.addEventListener("ce:room", function (ev) {
     if (cinema.atmos && cinema.atmos.tune) cinema.atmos.tune(ev.detail);
   });
 
   /* After the useful site. Never before it, and never during it. */
   function scheduleCinematics() {
     var go = function () {
-      try {
-        channels();
-      } catch (e) {}
       try {
         cinematics();
       } catch (e) {}
@@ -499,12 +885,17 @@
 
   function start() {
     try {
+      anchors();
+      /* Before reveals(), so the first thing measured is the page where it is
+         actually going to be read rather than where it briefly was. */
+      arrive();
       reveals();
       progress();
       menu();
       motionControls();
-      sound();
-      acquire();
+      arrival();
+      theatre();
+      card();
     } catch (err) {
       /* A failure in any of the above must never leave content hidden. */
       revealAll();
@@ -534,16 +925,6 @@
       else scheduleCinematics();
     });
   }
-
-  /* The aperture blinks between documents, so it gets the aperture's sound. */
-  document.addEventListener("click", function (ev) {
-    if (!audio.on) return;
-    var a = ev.target.closest ? ev.target.closest("a[href]") : null;
-    if (!a) return;
-    var href = a.getAttribute("href") || "";
-    if (/^(https?:|mailto:|#)/.test(href)) return;
-    play("iris");
-  });
 
   window.addEventListener("pagehide", teardown);
 })();

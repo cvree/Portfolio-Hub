@@ -139,7 +139,10 @@
 
 <a class="skip" href="#main">Skip to content</a>
 
-<div class="atmos" aria-hidden="true"></div>
+<!-- The atmosphere. The gradient wash below is the whole design with no
+     script; when the shader is allowed to run it mounts its canvas in here and
+     renders over it, on every page, for the whole scroll. -->
+<div class="atmos" aria-hidden="true" data-atmos-slot></div>
 <div class="grain" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true">
   <svg class="progress__ghost" viewBox="0 0 1200 22" preserveAspectRatio="none" focusable="false"><path d="M0 11 H150 L162 11 L170 5 L178 17 L186 11 L196 11 H330 L342 11 L350 3 L358 19 L366 11 L376 11 H510 L522 11 L530 5 L538 17 L546 11 L556 11 H690 L702 11 L710 2 L718 20 L726 11 L736 11 H870 L882 11 L890 5 L898 17 L906 11 L916 11 H1050 L1062 11 L1070 3 L1078 19 L1086 11 L1096 11 H1200" /></svg>
@@ -152,26 +155,17 @@
     <a class="wordmark" href="index.html">
       <span class="dot" aria-hidden="true"></span>
       <span>Connor Eppolito</span>
-      <span class="role">Health Science · EMT · Builder</span>
     </a>
 
     <nav class="nav nav--desk" aria-label="Primary">
-      <a href="index.html">Home</a>
-      <a href="work.html" aria-current="page">Selected Work</a>
-      <a href="experience.html">Experience</a>
-      <a href="about.html">About</a>
+      <a href="index.html#work" aria-current="page">Projects</a>
       <a class="nav__key" href="resume.html">Résumé</a>
       <a href="contact.html">Contact</a>
     </nav>
 
-    <!-- The one control that stops every continuous movement on the site. It
-         appears only once a script is running, because with no script there is
-         nothing continuous to stop. -->
-    <button class="soundbtn" type="button" data-sound-toggle aria-pressed="false" hidden>
-      <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
-      <span>Sound</span>
-    </button>
-
+    <!-- The one control in the masthead, and the only one the site needs: it
+         stops every continuous movement on it. It appears only once a script
+         is running, because with no script there is nothing to stop. -->
     <button class="motionbtn" type="button" data-motion-toggle aria-pressed="false">
       <span class="led" aria-hidden="true"></span>
       <span>Reduce motion</span>
@@ -184,18 +178,11 @@
       </summary>
       <div class="navmob__panel">
         <nav aria-label="Primary, mobile">
-          <a href="index.html">Home<span class="chev" aria-hidden="true">&rarr;</span></a>
-          <a href="work.html" aria-current="page">Selected Work<span class="chev" aria-hidden="true">&rarr;</span></a>
-          <a href="experience.html">Experience<span class="chev" aria-hidden="true">&rarr;</span></a>
-          <a href="about.html">About<span class="chev" aria-hidden="true">&rarr;</span></a>
+          <a href="index.html#work" aria-current="page">Projects<span class="chev" aria-hidden="true">&rarr;</span></a>
           <a href="resume.html">Résumé<span class="chev" aria-hidden="true">&rarr;</span></a>
           <a href="contact.html">Contact<span class="chev" aria-hidden="true">&rarr;</span></a>
         </nav>
         <a class="btn btn--primary" href="mailto:connor.eppolito803@myci.csuci.edu">Email Connor</a>
-        <button class="soundbtn" type="button" data-sound-toggle aria-pressed="false" hidden>
-          <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span>Sound</span>
-        </button>
         <button class="motionbtn" type="button" data-motion-toggle aria-pressed="false">
           <span class="led" aria-hidden="true"></span>
           <span>Reduce motion</span>
@@ -241,13 +228,13 @@
      carries, standing between this page's hero and its evidence: a page fold.
      One waveform, drawn before any script runs, at this product's own rate. -->
 <div class="shell">
-  <div class="ap__rail ap__rail--solo" data-pulse aria-hidden="true">
-    <svg class="ap__sig" viewBox="0 430 1440 260" preserveAspectRatio="none" focusable="false" aria-hidden="true">
-      <g class="ap__sigwrap">
-        <path class="ap__signal--ghost" d="M0 596 L1440 596" />
-        <path class="ap__signal" data-sig="live" d="M0 560 L60 560 L120 560 L180 560 L240 560 L300 560 L360 560 L420 560 L480 560 L540 558 L600 552 L660 540 L700 520 L720 428 L740 470 L760 540 L800 596 L860 616 L920 608 L980 590 L1040 574 L1100 564 L1200 560 L1320 560 L1440 560" />
-        <path class="ap__sweep" data-sig="sweep" d="M0 560 L60 560 L120 560 L180 560 L240 560 L300 560 L360 560 L420 560 L480 560 L540 558 L600 552 L660 540 L700 520 L720 428 L740 470 L760 540 L800 596 L860 616 L920 608 L980 590 L1040 574 L1100 564 L1200 560 L1320 560 L1440 560" />
-        <circle class="ap__head" data-sig="head" r="4.5" />
+  <div class="rail rail--solo" data-pulse aria-hidden="true">
+    <svg class="rail__svg" viewBox="0 430 1440 260" preserveAspectRatio="none" focusable="false" aria-hidden="true">
+      <g class="rail__wrap">
+        <path class="rail__ghost" d="M0 596 L1440 596" />
+        <path class="rail__path" data-sig="live" d="M0 560 L60 560 L120 560 L180 560 L240 560 L300 560 L360 560 L420 560 L480 560 L540 558 L600 552 L660 540 L700 520 L720 428 L740 470 L760 540 L800 596 L860 616 L920 608 L980 590 L1040 574 L1100 564 L1200 560 L1320 560 L1440 560" />
+        <path class="rail__sweep" data-sig="sweep" d="M0 560 L60 560 L120 560 L180 560 L240 560 L300 560 L360 560 L420 560 L480 560 L540 558 L600 552 L660 540 L700 520 L720 428 L740 470 L760 540 L800 596 L860 616 L920 608 L980 590 L1040 574 L1100 564 L1200 560 L1320 560 L1440 560" />
+        <circle class="rail__head" data-sig="head" r="4.5" />
       </g>
     </svg>
   </div>
@@ -535,7 +522,7 @@
   <div class="shell">
     <div class="nextup">
       <a href="owcs-comp-tracker.html"><span class="k">Previous</span><span class="v">OWCS Comp Tracker</span></a>
-      <a href="work.html"><span class="k">Index</span><span class="v">All work</span></a>
+      <a href="index.html#work"><span class="k">Index</span><span class="v">All work</span></a>
     </div>
   </div>
 </section>
@@ -549,26 +536,18 @@
         <p class="foot__sig">Health science,<br />built and tested.</p>
         <p class="quiet small mt-2" style="max-width:20.4em">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
       </div>
+      <!-- The whole map lives here and only here. The masthead carries three
+           items; everything else the site has — About included — is one scroll
+           away, at the foot, where a map belongs. -->
       <div>
         <h3>Site</h3>
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="work.html">Selected Work</a></li>
+          <li><a href="index.html#work">Projects</a></li>
           <li><a href="experience.html">Experience</a></li>
           <li><a href="about.html">About</a></li>
-          <li><a href="resume.html">Résumé</a></li>
+          <li><a href="resume.html">R&eacute;sum&eacute;</a></li>
           <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Work</h3>
-        <ul>
-          <li><a href="spellbomb.html">SpellBomb</a></li>
-          <li><a href="health-journal.html">Health Journal</a></li>
-          <li><a href="phlebotomy-exam-prep.html">Phlebotomy Exam Prep</a></li>
-          <li><a href="manifester.html">Manifester</a></li>
-          <li><a href="owcs-comp-tracker.html">OWCS Comp Tracker</a></li>
-          <li><a href="paper-animator.html">PaperAnimator</a></li>
         </ul>
       </div>
       <div>

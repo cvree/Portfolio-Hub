@@ -2,7 +2,7 @@
 """Assemble the static pages from templates/base.html + pages/*.html.
 
 There is no framework here and no runtime dependency: this script exists only
-so that the header, the footer and the <head> of twelve pages cannot drift
+so that the header, the footer and the <head> of eleven pages cannot drift
 apart. It writes plain HTML into the repository root, and that committed HTML
 is what GitHub Pages serves — so a visitor never waits on a build, and the
 site works when opened straight off a disk.
@@ -14,7 +14,7 @@ Each fragment in pages/ starts with a small front-matter block:
 
     <!--meta
     path: work.html
-    title: Selected Work — Connor Eppolito
+    title: Projects — Connor Eppolito
     nav: work
     surface: ink
     accent: cobalt
@@ -32,19 +32,55 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE = "https://cvree.github.io/Portfolio-Hub/"
 
-# The primary navigation, in the order it is read. This list is the single
-# definition of it; both the desktop bar and the mobile panel are drawn from it.
+# The primary navigation, in the order it is read. Three items, and the reason
+# there are three is that a masthead is a place to go, not an index: Home is the
+# wordmark to the left of it, Experience is a chapter of the résumé it sits
+# beside, About is a page about the site's own taste rather than a destination
+# anybody arrives looking for, and the complete map of the site — About and
+# Experience included — is at the foot of every page.
 NAV = [
-    ("home", "Home", "index.html"),
-    ("work", "Selected Work", "work.html"),
-    ("experience", "Experience", "experience.html"),
-    ("about", "About", "about.html"),
+    ("work", "Projects", "index.html#work"),
     ("resume", "Résumé", "resume.html"),
     ("contact", "Contact", "contact.html"),
 ]
 
+# Pages that used to exist and are now a place on another page. They are still
+# written out, because a URL somebody bookmarked or linked to is a promise, and
+# a 404 is a worse answer than a one-hop redirect. Each one is three lines of
+# HTML: the canonical, the refresh, and a link for the browser that honours
+# neither.
+REDIRECTS = {
+    "work.html": (
+        "index.html#work",
+        "Projects — Connor Eppolito",
+        "The projects have moved to the home page. This page forwards to index.html#work.",
+    ),
+}
+
+REDIRECT = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content="{desc}" />
+<meta name="robots" content="noindex, follow" />
+<link rel="canonical" href="{canonical}" />
+<meta http-equiv="refresh" content="0; url={to}" />
+</head>
+<body>
+<h1>{title}</h1>
+<p>The projects live on the home page now. <a href="{to}">Continue to the projects</a>.</p>
+<script>location.replace("{to}");</script>
+</body>
+</html>
+"""
+
 SURFACES = {
     "ink": ("on-ink", "#0b0c0e", "dark"),
+    # The résumé's own surface: the same room as the rest of the site, one stop
+    # darker, because a document is read more slowly than a site is looked at.
+    "record": ("on-record", "#07080a", "dark"),
     "paper": ("on-paper", "#f4f0e8", "light"),
 }
 
@@ -157,6 +193,20 @@ def build(check: bool = False) -> int:
         else:
             out.write_text(page, encoding="utf-8")
             print(f"wrote {path}  ({len(page) // 1024} KB)")
+
+    for path, (to, title, desc) in sorted(REDIRECTS.items()):
+        # A fragment is not part of a canonical URL — the page a search engine
+        # should hold is the document, and the document is the home page.
+        doc = to.split("#", 1)[0]
+        canonical = SITE + ("" if doc == "index.html" else doc)
+        page = REDIRECT.format(title=title, desc=desc, to=to, canonical=canonical)
+        out = ROOT / path
+        if check:
+            if not out.exists() or out.read_text(encoding="utf-8") != page:
+                stale.append(path)
+        else:
+            out.write_text(page, encoding="utf-8")
+            print(f"wrote {path}  (redirect to {to})")
 
     if check:
         if stale:

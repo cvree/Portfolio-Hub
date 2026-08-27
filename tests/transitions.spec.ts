@@ -20,7 +20,7 @@ test('every page opts in to cross-document view transitions', async ({ page }) =
 });
 
 test('a project card carries a name that its case study answers to', async ({ page }) => {
-  await page.goto('work.html');
+  await page.goto('index.html');
   const cardName = await page.locator('[data-vt="shot-spellbomb"]').getAttribute('data-vt');
   expect(cardName).toBe('shot-spellbomb');
   await page.goto('spellbomb.html');
@@ -30,7 +30,7 @@ test('a project card carries a name that its case study answers to', async ({ pa
 });
 
 test('navigation is not delayed, and back and forward stay reliable', async ({ page }) => {
-  await page.goto('work.html', { waitUntil: 'load' });
+  await page.goto('index.html', { waitUntil: 'load' });
   const t0 = Date.now();
   await page.locator('main').getByRole('link', { name: 'SpellBomb', exact: true }).click();
   await page.waitForURL(/spellbomb\.html/);
@@ -38,7 +38,7 @@ test('navigation is not delayed, and back and forward stay reliable', async ({ p
   expect(Date.now() - t0).toBeLessThan(4000);
 
   await page.goBack();
-  await expect(page).toHaveURL(/work\.html/);
+  await expect(page).toHaveURL(/index\.html/);
   await expect(page.locator('h1')).toBeVisible();
   await page.goForward();
   await expect(page).toHaveURL(/spellbomb\.html/);

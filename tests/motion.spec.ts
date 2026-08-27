@@ -31,28 +31,28 @@ test.describe('with JavaScript disabled', () => {
     });
   }
 
-  test('the home hero is a composed frame, not an empty stage', async ({ page }) => {
+  test('the home hero is a standing projection, not an empty stage', async ({ page }) => {
     await page.goto('index.html');
-    const iris = page.locator('.ap__iris img');
-    await expect(iris).toBeVisible();
-    const box = await iris.boundingBox();
-    expect(box!.height).toBeGreaterThan(180);
-    /* The blades are one thing that could cover the evidence; the aperture's
-       own clip is the other, and a clipped element still reports a box and
-       still counts as visible, so it has to be asserted directly. */
-    expect(await page.locator('.ap__blade:visible').count()).toBe(0);
-    const clip = await page.locator('.ap__iris').evaluate((e) => getComputedStyle(e).clipPath);
+    const holo = page.locator('.holo');
+    await expect(holo).toBeVisible();
+    const box = await holo.boundingBox();
+    expect(box!.height).toBeGreaterThan(280);
+
+    /* A clipped element still reports a box and still counts as visible, so
+       the clip has to be asserted directly. */
+    const clip = await holo.evaluate((e) => getComputedStyle(e).clipPath);
     expect(clip).not.toMatch(/inset\(\s*(?:[1-9]\d|100)/);
 
-    /* And, finally, that the pixels are actually there: a fully clipped frame
-       is indistinguishable from an empty one in the DOM but not on screen. */
-    const painted = await page.locator('.ap__frame').screenshot();
-    expect(painted.byteLength).toBeGreaterThan(9000);
+    /* And, finally, that the pixels are actually there: an object that never
+       materialised is indistinguishable from a standing one in the DOM but not
+       on screen. */
+    const painted = await holo.screenshot();
+    expect(painted.byteLength).toBeGreaterThan(4000);
   });
 
   test('the résumé and contact routes work', async ({ page }) => {
     await page.goto('index.html');
-    await page.getByRole('link', { name: /download résumé/i }).click();
+    await page.getByRole('link', { name: /view résumé/i }).click();
     await expect(page).toHaveURL(/resume\.html$/);
     await expect(page.locator('h1')).toContainText('Connor Eppolito');
   });
@@ -67,7 +67,7 @@ test.describe('with prefers-reduced-motion: reduce', () => {
 
   test('no shader is created, and no cinematic bundle is fetched', async ({ page }) => {
     const asked: string[] = [];
-    page.on('request', (r) => /vendor\/(aperture|atmosphere)\.js/.test(r.url()) && asked.push(r.url()));
+    page.on('request', (r) => /vendor\/(pulse|atmosphere)\.js/.test(r.url()) && asked.push(r.url()));
     await page.goto('index.html', { waitUntil: 'load' });
     await page.waitForTimeout(3000);
     expect(asked).toEqual([]);
@@ -78,7 +78,7 @@ test.describe('with prefers-reduced-motion: reduce', () => {
     test(`${p}: every section is in its final state`, async ({ page }) => {
       await page.goto(p, { waitUntil: 'load' });
       await page.waitForTimeout(900);
-      const unfinished = await page.$$eval('main [data-rise], main [data-motion]', (els) =>
+      const unfinished = await page.$$eval('main [data-rise], main [data-motion], main [data-scene]', (els) =>
         els
           .filter((e) => {
             const c = getComputedStyle(e);
@@ -91,12 +91,38 @@ test.describe('with prefers-reduced-motion: reduce', () => {
   }
 });
 
-test.describe('the hardware gate', () => {
-  test('a 390px viewport never gets a canvas', async ({ page }) => {
+/* THE GATES.
+   ---------------------------------------------------------------------------
+   These are deliberately looser than they were, and the change is the point of
+   the redesign rather than an accident of it. The atmosphere used to be built,
+   compiled and thrown away for one screenful behind one hero, and only for a
+   visitor with a fine pointer, a viewport of at least 1000 px and a browser
+   that reports four gigabytes or more of memory — which is to say: no phone,
+   no tablet, and no Safari at all, because Safari does not implement
+   `deviceMemory`. It is now the room every page is read in, so the gates that
+   remain are the ones that mean something.
+
+   Reduced motion and Save-Data are somebody telling you not to. No WebGL is
+   the browser telling you it cannot. A device that reports its memory and
+   reports less than four gigabytes is telling you it is small. Silence is not
+   any of those, and is no longer read as one. */
+
+test.describe('the gates', () => {
+  test('a phone gets the plane, because it is the same room', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('index.html', { waitUntil: 'load' });
-    await page.waitForTimeout(2600);
-    expect(await page.locator('canvas').count()).toBe(0);
+    await expect.poll(() => page.locator('canvas').count(), { timeout: 12000 }).toBe(1);
+  });
+
+  test('every page gets the plane, not only the one with the hero', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    for (const p of ['resume.html', 'about.html', 'contact.html', 'spellbomb.html']) {
+      await page.goto(p, { waitUntil: 'load' });
+      await expect.poll(() => page.locator('canvas').count(), { timeout: 12000 }).toBe(1);
+      /* And it is mounted on the fixed atmosphere plane rather than inside a
+         section, so it survives the whole scroll. */
+      expect(await page.locator('.atmos > canvas.atmos__canvas').count(), p).toBe(1);
+    }
   });
 
   test('Save-Data never gets a canvas or a cinematic bundle', async ({ browser }) => {
@@ -125,13 +151,27 @@ test.describe('the hardware gate', () => {
     expect(await page.locator('canvas').count()).toBe(0);
   });
 
-  test('a device that reports no memory at all never gets a canvas', async ({ page }) => {
+  test('a device that reports no memory at all is not treated as a small one', async ({ page }) => {
     await page.addInitScript(() => {
       Object.defineProperty(navigator, 'deviceMemory', { get: () => undefined });
     });
     await page.goto('index.html', { waitUntil: 'load' });
+    await expect.poll(() => page.locator('canvas').count(), { timeout: 12000 }).toBe(1);
+  });
+
+  test('no WebGL, no plane, and the page is untouched by its absence', async ({ page }) => {
+    await page.addInitScript(() => {
+      const real = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = function (kind, ...rest) {
+        if (String(kind).startsWith('webgl') || String(kind) === 'experimental-webgl') return null;
+        return real.call(this, kind, ...rest);
+      } as typeof real;
+    });
+    await page.goto('index.html', { waitUntil: 'load' });
     await page.waitForTimeout(2600);
     expect(await page.locator('canvas').count()).toBe(0);
+    await expect(page.locator('h1')).toBeVisible();
+    await expect(page.locator('.holo__slice')).toHaveCount(18);
   });
 });
 

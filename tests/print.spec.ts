@@ -24,7 +24,10 @@ test.describe('the printed résumé', () => {
   test('the cinematic layer and the navigation never reach paper', async ({ page }) => {
     await page.goto('resume.html', { waitUntil: 'load' });
     await page.emulateMedia({ media: 'print' });
-    for (const sel of ['.masthead', '.foot', '.atmos', '.grain', '.progress', '.no-print', '[data-motion-toggle]']) {
+    /* The journey's spine, its nodes and its key are how a screen shows an
+       order; a page shows the same order by being a page. None of them print. */
+    for (const sel of ['.masthead', '.foot', '.atmos', '.grain', '.progress', '.no-print', '[data-motion-toggle]',
+                       '.jour__node', '.jour-key']) {
       const n = await page.locator(`${sel}:visible`).count();
       expect(n, sel).toBe(0);
     }
@@ -34,10 +37,17 @@ test.describe('the printed résumé', () => {
     await page.goto('resume.html', { waitUntil: 'load' });
     await page.emulateMedia({ media: 'print' });
     await expect(page.locator('h1')).toBeVisible();
-    for (const text of ['Professional summary', 'Experience', 'Education', 'Certifications', 'Research', 'Technical projects', 'Skills']) {
+    for (const text of ['Professional summary', 'Experience & education', 'Certifications', 'Research', 'Skills']) {
       await expect(page.getByRole('heading', { name: text })).toBeVisible();
     }
     await expect(page.getByText('Expected Dec 2026')).toBeVisible();
+    /* Every entry of the journey reaches paper, in the order it is read in. */
+    await expect(page.locator('.jour__row')).toHaveCount(8);
+    const order = await page.$$eval('.jour__row .cv__role', (els) => els.map((e) => e.textContent?.trim()));
+    expect(order[0]).toBe('Bachelor of Science, Health Science');
+    expect(order[order.length - 1]).toBe('Computer Engineering coursework');
+    /* The software is the site's subject, not the résumé's. */
+    await expect(page.getByRole('heading', { name: 'Technical projects' })).toHaveCount(0);
     await expect(page.getByText('linkedin.com/in/connor-eppolito')).toBeVisible();
     /* Nothing collapsed, nothing clipped. */
     const clipped = await page.$$eval('main *', (els) =>
