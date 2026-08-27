@@ -186,3 +186,74 @@ test('the page still states where he is, when he is free and what he wants', asy
     expect(text.toLowerCase()).toContain(fact.toLowerCase());
   }
 });
+
+/* --- 6. the card, and nothing else ---------------------------------------- */
+
+test('the page is one card and nothing around it', async ({ page }) => {
+  await page.goto('contact.html', { waitUntil: 'load' });
+  /* One section, and the card is in it. A facts table, three headings of
+     advice and a button row underneath were all things the object itself says
+     better, and they are gone. */
+  expect(await page.locator('main > section').count()).toBe(1);
+  expect(await page.locator('main .facts, main .prose, main .btn-row').count()).toBe(0);
+  /* The name on the card is the page's heading — there is no second title
+     printed above the object. */
+  await expect(page.locator('h1')).toHaveCount(1);
+  await expect(page.locator('[data-vc-face="front"] h1')).toHaveCount(1);
+});
+
+test('the address is on the front, where a hand can read it', async ({ page }) => {
+  await page.goto('contact.html', { waitUntil: 'load' });
+  const addr = page.locator('[data-vc-face="front"] a[href^="mailto:"]');
+  await expect(addr).toHaveAttribute('href', 'mailto:connor.eppolito803@myci.csuci.edu');
+  await expect(addr).toContainText('connor.eppolito803@myci.csuci.edu');
+  await expect(addr).toBeVisible();
+});
+
+test.describe('touching the card', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 980 });
+    await page.goto('contact.html', { waitUntil: 'load' });
+    await ready(page);
+  });
+
+  test('a click anywhere that is not a link turns it over', async ({ page }) => {
+    const btn = page.locator('[data-vcard-flip]');
+    await expect(btn).toHaveAttribute('aria-pressed', 'false');
+
+    /* The card's own eyebrow: real content, not a control, and pressing it
+       turns the card the way pressing a card in a hand would. */
+    await page.locator('.vc__face--front .vc__eyebrow').first().click();
+    await expect(btn).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('[data-vc-face="back"]')).toHaveAttribute('aria-hidden', 'false');
+
+    /* And back again, from the face that is now up. */
+    await page.locator('.vc__face--back .vc__h').click();
+    await expect(btn).toHaveAttribute('aria-pressed', 'false');
+  });
+
+  test('the card actually rotates rather than only claiming to', async ({ page }) => {
+    const facing = () =>
+      page.locator('.vc__card').evaluate((e) => {
+        /* m33 of the composed matrix: +1 face-on, −1 turned away. */
+        const m = new DOMMatrix(getComputedStyle(e).transform);
+        return m.m33;
+      });
+    expect(await facing()).toBeGreaterThan(0.9);
+    await page.locator('.vc__face--front .vc__eyebrow').first().click();
+    await expect.poll(facing, { timeout: 4000 }).toBeLessThan(-0.9);
+  });
+
+  test('the address on the front is a link, not a place to press', async ({ page }) => {
+    const btn = page.locator('[data-vcard-flip]');
+    /* Clicking mailto must not also turn the card: a link that flips the thing
+       it is printed on has two jobs and does neither. */
+    await page.locator('.vc__addr').click({ trial: true });
+    await page.evaluate(() => {
+      const a = document.querySelector('.vc__addr') as HTMLElement;
+      a.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    });
+    await page.waitForTimeout(300);
+    await expect(btn).toHaveAttribute('aria-pressed', 'false');
+  });
+});

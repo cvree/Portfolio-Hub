@@ -3,21 +3,20 @@
 The portfolio and online résumé of **Connor Eppolito** — Health Science ·
 NREMT-certified EMT · product builder · esports leader.
 
-Twelve static pages, four self-hosted typefaces, one stylesheet and one small
+Eleven static pages, four self-hosted typefaces, one stylesheet and one small
 script. No framework, no CDN in the critical path, and no third-party runtime
 dependency in the path of anything a visitor needs.
 
 Above that sits a cinematic layer — the **CE Signal Sculpture** on the home
 page, six living project scenes, cross-document view transitions across
-all twelve pages, native scroll-driven motion, and one product-physics law per
+all eleven pages, native scroll-driven motion, and one product-physics law per
 case study. Every part of it is an escalation of the page underneath it, and
 every part of it can fail without taking that page with it.
 
 The design system it answers to is written down in [`DESIGN.md`](DESIGN.md).
 
 ```
-index.html                  Home — one signal
-work.html                   Projects — the index
+index.html                  Home — one signal, and the projects, at #work
 spellbomb.html              ┐
 health-journal.html         │
 phlebotomy-exam-prep.html   │ six case studies, one per flagship product
@@ -64,7 +63,9 @@ python3 -m http.server 8000     # then open http://localhost:8000/
 
 ## Editing it
 
-The twelve HTML files in the repository root are **generated**, and they are what
+The eleven HTML files in the repository root are **generated** — along with
+`work.html`, the one-hop redirect that keeps the old projects URL alive — and
+they are what
 GitHub Pages serves — so a visitor never waits on a build and the site works
 opened straight off a disk. To change something:
 
@@ -76,16 +77,16 @@ python3 tools/build_pages.py
 
 `python3 tools/build_pages.py --check` fails if the committed HTML is not what
 the sources would produce; CI runs it on every push and pull request. That is
-the whole reason the generator exists — twelve copies of a navigation bar drift
+the whole reason the generator exists — eleven copies of a navigation bar drift
 apart, and one copy does not.
 
 Each page fragment opens with a small front-matter block:
 
 ```html
 <!--meta
-path: work.html
-title: Projects — Connor Eppolito
-nav: work                 which navigation item is current
+path: about.html
+title: About — Connor Eppolito
+nav: about                which navigation item is current
 surface: ink | paper      near-black, or the warm ivory document surface
 accent: spellbomb         the per-page accent colour
 desc: ...                 meta description and Open Graph description
@@ -100,7 +101,8 @@ leader. It does that with the positioning line, an eight-cell credibility strip
 (EMT field experience, phlebotomy training in progress, the CSUCI Esports Club
 presidency, competitive play, the health science degree, the mathematics and
 science associate, the Alzheimer's research, and health informatics), and two
-unmissable actions: **View projects** and **View / download résumé**.
+unmissable actions: **Explore the work** — which is a place further down the
+same page rather than a second document — and **View / download résumé**.
 
 **Six case studies, not repository cards.** Each one opens on the most
 compelling real interaction from that product's latest working iteration, then
@@ -317,6 +319,24 @@ has nothing to say there.
 
 ## Projects — six living specimens
 
+Projects is a **place, not a page**. There used to be a `work.html` that
+restated the six products the home page already showed running, listed the
+smaller repositories, and then sent you back. Everything it held that the home
+page did not — the status key and the eight smaller pieces — now sits inside
+the home page's own Projects section, and `work.html` is a one-hop redirect to
+`index.html#work` so an old bookmark still lands somewhere real. Every route
+labelled Projects — the masthead, the footer, the hero button, a case study's
+own way back — goes to that fragment.
+
+Arriving on a fragment is composed rather than cut: the page is put down a
+screenful above its destination and glides the last stretch, which is exactly
+the amount of travel that says *this is further down the same page* and no
+more. Same-page links do the same thing from wherever you are, eased, and the
+first wheel notch, touch or key ends the glide and hands the page straight
+back. With reduced motion asked for, or with the script absent,
+`scroll-behavior: smooth` and a `scroll-padding-top` that clears the sticky
+masthead do the same job in one hop.
+
 Six rooms, six motion laws, one spine.
 
 The layout is a grid and nothing more. Each article is its own two-column room:
@@ -399,14 +419,18 @@ because the part that matters most there needs no pointer at all.
 
 ## The card
 
-The contact page is a card: a real object with a front, a back, four edges and
-a thickness, printed on the same warm ivory the résumé is set on.
+The contact page is a card, and nothing else: no page heading above it, no
+facts table under it, no advice beside it. A real object with a front, a back,
+four edges and a thickness, printed on the same warm ivory the résumé is set
+on, and given the whole screen to sit in the middle of.
 
-Both faces carry real content — the front is the identity, the back is every
-route out of the page as four ordinary links. With a script it is one card that
-tilts under the pointer, catches the light on its foil, and turns over in
-900 ms. With no script it is two stacked panels, both complete, and the turn
-control is not rendered at all.
+Both faces carry real content — the front is the identity **and the email
+address**, because a card that makes you turn it over to find the address has
+buried its own point; the back is every route out of the page as four ordinary
+links. With a script it is one card that tilts under the pointer, catches the
+light on its foil, rises a little when a hand comes near it, and turns over
+when you touch it anywhere that is not a link. With no script it is two stacked
+panels, both complete, and the turn control is not rendered at all.
 
 The rule that shapes it: **a link that is invisible but still focusable is
 worse than no link at all.** The face turned away is `inert`, so it leaves the
@@ -420,7 +444,7 @@ being reads without being taught, and this site had been drawing one at
 fourteen per cent opacity behind everything else.
 
 It is the protagonist now. On each of the six case studies a rail stands tuned
-to that one product, and the same trace runs across the top of all twelve
+to that one product, and the same trace runs across the top of all eleven
 documents as the reading-progress line. Six waveforms, six rhythms, and each
 means something about the thing it belongs to:
 
@@ -448,7 +472,7 @@ it, and nothing else has to know.
 ## The spine
 
 The reading-progress bar was a two-pixel rectangle. It is the same signal now,
-drawn as you read it: one ECG across the top of all twelve documents, dim for
+drawn as you read it: one ECG across the top of all eleven documents, dim for
 its whole length and bright as far as you have got. It only ever reports — it
 never steers, and it is never in the way.
 
@@ -489,7 +513,7 @@ overrides a system `prefers-reduced-motion: reduce`.
 
 ## Cross-document view transitions
 
-`@view-transition { navigation: auto }` is declared for all twelve pages. Five
+`@view-transition { navigation: auto }` is declared for all eleven pages. Five
 things are named and travel between documents: the wordmark, the navigation
 shell, and — per project — the screenshot, the title and the accent marker. A
 project card's screenshot becomes that project's case-study hero.
@@ -594,7 +618,7 @@ Three changes fixed it, and together they took mobile CLS to 0.000:
 - no horizontal overflow at 390, 768, 1440 and 1920 px, checked per element and
   not merely at the document level
 - every internal link resolves; no request leaves the origin
-- with JavaScript disabled: all twelve pages complete, navigable and
+- with JavaScript disabled: all eleven pages complete, navigable and
   screenshot-bearing, with no canvas and nothing left hidden
 - with reduced motion: no canvas, neither bundle fetched, every section final
 - the gates: a canvas on a phone, on every page and not only the one with the
@@ -618,7 +642,7 @@ Three changes fixed it, and together they took mobile CLS to 0.000:
   genuinely move, six tube cards that start in the wrong seats and end in the
   right ones, a rail that reports position without turning articles into tabs,
   no capture under 150 px wide on a phone, and one focusable target per room
-- the pulse layer on all twelve pages: exertion that rises from a real scroll,
+- the pulse layer on all eleven pages: exertion that rises from a real scroll,
   never exceeds its ceiling and returns to exactly zero on its own; one beat per
   activation and none from scrolling or hovering; not one property written under
   reduced motion, the Motion control or Save-Data; and no change to the height
@@ -630,7 +654,7 @@ Three changes fixed it, and together they took mobile CLS to 0.000:
 - keyboard order, focus rings on everything tabbable, the skip link, the mobile
   menu's Escape behaviour, and reaching a case study from the hero by keyboard
 - the résumé printing to exactly two pages on Letter and on A4
-- Axe with zero serious or critical violations on all twelve pages, twice each
+- Axe with zero serious or critical violations on all eleven pages, twice each
 
 `.github/workflows/verify.yml` runs all of that on Chromium, Firefox and WebKit,
 plus generator and vendor drift checks, HTML validation, a CDN check and the

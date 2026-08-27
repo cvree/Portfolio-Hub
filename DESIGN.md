@@ -296,17 +296,21 @@ should do something.
 
 ## 4c. The card
 
-The contact page is a card — a real object with a front, a back, four edges and
-a thickness, printed on the same warm ivory the résumé is set on, because paper
-is what this site already means by *the artefact you hand somebody*.
+The contact page is a card and nothing around it — a real object with a front,
+a back, four edges and a thickness, printed on the same warm ivory the résumé
+is set on, because paper is what this site already means by *the artefact you
+hand somebody*. Everything that used to be set in prose on that page is printed
+on the object instead, so the page is one card, centred in the screen.
 
 Both faces carry real content. The front is the identity: name, the four
-credentials, the clinical mark struck in foil, the signal across the foot, and the
-availability. The back is every route out of the page, as four ordinary links.
+credentials, the clinical mark struck in foil, **the email address**, the signal
+across the foot, and the availability. The address is on the front because it is
+what anybody came to this page for. The back is every route out of the page, as
+four ordinary links.
 
 | State | What the visitor gets |
 | --- | --- |
-| **With a script** | One card. It tilts under the pointer, the foil rakes across the stock, the shadow travels opposite the tilt, and the button turns it over in 900 ms. |
+| **With a script** | One card. It tilts under the pointer, the foil rakes across the stock, the shadow travels opposite the tilt, it rises where a hover exists, and touching it anywhere that is not a link turns it over. The button is still there, still says which way up it is, and is what a keyboard uses. |
 | **No script** | Two panels, stacked, both complete and both readable. The turn control is not rendered at all — there is nothing on screen that cannot work. |
 | **Reduced motion** | The same card, and the turn is instant. |
 
@@ -465,6 +469,15 @@ The redesign took things away, and the count is the point:
 | Duplicate button rows | Two actions under the through-line, two under the contact call | One each. |
 | The hero's social row | GitHub, LinkedIn, Email under the actions | The `@cvree` handle beside the location, and the footer. |
 | The wordmark's tagline | `Health Science · EMT · Builder`, set in mono beside the name and hidden below 560 px anyway | The name and the dot. The three words it carried are the first line of the hero, the first line of the résumé and half the `<title>` of the home page; a masthead is not the fourth place to say them. |
+
+Projects is one of those three, and it is a place rather than a document: it
+points at `index.html#work`, the section of the home page where the six
+products are already shown running. A second page that restated them, listed
+the smaller repositories and then sent you back was one page too many; the
+status key and the smaller pieces moved into that section, and the old URL is
+kept alive as a redirect. Arriving there is composed — the page is set down a
+screenful short of it and glides in, so the section is arrived at rather than
+cut to — and any input at all ends the glide immediately.
 
 A masthead is a place to go, not an index. The complete map of the site is at
 the foot of every page, where a map belongs.

@@ -160,7 +160,7 @@ async function planeIsLive(page: import('@playwright/test').Page) {
    the site where an object with its own light in it stands behind the words. */
 const PAGES: Array<[string, string]> = [
   ['index.html', 'the home page, teal'],
-  ['work.html', 'the projects index, teal'],
+  ['experience.html', 'a chapter page, teal'],
   ['spellbomb.html', 'a case study, gold'],
   ['owcs-comp-tracker.html', 'a case study, lime'],
   ['about.html', 'a page that opens on a paragraph'],

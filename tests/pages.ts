@@ -1,7 +1,8 @@
-/* The twelve pages, in the order the site presents them. */
+/* The eleven pages, in the order the site presents them. Projects is not on
+   this list because Projects is not a page: it is a place on the home page,
+   and work.html is the one-hop redirect that still honours the old URL. */
 export const PAGES = [
   'index.html',
-  'work.html',
   'spellbomb.html',
   'health-journal.html',
   'phlebotomy-exam-prep.html',

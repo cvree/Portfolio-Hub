@@ -25,7 +25,7 @@ for (const p of PAGES) {
             !e.classList.contains('btn');
           // A project title's ::after covers the whole card, so the card is the
           // target and the link's own box is not the hit area.
-          const card = !!e.closest('.work__title, .wk__t');
+          const card = !!e.closest('.wk__t');
           return { h: r.height, text: (e.textContent || '').trim().slice(0, 30), skip: e.classList.contains('skip'), inline, card };
         })
         .filter((x) => x.h > 0 && x.h < 44 && !x.skip && !x.inline && !x.card)
@@ -37,12 +37,13 @@ for (const p of PAGES) {
 
 test('the whole project card is one tap target', async ({ page }) => {
   test.setTimeout(90_000);
-  await page.goto('work.html', { waitUntil: 'load' });
-  const card = page.locator('.work').first();
+  await page.goto('index.html', { waitUntil: 'load' });
+  /* The room's reading column is the target: the title's ::after covers it, so
+     a thumb landing on the blurb or on the proof figures goes to the case
+     study. The scene beside it is a picture of the product and stays one. */
+  const card = page.locator('.wk .wk__body').first();
   await card.scrollIntoViewIfNeeded();
   const box = (await card.boundingBox())!;
-  // Tapping anywhere in the card row navigates, because the title's ::after
-  // covers it — so a thumb landing on the blurb goes to the case study.
   await card.click({ position: { x: box.width / 2, y: box.height - 24 } });
   /* Generous, because what this test is about is the hit area and nothing
      else. How fast the navigation completes is transitions.spec.ts's

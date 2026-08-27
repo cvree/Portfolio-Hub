@@ -91,8 +91,8 @@ test('a case study is reachable from the home page by keyboard alone', async ({ 
 
 test('every project card is one target, not three competing ones', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('work.html', { waitUntil: 'load' });
-  const card = page.locator('.work').first();
+  await page.goto('index.html', { waitUntil: 'load' });
+  const card = page.locator('.wk').first();
   expect(await card.locator('a').count()).toBe(1);
   const box = await card.boundingBox();
   expect(box!.height).toBeGreaterThan(44);

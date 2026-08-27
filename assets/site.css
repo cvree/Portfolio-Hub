@@ -77,6 +77,14 @@
   --ease-snap: cubic-bezier(.16,1,.3,1);
   --dur: 620ms;
 
+  /* The masthead is sticky, so it is a permanent 66 px of the viewport that
+     is not the document. Everything that decides where a scroll comes to
+     rest — scroll-padding, the offset a same-page link lands on, the height
+     the contact card is centred in — is derived from this one number rather
+     than from four hand-kept copies of it. */
+  --mast: 66px;
+  --land: calc(var(--mast) + clamp(1rem, 3vh, 2.25rem));
+
   color-scheme: dark;
 }
 
@@ -92,8 +100,26 @@
 /* --- reset ---------------------------------------------------------------- */
 
 *,*::before,*::after{ box-sizing:border-box; }
-html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+html{
+  -webkit-text-size-adjust:100%;
+  scroll-behavior:smooth;
+  /* Nothing this site scrolls to may come to rest under the masthead. This is
+     the one rule that decides it, for the keyboard, for a same-page link, for
+     a URL that arrives carrying a fragment, and for find-in-page. */
+  scroll-padding-top:var(--land);
+}
+/* A scroller that hits its end and hands the rest of the gesture to the
+   document behind it is the one kind of scrolling on this site nobody asked
+   for. `contain` stops the chaining and leaves the platform's own overscroll
+   alone — the elastic end of a page is what a phone is supposed to do, and
+   this is not the place to have an opinion about it. */
+html{ overscroll-behavior-y:contain; }
 @media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
+
+/* Anything that can be linked to is a place the page can stop, and a place
+   the page stops needs room above it. `scroll-padding-top` covers the
+   masthead; this is the breathing space on top of that. */
+:where(main [id]){ scroll-margin-top:.5rem; }
 
 body{
   margin:0;
@@ -486,55 +512,6 @@ section + section{ border-top:1px solid var(--line); }
 }
 @media (max-width:840px){ .sechead{ grid-template-columns:1fr; align-items:start; } }
 .sechead .h2{ margin-top:.6rem; }
-
-/* --- work index ----------------------------------------------------------- */
-
-.works{ display:grid; gap:1px; background:var(--line); border-block:1px solid var(--line); }
-
-.work{
-  background:var(--ink);
-  display:grid;
-  grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
-  gap:clamp(1.5rem,3.2vw,3rem);
-  padding:clamp(1.75rem, 3.4vw, 3rem) 0;
-  align-items:center;
-  position:relative;
-  transition:background 400ms var(--ease);
-}
-.on-paper .work{ background:var(--paper); }
-.work:hover{ background:var(--ink-raised); }
-.on-paper .work:hover{ background:var(--paper-sunk); }
-@media (max-width:840px){ .work{ grid-template-columns:1fr; } }
-
-.work__body{ padding-inline:clamp(0rem,1.6vw,1.5rem); min-width:0; }
-.work__idx{ font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; color:var(--accent); }
-.work__title{
-  font-family:var(--display); font-size:clamp(2rem, 1.3rem + 2.4vw, 3.1rem);
-  line-height:1.02; letter-spacing:-.014em; margin:.55rem 0 .1rem;
-}
-.work__title a{ text-decoration:none; }
-.work__title a::after{ content:""; position:absolute; inset:0; }
-.work__kicker{ font-family:var(--ui); font-weight:500; font-size:.95rem; color:var(--accent); }
-.work__blurb{ margin-top:.95rem; color:var(--text-quiet); font-size:1.02rem; line-height:1.55; max-width:31.2em; }
-.work__meta{ margin-top:1.15rem; display:flex; flex-wrap:wrap; gap:.5rem; }
-.work__go{
-  margin-top:1.3rem; display:inline-flex; align-items:center; gap:.5rem;
-  font-family:var(--ui); font-weight:700; font-size:.92rem; color:var(--accent);
-}
-.work__go .arrow{ transition:transform 300ms var(--ease-snap); }
-.work:hover .work__go .arrow{ transform:translateX(4px); }
-
-.work__shot{
-  position:relative; overflow:hidden; border-radius:var(--radius);
-  border:1px solid var(--line); background:var(--ink-card);
-}
-.work__shot img{
-  width:100%; aspect-ratio:16/10; object-fit:cover; object-position:top center;
-  transition:transform 900ms var(--ease), filter 700ms var(--ease);
-  filter:saturate(.94);
-}
-.work:hover .work__shot img{ transform:scale(1.022); filter:saturate(1.02); }
-.work__shot--tall img{ aspect-ratio:4/5; object-position:top center; }
 
 /* --- chips / status ------------------------------------------------------- */
 
@@ -986,7 +963,7 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
 /* ===========================================================================
    1. CROSS-DOCUMENT VIEW TRANSITIONS
    ---------------------------------------------------------------------------
-   Twelve pages, one film. A project card's screenshot becomes that project's
+   Eleven pages, one film. A project card's screenshot becomes that project's
    case-study hero; its title and its accent marker travel with it. Browsers
    without the feature get an ordinary, instant navigation and lose nothing.
    =========================================================================== */
@@ -1639,7 +1616,6 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
 
     /* Screenshots settle into frame as they enter — the same law the aperture
        uses, applied quietly to every other piece of evidence on the site. */
-    .work__shot img,
     .shotframe > img,
     .shot > img{
       animation:evidence-settle linear both;
@@ -1905,6 +1881,18 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
 }
 
 /* --- the rooms ------------------------------------------------------------ */
+
+/* The status key, printed once under the section head rather than beside
+   every badge that uses it. */
+.th__key{ margin-top:clamp(1.5rem, 3.5vw, 2.5rem); }
+
+/* The smaller pieces are the second half of this section, not a section of
+   their own: same room, one rule between them and the six. */
+.th__also{
+  margin-top:clamp(3rem, 7vw, 5.5rem);
+  padding-top:clamp(2.5rem, 5vw, 4rem);
+  border-top:1px solid var(--line);
+}
 
 .th__rooms{ min-width:0; }
 
@@ -2653,10 +2641,6 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   /* A link that sits in a card's footer row is a control, not a phrase. */
   .card__f .link{ min-height:44px; display:inline-flex; align-items:center; }
 
-  .work{ transition:background 160ms var(--ease); }
-  .work:active{ background:var(--ink-raised); }
-  .on-paper .work:active{ background:var(--paper-sunk); }
-  .work:active .work__go .arrow{ transform:translateX(4px); }
   .wk:active{ background:var(--ink-raised); }
   .wk:active .wk__go .arrow{ transform:translateX(4px); }
   .contact-list a:active,
@@ -2664,16 +2648,7 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   .on-paper .contact-list a:active,
   .on-paper .nextup a:active{ background:var(--paper-sunk); }
   .btn:active{ transform:translateY(1px); background:var(--accent-soft); }
-  .work__go,.wk__go{ min-height:44px; align-items:center; }
-}
-/* The whole row is the target: the title's ::after already covers it, so
-   nothing inside it may be a second, competing link. */
-.work__body a:not(.work__title a){ position:relative; z-index:2; }
-.work:focus-within{ background:var(--ink-raised); }
-.on-paper .work:focus-within{ background:var(--paper-sunk); }
-.work__title a:focus-visible{ outline:none; }
-.work:has(.work__title a:focus-visible){
-  outline:2px solid var(--accent); outline-offset:-2px;
+  .wk__go{ min-height:44px; align-items:center; }
 }
 
 /* ===========================================================================
@@ -2704,7 +2679,6 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   .js [data-motion="sort"] > *,
   .js [data-motion="breathe"]{ opacity:1 !important; transform:none !important; }
   .js [data-motion="breathe"].is-in{ animation:none !important; }
-  .work__shot img,
   .shotframe > img,
   .shot > img,
   .sechead .eyebrow .tick,
@@ -2724,7 +2698,6 @@ html[data-motion="off"] .holo__beam{ animation:none !important; }
 html[data-motion="off"] .holo__space{ transition:none !important; }
 html[data-motion="off"] [data-motion],
 html[data-motion="off"] [data-motion] > *{ opacity:1 !important; transform:none !important; clip-path:none !important; animation:none !important; }
-html[data-motion="off"] .work__shot img,
 html[data-motion="off"] .shotframe > img,
 html[data-motion="off"] .shot > img,
 html[data-motion="off"] [data-physics] .case-body::before,
@@ -2756,13 +2729,21 @@ html[data-motion="off"] .progress{ display:none; }
    it leaves the tab order with the pixels rather than lingering behind them.
    =========================================================================== */
 
-.vc{ border:0; }
+.vc{
+  border:0;
+  /* One object, and nothing above or below it to scroll past. The page is the
+     card, so the card is given the screen and set in the middle of it. */
+  display:grid;
+  align-content:center;
+  min-height:calc(100svh - var(--mast));
+  padding-block:clamp(2.5rem, 8vh, 6rem);
+}
 
 .vc__stage{
   position:relative;
   width:100%;
   max-width:660px;
-  margin:clamp(2rem, 5vw, 3.25rem) auto 0;
+  margin:0 auto;
   perspective:1500px;
   perspective-origin:50% 42%;
 }
@@ -2799,11 +2780,29 @@ html[data-motion="off"] .progress{ display:none; }
      fight, and the turn carries a little lift so the card comes toward the
      hand on the way round instead of pivoting flat. */
   transform:
-    translateZ(calc(var(--turn, 0) * 34px))
+    translateZ(calc(var(--turn, 0) * 34px + var(--hand, 0) * 20px))
     rotateY(calc(var(--px, 0) * 11deg + var(--turn, 0) * 180deg))
     rotateX(calc(var(--py, 0) * -7deg));
-  transition:transform 900ms cubic-bezier(.2,.8,.25,1);
+  transition:transform 980ms cubic-bezier(.16,1,.3,1);
+  cursor:pointer;
+  /* The card is the control. Text selection inside something you turn over by
+     clicking it is a drag that never finishes. */
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  will-change:transform;
 }
+/* The whole object answers a hand, so the whole object says so: it rises a
+   little under the pointer and its shadow softens with it. Hover only where a
+   hover exists — on a touch screen this state has no way to end. */
+@media (hover:hover){
+  .js .vc__stage:hover{ --hand:1; }
+  .js .vc__stage:hover .vc__shadow{ opacity:.62; filter:blur(24px); }
+}
+/* Keyboard operation is the button's job, and the card shows the same state
+   the button is in. */
+.js .vc__stage:focus-within{ --hand:1; }
+.js .vc__card a,.js .vc__card button{ cursor:pointer; user-select:text; }
 .js .vc__face{
   position:absolute;
   inset:0;
@@ -2955,6 +2954,47 @@ html[data-motion="off"] .progress{ display:none; }
   color:var(--p-text-quiet);
 }
 
+/* THE ADDRESS. Printed on the front, in the position a letterpress card puts
+   it: below the name, above the rule, in the ink that is not the body ink. It
+   is the one thing on the front that is a link rather than a place to press,
+   so it is the one thing on the front that underlines itself. */
+.vc__addr{
+  position:relative;
+  display:flex;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:.35rem .9rem;
+  min-height:44px;
+  padding-block:.5rem;
+  margin-top:auto;
+  text-decoration:none;
+  color:var(--p-text);
+  border-top:1px solid rgba(20,22,26,.14);
+  transition:color 200ms var(--ease);
+}
+.vc__addrk{
+  font-family:var(--mono);
+  font-size:clamp(.52rem, .9vw, .62rem);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--p-text-quiet);
+  flex:none;
+}
+.vc__addrv{
+  font-family:var(--ui);
+  font-size:clamp(.76rem, 1.5vw, 1rem);
+  letter-spacing:-.005em;
+  overflow-wrap:anywhere;
+  text-decoration:underline;
+  text-decoration-color:color-mix(in srgb, #0f8877 45%, transparent);
+  text-underline-offset:.22em;
+  text-decoration-thickness:from-font;
+  transition:text-decoration-color 200ms var(--ease);
+}
+.vc__addr:hover{ color:#0f8877; }
+.vc__addr:hover .vc__addrv{ text-decoration-color:#0f8877; }
+.vc__addr:focus-visible{ outline:2px solid var(--teal-ink); outline-offset:4px; border-radius:3px; }
+
 /* --- the back ------------------------------------------------------------- */
 
 .vc__h{
@@ -3003,10 +3043,14 @@ html[data-motion="off"] .progress{ display:none; }
 /* --- the turn ------------------------------------------------------------- */
 
 .js .vc__turn{
-  display:inline-flex;
+  display:flex;
   align-items:center;
   gap:.7rem;
+  /* Centred under a centred object, because the card is the only thing on
+     this page and the control belongs to it rather than to the column. */
+  width:fit-content;
   margin-top:clamp(1.25rem, 3vw, 2rem);
+  margin-inline:auto;
   min-height:44px;
   padding:.6rem 1.15rem;
   background:transparent;
@@ -3045,14 +3089,15 @@ html[data-motion="off"] .vc__turnicon{ transition:none; }
    ends up printed over the trace. On a phone the stock gets taller. It is
    still one object; it is just held the way a phone is held. */
 @media (max-width:640px){
-  .js .vc__card{ aspect-ratio:1.24 / 1; }
+  .js .vc__card{ aspect-ratio:1.02 / 1; }
   .vc__mark{ width:clamp(64px, 22vw, 104px); }
   .vc__mid{ gap:.7rem; padding-block:.7rem; }
   .vc__role{ margin-top:.45rem; }
-  .vc__trace{ height:22px; }
+  .vc__trace{ height:20px; }
+  .vc__addr{ padding-block:.4rem; }
 }
 @media (max-width:400px){
-  .js .vc__card{ aspect-ratio:1.05 / 1; }
+  .js .vc__card{ aspect-ratio:.86 / 1; }
   .vc__mid{ grid-template-columns:minmax(0,1fr) auto; }
 }
 
@@ -3076,7 +3121,7 @@ html[data-motion="off"] .vc__turnicon{ transition:none; }
    visible. It carries the channel (each product has its own rhythm), it
    carries the scroll (the progress bar is this same trace, drawn as you read),
    it carries arrival (the monitor acquires signal), and it carries navigation
-   (the aperture blinks between documents). One idea, four jobs, twelve pages.
+   (the aperture blinks between documents). One idea, four jobs, eleven pages.
 
    Everything below still resolves. Nothing pulses forever without meaning,
    nothing here is the only route to a fact, and all of it stops dead under
@@ -3196,7 +3241,7 @@ html[data-motion="off"] .vc__turnicon{ transition:none; }
 @keyframes acquire-trail{ from{ opacity:0; } 30%{ opacity:.06; } to{ opacity:.34; } }
 
 /* ---------------------------------------------------------------------------
-   9.1 · THE SPINE — the same trace, reporting the scroll, on all twelve pages
+   9.1 · THE SPINE — the same trace, reporting the scroll, on all eleven pages
    ---------------------------------------------------------------------------
    The reading-progress bar was a 2 px rectangle. It is now the site's own
    signal, drawn as you read it: one continuous ECG across the top of every
@@ -3285,7 +3330,7 @@ html.is-beat .progress::after{
 /* ---------------------------------------------------------------------------
    9.2 · THE CUT — every navigation is the aperture blinking
    ---------------------------------------------------------------------------
-   Twelve pages, one film. The outgoing document closes to a slit and the
+   Eleven pages, one film. The outgoing document closes to a slit and the
    incoming one opens out of it: the same aperture the hero is built around,
    at the scale of the whole viewport. It costs one clip-path either side, it
    is the browser's own cross-document transition, and a browser without the

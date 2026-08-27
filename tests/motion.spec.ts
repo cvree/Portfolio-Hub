@@ -116,7 +116,7 @@ test.describe('the gates', () => {
 
   test('every page gets the plane, not only the one with the hero', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    for (const p of ['work.html', 'about.html', 'contact.html', 'spellbomb.html']) {
+    for (const p of ['resume.html', 'about.html', 'contact.html', 'spellbomb.html']) {
       await page.goto(p, { waitUntil: 'load' });
       await expect.poll(() => page.locator('canvas').count(), { timeout: 12000 }).toBe(1);
       /* And it is mounted on the fixed atmosphere plane rather than inside a

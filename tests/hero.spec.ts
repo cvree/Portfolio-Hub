@@ -233,7 +233,7 @@ test.describe('what the hero no longer asks of anybody', () => {
   });
 
   test('no page anywhere on the site carries a sound control', async ({ page }) => {
-    for (const p of ['index.html', 'work.html', 'about.html', 'contact.html', 'resume.html']) {
+    for (const p of ['index.html', 'about.html', 'contact.html', 'resume.html']) {
       await page.goto(p, { waitUntil: 'load' });
       expect(await page.locator('[data-sound-toggle], .soundbtn').count(), p).toBe(0);
     }

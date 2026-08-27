@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Contact — Connor Eppolito</title>
-<meta name="description" content="Get in touch with Connor Eppolito — email, LinkedIn and GitHub. Based in Camarillo, California, and available from December 2026 for health informatics, clinical, research and product work." />
+<meta name="description" content="Get in touch with Connor Eppolito — email connor.eppolito803@myci.csuci.edu, or find him on LinkedIn and GitHub. Based in Camarillo, California, and available from December 2026 for health informatics, clinical, research and product work." />
 <meta name="author" content="Connor Eppolito" />
 <meta name="theme-color" content="#0b0c0e" />
 <meta name="color-scheme" content="dark" />
@@ -13,7 +13,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Connor Eppolito" />
 <meta property="og:title" content="Contact Connor Eppolito" />
-<meta property="og:description" content="Get in touch with Connor Eppolito — email, LinkedIn and GitHub. Based in Camarillo, California, and available from December 2026 for health informatics, clinical, research and product work." />
+<meta property="og:description" content="Get in touch with Connor Eppolito — email connor.eppolito803@myci.csuci.edu, or find him on LinkedIn and GitHub. Based in Camarillo, California, and available from December 2026 for health informatics, clinical, research and product work." />
 <meta property="og:url" content="https://cvree.github.io/Portfolio-Hub/contact.html" />
 <meta name="twitter:card" content="summary_large_image" />
 
@@ -158,7 +158,7 @@
     </a>
 
     <nav class="nav nav--desk" aria-label="Primary">
-      <a href="work.html">Projects</a>
+      <a href="index.html#work">Projects</a>
       <a class="nav__key" href="resume.html">Résumé</a>
       <a href="contact.html" aria-current="page">Contact</a>
     </nav>
@@ -178,7 +178,7 @@
       </summary>
       <div class="navmob__panel">
         <nav aria-label="Primary, mobile">
-          <a href="work.html">Projects<span class="chev" aria-hidden="true">&rarr;</span></a>
+          <a href="index.html#work">Projects<span class="chev" aria-hidden="true">&rarr;</span></a>
           <a href="resume.html">Résumé<span class="chev" aria-hidden="true">&rarr;</span></a>
           <a href="contact.html" aria-current="page">Contact<span class="chev" aria-hidden="true">&rarr;</span></a>
         </nav>
@@ -195,37 +195,34 @@
 
 <main id="main">
 <!-- ===================================================================== -->
-<!-- THE CARD — the thing you would actually be handed                     -->
+<!-- THE CARD — and nothing else                                            -->
 <!-- ===================================================================== -->
 <!--
-  A contact page is a card. So this one is a card: a real object with a front,
-  a back, four edges and a thickness, printed on the same warm ivory the résumé
-  is set on, because paper is what this site already means by "the artefact you
-  hand somebody".
+  A contact page is a card. So this page is one card and nothing around it: no
+  page heading above it, no facts table under it, no three paragraphs of advice
+  beside it. Everything that used to be printed on this page in prose is
+  printed on the object instead — where he is, when he is free, what he is
+  looking for, and the address to write to, which is on the front where a hand
+  can read it without turning anything over.
 
   It is built out of two faces that both carry real content. Turning it over is
   an enhancement and never a gate:
 
     with a script      one card, in the hand — it tilts under the pointer, the
-                       foil catches the light, and the button turns it over
+                       foil catches the light, and touching the card anywhere
+                       that is not a link turns it over
     with no script     two panels, stacked, both complete and both readable
     reduced motion     the same two panels, and the turn is instant
 
-  Every route out of this page is an ordinary <a href> on the back face. There
-  is no state in which a link is in the document but unreachable: the face that
-  is turned away is marked `inert`, so it leaves the tab order with the pixels
-  rather than lingering behind them.
+  Every route out of this page is an ordinary <a href>. There is no state in
+  which a link is in the document but unreachable: the face that is turned away
+  is marked `inert`, so it leaves the tab order with the pixels rather than
+  lingering behind them. The pointer-driven turn is layered on top of a real
+  <button> that says which way up the card is — a card you can only operate by
+  clicking the middle of it is not operable at all.
 -->
 <section class="vc" aria-labelledby="page-h">
   <div class="shell shell--narrow">
-
-    <p class="eyebrow" data-rise><span class="tick" aria-hidden="true"></span>Contact</p>
-    <h1 class="h1 mt-2" id="page-h" data-rise>Say hello.</h1>
-    <p class="case-hero__lede" data-rise>
-      Email is the fastest way to reach me and the one I check. If you are
-      recruiting, the résumé prints to a clean two-page PDF straight from the
-      browser — no form, no download gate.
-    </p>
 
     <div class="vc__stage" data-vcard>
       <span class="vc__shadow" aria-hidden="true"></span>
@@ -243,7 +240,7 @@
 
           <div class="vc__mid">
             <div>
-              <p class="vc__name">Connor <em>Eppolito</em></p>
+              <h1 class="vc__name" id="page-h">Connor <em>Eppolito</em></h1>
               <p class="vc__role">Health Science · NREMT-Certified EMT<br />Product Builder · CSUCI Esports President</p>
             </div>
 
@@ -276,6 +273,16 @@
               </g>
             </svg>
           </div>
+
+          <!-- THE ADDRESS. On the front, because it is the one thing anybody
+               came to this page for, and a card that makes you turn it over to
+               find the address has buried its own point. It is a real mailto
+               link: clicking it opens mail, and clicking anywhere else on the
+               card turns the card. -->
+          <a class="vc__addr" href="mailto:connor.eppolito803@myci.csuci.edu">
+            <span class="vc__addrk">Email</span>
+            <span class="vc__addrv">connor.eppolito803@myci.csuci.edu</span>
+          </a>
 
           <!-- The signal, struck across the foot of the card. -->
           <svg class="vc__trace" viewBox="0 0 900 60" preserveAspectRatio="none" focusable="false" aria-hidden="true">
@@ -336,71 +343,13 @@
 
     <!-- Only rendered where it can work, and it is the card's real state:
          aria-pressed says which way up it is, and the label says what pressing
-         it will do next. -->
+         it will do next. The card itself answers a click as well, and this
+         button is what says so to anybody not using a pointer. -->
     <button class="vc__turn" type="button" data-vcard-flip aria-pressed="false">
       <span class="vc__turnicon" aria-hidden="true"></span>
       <span data-vc-label>Turn the card over</span>
     </button>
 
-  </div>
-</section>
-
-<section aria-labelledby="det-h">
-  <div class="shell shell--narrow">
-    <div class="sechead">
-      <div>
-        <p class="eyebrow" data-rise><span class="tick" aria-hidden="true"></span>Details</p>
-        <h2 class="h2" id="det-h" data-rise>The practical bits.</h2>
-      </div>
-    </div>
-
-    <dl class="facts" data-motion="sequence">
-      <div>
-        <dt>Based in</dt>
-        <dd>Camarillo, California</dd>
-      </div>
-      <div>
-        <dt>Open to</dt>
-        <dd>Ventura &amp; Los Angeles area, and remote</dd>
-      </div>
-      <div>
-        <dt>Available</dt>
-        <dd>December 2026, on graduation</dd>
-      </div>
-      <div>
-        <dt>Looking for</dt>
-        <dd>Health informatics · clinical · research · product</dd>
-      </div>
-    </dl>
-
-    <div class="prose mt-4" data-rise>
-      <h3 class="h3">If you are hiring</h3>
-      <p class="quiet mt-1">
-        The <a class="link" href="resume.html">résumé</a> is the fast version and
-        the <a class="link" href="work.html">case studies</a> are the evidence —
-        each one names what the product cannot do as clearly as what it can. If
-        there is a specific claim you would like checked, ask and I will show you
-        the code, the test or the running build behind it.
-      </p>
-      <h3 class="h3 mt-3">If you are a student or a fellow builder</h3>
-      <p class="quiet mt-1">
-        Everything except SpellBomb is open source and free to read, fork or use.
-        If you are studying for the NHA CPT, the
-        <a class="link" href="phlebotomy-exam-prep.html">exam prep platform</a> is
-        free and needs no account — and I would genuinely like to hear where it is
-        wrong.
-      </p>
-      <h3 class="h3 mt-3">If you are at CSUCI</h3>
-      <p class="quiet mt-1">
-        The Esports Club is open to everyone, at every level, and the fastest way
-        in is to turn up. Email works for that too.
-      </p>
-    </div>
-
-    <div class="btn-row mt-4" data-rise>
-      <a class="btn btn--primary" href="mailto:connor.eppolito803@myci.csuci.edu">Email me <span class="arrow" aria-hidden="true">&rarr;</span></a>
-      <a class="btn" href="index.html">Back to the start <span class="arrow" aria-hidden="true">&rarr;</span></a>
-    </div>
   </div>
 </section>
 
@@ -420,7 +369,7 @@
         <h3>Site</h3>
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="work.html">Projects</a></li>
+          <li><a href="index.html#work">Projects</a></li>
           <li><a href="experience.html">Experience</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="resume.html">R&eacute;sum&eacute;</a></li>

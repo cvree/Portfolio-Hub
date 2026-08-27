@@ -4,7 +4,7 @@
    Enhancement only. Everything on every page is complete, readable, navigable
    and linkable with this file absent, blocked, or thrown out by an error.
 
-   Seven small jobs:
+   Eight small jobs:
      1. reveal-on-scroll for anything carrying [data-rise], [data-motion] or
         [data-scene]
      2. a hairline reading-progress bar
@@ -12,18 +12,22 @@
      4. the global Motion On/Off control — the one switch in the masthead
      5. the Projects rail: which room you are in, how far through, and
         what colour the room the whole page is read in should be
-     6. the contact card, which turns over
-     7. the three lazy layers, and far more often the decision not to load them,
+     6. the glide: an eased, interruptible scroll for same-page links, and the
+        composed arrival for a URL that turns up carrying a fragment
+     7. the contact card, which turns over
+     8. the three lazy layers, and far more often the decision not to load them,
         and telling the atmosphere where on the screen the words currently are
 
-   Jobs 1-6 are the site, and every one of them is small enough to live in the
+   Jobs 1-7 are the site, and every one of them is small enough to live in the
    critical file. The hero's whole arrival choreography is CSS — this file only
-   ends it when you touch something. Job 7 is an escalation that happens only
+   ends it when you touch something. Job 8 is an escalation that happens only
    after the useful page has painted, and only when the device, Save-Data and
    the visitor's own motion preference all say yes. No lazy module is ever
    required for a page to be complete.
 
-   Nothing here hijacks scrolling, and nothing here plays sound.
+   Nothing here holds the scroll against you, and nothing here plays sound. The
+   one thing that moves the page on its own is job 6; it runs only because a
+   link was followed, and the first wheel notch, touch or key ends it.
    =========================================================================== */
 
 (function () {
@@ -283,6 +287,187 @@
     for (var i = 0; i < rooms.length; i++) io.observe(rooms[i]);
   }
 
+  /* --- 3d2. the glide -------------------------------------------------------
+     There is one page on this site now where "Projects" is a place rather than
+     a document, and a place has to be arrived at rather than cut to. This is
+     the whole of that: an eased scroll that any same-page link hands its
+     destination to, and that gives up the instant the visitor does anything
+     at all.
+
+     It is not a scroll hijack. It never listens to the wheel to decide where
+     the page goes, it never holds a position against you, and it owns the
+     scroll for at most a second — the first wheel notch, touch, key or click
+     cancels it mid-flight and hands the page straight back. With reduced
+     motion asked for, or with this file absent, `scroll-behavior:smooth` and
+     `scroll-padding-top` in the stylesheet do the same job in one hop, which
+     is why nothing below is required for a fragment link to work. */
+  var flight = null;
+
+  /* `window.scrollTo(x, y)` honours the CSS `scroll-behavior` of the scrolling
+     element, and this stylesheet sets that to `smooth` — so every frame of the
+     eased scroll below would kick off its own second, native, eased scroll
+     toward the same place, and the two would compound into something neither
+     of them meant. For exactly as long as a flight owns the scroll, the
+     document's own behaviour is `auto` and this file is the only thing easing
+     anything; the moment the flight ends, the stylesheet has it back. */
+  function ownScroll(on) {
+    root.style.scrollBehavior = on ? "auto" : "";
+  }
+
+  function landing() {
+    /* One number, and the stylesheet owns it: --land is what clears the
+       sticky masthead, and reading it back means this file never carries a
+       second copy of the masthead's height. */
+    var pad = parseFloat(getComputedStyle(root).scrollPaddingTop);
+    return isFinite(pad) ? pad : 0;
+  }
+
+  function restAt(el) {
+    var own = parseFloat(getComputedStyle(el).scrollMarginTop);
+    var y = el.getBoundingClientRect().top + (window.pageYOffset || root.scrollTop);
+    return y - landing() - (isFinite(own) ? own : 0);
+  }
+
+  function glideTo(y) {
+    var ceiling = Math.max(0, root.scrollHeight - window.innerHeight);
+    y = Math.max(0, Math.min(ceiling, y));
+    var from = window.pageYOffset || root.scrollTop;
+    var span = y - from;
+
+    if (still() || Math.abs(span) < 2 || !window.requestAnimationFrame) {
+      flight = null;
+      ownScroll(true);
+      window.scrollTo(0, y);
+      ownScroll(false);
+      return;
+    }
+
+    /* Long enough to read as travel, short enough never to be a wait. The
+       duration follows the distance and is bounded at both ends, so a hop to
+       the next section and a jump across the whole document both feel like
+       the same page moving at the same speed. */
+    var ms = Math.max(420, Math.min(1150, 280 + Math.abs(span) * 0.34));
+    var t0 = null;
+    var mine = (flight = {});
+
+    function frame(t) {
+      if (flight !== mine) return;
+      if (t0 === null) t0 = t;
+      var k = Math.min(1, (t - t0) / ms);
+      /* Leaves at rest and arrives at rest, symmetrically. Anything that
+         starts at speed reads as a jump that was slowed down. */
+      var e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      window.scrollTo(0, from + span * e);
+      if (k < 1) {
+        window.requestAnimationFrame(frame);
+      } else {
+        flight = null;
+        ownScroll(false);
+      }
+    }
+
+    ownScroll(true);
+    window.requestAnimationFrame(frame);
+  }
+
+  /* The page belongs to whoever is holding it. Any of these and the glide is
+     over — not paused, over. */
+  function release() {
+    if (!flight) return;
+    flight = null;
+    ownScroll(false);
+  }
+
+  function focusLanding(el) {
+    if (el.tabIndex < 0 && !el.hasAttribute("tabindex")) {
+      el.setAttribute("tabindex", "-1");
+      el.addEventListener(
+        "blur",
+        function () {
+          el.removeAttribute("tabindex");
+        },
+        { once: true }
+      );
+    }
+    try {
+      el.focus({ preventScroll: true });
+    } catch (e) {
+      /* a browser without the options bag would scroll; better not to focus */
+    }
+  }
+
+  function fragment(hash) {
+    if (!hash || hash.length < 2) return null;
+    var id;
+    try {
+      id = decodeURIComponent(hash.slice(1));
+    } catch (e) {
+      id = hash.slice(1);
+    }
+    return document.getElementById(id) || null;
+  }
+
+  function anchors() {
+    var quit = ["wheel", "touchstart", "pointerdown", "keydown"];
+    for (var i = 0; i < quit.length; i++) {
+      window.addEventListener(quit[i], release, { capture: true, passive: true });
+    }
+
+    document.addEventListener("click", function (ev) {
+      if (ev.defaultPrevented || ev.button !== 0) return;
+      if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+
+      var a = ev.target.closest ? ev.target.closest("a[href]") : null;
+      if (!a || a.hasAttribute("download") || (a.target && a.target !== "_self")) return;
+      /* The skip link is the one same-page link that must not travel: its
+         whole purpose is to be over before you notice it. */
+      if (a.classList.contains("skip")) return;
+      if (a.protocol !== location.protocol || a.host !== location.host) return;
+      if (a.pathname !== location.pathname || a.search !== location.search) return;
+
+      var el = fragment(a.hash);
+      if (!el) return;
+
+      ev.preventDefault();
+      /* The address bar is right immediately, so a link copied mid-glide is
+         the link to where the page is going. */
+      if (window.history && history.pushState) history.pushState(null, "", a.hash);
+      else location.hash = a.hash;
+      focusLanding(el);
+      glideTo(restAt(el));
+    });
+  }
+
+  /* --- 3d3. arriving on a fragment ------------------------------------------
+     Projects is a place on the home page, and every route to it — the
+     masthead, the footer, a case study's own way back — is a URL carrying
+     #work. A browser answers that by cutting straight to it, which tells a
+     visitor nothing about what they landed in the middle of.
+
+     So the arrival is composed: the page is put down a screenful above its
+     destination and glides the last stretch, which is exactly the amount of
+     travel that says "this is further down the same page" and not one pixel
+     more. It runs before anything else measures the document, so nothing has
+     to be re-measured after it. */
+  function arrive() {
+    var el = fragment(location.hash);
+    if (!el || still()) return;
+
+    if (window.history && "scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    var target = restAt(el);
+    var start = Math.max(0, target - window.innerHeight * 1.15);
+    if (target - start < 40) return;
+
+    ownScroll(true);
+    window.scrollTo(0, start);
+    window.requestAnimationFrame(function () {
+      glideTo(restAt(el));
+    });
+  }
+
   /* --- 3e. the card, and turning it over -----------------------------------
      Both faces are real content and both are in the document. All this does is
      decide which one you are looking at, and — the part that actually matters —
@@ -292,7 +477,15 @@
 
      `inert` does the whole job in one attribute where it exists. Where it does
      not, the fallback is tabindex + aria-hidden, which is the same contract
-     spelled out longhand. */
+     spelled out longhand.
+
+     The card itself answers a click, because a card in a hand is turned over by
+     touching it and not by finding its label. That is layered on top of the
+     button rather than instead of it: the button is what a keyboard, a screen
+     reader and a visitor who has never met a flipping card all use, and it is
+     the only thing that ever claims to be a control. Clicks that land on a real
+     link — the address on the front, the four routes on the back — are the
+     link's, never the card's. */
   function card() {
     var stage = document.querySelector("[data-vcard]");
     if (!stage) return;
@@ -330,12 +523,14 @@
       away(faces.back, !turned);
     }
 
-    btn.addEventListener("click", function () {
+    function flip(fromButton) {
       turned = !turned;
       paint();
       /* Focus follows the card: whichever face is now facing you is the one a
-         keyboard should be able to walk into next. */
-      if (turned && faces.back) {
+         keyboard should be able to walk into next. Only when the turn was asked
+         for from the keyboard's own control — a pointer already knows where it
+         is, and moving its focus steals the scroll position out from under it. */
+      if (fromButton && turned && faces.back) {
         var first = faces.back.querySelector("a[href]");
         if (first && document.activeElement === btn) {
           /* Only once the half-turn has actually shown it — moving focus onto
@@ -345,6 +540,28 @@
           }, still() ? 0 : 620);
         }
       }
+    }
+
+    btn.addEventListener("click", function () {
+      flip(true);
+    });
+
+    /* A press that travelled is a drag, a text selection or a scroll that
+       started on the card, and none of those asked for the card to turn. */
+    var from = null;
+    stage.addEventListener(
+      "pointerdown",
+      function (ev) {
+        from = { x: ev.clientX, y: ev.clientY };
+      },
+      { passive: true }
+    );
+
+    stage.addEventListener("click", function (ev) {
+      var hit = ev.target.closest ? ev.target.closest("a[href], button, [role='button']") : null;
+      if (hit) return;
+      if (from && Math.abs(ev.clientX - from.x) + Math.abs(ev.clientY - from.y) > 10) return;
+      flip(false);
     });
 
     paint();
@@ -578,17 +795,33 @@
     for (var i = 0; i < text.length; i++) readIO.observe(text[i]);
 
     readPlane = plane;
+    readAt = -1;
     window.addEventListener("scroll", queueRead, { passive: true });
     window.addEventListener("resize", queueRead, { passive: true });
     measureRead(plane);
   }
 
-  /* One measurement per frame at most, and none at all while nothing moves. */
+  /* One measurement per frame at most, and none at all while nothing moves.
+     Measuring is the single most expensive thing this file does during a
+     scroll — a range over every line of text on screen, which forces layout —
+     so it is also the thing most worth not doing. A frame that arrives at the
+     same scroll position and the same viewport as the last one has nothing new
+     to say, and inside a smooth scroll's deceleration that is most of them. */
+  var readAt = -1;
+  var readW = -1;
+  var readH = -1;
+
   function queueRead() {
     if (queued || !readPlane) return;
     queued = true;
     requestAnimationFrame(function () {
       queued = false;
+      if (!readPlane) return;
+      var y = window.pageYOffset || root.scrollTop;
+      if (y === readAt && window.innerWidth === readW && window.innerHeight === readH) return;
+      readAt = y;
+      readW = window.innerWidth;
+      readH = window.innerHeight;
       measureRead(readPlane);
     });
   }
@@ -652,6 +885,10 @@
 
   function start() {
     try {
+      anchors();
+      /* Before reveals(), so the first thing measured is the page where it is
+         actually going to be read rather than where it briefly was. */
+      arrive();
       reveals();
       progress();
       menu();

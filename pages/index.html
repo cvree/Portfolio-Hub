@@ -80,7 +80,7 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
       </p>
 
       <div class="btn-row sig__actions">
-        <a class="btn btn--primary" href="work.html">
+        <a class="btn btn--primary" href="#work">
           Explore the work <span class="arrow" aria-hidden="true">&rarr;</span>
         </a>
         <a class="btn" href="resume.html">
@@ -252,7 +252,7 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
   and walking a screen reader through a decorative rebuild of a screenshot is
   not access, it is noise.
 -->
-<section class="th" data-theatre aria-labelledby="work-h">
+<section class="th" id="work" data-theatre aria-labelledby="work-h">
   <div class="shell">
     <div class="sechead">
       <div>
@@ -261,10 +261,42 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
       </div>
       <p class="quiet" data-rise>
         Real captures of the real applications, with real data in them. Each
-        scene is assembled from the same evidence the case study is written
-        from.
+        case study opens on the most interesting thing the product actually
+        does, then answers the same nine questions — what it is, why I built it,
+        the interaction worth showing, the problem underneath, what it can do
+        today, the decisions behind it, what changed across iterations, what is
+        next, and where to go and use it.
       </p>
     </div>
+
+    <p class="quiet small" data-rise style="max-width:37.2em;margin-top:clamp(.75rem,2vw,1.25rem)">
+      Every screenshot on this site was captured from the running application
+      with real data in it. Where a repository is private, this site says so
+      rather than pointing at a link that will not open.
+    </p>
+
+    <!-- The key to the chips printed on all six rooms and on the smaller
+         pieces below them. It sits here, once, rather than being re-explained
+         beside every badge that uses it. -->
+    <h3 class="vh" id="key-h">How status is labelled</h3>
+    <dl class="facts th__key" data-motion="sequence">
+      <div>
+        <dt>Live</dt>
+        <dd>Deployed and reachable. Anyone can open it right now.</dd>
+      </div>
+      <div>
+        <dt>In development</dt>
+        <dd>Runs, is being worked on, and is not publicly deployed today.</dd>
+      </div>
+      <div>
+        <dt>Experiment</dt>
+        <dd>Built to answer one question. Kept because the answer was useful.</dd>
+      </div>
+      <div>
+        <dt>Concept</dt>
+        <dd>A repository with a premise and not yet a product. Named, not oversold.</dd>
+      </div>
+    </dl>
   </div>
 
   <div class="shell th__wrap">
@@ -620,9 +652,105 @@ desc: Connor Eppolito is a senior Health Science student at CSU Channel Islands,
     </div>
   </div>
 
+  <!-- ALSO BUILT. This used to be the second half of a separate projects
+       page. There is no second page any more, so it is the second half of this
+       section: the six above are where the finished thinking lives, and these
+       are the smaller pieces and the open experiments behind them. -->
   <div class="shell">
-    <div class="btn-row mt-4" data-rise>
-      <a class="btn" href="work.html">All work, including the smaller pieces <span class="arrow" aria-hidden="true">&rarr;</span></a>
+    <div class="sechead th__also">
+      <div>
+        <p class="eyebrow" data-rise><span class="tick" aria-hidden="true"></span>Also built</p>
+        <h3 class="h2" id="more-h" data-rise>Smaller pieces,<br />and open experiments.</h3>
+      </div>
+      <p class="quiet" data-rise>
+        Named honestly. A repository with a good premise and an early build is
+        listed as exactly that.
+      </p>
+    </div>
+
+    <div class="cards" data-motion="sort">
+
+      <div class="card">
+        <p class="card__t"><a class="link" href="https://github.com/cvree/RemyDee" rel="noopener">Remy Dee</a></p>
+        <p class="card__d">
+          Greek and Latin root learning: two parts you already know, one medical
+          term you do not. The same premise as the vocabulary half of Phlebotomy
+          Exam Prep, tried first as a game.
+        </p>
+        <p class="card__f"><span class="chip chip--exp"><span class="led" aria-hidden="true"></span>Experiment</span></p>
+      </div>
+
+      <div class="card">
+        <p class="card__t"><a class="link" href="https://github.com/cvree/MedicalTerminology-Trainer" rel="noopener">Medical Terminology Trainer</a></p>
+        <p class="card__d">
+          Drilling the vocabulary that every clinical course assumes you have
+          already absorbed. An early sketch of the spaced-repetition work that
+          later became a real product.
+        </p>
+        <p class="card__f"><span class="chip chip--exp"><span class="led" aria-hidden="true"></span>Experiment</span></p>
+      </div>
+
+      <div class="card">
+        <p class="card__t"><a class="link" href="https://github.com/cvree/PhlebLearn" rel="noopener">PhlebLearn</a></p>
+        <p class="card__d">
+          The first attempt at phlebotomy study material, before the question bank
+          and the drills were the point. Kept because it is where the shape of the
+          real one was worked out.
+        </p>
+        <p class="card__f"><span class="chip chip--exp"><span class="led" aria-hidden="true"></span>Experiment</span></p>
+      </div>
+
+      <div class="card">
+        <p class="card__t"><a class="link" href="https://github.com/cvree/EpiMap" rel="noopener">EpiMap</a></p>
+        <p class="card__d">
+          Public-health data on a map — the coursework instinct from epidemiology
+          and biostatistics, pointed at something you can look at rather than
+          tabulate.
+        </p>
+        <p class="card__f"><span class="chip chip--concept">Concept</span></p>
+      </div>
+
+      <div class="card">
+        <p class="card__t"><a class="link" href="https://github.com/cvree/Steady" rel="noopener">Steady</a></p>
+        <p class="card__d">
+          A small habit-and-consistency tool. Its lesson — that a streak is a
+          worse motivator than a legible record — went straight into Health
+          Journal.
+        </p>
+        <p class="card__f"><span class="chip chip--concept">Concept</span></p>
+      </div>
+
+      <div class="card">
+        <p class="card__t"><a class="link" href="https://github.com/cvree/TwoDO" rel="noopener">TwoDO</a></p>
+        <p class="card__d">
+          Two things to do today, and nothing else on screen. An exercise in how
+          much a to-do app can refuse to show you and still be useful.
+        </p>
+        <p class="card__f"><span class="chip chip--exp"><span class="led" aria-hidden="true"></span>Experiment</span></p>
+      </div>
+
+      <div class="card">
+        <p class="card__t"><a class="link" href="https://github.com/cvree/Story-Atlas" rel="noopener">Story Atlas</a></p>
+        <p class="card__d">
+          Mapping a narrative as a place rather than a sequence. The spatial
+          thinking that later made PaperAnimator&rsquo;s storyboard feel obvious.
+        </p>
+        <p class="card__f"><span class="chip chip--concept">Concept</span></p>
+      </div>
+
+      <div class="card">
+        <p class="card__t">This site</p>
+        <p class="card__d">
+          Eleven static pages, four self-hosted typefaces, one stylesheet and one
+          small script. No framework, no CDN in the critical path, and everything
+          readable with JavaScript switched off.
+        </p>
+        <p class="card__f">
+          <span class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+          <a class="link small" href="https://github.com/cvree/Portfolio-Hub" rel="noopener">Source</a>
+        </p>
+      </div>
+
     </div>
   </div>
 </section>
