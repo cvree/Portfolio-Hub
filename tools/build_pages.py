@@ -50,7 +50,11 @@ NAV = [
 # HTML: the canonical, the refresh, and a link for the browser that honours
 # neither.
 REDIRECTS = {
-    "work.html": ("index.html#work", "Projects — Connor Eppolito"),
+    "work.html": (
+        "index.html#work",
+        "Projects — Connor Eppolito",
+        "The projects have moved to the home page. This page forwards to index.html#work.",
+    ),
 }
 
 REDIRECT = """<!DOCTYPE html>
@@ -59,11 +63,13 @@ REDIRECT = """<!DOCTYPE html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{title}</title>
+<meta name="description" content="{desc}" />
 <meta name="robots" content="noindex, follow" />
 <link rel="canonical" href="{canonical}" />
 <meta http-equiv="refresh" content="0; url={to}" />
 </head>
 <body>
+<h1>{title}</h1>
 <p>The projects live on the home page now. <a href="{to}">Continue to the projects</a>.</p>
 <script>location.replace("{to}");</script>
 </body>
@@ -185,12 +191,12 @@ def build(check: bool = False) -> int:
             out.write_text(page, encoding="utf-8")
             print(f"wrote {path}  ({len(page) // 1024} KB)")
 
-    for path, (to, title) in sorted(REDIRECTS.items()):
+    for path, (to, title, desc) in sorted(REDIRECTS.items()):
         # A fragment is not part of a canonical URL — the page a search engine
         # should hold is the document, and the document is the home page.
         doc = to.split("#", 1)[0]
         canonical = SITE + ("" if doc == "index.html" else doc)
-        page = REDIRECT.format(title=title, to=to, canonical=canonical)
+        page = REDIRECT.format(title=title, desc=desc, to=to, canonical=canonical)
         out = ROOT / path
         if check:
             if not out.exists() or out.read_text(encoding="utf-8") != page:
