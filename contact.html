@@ -198,28 +198,17 @@
 <!-- THE CARD — and nothing else                                            -->
 <!-- ===================================================================== -->
 <!--
-  A contact page is a card. So this page is one card and nothing around it: no
-  page heading above it, no facts table under it, no three paragraphs of advice
-  beside it. Everything that used to be printed on this page in prose is
-  printed on the object instead — where he is, when he is free, what he is
-  looking for, and the address to write to, which is on the front where a hand
-  can read it without turning anything over.
+  One card and nothing around it. Two faces, both carrying real content; the
+  turn is an enhancement, never a gate:
 
-  It is built out of two faces that both carry real content. Turning it over is
-  an enhancement and never a gate:
-
-    with a script      one card, in the hand — it tilts under the pointer, the
-                       foil catches the light, and touching the card anywhere
-                       that is not a link turns it over
-    with no script     two panels, stacked, both complete and both readable
+    with a script      one card in the hand — it tilts under the pointer, the
+                       foil catches the light, and touching it turns it over
+    with no script     two panels, stacked, both complete
     reduced motion     the same two panels, and the turn is instant
 
-  Every route out of this page is an ordinary <a href>. There is no state in
-  which a link is in the document but unreachable: the face that is turned away
-  is marked `inert`, so it leaves the tab order with the pixels rather than
-  lingering behind them. The pointer-driven turn is layered on top of a real
-  <button> that says which way up the card is — a card you can only operate by
-  clicking the middle of it is not operable at all.
+  Every route out is an ordinary <a href>. The face turned away is `inert`, so
+  it leaves the tab order with the pixels. The pointer turn sits on top of a
+  real <button> that says which way up the card is.
 -->
 <section class="vc" aria-labelledby="page-h">
   <div class="shell shell--narrow">
@@ -362,9 +351,7 @@
         <p class="foot__sig">Health science,<br />built and tested.</p>
         <p class="quiet small mt-2" style="max-width:20.4em">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
       </div>
-      <!-- The whole map lives here and only here. The masthead carries three
-           items; everything else the site has — About included — is one scroll
-           away, at the foot, where a map belongs. -->
+      <!-- The whole map, here and only here. The masthead carries three items. -->
       <div>
         <h3>Site</h3>
         <ul>
@@ -388,7 +375,7 @@
 
     <div class="foot__base">
       <p>© 2026 Connor Eppolito</p>
-      <p>Every claim on this site comes from the record it describes. Facts read August 2026.</p>
+      <p>Every claim here comes from the record it describes. Facts read August 2026.</p>
     </div>
   </div>
 </footer>

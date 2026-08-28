@@ -208,12 +208,11 @@
 
     <p class="case-hero__lede" data-rise style="--d:160ms">
       Paste a link to an Overwatch Champions Series VOD and get back an auditable
-      hero-composition timeline: automatic HUD calibration, live-versus-replay
-      frame classification, template-matched hero detection with a temporal swap
-      model, a staged SQLite database, and a static fan-facing site that renders
-      the result with click-through evidence. Everything downstream of the video is
-      plain Python and OpenCV; the site is plain HTML, CSS and JavaScript. No
-      frameworks, no server, no paid services.
+      hero-composition timeline: HUD calibration, live-versus-replay frame
+      classification, template-matched detection with a temporal swap model, a staged
+      SQLite database, and a static site that renders the result with click-through
+      evidence. Plain Python and OpenCV behind it, plain HTML, CSS and JavaScript in
+      front. No frameworks, no server, no paid services.
     </p>
 
     <div class="btn-row case-hero__actions" data-rise style="--d:210ms">
@@ -226,7 +225,7 @@
     </div>
 
     <p class="quiet small mt-3" data-rise style="max-width:36em">
-      An independent fan project. Unaffiliated with, and not endorsed by, Blizzard
+      An independent fan project, unaffiliated with and unendorsed by Blizzard
       Entertainment or any tournament organiser.
     </p>
   </div>
@@ -260,10 +259,9 @@
            width="2400" height="1500" loading="eager" fetchpriority="high" decoding="async"
            alt="The OWCS Comp Tracker review screen for Al Qadsiah versus Twisted Minds: fourteen detected slots, fourteen unconfirmed, zero decided by you, with an Approve 3 clean reads button. Below, three round boundaries drawn as time bars from 32:21 to 46:05 with 85 percent confidence each, then a list of detected heroes — Shion at 95 percent over 307 agreeing frames, Symmetra at 90 percent, Mauga at 92, Kiriko twice for two different stints, Juno at 96 — each showing the frame it was read from and Approve, Correct and Flag buttons." />
       <figcaption class="shotframe__cap">
-        The Review screen, served from the repository on the committed Al Qadsiah
-        versus Twisted Minds (Nepal) dataset. Every detection sits beside the
-        frame it was read from, its confidence as a bar, and the number of frames
-        that agreed. Nothing here is a fact yet.
+        The Review screen on the committed Al Qadsiah versus Twisted Minds (Nepal)
+        dataset. Every detection sits beside the frame it was read from, its
+        confidence as a bar, and how many frames agreed. Nothing here is a fact yet.
       </figcaption>
     </figure>
   </div>
@@ -277,20 +275,18 @@
         <div class="chapter__label"><span class="n">01</span><h2>What it is</h2></div>
         <div class="chapter__body prose">
           <p>
-            One product with one workflow, and every page belongs to a step of it:
-            <b>submit a game &rarr; automatic processing &rarr; review what was
-            detected &rarr; approve or correct &rarr; published match stats.</b> The
-            navigation has five entries, in that order, and everything else is
-            reached from the screen it belongs to.
+            One workflow, and every page is a step of it: <b>submit a game &rarr;
+            process &rarr; review what was detected &rarr; approve or correct &rarr;
+            published match stats.</b> Five navigation entries, in that order;
+            everything else is reached from the screen it belongs to.
           </p>
           <p>
-            The pipeline has processed one complete real map end to end, and the
-            page that publishes it says so precisely: Al Qadsiah versus Twisted
-            Minds, OWCS 2026 NA/EMEA Stage 2 Playoffs Day 2, Nepal — 3 control
-            rounds, 299 frames sampled (196 hero-readable, 103 skipped with
-            reasons), 1,950 accepted slot reads, two temporally confirmed hero
-            swaps with before-and-after evidence crops, and seven suspected swaps
-            rejected as noise.
+            It has processed one complete real map end to end, and the page publishing
+            it says so precisely: Al Qadsiah versus Twisted Minds, OWCS 2026 NA/EMEA
+            Stage 2 Playoffs Day 2, Nepal — 3 control rounds, 299 frames sampled (196
+            hero-readable, 103 skipped with reasons), 1,950 accepted slot reads, two
+            temporally confirmed swaps with before-and-after crops, and seven suspected
+            swaps rejected as noise.
           </p>
           <dl class="facts" data-motion="sort">
             <div><dt>Detection</dt><dd>Python + OpenCV, ranked template match</dd></div>
@@ -305,22 +301,19 @@
         <div class="chapter__label"><span class="n">02</span><h2>Why I built it</h2></div>
         <div class="chapter__body prose">
           <p>
-            I play and lead competitively, and the single most useful thing after a
-            match is knowing what the other team actually ran and <em>when they
-            changed it</em>. That information exists — it is on screen for the whole
-            broadcast — and it exists nowhere afterwards. A VOD is a video of a
-            match, not a record of one. Every serious answer requires somebody to
-            scrub the footage by hand.
+            I play and lead competitively, and the most useful thing after a match is
+            what the other team ran and <em>when they changed it</em>. That is on screen
+            for the whole broadcast and exists nowhere afterwards. A VOD is a video of a
+            match, not a record of one, and every serious answer means scrubbing footage
+            by hand.
           </p>
           <p>
-            The version of that problem I found interesting was not
-            &ldquo;can a model read a HUD&rdquo;. It was: <em>how do you build a
-            system whose output somebody should be willing to trust?</em> A
-            composition tracker that is right most of the time is worse than
-            useless — it is a source people will cite. So the real design problem
-            was evidence: making every published number traceable to the frame it
-            was read from, and making the system refuse to publish anything it
-            cannot show its working for.
+            The interesting problem was never &ldquo;can a model read a HUD&rdquo;. It
+            was: <em>how do you build a system whose output somebody should trust?</em>
+            A tracker that is right most of the time is worse than useless — it is a
+            source people will cite. So the design problem was evidence: every published
+            number traceable to the frame it came from, and nothing published that
+            cannot show its working.
           </p>
         </div>
       </article>
@@ -329,35 +322,32 @@
         <div class="chapter__label"><span class="n">03</span><h2>The most interesting interaction</h2></div>
         <div class="chapter__body prose">
           <p>
-            <strong>The swap review.</strong> A hero swap is the highest-value fact
-            the pipeline can produce and the easiest one to get wrong: a dead
-            portrait dims and looks like a different hero, a killcam cuts to another
-            player&rsquo;s view, an ultimate changes the art. A naive detector
-            produces a stream of swaps that did not happen.
+            <strong>The swap review.</strong> A hero swap is the highest-value fact the
+            pipeline can produce and the easiest to get wrong: a dead portrait dims, a
+            killcam cuts to another player&rsquo;s view, an ultimate changes the art. A
+            naive detector produces a stream of swaps that did not happen.
           </p>
           <p>
             So the temporal model treats a change as a <em>hypothesis</em>, and the
-            review screen shows you the hypothesis and its verdict together —
-            including the ones it threw out. Each row states the slot, the
-            timestamp, and the reasoning in plain language: <i>&ldquo;detector said
-            rejected (candidate sojourn seen 2× then sym returned — noise, not a
-            swap)&rdquo;</i>, or <i>&ldquo;detector said confirmed (lucio persisted
-            3 obs while juno no longer detected)&rdquo;</i>.
+            review screen shows the hypothesis and its verdict together — including the
+            ones it threw out. Each row gives the slot, the timestamp and the reasoning
+            in plain language: <i>&ldquo;detector said rejected (candidate sojourn seen
+            2× then sym returned — noise, not a swap)&rdquo;</i>, or <i>&ldquo;detector
+            said confirmed (lucio persisted 3 obs while juno no longer
+            detected)&rdquo;</i>.
           </p>
           <p>
-            Showing the rejections is the part that matters. A system that only
-            displays what it accepted is asking to be trusted. A system that shows
-            you the seven it discarded, and why, is showing you its judgement — and
-            lets you catch the one it got wrong.
+            The rejections are the part that matters. A system that shows only what it
+            accepted is asking to be trusted; one that shows the seven it discarded, and
+            why, is showing its judgement — and lets you catch the one it got wrong.
           </p>
           <p>
-            The whole screen is keyboard-driven, because reviewing evidence is
-            repetitive work: <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>a</kbd> approves,
-            <kbd>c</kbd> corrects, <kbd>f</kbd> flags, and <kbd>&#8679;A</kbd>
-            approves every clean read at once — where &ldquo;clean&rdquo; is defined
-            on screen as the detector agreeing with itself across the whole stint at
-            90% or better, the same threshold the pipeline uses before it will
-            publish anything without asking.
+            The screen is keyboard-driven, because reviewing evidence is repetitive
+            work: <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>a</kbd> approves, <kbd>c</kbd>
+            corrects, <kbd>f</kbd> flags, <kbd>&#8679;A</kbd> approves every clean read
+            — &ldquo;clean&rdquo; defined on screen as the detector agreeing with itself
+            across the stint at 90% or better, the same threshold the pipeline uses
+            before publishing without asking.
           </p>
         </div>
       </article>
@@ -374,9 +364,9 @@
                  width="1600" height="1000" loading="lazy" decoding="async"
                  alt="The swap review list. Four rows are marked rejected — Kiriko to Shion, Symmetra to Sojourn, Lúcio to Sojourn and one above — each explaining that the candidate was seen once or twice before the original hero returned, which is noise rather than a swap. The last row, Juno to Lúcio at 39:54, is marked confirmed at 82 percent with real before-and-after evidence crops beside it and a Confirm button." />
             <figcaption class="shotframe__cap">
-              Four rejections and one confirmation, in the same list, with the
-              same amount of screen. The confirmed row is the only one carrying
-              evidence crops, because it is the only one with evidence.
+              Four rejections and one confirmation, one list, the same amount of
+              screen each. The confirmed row is the only one carrying evidence crops,
+              because it is the only one with evidence.
             </figcaption>
           </figure>
         </div>
@@ -386,30 +376,27 @@
         <div class="chapter__label"><span class="n">04</span><h2>The problem being solved</h2></div>
         <div class="chapter__body prose">
           <p>
-            Reading a hero portrait at 35&times;35 pixels out of a compressed
-            broadcast stream is not one problem. It is five, and the pipeline is
-            arranged as five answers.
+            Reading a hero portrait at 35&times;35 pixels out of a compressed broadcast
+            stream is five problems, and the pipeline is five answers.
           </p>
           <ul class="bullets">
-            <li><b>Where is the HUD?</b> Calibration finds the ten portrait boxes computationally — chip rows in HSV, a RANSAC grid fit, then pixel-evidence verification — and writes a reusable, resolution-independent layout profile. Below a confidence of 0.55 it <em>refuses</em>, with reasons, rather than producing a layout it cannot stand behind.</li>
+            <li><b>Where is the HUD?</b> Calibration finds the ten portrait boxes computationally — chip rows in HSV, a RANSAC grid fit, pixel-evidence verification — and writes a reusable, resolution-independent layout profile. Below 0.55 confidence it <em>refuses</em>, with reasons.</li>
             <li><b>Is this frame even gameplay?</b> A structural filter separates live play from replays, scoreboards, the analyst desk and transitions, so a replay can never create a composition.</li>
             <li><b>What hero is that?</b> A ranked template match returns the candidate, the runner-up and the margin between them — and returns <code>UNKNOWN</code> rather than guessing when the margin is too thin.</li>
             <li><b>Did it change, or did the picture change?</b> Temporal consensus with hysteresis: a swap needs persistence and displacement, not a single disagreeing frame.</li>
-            <li><b>Can a template be trusted at all?</b> Templates are cut only from a build slice, separated from a holdout by a dead zone, gated on size, sharpness, contrast, flatness, overlay bands and confusion with another hero — then validated on frames they have never seen.</li>
+            <li><b>Can a template be trusted at all?</b> Templates are cut from a build slice only, separated from a holdout by a dead zone, gated on size, sharpness, contrast, flatness, overlay bands and confusion with another hero, then validated on frames they have never seen.</li>
           </ul>
           <p>
-            <strong>And the limits are published, not buried.</strong> The README
-            has a section titled &ldquo;What is NOT production-ready&rdquo;, and it
-            is the most useful thing in the repository. Hero coverage is 8 of 52 on
-            the best template package — those eight fully provenanced and validated
-            across 1,861 held-out trials with zero confident wrong answers, and the
-            other 44 heroes have simply never appeared in a broadcast this pipeline
-            has processed, so no amount of reprocessing covers them. Two heroes are
-            named as genuinely confusable at that resolution in grayscale, with the
-            measured failure rate stated rather than averaged into a pass. A
-            colour-based veto was built to fix it, measured against real crops, and
-            <em>removed</em>, because it blocked none of the actual leaks while
-            vetoing legitimate reads.
+            <strong>And the limits are published, not buried.</strong> The README&rsquo;s
+            &ldquo;What is NOT production-ready&rdquo; is the most useful thing in the
+            repository. Hero coverage is 8 of 52 on the best template package — those
+            eight fully provenanced and validated across 1,861 held-out trials with zero
+            confident wrong answers; the other 44 have never appeared in a broadcast this
+            pipeline has processed, so no amount of reprocessing covers them. Two heroes
+            are named as genuinely confusable at that resolution in grayscale, with the
+            measured failure rate stated rather than averaged into a pass. A colour-based
+            veto was built to fix it, measured against real crops, and <em>removed</em>,
+            because it blocked none of the leaks while vetoing legitimate reads.
           </p>
         </div>
       </article>
@@ -419,11 +406,11 @@
         <div class="chapter__body prose">
           <ul class="bullets">
             <li><b>One link in.</b> Submit has one required field. The link is classified as you type, offline; known broadcasts autofill the rest; advanced options stay shut; there is exactly one final button.</li>
-            <li><b>The site fills itself.</b> A scheduled scan reads every verified official channel and produces a discovery layer: every found broadcast with the event, stage, day and region <em>its own title states</em> — and <code>null</code> where it does not — joined against the official calendar and against the published record, with the one action that moves it forward.</li>
+            <li><b>The site fills itself.</b> A scheduled scan reads every verified official channel and produces a discovery layer: each broadcast with the event, stage, day and region <em>its own title states</em>, <code>null</code> where it does not, joined against the official calendar and the published record, with the one action that moves it forward.</li>
             <li><b>Three datasets, never merged.</b> The published record (approved, evidence-backed, safe to state as fact), the working record (runs, sources, what is happening), and the discovery record (what the scan found, never a fact a person confirmed). An empty export renders an honest empty state, never invented games.</li>
             <li><b>Finding is not detection.</b> Nothing in the discovery layer can publish a composition, approve a source or touch the database. A discovered row carries the video&rsquo;s own metadata and a reading of its title — never a score, a composition or a result.</li>
             <li><b>Full stats over approved data only</b> — heroes, compositions, maps, teams and swaps as five tabs, with nested team and hero profiles reached from the table you were reading.</li>
-            <li><b>Site search</b> on every page behind a button, <kbd>/</kbd> and <kbd>&#8984;K</kbd>, indexing games, teams, heroes, maps and the product&rsquo;s own pages straight from the export, with no service and no index file to rebuild. Fuzzy, because &ldquo;qadsia&rdquo; and &ldquo;midseson&rdquo; are what people actually type.</li>
+            <li><b>Site search</b> behind a button, <kbd>/</kbd> and <kbd>&#8984;K</kbd>, indexing games, teams, heroes, maps and the product&rsquo;s own pages straight from the export — no service, no index file to rebuild. Fuzzy, because &ldquo;qadsia&rdquo; and &ldquo;midseson&rdquo; are what people type.</li>
             <li><b>An in-browser calibration wizard</b> — the one operator tool that works fully on the published copy.</li>
             <li><b>A Windows application build</b>, and a reproducibility gate that checks template directories, marker assets, the database milestone, evidence paths and page wiring before anything ships.</li>
             <li><b>107 Python test modules</b>, all runnable offline with no network and no VOD.</li>
@@ -436,19 +423,17 @@
         <div class="chapter__body prose">
           <p>
             <strong>Detector consensus is never presented as human labelling.</strong>
-            Every crop records its <code>labelSource</code>. Labels produced by
-            temporal stint consensus are strong — hundreds of agreeing frames decide
-            each one, so no single template can influence the crop it is tested on —
-            but they cannot catch a systematically mislabelled set, and the
-            distinction is preserved all the way through the system rather than
-            collapsed at the first convenient point.
+            Every crop records its <code>labelSource</code>. Temporal stint consensus
+            labels are strong — hundreds of agreeing frames decide each, so no single
+            template influences the crop it is tested on — but they cannot catch a
+            systematically mislabelled set, and that distinction survives all the way
+            through rather than collapsing at the first convenient point.
           </p>
           <p>
-            <strong>Readiness is never one number.</strong> Hero coverage is
-            reported per package as four separate things — covered, sound, traceable,
-            proven — with the blocker and the next action for each hero, because a
-            single percentage would let a package look ready by averaging over the
-            heroes nobody has evidence for.
+            <strong>Readiness is never one number.</strong> Hero coverage is reported
+            per package as four things — covered, sound, traceable, proven — with the
+            blocker and next action for each hero, because a single percentage lets a
+            package look ready by averaging over the heroes nobody has evidence for.
           </p>
           <p>
             <strong>The template describes the hero, not the player.</strong> A
@@ -458,29 +443,27 @@
           </p>
           <p>
             <strong>Scheduled jobs are read-only by construction.</strong> The two
-            workflows that run on a schedule sync a registry and discover
-            broadcasts. Neither downloads a video, writes a composition or approves
-            a source. Everything that mutates the committed milestone is manual
-            dispatch only, so an unattended job cannot race CI or change a published
-            fact.
+            scheduled workflows sync a registry and discover broadcasts; neither
+            downloads a video, writes a composition or approves a source. Anything that
+            mutates the committed milestone is manual dispatch only, so an unattended job
+            cannot race CI or change a published fact.
           </p>
           <p>
             <strong>The hero art crops itself.</strong> Official splash art is a
-            <em>scene</em> — the hero stands off-centre in a blurred location with a
-            flat band at the bottom for page text — so cropping down the middle gave
-            portraits that were mostly backdrop with the head clipped off. The
-            cropper now finds the hero first: the flat band has no detail, the hero
-            is the only thing in focus, so a block-wise sharpness map isolates the
-            figure and the heaviest run of columns separates them from their props.
-            There is no per-hero table; a hero added tomorrow frames itself.
+            <em>scene</em> — the hero off-centre in a blurred location, a flat band at
+            the bottom for page text — so cropping down the middle gave portraits that
+            were mostly backdrop with the head clipped off. The cropper finds the hero
+            first: the flat band has no detail and the hero is the only thing in focus,
+            so a block-wise sharpness map isolates the figure and the heaviest run of
+            columns separates them from their props. No per-hero table; a hero added
+            tomorrow frames itself.
           </p>
           <p>
             <strong>The language-model advisor contributes nothing to any published
-            number.</strong> It offers closed-vocabulary suggestions behind a human
-            gate and wording help on calibration failures. Its live suggestion
-            quality has not been measured against a labelled set, and until it has,
-            the documentation says to treat a suggestion as a prompt to go look, not
-            as evidence.
+            number.</strong> It offers closed-vocabulary suggestions behind a human gate
+            and wording help on calibration failures. Its suggestion quality has not been
+            measured against a labelled set, so the documentation says to treat a
+            suggestion as a prompt to go look, not as evidence.
           </p>
         </div>
       </article>
@@ -494,7 +477,7 @@
             <div class="iteration"><p class="when">Then</p><p class="what"><b>UNKNOWN as a first-class answer.</b> The detector stopped picking a best guess and started reporting the margin, which is what made the confidence numbers mean anything.</p></div>
             <div class="iteration"><p class="when">Then</p><p class="what"><b>Held-out validation and the leave-one-hero-out test.</b> Removing a hero from a package and checking that its portraits read <i>UNKNOWN</i> rather than as somebody else — the test that found the juno/kiriko confusion.</p></div>
             <div class="iteration"><p class="when">Then</p><p class="what"><b>The review gate.</b> Four separate lists — matches, runs, sources and tournaments — collapsed into one games list and one review screen, because they were four views of the same thing.</p></div>
-            <div class="iteration"><p class="when">Then</p><p class="what"><b>The site fills itself.</b> The finder had always scanned official channels, but its snapshot was only rendered on the operator&rsquo;s own machine — so the live site showed whatever a human last pushed while dozens of real broadcasts sat in a committed file.</p></div>
+            <div class="iteration"><p class="when">Then</p><p class="what"><b>The site fills itself.</b> The finder always scanned official channels, but its snapshot rendered only on the operator&rsquo;s machine — so the live site showed whatever a human last pushed while dozens of real broadcasts sat in a committed file.</p></div>
             <div class="iteration"><p class="when">Latest</p><p class="what"><b>Hero art that shows the hero</b>, and the surface overhaul around it — portraits that are readable at the 28–40&nbsp;px the comp strips actually render them at.</p></div>
           </div>
         </div>
@@ -504,9 +487,9 @@
         <div class="chapter__label"><span class="n">08</span><h2>What comes next</h2></div>
         <div class="chapter__body prose">
           <ul class="bullets">
-            <li><b>A second broadcast.</b> Almost every limit in this project resolves the same way: the thresholds are fitted to one source, the confusable pair needs a better template from different footage, and 44 heroes need footage that contains them. One more processed map is worth more than any amount of tuning.</li>
+            <li><b>A second broadcast.</b> Nearly every limit here resolves the same way: thresholds fitted to one source, a confusable pair needing a template from different footage, 44 heroes needing footage that contains them. One more processed map beats any amount of tuning.</li>
             <li><b>Series-level structure.</b> Only one map of one match is ingested; series scores are not recorded and the map winner is operator-supplied rather than read.</li>
-            <li><b>Round detail read rather than told.</b> Round boundaries currently come from clustering the centre point-emblem at the sample rate — good to about one sample — and per-round control percentages are not read at all, which the map page states as an honest fallback rather than filling in.</li>
+            <li><b>Round detail read rather than told.</b> Round boundaries come from clustering the centre point-emblem at the sample rate — good to about one sample — and per-round control percentages are not read at all, which the map page states rather than fills in.</li>
           </ul>
         </div>
       </article>
@@ -515,10 +498,9 @@
         <div class="chapter__label"><span class="n">09</span><h2>Where to find it</h2></div>
         <div class="chapter__body prose">
           <p>
-            The live site renders the production dataset, not a demo fixture — the
-            demo lives under test fixtures and no page can load it. Start on
-            <i>Review</i>: it is the best screen in the product and the one that
-            explains the rest of it.
+            The live site renders the production dataset, not a demo fixture — the demo
+            lives under test fixtures and no page can load it. Start on <i>Review</i>:
+            the best screen in the product, and the one that explains the rest.
           </p>
           <div class="btn-row mt-3">
             <a class="btn btn--primary" href="https://cvree.github.io/OWCSComp.Tracker/" rel="noopener">Open the live site <span class="arrow" aria-hidden="true">&rarr;</span></a>
@@ -549,9 +531,7 @@
         <p class="foot__sig">Health science,<br />built and tested.</p>
         <p class="quiet small mt-2" style="max-width:20.4em">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
       </div>
-      <!-- The whole map lives here and only here. The masthead carries three
-           items; everything else the site has — About included — is one scroll
-           away, at the foot, where a map belongs. -->
+      <!-- The whole map, here and only here. The masthead carries three items. -->
       <div>
         <h3>Site</h3>
         <ul>
@@ -575,7 +555,7 @@
 
     <div class="foot__base">
       <p>© 2026 Connor Eppolito</p>
-      <p>Every claim on this site comes from the record it describes. Facts read August 2026.</p>
+      <p>Every claim here comes from the record it describes. Facts read August 2026.</p>
     </div>
   </div>
 </footer>

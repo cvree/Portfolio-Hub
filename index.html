@@ -198,27 +198,14 @@
 <!-- THE PROJECTION — the identity hero                                    -->
 <!-- ===================================================================== -->
 <!--
-  The hero used to be a monogram assembled out of three planes, with a
-  three-position control under it deciding which plane was lit. It was a
-  diagram of an idea about Connor rather than something anybody wanted to look
-  at, and the control under it hid two thirds of its own content behind a tab
-  set whose every fact is stated again, uncontested, in the strip immediately
-  below. Both are gone.
+  One object: the GitHub mark as a real volume — eighteen depth slices of one
+  path stacked along Z in a `preserve-3d` scene, a spectral film clipped to the
+  silhouette, two chromatic ghosts, a scan bar, three orbital rings. The pointer
+  leads the tilt, a drag throws it, a click nudges it; with no pointer it
+  answers to the scroll, and with no script it still drifts on keyframes.
 
-  What stands here now is one object: the GitHub mark, projected. It is a real
-  volume, not a picture of one — eighteen depth slices of a single path stacked
-  along the Z axis inside a `preserve-3d` scene, with a spectral film clipped
-  to the silhouette on the front of it, two chromatic ghosts either side, a
-  scan bar crossing it, and three orbital rings around it. It turns because it
-  is being looked at: the pointer leads the tilt, a drag throws it and it
-  carries the throw, and a click gives it a nudge. With no pointer it answers
-  to the scroll instead. With no script at all it still stands, still drifts,
-  and still catches the light — every one of those is a keyframe.
-
-  It is decorative, and correctly so. Every fact about Connor is in the copy
-  beside it and in the strip below it; there is nothing in the object for a
-  screen reader to be walked through, and nothing on this page that a visitor
-  reaches only by touching it.
+  Decorative, and aria-hidden for that reason: every fact it carries is in the
+  copy beside it.
 -->
 <section class="sig" data-signal aria-labelledby="hero-h">
 
@@ -243,13 +230,13 @@
       </h1>
 
       <p class="sig__creed">
-        Care. Code. Competition. <em>One signal.</em>
+        Care. Code. <em>Competition.</em>
       </p>
 
       <p class="sig__lede">
-        I build calm, high-signal systems for people under pressure &mdash; and I am
-        in the room those systems are for. Six shipped products, an NREMT card,
-        and a health science degree that explains both.
+        I build software for people working under pressure, and I work under it.
+        Six shipped products, an NREMT card, and a health science degree that
+        explains both.
       </p>
 
       <ul class="sig__stance">
@@ -342,22 +329,13 @@
 <!-- THE VITALS — the credibility strip, read as an instrument              -->
 <!-- ===================================================================== -->
 <!--
-  This strip is why the hero no longer needs a tab set. Every fact the three
-  domain panels used to hold — the certification, the degree and its GPA, the
-  phlebotomy training, the research sample, the club, the titles played and the
-  informatics coursework — is here, open, uncontested, in the second screenful,
-  with no control to press and nothing hidden behind the two thirds you did not
-  choose.
+  Every fact, open in the second screenful: no control to press, nothing hidden.
+  Three facts matter more than the other five, so three cells are larger.
 
-  The order of importance inside each cell is the certification or the number
-  first, the label small and monospaced, the sentence third. Three of these
-  facts are larger than the other five, so three of these cells are larger than
-  the other five.
-
-  The two counters climb once, on entry, from a registered custom property
-  animated by the compositor — no interval, no tick loop, no script. The
-  literal digits in the markup are what a browser without @property or without
-  a view() timeline prints, which is the finished number, immediately.
+  The two counters climb once on entry, from a registered custom property
+  animated by the compositor — no interval, no tick loop, no script. Without
+  @property or a view() timeline the literal digits in the markup print, which
+  is the finished number.
 -->
 <section aria-labelledby="creds-h" style="padding-block:0 clamp(3rem,6vw,5.5rem);border:0">
   <div class="shell">
@@ -367,49 +345,49 @@
       <li class="vitals__cell vitals__cell--lg vitals__cell--w5">
         <p class="vitals__k">Emergency medicine</p>
         <p class="vitals__v">NREMT</p>
-        <p class="vitals__s">Certified EMT. Patient assessment, vitals, transport support and clinical documentation in the field.</p>
+        <p class="vitals__s">Patient assessment, vitals, transport and clinical documentation in the field.</p>
       </li>
 
       <li class="vitals__cell vitals__cell--lg vitals__cell--w4">
         <p class="vitals__k">Leadership</p>
         <p class="vitals__v">President</p>
-        <p class="vitals__s">CSUCI Esports Club. Previously Vice President at CSUCI and at Santa Barbara City College.</p>
+        <p class="vitals__s">CSUCI Esports Club. Vice President before that, here and at Santa Barbara City College.</p>
       </li>
 
       <li class="vitals__cell vitals__cell--w3">
         <p class="vitals__k">Phlebotomy</p>
         <p class="vitals__v">CPT</p>
-        <p class="vitals__s">Training in progress. Coursework completed July 2026; preparing for the NHA Certified Phlebotomy Technician exam.</p>
+        <p class="vitals__s">Coursework completed July 2026. The NHA certification exam is next.</p>
       </li>
 
       <li class="vitals__cell vitals__cell--lg vitals__cell--w4">
         <p class="vitals__k">Education</p>
         <p class="vitals__v" aria-hidden="true"><span class="num num--frac" style="--count:3;--count-frac:813"><span class="num__t">3.813</span></span></p>
-        <p class="vitals__s"><span class="vh">3.813 </span>GPA. B.S. Health Science at CSU Channel Islands, senior, expected December 2026. President&rsquo;s List · Dean&rsquo;s List.</p>
+        <p class="vitals__s"><span class="vh">3.813 </span>GPA. B.S. Health Science, CSU Channel Islands, expected December 2026. President&rsquo;s List · Dean&rsquo;s List.</p>
       </li>
 
       <li class="vitals__cell vitals__cell--w3">
         <p class="vitals__k">Research</p>
         <p class="vitals__v" aria-hidden="true"><span class="num" style="--count:105"><span class="num__t">105</span></span></p>
-        <p class="vitals__s"><span class="vh">105 </span>participants surveyed. A collaborative academic study on Alzheimer&rsquo;s and dementia education, with measured improvement in confidence.</p>
+        <p class="vitals__s"><span class="vh">105 </span>participants surveyed. A student team study on Alzheimer&rsquo;s and dementia education; confidence measurably improved.</p>
       </li>
 
       <li class="vitals__cell vitals__cell--w5">
         <p class="vitals__k">Foundation</p>
         <p class="vitals__v">A.A.</p>
-        <p class="vitals__s">Mathematics &amp; Science, mathematics emphasis, Santa Barbara City College. Prior computer engineering coursework at SDSU.</p>
+        <p class="vitals__s">Mathematics &amp; Science, Santa Barbara City College. Computer engineering coursework at SDSU before it.</p>
       </li>
 
       <li class="vitals__cell vitals__cell--w5">
         <p class="vitals__k">Competition</p>
         <p class="vitals__v">3</p>
-        <p class="vitals__s">titles played competitively — Overwatch, Deadlock and Marvel&nbsp;Rivals — plus the team and event operations around them.</p>
+        <p class="vitals__s">titles played competitively — Overwatch, Deadlock and Marvel&nbsp;Rivals — plus the operations around them.</p>
       </li>
 
       <li class="vitals__cell vitals__cell--w7">
         <p class="vitals__k">Informatics</p>
         <p class="vitals__v">Health data</p>
-        <p class="vitals__s">In coursework and in code: Health Care Informatics, Biostatistics and Research Methods — then built against them.</p>
+        <p class="vitals__s">Health Care Informatics, Biostatistics and Research Methods — then built against them.</p>
       </li>
 
     </ul>
@@ -422,20 +400,15 @@
 <!--
   Six rooms, six motion laws, one spine.
 
-  The layout is a two-column grid and nothing more: the article sits in the
-  reading column, its scene sits in the stage column on the same grid row, and
-  the scene is `position: sticky` inside that row. So the stage holds while you
-  read its project and hands off physically to the next one when you leave —
-  with the browser's own scrolling, no pin, no wheel listener, no snap and no
-  jail. At one column the grid collapses and every scene sits with its own
-  copy, which is the mobile design rather than a fallback for it.
+  A two-column grid: the article reads in one column, its scene is
+  `position: sticky` in the other on the same row, so the stage holds while you
+  read and hands off when you leave — browser scrolling only, no pin, no wheel
+  listener, no snap. At one column the grid collapses and each scene sits with
+  its own copy.
 
-  Each scene is built from the real capture plus real reconstructed layers —
-  actual tube cards, actual letters, actual detected rows — because a promise
-  of sorting has to be made of things that can be sorted. The reconstructions
-  are aria-hidden: the article beside them already states every fact they show,
-  and walking a screen reader through a decorative rebuild of a screenshot is
-  not access, it is noise.
+  Each scene is the real capture plus real reconstructed layers — actual tube
+  cards, letters, detected rows — and all of it aria-hidden, because the article
+  beside them already states every fact they show.
 -->
 <section class="th" id="work" data-theatre aria-labelledby="work-h">
   <div class="shell">
@@ -446,18 +419,14 @@
       </div>
       <p class="quiet" data-rise>
         Real captures of the real applications, with real data in them. Each
-        case study opens on the most interesting thing the product actually
-        does, then answers the same nine questions — what it is, why I built it,
-        the interaction worth showing, the problem underneath, what it can do
-        today, the decisions behind it, what changed across iterations, what is
-        next, and where to go and use it.
+        case study opens on the most interesting thing the product does, then
+        answers the same nine questions about it.
       </p>
     </div>
 
     <p class="quiet small" data-rise style="max-width:37.2em;margin-top:clamp(.75rem,2vw,1.25rem)">
-      Every screenshot on this site was captured from the running application
-      with real data in it. Where a repository is private, this site says so
-      rather than pointing at a link that will not open.
+      Where a repository is private, this site says so rather than pointing at
+      a link that will not open.
     </p>
 
     <!-- The key to the chips printed on all six rooms and on the smaller
@@ -467,11 +436,11 @@
     <dl class="facts th__key" data-motion="sequence">
       <div>
         <dt>Live</dt>
-        <dd>Deployed and reachable. Anyone can open it right now.</dd>
+        <dd>Deployed. Anyone can open it right now.</dd>
       </div>
       <div>
         <dt>In development</dt>
-        <dd>Runs, is being worked on, and is not publicly deployed today.</dd>
+        <dd>Runs, still being worked on, not publicly deployed.</dd>
       </div>
       <div>
         <dt>Experiment</dt>
@@ -479,7 +448,7 @@
       </div>
       <div>
         <dt>Concept</dt>
-        <dd>A repository with a premise and not yet a product. Named, not oversold.</dd>
+        <dd>A premise with a repository, not yet a product.</dd>
       </div>
     </dl>
   </div>
@@ -572,9 +541,9 @@
           <h3 class="wk__t" data-vt="title-health-journal"><a href="health-journal.html">Health Journal</a></h3>
           <p class="wk__say">A minute a day, and the pattern comes out over weeks.</p>
           <p class="wk__blurb">
-            A private daily journal that never leaves the device. You design the
-            check-in; it gives you back a timeline, sunlight computed from real
-            solar arithmetic, and experiments graded on evidence.
+            A daily journal that never leaves the device. You design the check-in;
+            it returns a timeline, sunlight from real solar arithmetic, and
+            experiments graded on evidence.
           </p>
           <ul class="wk__proof">
             <li><span class="n">0</span><span class="k">Network calls</span></li>
@@ -620,10 +589,9 @@
           <h3 class="wk__t" data-vt="title-phlebotomy"><a href="phlebotomy-exam-prep.html">Phlebotomy Exam Prep</a></h3>
           <p class="wk__say">Know what to study before the exam, not after it.</p>
           <p class="wk__blurb">
-            The platform I wanted while training for the NHA CPT myself. Four
-            Order of Draw drill modes over the six CLSI collection positions,
-            and a results screen that leads with the weak area rather than the
-            score.
+            The platform I wanted while training for the NHA CPT. Four Order of
+            Draw drills over the six CLSI positions, and a results screen that
+            leads with your weakest area rather than your score.
           </p>
           <ul class="wk__proof">
             <li><span class="n">513</span><span class="k">Original questions</span></li>
@@ -671,9 +639,9 @@
           <h3 class="wk__t" data-vt="title-manifester"><a href="manifester.html">Manifester</a></h3>
           <p class="wk__say">Your own words, read back over a room that breathes.</p>
           <p class="wk__blurb">
-            Write the lines you want to hear, pick a voice, and the app loops
-            them over layered ambient sound. A line heard once plays forever
-            after with no network at all.
+            Write the lines you want to hear, pick a voice, and it loops them over
+            layered ambient sound. Heard once, a line plays forever after with no
+            network at all.
           </p>
           <ul class="wk__proof">
             <li><span class="n">6</span><span class="k">Visualiser rooms</span></li>
@@ -723,8 +691,8 @@
           <p class="wk__say">A broadcast is a video of a match, not a record of one.</p>
           <p class="wk__blurb">
             A no-budget pipeline that turns an esports VOD into an auditable
-            composition timeline — then a human review gate where every read
-            sits beside the frame it was read from.
+            composition timeline, with a review gate where every read sits beside
+            the frame it came from.
           </p>
           <ul class="wk__proof">
             <li><span class="n">107</span><span class="k">Test modules</span></li>
@@ -785,9 +753,9 @@
           <h3 class="wk__t" data-vt="title-paper-animator"><a href="paper-animator.html">PaperAnimator</a></h3>
           <p class="wk__say">Read the paper. Mark it up. That is the presentation.</p>
           <p class="wk__blurb">
-            Mark a passage and a scene appears on the storyboard already carrying
-            the exact words it came from. The highlight <em>is</em> the citation,
-            so there is no later step where a source gets attached.
+            Mark a passage and a scene appears on the storyboard carrying the exact
+            words it came from. The highlight <em>is</em> the citation — there is no
+            later step where a source gets attached.
           </p>
           <ul class="wk__proof">
             <li><span class="n">21</span><span class="k">Entrance animations</span></li>
@@ -837,10 +805,7 @@
     </div>
   </div>
 
-  <!-- ALSO BUILT. This used to be the second half of a separate projects
-       page. There is no second page any more, so it is the second half of this
-       section: the six above are where the finished thinking lives, and these
-       are the smaller pieces and the open experiments behind them. -->
+  <!-- ALSO BUILT. The smaller pieces and open experiments behind the six. -->
   <div class="shell">
     <div class="sechead th__also">
       <div>
@@ -848,8 +813,8 @@
         <h3 class="h2" id="more-h" data-rise>Smaller pieces,<br />and open experiments.</h3>
       </div>
       <p class="quiet" data-rise>
-        Named honestly. A repository with a good premise and an early build is
-        listed as exactly that.
+        Named honestly: a good premise with an early build is listed as exactly
+        that.
       </p>
     </div>
 
@@ -858,9 +823,8 @@
       <div class="card">
         <p class="card__t"><a class="link" href="https://github.com/cvree/RemyDee" rel="noopener">Remy Dee</a></p>
         <p class="card__d">
-          Greek and Latin root learning: two parts you already know, one medical
-          term you do not. The same premise as the vocabulary half of Phlebotomy
-          Exam Prep, tried first as a game.
+          Greek and Latin roots: two parts you know, one medical term you do not.
+          The vocabulary half of Phlebotomy Exam Prep, tried first as a game.
         </p>
         <p class="card__f"><span class="chip chip--exp"><span class="led" aria-hidden="true"></span>Experiment</span></p>
       </div>
@@ -868,9 +832,8 @@
       <div class="card">
         <p class="card__t"><a class="link" href="https://github.com/cvree/MedicalTerminology-Trainer" rel="noopener">Medical Terminology Trainer</a></p>
         <p class="card__d">
-          Drilling the vocabulary that every clinical course assumes you have
-          already absorbed. An early sketch of the spaced-repetition work that
-          later became a real product.
+          Drilling the vocabulary every clinical course assumes you already have.
+          An early sketch of the spaced repetition that became a real product.
         </p>
         <p class="card__f"><span class="chip chip--exp"><span class="led" aria-hidden="true"></span>Experiment</span></p>
       </div>
@@ -879,8 +842,8 @@
         <p class="card__t"><a class="link" href="https://github.com/cvree/PhlebLearn" rel="noopener">PhlebLearn</a></p>
         <p class="card__d">
           The first attempt at phlebotomy study material, before the question bank
-          and the drills were the point. Kept because it is where the shape of the
-          real one was worked out.
+          was the point. Kept because it is where the real one&rsquo;s shape was
+          worked out.
         </p>
         <p class="card__f"><span class="chip chip--exp"><span class="led" aria-hidden="true"></span>Experiment</span></p>
       </div>
@@ -888,9 +851,8 @@
       <div class="card">
         <p class="card__t"><a class="link" href="https://github.com/cvree/EpiMap" rel="noopener">EpiMap</a></p>
         <p class="card__d">
-          Public-health data on a map — the coursework instinct from epidemiology
-          and biostatistics, pointed at something you can look at rather than
-          tabulate.
+          Public-health data on a map. Epidemiology and biostatistics pointed at
+          something you can look at rather than tabulate.
         </p>
         <p class="card__f"><span class="chip chip--concept">Concept</span></p>
       </div>
@@ -951,9 +913,8 @@
         <h2 class="h2" id="res-h" data-rise>Teaching people about a<br />disease they are afraid of.</h2>
       </div>
       <p class="quiet" data-rise>
-        Health Science Research Methods at CSU Channel Islands. Collaborative
-        academic research — I was one member of a student team, and the work is
-        described here the way it was actually done.
+        Health Science Research Methods, CSU Channel Islands. I was one member of
+        a student team, and the work is described here as it was done.
       </p>
     </div>
 
@@ -965,24 +926,21 @@
         </div>
         <div class="prose">
           <p>
-            The project asked a narrow question: does a short, structured
-            educational intervention change how confident people feel about
-            Alzheimer&rsquo;s disease and dementia — recognising it, talking about
-            it, and supporting somebody living with it?
+            The question was narrow: does a short, structured educational
+            intervention change how confident people feel about Alzheimer&rsquo;s
+            and dementia — recognising it, talking about it, supporting somebody
+            living with it?
           </p>
           <p>
-            Confidence was measured before and after across a sample of 105
-            participants, and the post-intervention measure improved. That is the
-            finding, and it is the whole of it: a student research project with a
-            convenience sample and no control group is evidence that a short
-            intervention <em>can</em> move self-reported confidence, not evidence
-            about a population.
+            Confidence was measured before and after across 105 participants, and
+            the post measure improved. That is the whole finding: a convenience
+            sample with no control group shows a short intervention <em>can</em>
+            move self-reported confidence, not anything about a population.
           </p>
           <p class="small quiet">
-            Being precise about the limits is part of the training. Health Science
             Research Methods and Biostatistics are where I learned to state a
-            result at the size it actually is — which turned out to be the same
-            discipline every project on this site needed.
+            result at the size it actually is — the discipline every project on
+            this site needed.
           </p>
         </div>
       </div>
@@ -1002,12 +960,11 @@
     <div class="sechead">
       <div>
         <p class="eyebrow" data-rise><span class="tick" aria-hidden="true"></span>The through-line</p>
-        <h2 class="h2" id="thread-h" data-rise>Five things that look<br />unrelated, and are not.</h2>
+        <h2 class="h2" id="thread-h" data-rise>Five worlds,<br />one set of habits.</h2>
       </div>
       <p class="quiet" data-rise>
         Emergency medicine, competitive esports, health research, club leadership
-        and product design all reward the same small set of habits. This site is
-        organised around that, not around a list of repositories.
+        and product design all reward the same small set of habits.
       </p>
     </div>
 
@@ -1034,9 +991,9 @@
         <p class="mono">03</p>
         <p class="card__t">Design for the worst moment, not the demo</p>
         <p class="card__d">
-          Blocked font hosts, dead networks, a phone in one hand. Every one of
-          these products has a defined behaviour for the moment it stops going
-          well, because in the field that is the moment that counts.
+          Blocked font hosts, dead networks, a phone in one hand. Every product
+          here has a defined behaviour for the moment it stops going well — in the
+          field, that is the moment that counts.
         </p>
       </div>
       <div class="card">
@@ -1052,18 +1009,18 @@
         <p class="mono">05</p>
         <p class="card__t">Finish it</p>
         <p class="card__d">
-          Six products with real users&rsquo; worth of edge cases handled, tests
-          that fail on content mistakes, and privacy pages that render on a dead
-          connection. Shipping is the part most projects skip.
+          Six products with the edge cases handled, tests that fail on content
+          mistakes, and privacy pages that render on a dead connection. Shipping is
+          the part most projects skip.
         </p>
       </div>
       <div class="card">
         <p class="mono">06</p>
         <p class="card__t">Stay curious out loud</p>
         <p class="card__d">
-          Sunlight and circadian rhythm, human performance, nutrition, the
-          mechanics of a team fight. Most of what is on this site began as
-          something I wanted to understand properly.
+          Sunlight and circadian rhythm, human performance, nutrition, the mechanics
+          of a team fight. Most of this began as something I wanted to understand
+          properly.
         </p>
       </div>
     </div>
@@ -1102,9 +1059,7 @@
         <p class="foot__sig">Health science,<br />built and tested.</p>
         <p class="quiet small mt-2" style="max-width:20.4em">Camarillo, California. Open to health informatics, clinical, research and product roles from December 2026.</p>
       </div>
-      <!-- The whole map lives here and only here. The masthead carries three
-           items; everything else the site has — About included — is one scroll
-           away, at the foot, where a map belongs. -->
+      <!-- The whole map, here and only here. The masthead carries three items. -->
       <div>
         <h3>Site</h3>
         <ul>
@@ -1128,7 +1083,7 @@
 
     <div class="foot__base">
       <p>© 2026 Connor Eppolito</p>
-      <p>Every claim on this site comes from the record it describes. Facts read August 2026.</p>
+      <p>Every claim here comes from the record it describes. Facts read August 2026.</p>
     </div>
   </div>
 </footer>
