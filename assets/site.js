@@ -4,7 +4,7 @@
    Enhancement only. Everything on every page is complete, readable, navigable
    and linkable with this file absent, blocked, or thrown out by an error.
 
-   Eight small jobs:
+   Fourteen small jobs:
      1. reveal-on-scroll for anything carrying [data-rise], [data-motion] or
         [data-scene]
      2. a hairline reading-progress bar
@@ -17,17 +17,33 @@
      7. the contact card, which turns over
      8. the three lazy layers, and far more often the decision not to load them,
         and telling the atmosphere where on the screen the words currently are
+     9. the reply: one call that answers in the rail and to a screen reader at
+        the same moment
+    10. the receipt: copying, and the proof that it happened — including the
+        anchor beside every heading on the site
+    11. the return: a dial that reports how far down a document you are, and
+        goes back to the top of it
+    12. the chapters: a document's own contents, built from the document,
+        reporting position and never steering
+    13. the magnets: four pixels of travel on the controls that are the point
+        of the page they are on
+    14. the console: ⌘K, / , or the control in the masthead — one field, and
+        every page, product and section on this site is one key away
 
-   Jobs 1-7 are the site, and every one of them is small enough to live in the
-   critical file. The hero's whole arrival choreography is CSS — this file only
-   ends it when you touch something. Job 8 is an escalation that happens only
-   after the useful page has painted, and only when the device, Save-Data and
-   the visitor's own motion preference all say yes. No lazy module is ever
-   required for a page to be complete.
+   Jobs 1-7 and 9-13 are the site, and every one of them is small enough to
+   live in the critical file. The hero's whole arrival choreography is CSS —
+   this file only ends it when you touch something. Jobs 8 and 14 are
+   escalations that happen only after the useful page has painted: the
+   cinematic layer when the device, Save-Data and the visitor's own motion
+   preference all say yes, and the console the first time somebody reaches for
+   it. No lazy module is ever required for a page to be complete, and every
+   place the console can travel to is an ordinary URL that is in the navigation
+   or the footer as well.
 
    Nothing here holds the scroll against you, and nothing here plays sound. The
-   one thing that moves the page on its own is job 6; it runs only because a
-   link was followed, and the first wheel notch, touch or key ends it.
+   two things that move the page on their own are jobs 6 and 11; both run only
+   because something was pressed, and the first wheel notch, touch or key ends
+   them.
    =========================================================================== */
 
 (function () {
@@ -114,16 +130,31 @@
      the document is. It only ever reports — it never steers. */
   function progress() {
     var bar = document.querySelector("[data-progress]");
-    if (!bar || still()) return;
+    /* The bar is continuous movement and answers to the motion preference. The
+       dial and the chapters are reports, not motion: they are how far down a
+       document somebody is, and withholding that from a visitor who asked for
+       stillness would be withholding information rather than movement. */
+    if (still()) bar = null;
 
     var ticking = false;
 
     function draw() {
       var doc = document.documentElement;
       var span = doc.scrollHeight - window.innerHeight;
-      var pct = span > 40 ? (doc.scrollTop || document.body.scrollTop) / span : 0;
+      var y = doc.scrollTop || document.body.scrollTop;
+      var pct = span > 40 ? y / span : 0;
       pct = Math.max(0, Math.min(1, pct));
-      bar.style.setProperty("--read", pct * 100 + "%");
+      if (bar) bar.style.setProperty("--read", pct * 100 + "%");
+      if (dial) {
+        dial.style.setProperty("--read-pct", (pct * 100).toFixed(1));
+        /* One and a bit screens down is the point at which the top of the
+           document has stopped being somewhere you can simply look up at. */
+        var up = y > window.innerHeight * 1.4;
+        dial.classList.toggle("is-up", up);
+        dial.setAttribute("aria-hidden", up ? "false" : "true");
+        dial.tabIndex = up ? 0 : -1;
+      }
+      markChapter();
       ticking = false;
     }
 
@@ -567,6 +598,505 @@
     paint();
   }
 
+  /* =========================================================================
+     THE ANSWER — jobs 9 to 14, and the one rule they share
+     -------------------------------------------------------------------------
+     Every action gets an answer, and the answer is proportional to the action.
+     A press is answered where the finger is. Something that changed state
+     somewhere the eye is not looking — an address copied, a preference
+     stored — is answered in words, once, and then takes itself away.
+
+     Nothing below is in the markup until this file runs, because none of it
+     can do anything without this file, and everywhere any of it can reach is
+     reachable from the navigation and the footer with all of it absent.
+     ========================================================================= */
+
+  var EMAIL = "connor.eppolito803@myci.csuci.edu";
+
+  /* --- 9. the reply -------------------------------------------------------
+     Two channels, one call: a line of type in the rail, and the same words in
+     a polite live region. The rail is aria-hidden — it is the visible half of
+     one reply, not a second one, and a screen reader that was given both would
+     hear everything twice.
+
+     A `quiet` reply skips the rail. The console's result count changes on every
+     keystroke and belongs in the live region, where it is the only way to know
+     the list moved; put through the rail it would be a stack of toasts nobody
+     asked for. */
+
+  var TOASTS = 3;
+  var saidAt = 0;
+
+  function say(text, tone) {
+    var live = document.querySelector("[data-announce]");
+    if (live) {
+      /* Cleared, then filled a beat later. A live region that is assigned the
+         same string it already held has not changed, and two identical replies
+         in a row would be announced once — so the region is genuinely emptied
+         first, in its own frame, and refilled in the next one. */
+      live.textContent = "";
+      var mine = ++saidAt;
+      window.setTimeout(function () {
+        if (mine === saidAt) live.textContent = text;
+      }, 40);
+    }
+    if (tone === "quiet") return;
+
+    var rail = document.querySelector("[data-toasts]");
+    if (!rail) return;
+
+    var note = document.createElement("div");
+    note.className = "toast";
+    var led = document.createElement("span");
+    led.className = "toast__led";
+    var words = document.createElement("span");
+    words.textContent = text;
+    note.appendChild(led);
+    note.appendChild(words);
+    rail.appendChild(note);
+    while (rail.children.length > TOASTS) rail.removeChild(rail.firstChild);
+
+    var gone = false;
+    function retire() {
+      if (gone) return;
+      gone = true;
+      note.classList.add("is-going");
+      window.setTimeout(function () {
+        if (note.parentNode) note.parentNode.removeChild(note);
+      }, still() ? 0 : 240);
+    }
+    window.setTimeout(retire, 3400);
+  }
+
+  /* --- 10. the receipt ----------------------------------------------------
+     Copying is the one interaction on the web with no feedback of its own: the
+     clipboard changes somewhere nobody can see. So every copy on this site
+     answers in three places — on the control, in the rail, and to a screen
+     reader — and a copy that did not happen says so instead of pretending. */
+
+  function fallbackCopy(text) {
+    try {
+      var pad = document.createElement("textarea");
+      pad.value = text;
+      pad.setAttribute("readonly", "");
+      pad.style.cssText = "position:fixed;top:0;left:0;opacity:0;pointer-events:none";
+      document.body.appendChild(pad);
+      pad.select();
+      var ok = document.execCommand("copy");
+      document.body.removeChild(pad);
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function flash(el) {
+    if (!el || !el.classList) return;
+    el.classList.add("copied");
+    window.setTimeout(function () {
+      el.classList.remove("copied");
+    }, 1600);
+  }
+
+  function copy(text, done, el) {
+    function win() {
+      flash(el);
+      say(done);
+    }
+    function lose() {
+      say("The browser would not let this page copy. Select it and copy by hand.");
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(win, function () {
+        if (fallbackCopy(text)) win();
+        else lose();
+      });
+      return;
+    }
+    if (fallbackCopy(text)) win();
+    else lose();
+  }
+
+  var LINK_SVG =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" ' +
+    'stroke-linecap="round" aria-hidden="true" focusable="false">' +
+    '<path d="M10 14a4.4 4.4 0 0 0 6.3 0l2.6-2.6a4.45 4.45 0 0 0-6.3-6.3L11.4 6.3"/>' +
+    '<path d="M14 10a4.4 4.4 0 0 0-6.3 0l-2.6 2.6a4.45 4.45 0 0 0 6.3 6.3l1.2-1.2"/></svg>';
+
+  /* Every section of every page on this site is a real URL — build_pages.py
+     gives every heading an id, and this is the control that hands one over.
+     Pointer only: on a touch screen it would be a 44 px target sitting inside
+     a line of type, and the console's "Copy a link to this page" is the same
+     job with a thumb. */
+  function receipts() {
+    document.addEventListener("click", function (ev) {
+      var hit = ev.target.closest ? ev.target.closest("[data-copy]") : null;
+      if (!hit) return;
+      ev.preventDefault();
+      copy(hit.getAttribute("data-copy"), hit.getAttribute("data-copy-said") || "Copied", hit);
+    });
+
+    var main = document.getElementById("main");
+    if (!main || !("closest" in Element.prototype)) return;
+
+    var heads = main.querySelectorAll("h2[id], h3[id]");
+    for (var i = 0; i < heads.length; i++) {
+      var h = heads[i];
+      /* Not every heading is a section. A heading on the face of an object —
+         the contact card turns over, and half of it is facing away at any
+         moment — is a label on a thing, and a permanent link to a line that is
+         sometimes pointing at the wall is a link to nothing. */
+      if (h.classList.contains("vh") || h.querySelector("a")) continue;
+      if (h.closest("[data-anchors='off']")) continue;
+      var name = words(h);
+      if (!name) continue;
+
+      var a = document.createElement("a");
+      a.className = "anchor";
+      a.href = "#" + h.id;
+      a.setAttribute("aria-label", "Copy a link to “" + name + "”");
+      a.innerHTML = LINK_SVG;
+      (function (link, id) {
+        link.addEventListener("click", function (ev) {
+          /* The document's own anchor handler would travel; this one is the
+             copy, and the travel is the part the address bar does anyway. */
+          ev.preventDefault();
+          ev.stopPropagation();
+          var url = location.href.split("#")[0] + "#" + id;
+          if (window.history && history.replaceState) history.replaceState(null, "", "#" + id);
+          copy(url, "Link to this section copied", link);
+        });
+      })(a, h.id);
+      h.appendChild(a);
+    }
+  }
+
+  /* --- 11. the return -----------------------------------------------------
+     Not on screen until there is something to return from, and the ring around
+     it is the same number the trace across the top of the page is drawing. */
+
+  var dial = null;
+
+  function returning() {
+    dial = document.querySelector("[data-totop]");
+    if (!dial) return;
+    dial.hidden = false;
+    dial.addEventListener("click", function () {
+      var main = document.getElementById("main");
+      if (main) focusLanding(main);
+      glideTo(0);
+      say("Back at the top");
+    });
+  }
+
+  /* --- 12. the chapters ---------------------------------------------------
+     The law the Projects rail is built on, applied to every long document on
+     the site: it reports which section you are in, and it never converts the
+     page into tabs, never hides an inactive section and never competes with
+     the scroll for authority.
+
+     It is built from the document rather than from a list kept beside it, so a
+     section added to a page is in its contents the moment it is written. */
+
+  /* A heading broken over two lines with a <br> reads as one word either side
+     of the break unless the break is read as a space. `innerText` does that;
+     `textContent` does not, and "Five rules I did notset out to have" is what
+     the difference looks like. */
+  function words(el) {
+    return ((el.innerText || el.textContent || "") + "").replace(/\s+/g, " ").trim();
+  }
+
+  var chapterLinks = [];
+  var chapterHeads = [];
+  var chapterAt = -1;
+
+  function chapters() {
+    /* The home page already has a rail through the one part of it that is a
+       place, and two spines down one screen is one too many. */
+    if (document.querySelector("[data-theatre]")) return;
+    var main = document.getElementById("main");
+    if (!main) return;
+
+    var found = main.querySelectorAll("h2[id]");
+    var heads = [];
+    for (var i = 0; i < found.length; i++) {
+      if (found[i].classList.contains("vh")) continue;
+      if (!words(found[i])) continue;
+      heads.push(found[i]);
+    }
+    /* Under four sections the masthead is already the whole map. */
+    if (heads.length < 4) return;
+
+    var nav = document.createElement("nav");
+    nav.className = "chapters";
+    nav.setAttribute("aria-label", "Sections on this page");
+    var list = document.createElement("ul");
+    list.className = "chapters__list";
+
+    for (var j = 0; j < heads.length; j++) {
+      var name = words(heads[j]);
+      if (name.length > 38) name = name.slice(0, 37).replace(/[\s,;:.]+$/, "") + "…";
+
+      var li = document.createElement("li");
+      li.className = "chapters__i";
+      var a = document.createElement("a");
+      a.className = "chapters__a";
+      a.href = "#" + heads[j].id;
+      var label = document.createElement("span");
+      label.className = "chapters__label";
+      label.textContent = name;
+      var tick = document.createElement("span");
+      tick.className = "chapters__tick";
+      tick.setAttribute("aria-hidden", "true");
+      a.appendChild(label);
+      a.appendChild(tick);
+      li.appendChild(a);
+      list.appendChild(li);
+      chapterLinks.push(a);
+    }
+
+    nav.appendChild(list);
+    document.body.appendChild(nav);
+    chapterHeads = heads;
+    markChapter();
+  }
+
+  function markChapter() {
+    if (!chapterHeads.length) return;
+    var line = landing() + 12;
+    var n = 0;
+    for (var i = 0; i < chapterHeads.length; i++) {
+      if (chapterHeads[i].getBoundingClientRect().top <= line) n = i;
+    }
+    if (n === chapterAt) return;
+    if (chapterAt >= 0 && chapterLinks[chapterAt]) chapterLinks[chapterAt].removeAttribute("aria-current");
+    chapterAt = n;
+    if (chapterLinks[n]) chapterLinks[n].setAttribute("aria-current", "true");
+  }
+
+  /* --- 13. the magnets ----------------------------------------------------
+     Four pixels, on the controls that are the point of the page they are on,
+     and only while a fine pointer is actually inside one. The attribute is put
+     on here rather than in the markup so that a page with this file absent
+     carries no state it cannot resolve. */
+
+  function magnets() {
+    if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var targets = document.querySelectorAll(".btn--primary, .nav__key, .findbtn");
+    for (var i = 0; i < targets.length; i++) {
+      var el = targets[i];
+      el.setAttribute("data-magnet", "");
+      el.addEventListener("pointermove", onMagnet, { passive: true });
+      el.addEventListener("pointerleave", offMagnet, { passive: true });
+      el.addEventListener("blur", offMagnet);
+    }
+  }
+
+  function onMagnet(ev) {
+    if (still()) return;
+    var el = ev.currentTarget;
+    var box = el.getBoundingClientRect();
+    var mx = (ev.clientX - box.left) / box.width - 0.5;
+    var my = (ev.clientY - box.top) / box.height - 0.5;
+    el.style.setProperty("--mx", (mx * 2).toFixed(3));
+    el.style.setProperty("--my", (my * 2).toFixed(3));
+  }
+
+  function offMagnet(ev) {
+    var el = ev.currentTarget;
+    el.style.setProperty("--mx", "0");
+    el.style.setProperty("--my", "0");
+  }
+
+  /* --- 14. the console ----------------------------------------------------
+     One field, and every page, product and section on this site is one key
+     away from every other one. The module is imported the first time somebody
+     reaches for it and never before, so it costs the critical path nothing —
+     and it is warmed on the first hover of the control, so the first press is
+     not the first request. */
+
+  var consoleApi = null;
+  var consoleLoading = null;
+  var motionSwitch = null;
+
+  /* "/Portfolio-Hub/" and "/Portfolio-Hub/index.html" are the same document,
+     and a console that reloaded the page you are already on to reach a place
+     further down it would be answering a question nobody asked. */
+  function samePath(a, b) {
+    return a.replace(/(^|\/)index\.html$/, "$1") === b.replace(/(^|\/)index\.html$/, "$1");
+  }
+
+  function travel(url) {
+    var probe = document.createElement("a");
+    probe.href = url;
+    if (samePath(probe.pathname, location.pathname) && probe.search === location.search) {
+      var el = fragment(probe.hash);
+      if (el) {
+        if (window.history && history.pushState) history.pushState(null, "", probe.hash);
+        else location.hash = probe.hash;
+        focusLanding(el);
+        glideTo(restAt(el));
+        return;
+      }
+    }
+    /* A different document: the browser's own cross-document transition is the
+       arrival, and this file has nothing to add to it. */
+    location.href = url;
+  }
+
+  function consoleActions() {
+    var off = root.getAttribute("data-motion") === "off";
+    var list = [
+      {
+        t: "Copy a link to this page",
+        c: "Action",
+        d: location.href.replace(/^https?:\/\//, ""),
+        w: "url share address bookmark",
+        run: function () {
+          copy(location.href, "Link to this page copied");
+        }
+      },
+      {
+        t: "Copy Connor’s email address",
+        c: "Action",
+        d: EMAIL,
+        w: "contact mail address hire",
+        run: function () {
+          copy(EMAIL, "Email address copied");
+        }
+      },
+      {
+        t: "Email Connor",
+        c: "Action",
+        d: "Opens a message in your mail client",
+        w: "contact write hire message",
+        run: function () {
+          location.href = "mailto:" + EMAIL;
+        }
+      },
+      {
+        t: off ? "Restore motion" : "Reduce motion",
+        c: "Action",
+        d: off ? "Movement on this site is currently stopped" : "Stops every continuous movement on this site",
+        w: "animation still accessibility vestibular",
+        run: function () {
+          if (motionSwitch) motionSwitch();
+        }
+      },
+      {
+        t: "Print this page",
+        c: "Action",
+        d: "The résumé is composed for two printed pages",
+        w: "pdf save paper export",
+        run: function () {
+          window.print();
+        }
+      },
+      {
+        t: "Return to the top",
+        c: "Action",
+        d: "",
+        w: "scroll up start",
+        run: function () {
+          var main = document.getElementById("main");
+          if (main) focusLanding(main);
+          glideTo(0);
+        }
+      }
+    ];
+    return list;
+  }
+
+  function loadConsole() {
+    if (consoleApi) return Promise.resolve(consoleApi);
+    if (consoleLoading) return consoleLoading;
+    consoleLoading = import(HERE + "vendor/console.js")
+      .then(function (m) {
+        consoleApi = m.mount({
+          index: HERE + "search.json",
+          go: travel,
+          say: say,
+          actions: consoleActions
+        });
+        consoleLoading = null;
+        return consoleApi;
+      })
+      .catch(function (err) {
+        consoleLoading = null;
+        throw err;
+      });
+    return consoleLoading;
+  }
+
+  function openConsole(prefill) {
+    loadConsole().then(
+      function (api) {
+        api.open(prefill);
+      },
+      function () {
+        say("The search could not be loaded. Every page on this site is listed in the footer.");
+      }
+    );
+  }
+
+  function consoleControl() {
+    var opens = document.querySelectorAll("[data-console-open]");
+    if (!opens.length || !window.Promise) return;
+
+    /* ⌘K on an Apple keyboard, / everywhere else. Both work everywhere; the
+       hint shows whichever one the keyboard in front of you actually has. */
+    var apple = /Mac|iPhone|iPad|iPod/.test(navigator.platform || "") ||
+      /Mac OS X/.test(navigator.userAgent || "");
+    var hints = document.querySelectorAll("[data-console-key]");
+    for (var h = 0; h < hints.length; h++) hints[h].textContent = apple ? "⌘K" : "/";
+
+    for (var i = 0; i < opens.length; i++) {
+      opens[i].addEventListener("click", function () {
+        /* One of these controls lives inside the mobile menu, and a menu left
+           standing open behind the panel it just opened is a second navigation
+           waiting underneath the first. */
+        var panel = document.querySelector("[data-menu][open]");
+        if (panel) panel.removeAttribute("open");
+        openConsole();
+      });
+      /* Warmed by the hand on its way to the control, so the press itself is
+         never the request. */
+      opens[i].addEventListener("pointerenter", warmConsole, { passive: true, once: true });
+      opens[i].addEventListener("focus", warmConsole, { once: true });
+    }
+
+    document.addEventListener("keydown", function (ev) {
+      if (ev.defaultPrevented) return;
+      var mod = ev.metaKey || ev.ctrlKey;
+      if (mod && (ev.key === "k" || ev.key === "K")) {
+        ev.preventDefault();
+        openConsole();
+        return;
+      }
+      if (mod || ev.altKey) return;
+      var t = ev.target;
+      var typing =
+        t &&
+        (t.isContentEditable ||
+          /^(input|textarea|select)$/i.test(t.tagName || "") ||
+          (consoleApi && consoleApi.isOpen()));
+      if (typing) return;
+      if (ev.key === "/") {
+        ev.preventDefault();
+        openConsole();
+      }
+    });
+  }
+
+  function warmConsole() {
+    loadConsole().then(
+      function (api) {
+        if (api.warm) api.warm();
+      },
+      function () {}
+    );
+  }
+
   /* --- 4. the motion control ----------------------------------------------- */
 
   /* Two things on this site move for longer than five seconds — the atmosphere
@@ -601,6 +1131,12 @@
     }
 
     for (var i = 0; i < btns.length; i++) btns[i].addEventListener("click", toggle);
+    /* The console offers the same switch as a command, and there is one of it:
+       both routes run this function, so the two can never disagree. */
+    motionSwitch = function () {
+      toggle();
+      say(root.getAttribute("data-motion") === "off" ? "Motion reduced" : "Motion restored");
+    };
     paint();
   }
 
@@ -890,12 +1426,19 @@
          actually going to be read rather than where it briefly was. */
       arrive();
       reveals();
-      progress();
       menu();
       motionControls();
       arrival();
       theatre();
       card();
+      /* The answer. Built before progress() runs, because progress() is what
+         reports into the two of these that report. */
+      receipts();
+      returning();
+      chapters();
+      magnets();
+      consoleControl();
+      progress();
     } catch (err) {
       /* A failure in any of the above must never leave content hidden. */
       revealAll();

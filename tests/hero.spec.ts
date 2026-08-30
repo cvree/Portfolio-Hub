@@ -224,11 +224,15 @@ test.describe('what the hero no longer asks of anybody', () => {
     for (const fact of OPEN_FACTS) expect(text).toContain(fact);
   });
 
-  test('the masthead carries one control and three destinations', async ({ page }) => {
+  test('the masthead carries two controls and three destinations', async ({ page }) => {
+    /* Two, and they are the two the site needs: the way in, and the way to
+       stop everything moving. Anything beyond those two belongs in the footer
+       or in the console, and a third would make the masthead an index. */
     const nav = page.locator('.masthead nav[aria-label="Primary"] a');
     await expect(nav).toHaveCount(3);
     expect(await nav.allInnerTexts()).toEqual(['Projects', 'Résumé', 'Contact']);
-    expect(await page.locator('.masthead__in > button').count()).toBe(1);
+    expect(await page.locator('.masthead__in > button').count()).toBe(2);
+    await expect(page.locator('.masthead__in > [data-console-open]')).toBeVisible();
     await expect(page.locator('.masthead__in > [data-motion-toggle]')).toBeVisible();
   });
 

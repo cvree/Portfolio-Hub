@@ -163,9 +163,23 @@
       <a href="contact.html">Contact</a>
     </nav>
 
-    <!-- The one control in the masthead, and the only one the site needs: it
-         stops every continuous movement on it. It appears only once a script
-         is running, because with no script there is nothing to stop. -->
+    <!-- Two controls in the masthead, and they are the two the site needs.
+
+         The first is the way in: one field that searches every page, product
+         and section here, opened from this button, from ⌘K, or from / . The
+         second stops every continuous movement on the site. Both appear only
+         once a script is running — with no script there is nothing to search
+         with and nothing to stop — and everything either of them reaches is
+         reachable without them, from the navigation and the footer. -->
+    <button class="findbtn" type="button" data-console-open aria-label="Search this site">
+      <svg class="findbtn__glass" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false">
+        <circle cx="10.5" cy="10.5" r="6.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <path d="M15.4 15.4 L20.5 20.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      </svg>
+      <span class="findbtn__label" aria-hidden="true">Search</span>
+      <kbd class="findbtn__key" data-console-key aria-hidden="true">/</kbd>
+    </button>
+
     <button class="motionbtn" type="button" data-motion-toggle aria-pressed="false">
       <span class="led" aria-hidden="true"></span>
       <span>Reduce motion</span>
@@ -182,6 +196,13 @@
           <a href="resume.html">Résumé<span class="chev" aria-hidden="true">&rarr;</span></a>
           <a href="contact.html">Contact<span class="chev" aria-hidden="true">&rarr;</span></a>
         </nav>
+        <button class="btn navmob__find" type="button" data-console-open>
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+            <circle cx="10.5" cy="10.5" r="6.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+            <path d="M15.4 15.4 L20.5 20.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+          Search this site
+        </button>
         <a class="btn btn--primary" href="mailto:connor.eppolito803@myci.csuci.edu">Email Connor</a>
         <button class="motionbtn" type="button" data-motion-toggle aria-pressed="false">
           <span class="led" aria-hidden="true"></span>
@@ -229,7 +250,7 @@
       <article class="tl__item" data-rise>
         <p class="tl__when">Certified</p>
         <div>
-          <h3 class="h3">Emergency Medical Technician</h3>
+          <h3 id="s-emergency-medical-technician" class="h3">Emergency Medical Technician</h3>
           <p class="tl__where">Pre-hospital emergency care</p>
           <div class="tl__body">
             <ul>
@@ -244,7 +265,7 @@
       <article class="tl__item" data-rise>
         <p class="tl__when">2026 &ndash; Present</p>
         <div>
-          <h3 class="h3">President</h3>
+          <h3 id="s-president" class="h3">President</h3>
           <p class="tl__where">CSU Channel Islands Esports Club</p>
           <div class="tl__body">
             <ul>
@@ -259,7 +280,7 @@
       <article class="tl__item" data-rise>
         <p class="tl__when">Fall 2025 &ndash; Spring 2026</p>
         <div>
-          <h3 class="h3">Vice President</h3>
+          <h3 id="s-vice-president" class="h3">Vice President</h3>
           <p class="tl__where">CSU Channel Islands Esports Club</p>
           <div class="tl__body">
             <ul>
@@ -272,7 +293,7 @@
       <article class="tl__item" data-rise>
         <p class="tl__when">Earlier</p>
         <div>
-          <h3 class="h3">Vice President</h3>
+          <h3 id="s-vice-president-2" class="h3">Vice President</h3>
           <p class="tl__where">Santa Barbara City College Esports Club</p>
           <div class="tl__body">
             <ul>
@@ -285,7 +306,7 @@
       <article class="tl__item" data-rise>
         <p class="tl__when">Summer 2025</p>
         <div>
-          <h3 class="h3">Keyholder / Store Associate</h3>
+          <h3 id="s-keyholder-store-associate" class="h3">Keyholder / Store Associate</h3>
           <p class="tl__where">Goodwill</p>
           <div class="tl__body">
             <ul>
@@ -319,7 +340,7 @@
       <article class="tl__item" data-rise>
         <p class="tl__when">Expected Dec 2026</p>
         <div>
-          <h3 class="h3">Bachelor of Science, Health Science</h3>
+          <h3 id="s-bachelor-of-science-health-science" class="h3">Bachelor of Science, Health Science</h3>
           <p class="tl__where">California State University Channel Islands</p>
           <div class="tl__body">
             <p class="prose quiet">GPA 3.813. President&rsquo;s List, Spring 2026. Dean&rsquo;s List, Fall 2025. Semester Honors, May 2026.</p>
@@ -334,7 +355,7 @@
       <article class="tl__item" data-rise>
         <p class="tl__when">Graduated</p>
         <div>
-          <h3 class="h3">Associate of Arts, Mathematics &amp; Science</h3>
+          <h3 id="s-associate-of-arts-mathematics-science" class="h3">Associate of Arts, Mathematics &amp; Science</h3>
           <p class="tl__where">Santa Barbara City College — Mathematics emphasis</p>
           <div class="tl__body">
             <ul>
@@ -347,7 +368,7 @@
       <article class="tl__item" data-rise>
         <p class="tl__when">Prior</p>
         <div>
-          <h3 class="h3">Computer Engineering coursework</h3>
+          <h3 id="s-computer-engineering-coursework" class="h3">Computer Engineering coursework</h3>
           <p class="tl__where">San Diego State University</p>
           <div class="tl__body">
             <ul>
@@ -553,6 +574,27 @@
     </div>
   </div>
 </footer>
+
+<!-- THE ANSWER. Three elements, all empty until something happens in them.
+
+     The rail is where the site replies out loud: a copied address, a stored
+     preference, a place it has just travelled to. The announcer is the same
+     replies for a screen reader, and the quiet ones a toast would be too loud
+     for. The return is the one control that appears on its own, and only once
+     there is something to return from. -->
+<div class="toasts" data-toasts aria-hidden="true"></div>
+<p class="vh" data-announce role="status" aria-live="polite"></p>
+
+<button class="totop" type="button" data-totop hidden>
+  <span class="totop__dial" aria-hidden="true">
+    <svg viewBox="0 0 44 44" focusable="false">
+      <circle class="totop__track" cx="22" cy="22" r="19" />
+      <circle class="totop__read" cx="22" cy="22" r="19" pathLength="100" />
+    </svg>
+    <span class="totop__arrow"></span>
+  </span>
+  <span class="vh" data-totop-label>Return to the top</span>
+</button>
 
 <script src="assets/site.js" defer></script>
 </body>

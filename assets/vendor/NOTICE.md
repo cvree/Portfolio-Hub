@@ -20,10 +20,11 @@ critical `site.js` — none of which is behind a lazy request.
 | Package | Version | Source | License | Bundle | Raw | Gzip |
 | --- | --- | --- | --- | --- | --- | --- |
 | `—` | — | this repository | MIT (this repository) | `assets/vendor/pulse.js` | 2.0 KB | 0.9 KB |
+| `—` | — | this repository | MIT (this repository) | `assets/vendor/console.js` | 8.8 KB | 3.6 KB |
 | `—` | — | this repository | MIT (this repository) | `assets/vendor/holo.js` | 2.8 KB | 1.1 KB |
 | `ogl` | 1.0.11 | https://github.com/oframe/ogl | Unlicense | `assets/vendor/atmosphere.js` | 62.2 KB | 19.5 KB |
 
-Total lazy payload: **21.5 KB gzip**, against a
+Total lazy payload: **25.2 KB gzip**, against a
 budget of 100 KB. None of it is requested until after the useful site has
 rendered, and the shader additionally requires WebGL and a device that does not
 report under 4 GB of memory — a browser that declines to report at all is not
@@ -34,6 +35,10 @@ read as a small device.
 ### `assets/vendor/pulse.js` — no dependency
 
 The pulse layer, on every page. It has no dependency at all — it is here because it is main-thread work the critical path must not carry, not because it needed a library. Everything the site says is CSS and markup that has painted before this file is requested; what is left for a script is the handful of things CSS cannot know — where the pointer is, how hard somebody is scrolling, and when they have taken hold of the sculpture. It writes four custom properties onto <html> and gets out of the way. It is bundled and committed through the same path as the shader so that exactly one mechanism puts JavaScript on this site.
+
+### `assets/vendor/console.js` — no dependency
+
+The console — the field that opens on ⌘K and searches every page, product and section on this site. It has no dependency: the index it reads is written by tools/build_pages.py out of the pages themselves, and the combobox, the scoring and the key handling are this file. It is here rather than in the critical path because nothing on this site waits on it — it is imported the first time somebody reaches for it, and every place it can travel to is an ordinary URL that works with this bundle absent.
 
 ### `assets/vendor/holo.js` — no dependency
 

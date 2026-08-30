@@ -2,6 +2,8 @@
 path: contact.html
 title: Contact — Connor Eppolito
 ogtitle: Contact Connor Eppolito
+label: Contact
+keywords: email, linkedin, github, hire, reach, get in touch, card, address
 nav: contact
 surface: ink
 accent: research
@@ -27,7 +29,7 @@ desc: Get in touch with Connor Eppolito — email connor.eppolito803@myci.csuci.
 <section class="vc" aria-labelledby="page-h">
   <div class="shell shell--narrow">
 
-    <div class="vc__stage" data-vcard>
+    <div class="vc__stage" data-vcard data-anchors="off">
       <span class="vc__shadow" aria-hidden="true"></span>
 
       <div class="vc__card" data-vcard-body>
@@ -148,10 +150,23 @@ desc: Get in touch with Connor Eppolito — email connor.eppolito803@myci.csuci.
          aria-pressed says which way up it is, and the label says what pressing
          it will do next. The card itself answers a click as well, and this
          button is what says so to anybody not using a pointer. -->
-    <button class="vc__turn" type="button" data-vcard-flip aria-pressed="false">
-      <span class="vc__turnicon" aria-hidden="true"></span>
-      <span data-vc-label>Turn the card over</span>
-    </button>
+    <div class="vc__controls">
+      <button class="vc__turn" type="button" data-vcard-flip aria-pressed="false">
+        <span class="vc__turnicon" aria-hidden="true"></span>
+        <span data-vc-label>Turn the card over</span>
+      </button>
+
+      <!-- The address is a mailto link, which is the right thing for anybody
+           who has a mail client set up and the wrong thing for everybody else.
+           This is the other half of that: the same address, on the clipboard,
+           and a line of type saying so. -->
+      <button class="vc__turn vc__copy" type="button"
+              data-copy="connor.eppolito803@myci.csuci.edu"
+              data-copy-said="Email address copied">
+        <span class="vc__turnicon vc__turnicon--copy" aria-hidden="true"></span>
+        <span>Copy the address</span>
+      </button>
+    </div>
 
   </div>
 </section>

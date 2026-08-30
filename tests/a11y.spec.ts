@@ -52,3 +52,40 @@ for (const p of PAGES) {
     });
   }
 }
+
+/* The console is a dialog that is not in the document until it is opened, so
+   the pass above never sees it. This is the same scanner, run over the one
+   state on this site that a page walk cannot reach. */
+for (const [label, width] of [['desktop', 1440], ['mobile', 390]] as const) {
+  test(`the console (${label}): no serious or critical axe violations`, async ({ page }) => {
+    test.setTimeout(90_000);
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+    await page.goto('index.html', { waitUntil: 'load' });
+    await page.evaluate(() => document.fonts.ready);
+    await page.locator('[data-console-open]').first().click();
+    await page.waitForSelector('.cons__row');
+    await page.waitForTimeout(600);
+
+    const rest = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
+      .analyze();
+    expect(
+      rest.violations
+        .filter((v) => v.impact === 'serious' || v.impact === 'critical')
+        .map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(' | ')}`)
+    ).toEqual([]);
+
+    /* And with a query in it, which is a different tree: groups, marks and a
+       live count. */
+    await page.keyboard.type('health');
+    await page.waitForTimeout(500);
+    const found = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
+      .analyze();
+    expect(
+      found.violations
+        .filter((v) => v.impact === 'serious' || v.impact === 'critical')
+        .map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(' | ')}`)
+    ).toEqual([]);
+  });
+}

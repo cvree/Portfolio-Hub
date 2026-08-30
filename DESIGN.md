@@ -662,14 +662,19 @@ preloaders · "enter experience" gates · custom cursors · cursor-following blo
 scroll · scroll snapping · scroll-jail storytelling · fake HUD metrics ·
 fictional telemetry · invented testimonials, users, detections, clinical values
 or project numbers · emoji as interface iconography · two animation engines
-doing one job.
+doing one job · a toast that has to be dismissed · a confirmation nobody asked
+for · a spinner in front of something that has already painted · a keyboard
+shortcut for something with no control on screen · a search that finds things
+that are not on the site.
 
 **Nothing on this site makes a sound.** There was a sound layer here — three
 synthesised tones behind a masthead switch, correct in every detail, autoplaying
 nothing — and it is gone. It was a control that existed to make a promise about
 a feature nobody asked for, and the honest version of that promise is not
-having the feature. The masthead now carries one switch, and it is the one that
-stops every continuous movement on the site.
+having the feature. The masthead carries two controls and no more: the field
+that finds anything on this site, and the switch that stops every continuous
+movement on it. A third would make a masthead into an index, and the index is
+the footer.
 
 ---
 
@@ -688,3 +693,130 @@ stops every continuous movement on the site.
 object at all.** The projection says nothing. Everything about Connor is in the
 copy beside it and in the strip below it, open, at first paint, with nothing to
 press.
+
+---
+
+## 10. The answer — every action gets one
+
+Sections 1–9 are what this site says. This one is what it says back.
+
+**Every action gets an answer, and the answer is proportional to the action.**
+
+| Action | Answer | Where |
+| --- | --- | --- |
+| Hover | a hairline warms, 160–220 ms, no travel | the control |
+| Focus | the ring — two pixels of accent, offset three, the same on every control | the control |
+| Press | a one-pixel detent at 90 ms, and one QRS down the trace | the control, and the top of the page |
+| Press something that is the point of its page | four pixels of magnetic travel first | the control |
+| Something changed where the eye is not looking | one line of type, once, that takes itself away | the rail, bottom left |
+| Any of the above, without sight | the same words, at the same moment | one polite live region |
+
+There are five things in this section, and each of them is an answer to a
+question the site could not previously be asked. (The word *instrument* is
+already taken on this site: it is the pulse layer, in section 4b. This is what
+answers a visitor, not what reports a heartbeat.)
+
+### 10.1 The console — ⌘K, `/`, or the control in the masthead
+
+Eleven pages, six products and ninety-nine sections, and until this existed the
+only way to reach any of them was to already know which page it was on.
+
+The console is one field. It searches an index built out of the pages
+themselves at author time — `tools/build_pages.py` writes `assets/search.json`
+from each page's front-matter, every heading in it, and the first 420
+characters each of those headings is followed by. So the index cannot fall
+behind the site: it is made out of it, and `--check` fails the build if the
+committed copy has drifted.
+
+**What it can find.** Products by name and by what they do; pages; sections by
+their heading *and by what the section actually says* — "the order of draw" is
+the whole point of a section on this site and appears in no heading on it. Six
+actions sit alongside them: copy a link to this page, copy the address, write
+to Connor, reduce or restore motion, print, return to the top.
+
+**How it is spelled.** A combobox, the way the pattern is spelled: the field
+owns `aria-expanded` and `aria-activedescendant`, the list owns `role=listbox`,
+and the row under the selection is the one the field is pointing at. Focus goes
+in on open and comes back out to whatever opened it. Tab cannot walk behind it.
+Escape clears a query that has one and closes a field that does not, so one key
+never destroys two things.
+
+**What it answers with.** A count beside the caret after every keystroke and
+the same number to a screen reader; the matched run marked in the row; the row
+you are selecting drawn in the page's accent with the return key on it; a row
+that would take you where you already are labelled *you are here*; an empty
+field showing what you opened last and then the six products, because a panel
+that opens blank is a panel that asked a question it will not help you answer;
+and nothing matching saying what it looked in rather than showing an empty box.
+
+**Scoring** is deterministic, not fuzzy. Every token has to appear somewhere —
+an AND, because a search that widens as you type punishes you for being
+specific — and *where* it appears is what orders the result: the title beats
+the page it is on, which beats the prose; the start of a word beats the middle
+of one; the whole query as one run beats the same letters scattered across
+three fields.
+
+**What it costs the site: nothing.** The module is 3.6 KB gzip and is imported
+the first time somebody reaches for it — warmed on the first hover of the
+control, so the press is never the request. The index is one 19 KB gzip fetch,
+made once, on the first open. Neither is in the critical path, and every place
+the console can travel to is an ordinary link in the navigation or the footer.
+With no script there is no field, because a field that cannot search is worse
+than no field.
+
+### 10.2 The receipt
+
+Copying is the one interaction on the web with no feedback of its own: the
+clipboard changes somewhere nobody can see. Every copy on this site answers in
+three places at once — on the control, in the rail, and to a screen reader —
+and a copy that did not happen says so instead of pretending.
+
+Because `build_pages.py` now gives every heading an id, every section of every
+page is a real URL. So every heading carries an anchor that hands that URL
+over. It is pointer-only: on a touch screen it would be a 44 px target sitting
+inside a line of type, and the console's *copy a link to this page* is the same
+job with a thumb. A heading on the face of the contact card is not offered one,
+because a card face is an object rather than a section and half of it is
+pointing at the wall at any moment.
+
+### 10.3 The rail
+
+Bottom left, out of the way of the return dial on the right. One line of type
+per reply, newest on top, at most three at once, and every one of them takes
+itself away after three and a half seconds. **Never an error somebody has to
+dismiss to carry on.** The rail is `aria-hidden`, because the same words go out
+through the announcer at the same moment and a screen reader that heard both
+would hear everything twice.
+
+### 10.4 The return
+
+Not on screen until there is something to return from — one and a bit screens,
+which is the point at which the top of the document stops being somewhere you
+can simply look up at. The ring around it is the same number the trace across
+the top of the page is drawing. Pressing it takes the focus with it, so the
+keyboard lands where the eye does.
+
+### 10.5 The chapters
+
+The law the Projects rail is built on, applied to every long document on the
+site: it reports which section you are in and it never converts the page into
+tabs, never hides an inactive section and never competes with the scroll for
+authority. It is built from the document rather than from a list kept beside
+it, so a section added to a page is in its contents the moment it is written.
+
+Five hairlines, and the one you are in is the long one in the page's accent.
+The label is asked for — hover or focus — never permanent: a column of section
+names standing open down the side of a document is a second navigation nobody
+wanted, and at 1360 px there is no room beside the measure for one anyway. The
+home page does not get one, because Projects already has a spine and two down
+one screen is one too many.
+
+### What every state holds, again
+
+| State | What this section does |
+| --- | --- |
+| **No JavaScript** | None of it is in the markup. There is no field, no anchor, no dial and no contents — and every place any of them reaches is in the navigation and the footer. |
+| **`prefers-reduced-motion`** | Everything still happens; none of it moves. The panel appears rather than arriving, the reply appears rather than rising, the magnet is zero, and the dial and the contents still report — because how far down a document you are is information, not movement, and withholding it would be withholding the wrong thing. |
+| **Coarse pointer** | The console is a full-height sheet with 60 px rows; the magnet and the heading anchors are absent, because both are pointer-only by definition. |
+| **Keyboard** | The whole console, in order, with the selection announced as a count and the panel closed by the key that opened the query. Every control here is an `<a>`, a `<button>` or an `<input>`, so every one of them takes the site's own focus ring without a second rule. |
+| **Offline, or a blocked fetch** | The console opens, the actions still work, and the message says the index could not be loaded rather than showing an empty list. |

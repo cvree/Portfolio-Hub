@@ -13,6 +13,17 @@ all eleven pages, native scroll-driven motion, and one product-physics law per
 case study. Every part of it is an escalation of the page underneath it, and
 every part of it can fail without taking that page with it.
 
+Beside that sits **the answer layer** — what the site says back.
+**⌘K** (or `/`, or the field in the masthead) opens a console that searches
+every page, product and section on the site from an index built out of the
+pages themselves; every heading is a real URL with a control that hands it
+over; every copy, every stored preference and every arrival says so in one
+line of type that takes itself away; a dial reports how far down a document
+you are and takes you back to the top of it; and every long document carries
+its own contents down the side, reporting position and never steering. All of
+it is progressive: with no script none of it is in the markup, and everywhere
+any of it reaches is in the navigation and the footer as well.
+
 The design system it answers to is written down in [`DESIGN.md`](DESIGN.md).
 
 ```
@@ -30,10 +41,11 @@ resume.html                 The document — one chronological journey on
 contact.html                Email, LinkedIn, GitHub, and the practical details
 
 assets/site.css             The design system: tokens, layout, type, motion, print
-assets/site.js              Progressive enhancement, ~330 lines, five jobs
+assets/site.js              Progressive enhancement, fourteen jobs, none required
+assets/search.json          The console's index — generated, never hand-written
 assets/fonts/               Self-hosted latin subsets (SIL OFL)
 assets/projects/            Real screenshots of the six products (WebP)
-assets/src/                 Sources for the two lazy bundles
+assets/src/                 Sources for the four lazy bundles
 DESIGN.md                   The ONE SIGNAL design system: tokens, motion laws, anti-patterns
 assets/vendor/              Those bundles, built and committed — plus NOTICE.md
 
@@ -44,8 +56,10 @@ tools/build_vendor.mjs      esbuild → assets/vendor/, with a --check for CI
 tools/build_images.mjs      Responsive WebP derivatives from the screenshots
 tools/build_fonts.py        Instances the variable faces down to what is used
 tools/calibrate_fallbacks.mjs  Keeps the metric-matched fallbacks honest
+tools/shots_answer.mjs      The evidence set for section 10 of DESIGN.md
 tools/asset_manifest.py     Writes the asset manifest from the built pages
-tests/                      Playwright: structure, motion, a11y, print, keyboard
+tests/                      Playwright: structure, motion, a11y, print, keyboard,
+                            the console, and the rest of the answer layer
 ```
 
 ```bash
@@ -87,6 +101,8 @@ Each page fragment opens with a small front-matter block:
 <!--meta
 path: about.html
 title: About — Connor Eppolito
+label: About              what the console calls this page
+keywords: bio, taste      words somebody might type that are not on the page
 nav: about                which navigation item is current
 surface: ink | record     near-black, or the résumé's darker floor
         | paper            the warm ivory document surface
@@ -94,6 +110,18 @@ accent: spellbomb         the per-page accent colour
 desc: ...                 meta description and Open Graph description
 -->
 ```
+
+The generator also does two things nobody has to maintain by hand:
+
+1. **Every `<h2>` and `<h3>` that does not already carry an id is given one**,
+   slugified from its own text and prefixed `s-` so it can never collide with a
+   hand-written id. That is what makes every section of every case study a real
+   URL — and the console's index, the chapter rail and the copy-link control
+   all address the same anchor, because there is only one of them.
+2. **`assets/search.json` is written out of the pages themselves**: each page's
+   front-matter, every heading in it, and the first 420 characters each heading
+   is followed by. `--check` fails if the committed index has drifted, so the
+   thing the console searches cannot fall behind the thing it is searching.
 
 ## What is on the site
 
@@ -424,6 +452,66 @@ site's own Motion control, Save-Data — and under any of them it is never
 fetched and not one property is ever written. On a phone it still loads,
 because the part that matters most there needs no pointer at all.
 
+## The console
+
+**⌘K**, `/`, or the field in the masthead. One input, and every page, product
+and section on this site is one key away from every other one.
+
+It searches `assets/search.json`, which is generated out of the pages — see
+*Editing it* above — so it can find a section by its heading **and by what the
+section actually says**. "The order of draw" is the whole point of a section on
+this site and appears in no heading on it; the console finds it anyway.
+
+Alongside the places, six actions: copy a link to this page, copy the address,
+write to Connor, reduce or restore motion, print, and return to the top. The
+motion action and the masthead switch are the same function, so the two can
+never disagree about which state the site is in.
+
+It is a combobox, spelled the way the pattern is spelled — `aria-expanded` and
+`aria-activedescendant` on the field, `role="listbox"` on the list, focus in on
+open and back out on close, and Tab that cannot walk behind it. Escape clears a
+query that has one and closes a field that does not. After every keystroke the
+count is redrawn beside the caret and announced to a screen reader; the matched
+run is marked in the row; and a row that would take you to the page you are
+already reading is labelled *you are here*.
+
+The module is 3.6 KB gzip, imported the first time somebody reaches for it and
+warmed on the first hover of the control, so the press is never the request.
+The index is one 19 KB gzip fetch, made once, on the first open. Neither is in
+the critical path; `npm test` asserts that neither is requested by a page load.
+With no script there is no field at all — a field that cannot search is worse
+than no field — and everywhere the console can travel to is an ordinary link in
+the navigation or the footer.
+
+## The receipt, the rail, the return and the chapters
+
+The other four parts of the answer layer, and the rule all five share: **every
+action gets an answer, and the answer is proportional to the action.**
+
+- **The receipt.** Copying is the one interaction on the web with no feedback of
+  its own. Every copy here answers in three places at once — on the control, in
+  the rail, and to a screen reader — and a copy that did not happen says so
+  instead of pretending. Because every heading now has an id, every heading also
+  carries an anchor that hands its URL over. Pointer only: on a touch screen it
+  would be a 44 px target inside a line of type, and the console's *copy a link
+  to this page* is the same job with a thumb.
+- **The rail.** Bottom left, one line of type per reply, newest on top, at most
+  three at a time, and every one of them takes itself away. Never an error
+  somebody has to dismiss to carry on. It is `aria-hidden`, because the same
+  words go out through one polite live region at the same moment.
+- **The return.** Not on screen until there is something to return from. The
+  ring around it is the same number the trace across the top of the page is
+  drawing, and pressing it takes the focus with it.
+- **The chapters.** Every long document carries its own contents down the side,
+  built from the document rather than from a list kept beside it. Five
+  hairlines; the one you are in is the long one, in the page's accent; the label
+  is asked for rather than permanent. The home page does not get one, because
+  Projects already has a spine.
+
+Under a reduced-motion preference every one of them still happens and none of
+them moves — the dial and the chapters keep reporting, because how far down a
+document you are is information rather than movement.
+
 ## The card
 
 The contact page is a card, and nothing else: no page heading above it, no
@@ -512,11 +600,14 @@ switch lighter for it.
 
 Because the atmosphere plane keeps moving for longer than five seconds, every
 page carries a **Reduce motion** button — in the masthead on wide screens, in
-the mobile menu below that. It is the only switch in the masthead. It is a real button with a stable accessible name and an
+the mobile menu below that. It is one of the two controls in the masthead — the
+other is the console — and it is the only switch. It is a real button with a stable accessible name and an
 `aria-pressed` state, it stops the renderer and every non-essential animation on
 the spot, and the choice is remembered in `localStorage`. It can only ever make
 the site stiller than the operating system asked for: a stored "on" never
-overrides a system `prefers-reduced-motion: reduce`.
+overrides a system `prefers-reduced-motion: reduce`. The console offers the
+same switch as a command, and both routes call the same function, so the two
+can never report different states.
 
 ## Cross-document view transitions
 
@@ -643,8 +734,8 @@ Three changes fixed it, and together they took mobile CLS to 0.000:
 - the simplification, asserted so it cannot quietly come back: no radio group,
   no `role="tab"` and nothing `display: none` in the hero waiting for a press;
   every fact the old domain panels held present in the open page text; three
-  primary destinations and exactly one button in the masthead; and no sound
-  control on any page
+  primary destinations and exactly two buttons in the masthead — the way in and
+  the way to stop everything moving; and no sound control on any page
 - the six rooms: one distinct motion law each made of elements that can
   genuinely move, six tube cards that start in the wrong seats and end in the
   right ones, a rail that reports position without turning articles into tabs,
@@ -660,8 +751,26 @@ Three changes fixed it, and together they took mobile CLS to 0.000:
   target over 44 px
 - keyboard order, focus rings on everything tabbable, the skip link, the mobile
   menu's Escape behaviour, and reaching a case study from the hero by keyboard
+- the console: every destination in the index resolving to a page that exists
+  and to an anchor that is actually in it; one row per destination; opening from
+  ⌘K, from `/` and from the control; an empty field that is a menu rather than a
+  blank panel; a count that is what the list is, and the same count announced;
+  the matched run marked; arrow keys that move `aria-activedescendant`; Enter
+  travelling both across documents and within one; Escape undoing the query
+  before it closes the panel; focus returning to whatever opened it; Tab that
+  cannot walk out; and no field at all with JavaScript disabled
+- the rest of the answer layer: every heading on a document carrying an id; the
+  anchor and the card's copy control both writing to the clipboard, saying so on
+  the control, in the rail and to a screen reader, and never stacking more than
+  three replies; a return dial that is absent until there is something to return
+  from, reports the same number the trace does, and takes focus with it; a
+  chapter rail on the long documents and none on the home page, marking exactly
+  one section at a time; four pixels of magnetic travel that returns to zero;
+  and, under reduced motion, all of it still reporting and none of it moving
+- neither the console module nor its index requested on any page load
 - the résumé printing to exactly two pages on Letter and on A4
-- Axe with zero serious or critical violations on all eleven pages, twice each
+- Axe with zero serious or critical violations on all eleven pages, twice each,
+  and on the console both empty and with a query in it
 
 `.github/workflows/verify.yml` runs all of that on Chromium, Firefox and WebKit,
 plus generator and vendor drift checks, HTML validation, a CDN check and the
@@ -689,6 +798,16 @@ checks and publishes.
   states the same number, and the drawn numeral is marked decorative.
 - Wide diagrams and screenshots scroll inside their own frame on narrow screens
   rather than shrinking their labels.
+- The console is a combobox with `aria-expanded`, `aria-activedescendant` and a
+  `role="listbox"`; it takes focus on open, returns it on close, traps Tab while
+  it is open, and announces its result count after every keystroke. Rows are
+  52 px on a pointer and 60 px on a phone, where it opens as a full-height sheet
+  rather than a panel with a keyboard underneath it.
+- Anything the site does where the eye is not looking — a copy, a stored
+  preference, an arrival — is announced through one polite live region. The
+  visible replies are `aria-hidden`, so nothing is heard twice.
+- Every label in the answer layer is small, so every label in it is drawn in
+  `--text-quiet` (7.0:1). `--text-faint` is 3.8:1 and appears nowhere in it.
 
 ## Deploying
 

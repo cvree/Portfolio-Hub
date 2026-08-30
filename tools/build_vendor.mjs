@@ -40,6 +40,20 @@ const TARGETS = [
       'the shader so that exactly one mechanism puts JavaScript on this site.',
   },
   {
+    entry: 'assets/src/console.js',
+    file: 'console.js',
+    packages: [],
+    why:
+      'The console — the field that opens on ⌘K and searches every page, ' +
+      'product and section on this site. It has no dependency: the index it ' +
+      'reads is written by tools/build_pages.py out of the pages themselves, ' +
+      'and the combobox, the scoring and the key handling are this file. It ' +
+      'is here rather than in the critical path because nothing on this site ' +
+      'waits on it — it is imported the first time somebody reaches for it, ' +
+      'and every place it can travel to is an ordinary URL that works with ' +
+      'this bundle absent.',
+  },
+  {
     entry: 'assets/src/holo.js',
     file: 'holo.js',
     packages: [],

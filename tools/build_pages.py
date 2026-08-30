@@ -15,16 +15,31 @@ Each fragment in pages/ starts with a small front-matter block:
     <!--meta
     path: work.html
     title: Projects — Connor Eppolito
+    label: Projects
     nav: work
     surface: ink
     accent: cobalt
     physics: sort
+    keywords: case study, shipped
     desc: ...
     -->
+
+Two things are derived from the pages rather than kept beside them by hand:
+
+  * every <h2> and <h3> in a fragment that does not already carry an id is
+    given one, slugified from its own text. That is what makes every section
+    of every case study a real URL — and the console's index, the chapter
+    rail and the copy-link control all address the same anchor because there
+    is only one of them.
+  * assets/search.json, the console's index, is written from those headings
+    plus each page's own front-matter. It cannot fall behind the pages,
+    because it is made out of them.
 """
 
 from __future__ import annotations
 
+import html as htmllib
+import json
 import pathlib
 import re
 import sys
@@ -135,13 +150,152 @@ def font_face_css() -> str:
     return css
 
 
+# ---------------------------------------------------------------------------
+# Anchors, and the index made out of them
+# ---------------------------------------------------------------------------
+#
+# A section that cannot be linked to is a section that cannot be found, and
+# nine of the eleven pages had exactly one addressable place in them: the top.
+# Every <h2> and <h3> that does not already carry an id gets one here, taken
+# from its own text, and that single id is what the console's index, the
+# chapter rail and the copy-link control all point at. There is one anchor per
+# section because there is one place that makes it.
+
+# How much of a section is carried into the index. Long enough that the claim
+# a section is actually about is in it, short enough that the whole index is
+# one small request made once.
+EXCERPT = 420
+
+HEAD_RE = re.compile(r"<h([23])(\s[^>]*)?>(.*?)</h\1>", re.S)
+ID_RE = re.compile(r'\bid="([^"]+)"')
+CLASS_RE = re.compile(r'\bclass="([^"]*)"')
+TAG_RE = re.compile(r"<[^>]+>")
+
+
+def text_of(markup: str) -> str:
+    """The words in a heading, with its markup and its entities resolved.
+
+    A tag becomes a space rather than nothing: several headings on this site
+    are broken across two lines with a <br>, and closing the gap instead of
+    keeping it would index "Who I am,in one paragraph."
+    """
+    return re.sub(r"\s+", " ", htmllib.unescape(TAG_RE.sub(" ", markup))).strip()
+
+
+def slugify(text: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+    return slug[:48].rstrip("-") or "section"
+
+
+def autoid(body: str) -> tuple[str, list[dict[str, str]]]:
+    """Give every heading an id, and report what the headings say.
+
+    Ids already in the fragment are left exactly as they are — several are
+    referenced by aria-labelledby and moving one would break the label it
+    names. Everything generated is prefixed `s-`, which no hand-written id on
+    this site uses, so a generated anchor can never collide with a written one.
+    """
+    taken = set(ID_RE.findall(body))
+    found: list[dict[str, str]] = []
+    out: list[str] = []
+    at = 0
+    spans: list[tuple[int, int]] = []
+
+    for m in HEAD_RE.finditer(body):
+        level, attrs, inner = m.group(1), m.group(2) or "", m.group(3)
+        words = text_of(inner)
+        have = ID_RE.search(attrs)
+
+        if have:
+            anchor = have.group(1)
+        else:
+            base = "s-" + slugify(words)
+            anchor = base
+            n = 2
+            while anchor in taken:
+                anchor = f"{base}-{n}"
+                n += 1
+            attrs = f' id="{anchor}"' + attrs
+            out.append(body[at:m.start()])
+            out.append(f"<h{level}{attrs}>{inner}</h{level}>")
+            at = m.end()
+
+        taken.add(anchor)
+        classes = (CLASS_RE.search(attrs).group(1).split() if CLASS_RE.search(attrs) else [])
+        found.append({"id": anchor, "text": words, "level": level, "vh": "vh" in classes})
+        spans.append((m.end(), m.start()))
+
+    out.append(body[at:])
+
+    # What a section says, not only what it is called. A heading alone makes
+    # nine of the eleven pages searchable by their table of contents and by
+    # nothing else — "the order of draw" is the whole point of a section on
+    # this site and appears in no heading on it. The prose between one heading
+    # and the next is read here, flattened, and carried into the index as
+    # something to match against rather than something to display.
+    for i, (start, _) in enumerate(spans):
+        stop = spans[i + 1][1] if i + 1 < len(spans) else len(body)
+        found[i]["says"] = text_of(body[start:stop])[:EXCERPT]
+
+    return "".join(out), found
+
+
+# The six projects are the one part of the index that is not a heading: what
+# a visitor searches for is the product's own promise, and that sentence lives
+# on the card rather than in a title.
+WK_RE = re.compile(
+    r'<article class="wk" id="(?P<id>[^"]+)"[^>]*>.*?'
+    r'<p class="wk__idx"><span>(?P<n>[^<]*)</span>\s*(?P<kind>[^<]*)</p>.*?'
+    r'<h3[^>]*><a href="(?P<href>[^"]+)">(?P<title>[^<]+)</a></h3>\s*'
+    r'<p class="wk__say">(?P<say>.*?)</p>',
+    re.S,
+)
+
+
+def projects_in(body: str) -> list[dict[str, str]]:
+    out = []
+    for m in WK_RE.finditer(body):
+        out.append(
+            {
+                "k": "project",
+                "t": text_of(m.group("title")),
+                "u": m.group("href"),
+                "c": f"{m.group('n').strip()} · {text_of(m.group('kind'))}",
+                "d": text_of(m.group("say")),
+            }
+        )
+    return out
+
+
+def write_index(entries: list[dict[str, str]], check: bool) -> bool:
+    """assets/search.json — the console's whole index, in one request.
+
+    It is fetched on the first press of the console and never before it, so
+    nothing on this site waits on it. Written with separators that leave no
+    space to save, and sorted the way the console presents it.
+    """
+    payload = json.dumps(entries, ensure_ascii=False, separators=(",", ":")) + "\n"
+    out = ROOT / "assets" / "search.json"
+    if check:
+        have = out.read_text(encoding="utf-8") if out.exists() else ""
+        if have != payload:
+            print("out of date: assets/search.json", file=sys.stderr)
+            return True
+        return False
+    out.write_text(payload, encoding="utf-8")
+    print(f"wrote assets/search.json  ({len(entries)} entries, {len(payload) // 1024} KB)")
+    return False
+
+
 def build(check: bool = False) -> int:
     template = (ROOT / "templates" / "base.html").read_text(encoding="utf-8")
     fonts = font_face_css()
     stale: list[str] = []
+    index: list[dict[str, str]] = []
 
     for frag_path in sorted((ROOT / "pages").glob("*.html")):
         meta, body = parse(frag_path.read_text(encoding="utf-8"))
+        body, headings = autoid(body)
 
         path = meta["path"]
         rel = meta.get("rel", "")
@@ -153,6 +307,41 @@ def build(check: bool = False) -> int:
         og_image = meta.get("image", "")
 
         desk, mob = nav_html(meta.get("nav", ""), rel)
+
+        # --- the index, made out of the page that was just assembled --------
+        label = meta.get("label") or meta["title"].split(" — ")[0]
+        index.append(
+            {
+                "k": "page",
+                "t": label,
+                "u": path,
+                "c": "Case study" if meta.get("ogtype") == "article" else "Page",
+                "d": meta["desc"],
+                "w": meta.get("keywords", ""),
+            }
+        )
+        cards = projects_in(body)
+        index.extend(cards)
+        named = {c["t"] for c in cards}
+        for h in headings:
+            # A visually-hidden heading labels a region for a screen reader.
+            # It is not a place, and offering it as one would send somebody to
+            # a line they cannot see.
+            if h["vh"] or not h["text"] or h["text"] in named:
+                continue
+            says = h.get("says", "")
+            index.append(
+                {
+                    "k": "section",
+                    "t": h["text"],
+                    "u": f"{path}#{h['id']}",
+                    "c": label,
+                    # Shown: the page it is on, then the first thing it says.
+                    "d": says[:150].rstrip() + ("…" if len(says) > 150 else ""),
+                    # Matched against, and never shown: the rest of it.
+                    "w": says,
+                }
+            )
 
         page = template
         replacements = {
@@ -208,9 +397,29 @@ def build(check: bool = False) -> int:
             out.write_text(page, encoding="utf-8")
             print(f"wrote {path}  (redirect to {to})")
 
+    # A product is one place, not two. The card in Projects and the case study
+    # it links to are the same destination, so they are one row: the card's
+    # promise is what a person recognises, and the page's own keywords are what
+    # they are likely to have typed.
+    by_url: dict[str, dict[str, str]] = {}
+    for e in index:
+        if e["k"] == "project":
+            by_url[e["u"]] = e
+    merged: list[dict[str, str]] = []
+    for e in index:
+        twin = by_url.get(e["u"])
+        if e["k"] == "page" and twin is not None:
+            twin["w"] = (twin.get("w", "") + " " + e.get("w", "") + " " + e["d"]).strip()
+            continue
+        merged.append(e)
+    index = merged
+
+    drifted = write_index(index, check)
+
     if check:
-        if stale:
-            print("out of date: " + ", ".join(stale), file=sys.stderr)
+        if stale or drifted:
+            if stale:
+                print("out of date: " + ", ".join(stale), file=sys.stderr)
             print("run: python3 tools/build_pages.py", file=sys.stderr)
             return 1
         print("all pages are up to date")

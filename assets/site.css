@@ -101,6 +101,18 @@
 [data-accent="paper-animator"] { --accent:#ded7c6; }
 [data-accent="research"]       { --accent:#17a08f; }
 
+/* And the two tokens derived from it, again, here.
+   A custom property whose value contains var() is substituted where it is
+   *declared*, not where it is used — so --accent-soft and --accent-line above
+   were both baked out of the root's cobalt and then inherited, cobalt, into
+   every page and every project room on the site. Re-declaring them on the same
+   elements that set --accent is what makes a tint and a hairline actually
+   belong to the colour they are drawn beside. */
+[data-accent]{
+  --accent-soft: color-mix(in srgb, var(--accent) 16%, transparent);
+  --accent-line: color-mix(in srgb, var(--accent) 42%, transparent);
+}
+
 /* --- reset ---------------------------------------------------------------- */
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -2916,7 +2928,7 @@ html[data-motion="off"] .progress{ display:none; }
     0 0 0 1px rgba(20,22,26,.10),
     0 30px 60px -34px rgba(0,0,0,.9);
 }
-.vc__edge,.vc__sheen,.vc__turn{ display:none; }
+.vc__edge,.vc__sheen,.vc__turn,.vc__controls{ display:none; }
 
 /* --- with a script: one card, in the hand --------------------------------- */
 
@@ -3191,17 +3203,20 @@ html[data-motion="off"] .progress{ display:none; }
 .vc__ways a:hover .arrow{ transform:translateX(4px); }
 .vc__ways a:focus-visible{ outline:2px solid var(--teal-ink); outline-offset:4px; border-radius:3px; }
 
-/* --- the turn ------------------------------------------------------------- */
+/* --- the turn, and the copy ------------------------------------------------
+   Two controls, side by side, because the card has two things you can do with
+   it: read the other face, and take the address away with you. */
 
+.js .vc__controls{
+  display:flex; flex-wrap:wrap; gap:.6rem;
+  justify-content:center;
+  margin-top:clamp(1.25rem, 3vw, 2rem);
+}
 .js .vc__turn{
   display:flex;
   align-items:center;
   gap:.7rem;
-  /* Centred under a centred object, because the card is the only thing on
-     this page and the control belongs to it rather than to the column. */
   width:fit-content;
-  margin-top:clamp(1.25rem, 3vw, 2rem);
-  margin-inline:auto;
   min-height:44px;
   padding:.6rem 1.15rem;
   background:transparent;
@@ -3224,6 +3239,19 @@ html[data-motion="off"] .progress{ display:none; }
 }
 .js .vc__turn[aria-pressed="true"] .vc__turnicon{ transform:rotateY(180deg); }
 .js .vc__turn[aria-pressed="true"]{ color:var(--text); border-color:var(--accent); }
+
+/* Two leaves, offset — the shape everybody already reads as "copy". */
+.vc__turnicon--copy{
+  position:relative;
+  border-color:currentColor;
+  transition:transform 220ms var(--ease-snap);
+}
+.vc__turnicon--copy::before{
+  content:""; position:absolute; inset:-4px 4px 4px -4px;
+  border:1.5px solid currentColor; border-radius:2px;
+  opacity:.5;
+}
+.vc__copy.copied .vc__turnicon--copy{ transform:translateY(-1px); }
 
 /* --- stillness ------------------------------------------------------------ */
 
@@ -3540,3 +3568,580 @@ html:not(.js) .rail__head{ display:none; }
   .progress{ display:none !important; }
 }
 
+
+/* ===========================================================================
+   10. THE ANSWER — every action gets one
+   ---------------------------------------------------------------------------
+   Sections 1–9 are what this site says. This one is what it says back.
+
+   The rule the whole section is built on: **every action gets an answer, and
+   the answer is proportional to the action.** A hover is worth a hairline. A
+   press is worth a detent. Something that changed state somewhere the eye is
+   not looking — an address copied, a preference stored — is worth a line of
+   type that says so, and then takes itself away.
+
+   Nothing here is decoration with a purpose written on it afterwards. There
+   are five things:
+
+     · the console       one field, and every page on this site is one key away
+     · the receipt       a copy, an anchor, and the confirmation of either
+     · the rail          where the site replies, bottom left, in words
+     · the return        a dial that reports how far down you are, and goes back
+     · the chapters      the document's own contents, reporting position
+
+   All five are drawn from the tokens in section 3 and inherit the page's
+   accent. Every label in them is small, so every label in them is
+   --text-quiet: --text-faint is 3.8:1 and this section has no large text in
+   it at all. None of them is in the markup until a script is running, because
+   none of them can do anything without one, and every place any of them
+   reaches is reachable from the navigation and the footer with this whole
+   section absent.
+   =========================================================================== */
+
+:root{
+  --lift: 0 18px 40px -22px rgba(0,0,0,.86);
+  --z-console: 400;
+}
+
+/* ---------------------------------------------------------------------------
+   10.1 · THE INTERACTION CONTRACT
+   ---------------------------------------------------------------------------
+   Four states, on everything that can be operated, and they do not overlap:
+
+     rest          the composed frame
+     hover         a hairline warms — 160 ms, no travel, pointer only
+     focus-visible the ring the reset already draws, on every control here too
+     active        a 1 px detent, 90 ms, and the trace beats once
+
+   The ring is the one in the reset at the top of this file — two pixels of
+   accent, offset three — and every control added below is an <a>, a <button>
+   or an <input>, so every one of them takes it without a second rule. What
+   this section adds is the two states the site did not have everywhere: a
+   press that answers in the hand, and four pixels of travel on the controls
+   that are the point of the page they are on.
+   --------------------------------------------------------------------------- */
+
+/* A press is answered in the hand as well as on the screen: one pixel of
+   travel, faster than the release, so the control arrives back under the
+   finger rather than following it. */
+.btn:active,
+.nav__key:active,
+.motionbtn:active,
+.findbtn:active{ transform:translateY(1px); transition-duration:90ms; }
+
+/* Magnetic travel, four pixels, on the controls that are the point of the page
+   they are on. The stylesheet only says how far; site.js says how much of it,
+   and writes zero the moment the pointer leaves.
+
+   It is written as `translate` rather than as a `transform`, and that is not a
+   preference. The hero's arrival animates the transform of the two buttons it
+   ends on, and a filled animation's transform beats a declaration for the rest
+   of the document's life — so a magnet written as a transform would have been
+   a magnet that silently did nothing on the one page it was made for.
+   `translate` is its own property and composes with all of it. */
+[data-magnet]{
+  transition:translate 260ms var(--ease-snap), background 220ms var(--ease),
+             border-color 220ms var(--ease), color 220ms var(--ease);
+}
+@media (hover:hover) and (pointer:fine){
+  [data-magnet]{ translate:calc(var(--mx,0) * 4px) calc(var(--my,0) * 4px); }
+}
+
+/* ---------------------------------------------------------------------------
+   10.2 · THE CONSOLE — the control that opens it
+   --------------------------------------------------------------------------- */
+
+.findbtn{
+  display:none;
+  align-items:center; gap:.55rem;
+  font-family:var(--ui); font-weight:500; font-size:.86rem;
+  color:var(--text-quiet);
+  background:color-mix(in srgb, var(--text) 4%, transparent);
+  border:1px solid var(--line); border-radius:var(--radius);
+  min-height:38px; padding:.4rem .55rem .4rem .7rem;
+  cursor:pointer; white-space:nowrap;
+  transition:color 180ms var(--ease), border-color 180ms var(--ease), background 180ms var(--ease);
+}
+.js .findbtn{ display:inline-flex; }
+.findbtn:hover{ color:var(--text); border-color:var(--accent); background:var(--accent-soft); }
+.findbtn__glass{ flex:none; opacity:.85; }
+.findbtn__key{
+  font-family:var(--mono); font-size:.66rem; line-height:1;
+  color:var(--text-quiet);
+  border:1px solid var(--line); border-radius:2px;
+  padding:.28rem .38rem; min-width:1.5rem; text-align:center;
+}
+.findbtn:hover .findbtn__key{ color:var(--text-quiet); border-color:var(--line-firm); }
+.on-paper .findbtn{ color:var(--p-text-quiet); border-color:var(--p-line); }
+.on-paper .findbtn:hover{ color:var(--p-text); }
+.on-paper .findbtn__key{ color:var(--p-text-quiet); border-color:var(--p-line); }
+
+/* On a phone the label and the key hint go and the target does not: search is
+   the control that earns its place on a small screen, and the one it displaces
+   is the motion toggle, which is in the menu panel. */
+@media (max-width:1000px){
+  .findbtn{ padding:.4rem .62rem; min-height:48px; min-width:48px; justify-content:center; }
+  .findbtn__label,.findbtn__key{ display:none; }
+}
+.navmob__find{ width:100%; margin-top:.5rem; }
+
+/* ---------------------------------------------------------------------------
+   10.3 · THE CONSOLE
+   ---------------------------------------------------------------------------
+   A field, a list, and a legend. It sits high rather than centred, because the
+   list grows downward and a panel that grows from the middle of a screen moves
+   the thing you are reading while you read it.
+   --------------------------------------------------------------------------- */
+
+.cons{
+  position:fixed; inset:0; z-index:var(--z-console);
+  display:grid; grid-template-rows:1fr auto;
+  align-items:start; justify-items:center;
+  padding:clamp(3.5rem,11vh,7.5rem) 1rem 1rem;
+}
+.cons[hidden]{ display:none; }
+
+.cons__scrim{
+  position:fixed; inset:0;
+  background:color-mix(in srgb, #05060a 72%, transparent);
+  backdrop-filter:blur(3px) saturate(120%);
+  -webkit-backdrop-filter:blur(3px) saturate(120%);
+}
+.on-paper .cons__scrim{ background:color-mix(in srgb, #2a2620 46%, transparent); }
+
+.cons__box{
+  position:relative;
+  width:min(680px,100%);
+  max-height:min(72vh,640px);
+  display:flex; flex-direction:column;
+  background:var(--ink-card);
+  border:1px solid var(--line-firm);
+  border-radius:calc(var(--radius) + 3px);
+  box-shadow:var(--lift), 0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent);
+  overflow:hidden;
+}
+.on-paper .cons__box{ background:var(--paper); border-color:var(--p-line-firm); }
+
+/* --- the field ------------------------------------------------------------ */
+
+.cons__field{
+  display:flex; align-items:center; gap:.7rem;
+  padding:.35rem .5rem .35rem .95rem;
+  border-bottom:1px solid var(--line);
+  flex:none;
+}
+.on-paper .cons__field{ border-color:var(--p-line); }
+.cons__glass{ flex:none; color:var(--accent); }
+
+.cons__input{
+  flex:1 1 auto; min-width:0;
+  font-family:var(--ui); font-size:1.02rem; font-weight:500;
+  color:var(--text); background:transparent;
+  border:0; outline:none;
+  padding:.95rem 0; min-height:52px;
+}
+.on-paper .cons__input{ color:var(--p-text); }
+.cons__input::placeholder{ color:var(--text-quiet); }
+.on-paper .cons__input::placeholder{ color:var(--p-text-quiet); }
+/* The field is the dialog's own subject; a ring around it inside a panel that
+   is already the only thing on screen says nothing the caret has not. */
+.cons__input:focus-visible{ outline:none; }
+
+/* The count is the answer to every keystroke, and it is next to the caret
+   rather than at the foot of a list nobody is looking at yet. */
+.cons__count{
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.1em;
+  color:var(--text-quiet); flex:none; white-space:nowrap;
+}
+.on-paper .cons__count{ color:var(--p-text-quiet); }
+
+.cons__x{
+  flex:none; cursor:pointer;
+  font-family:var(--mono); font-size:.66rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--text-quiet);
+  background:transparent; border:1px solid var(--line); border-radius:2px;
+  min-height:34px; padding:.3rem .55rem;
+  transition:color 180ms var(--ease), border-color 180ms var(--ease);
+}
+.cons__x:hover{ color:var(--text); border-color:var(--line-firm); }
+.on-paper .cons__x{ color:var(--p-text-quiet); border-color:var(--p-line); }
+
+/* --- the list ------------------------------------------------------------- */
+
+.cons__results{
+  overflow-y:auto; overscroll-behavior:contain;
+  padding:.4rem 0 .5rem;
+  scrollbar-width:thin;
+}
+.cons__results:focus-visible{ outline:none; }
+
+.cons__group{
+  font-family:var(--mono); font-size:.62rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--text-quiet);
+  padding:.85rem 1.1rem .35rem;
+  margin:0;
+}
+.on-paper .cons__group{ color:var(--p-text-quiet); }
+.cons__group:first-child{ padding-top:.35rem; }
+
+.cons__row{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center; gap:.8rem;
+  width:100%;
+  padding:.62rem 1.1rem;
+  min-height:52px;
+  border:0; border-left:2px solid transparent;
+  background:transparent; color:inherit;
+  font:inherit; text-align:left; text-decoration:none;
+  cursor:pointer;
+}
+.cons__row.is-on{
+  background:color-mix(in srgb, var(--accent) 12%, transparent);
+  border-left-color:var(--accent);
+}
+/* The selection is the only highlight in the list, and it is moved by the
+   keyboard and by the pointer alike — so a focus ring on a row would be a
+   second answer to the same question. The row is never focused; the field is. */
+.cons__row:focus-visible{ outline:none; }
+
+.cons__tag{
+  font-family:var(--mono); font-size:.58rem; letter-spacing:.12em;
+  color:var(--text-quiet);
+  border:1px solid var(--line); border-radius:2px;
+  padding:.22rem .34rem; min-width:3.1rem; text-align:center;
+  flex:none;
+}
+.cons__row.is-on .cons__tag{ color:var(--accent); border-color:var(--accent-line); }
+.on-paper .cons__tag{ color:var(--p-text-quiet); border-color:var(--p-line); }
+
+.cons__main{ display:grid; gap:.12rem; min-width:0; }
+.cons__t{
+  font-family:var(--ui); font-weight:600; font-size:.95rem;
+  color:var(--text);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.on-paper .cons__t{ color:var(--p-text); }
+.cons__c{
+  font-family:var(--mono); font-size:.68rem; letter-spacing:.02em;
+  color:var(--text-quiet);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.on-paper .cons__c{ color:var(--p-text-quiet); }
+
+/* What matched, shown as what matched. Underlined rather than filled, because
+   a filled highlight inside a row that is itself highlighted is two
+   backgrounds arguing about which one you are on. */
+.cons__hit{
+  background:transparent; color:var(--accent);
+  box-shadow:inset 0 -1px 0 0 currentColor;
+}
+.on-paper .cons__hit{ color:var(--cobalt-ink); }
+
+/* Where you already are, said once, in the row that would have taken you
+   there. */
+.cons__here{
+  justify-self:start;
+  font-family:var(--mono); font-size:.58rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent);
+  border:1px solid var(--accent-line); border-radius:2px;
+  padding:.1rem .3rem; margin-top:.18rem;
+}
+.on-paper .cons__here{ color:var(--gold-ink); border-color:color-mix(in srgb, var(--gold-ink) 40%, transparent); }
+
+.cons__go{
+  font-family:var(--mono); font-size:.9rem; color:var(--accent);
+  opacity:0; flex:none;
+  transition:opacity 160ms var(--ease);
+}
+.cons__row.is-on .cons__go{ opacity:1; }
+
+.cons__none{
+  margin:0; padding:1.6rem 1.1rem 0;
+  font-family:var(--ui); font-size:.95rem; color:var(--text);
+}
+.cons__none--hint{
+  padding:.35rem 1.1rem 1.6rem;
+  font-size:.86rem; color:var(--text-quiet);
+}
+.on-paper .cons__none{ color:var(--p-text); }
+.on-paper .cons__none--hint{ color:var(--p-text-quiet); }
+
+/* --- the legend ----------------------------------------------------------- */
+
+.cons__legend{
+  flex:none; margin:0;
+  display:flex; align-items:center; gap:1.1rem; flex-wrap:wrap;
+  padding:.6rem 1.1rem;
+  border-top:1px solid var(--line);
+  font-family:var(--mono); font-size:.64rem; letter-spacing:.08em;
+  color:var(--text-quiet);
+}
+.on-paper .cons__legend{ border-color:var(--p-line); color:var(--p-text-quiet); }
+.cons__legend kbd{
+  font-family:var(--mono); font-size:.66rem;
+  border:1px solid var(--line); border-radius:2px;
+  padding:.1rem .3rem; margin-right:.18rem;
+}
+.cons__legend-end{ margin-left:auto; }
+
+/* --- the phone ------------------------------------------------------------
+   A sheet, not a dialog: it starts at the top of the screen and runs to the
+   bottom of it, because a floating panel on a phone is a panel with a keyboard
+   underneath it. */
+@media (max-width:640px){
+  .cons{ padding:0; }
+  .cons__box{
+    width:100%; max-height:100%; height:100%;
+    border:0; border-radius:0;
+  }
+  .cons__results{ padding-bottom:2rem; }
+  .cons__row{ min-height:60px; padding-inline:1rem; }
+  .cons__legend{ padding-bottom:calc(.6rem + env(safe-area-inset-bottom)); }
+}
+
+/* The page behind it does not move while it is open. */
+html.is-consoled{ overflow:hidden; }
+
+/* --- the arrival ---------------------------------------------------------- */
+
+@media (prefers-reduced-motion:no-preference){
+  html:not([data-motion="off"]) .cons__scrim{ animation:cons-scrim 180ms var(--ease) both; }
+  html:not([data-motion="off"]) .cons__box{ animation:cons-box 260ms var(--ease-snap) both; }
+}
+@keyframes cons-scrim{ from{ opacity:0; } to{ opacity:1; } }
+@keyframes cons-box{
+  from{ opacity:0; transform:translateY(-10px) scale(.985); }
+  to  { opacity:1; transform:none; }
+}
+
+/* ---------------------------------------------------------------------------
+   10.4 · THE RECEIPT — copying, and the proof that it happened
+   ---------------------------------------------------------------------------
+   Copying is the one interaction on the web with no native feedback at all:
+   the clipboard changes somewhere nobody can see, and the page it happened on
+   usually says nothing. Every control on this site that copies says so in
+   three places at once — on the control, in the rail, and to a screen reader.
+   --------------------------------------------------------------------------- */
+
+[data-copy]{ position:relative; }
+
+.copied{
+  color:var(--accent) !important;
+  border-color:var(--accent) !important;
+}
+
+/* The anchor beside a heading. Pointer only: on a touch screen it would be a
+   44 px target sitting inside a line of type, and the console's own
+   "Copy a link to this section" is the same job with a thumb. */
+.anchor{
+  display:none;
+  margin-left:.45rem;
+  vertical-align:baseline;
+  color:var(--text-quiet);
+  opacity:0;
+  transition:opacity 160ms var(--ease), color 160ms var(--ease);
+}
+@media (hover:hover) and (pointer:fine){
+  .js .anchor{ display:inline-flex; align-items:center; }
+}
+h1:hover > .anchor, h2:hover > .anchor, h3:hover > .anchor,
+.chapter__label:hover .anchor,
+.anchor:focus-visible{ opacity:1; }
+.anchor:hover{ color:var(--accent); }
+.anchor.copied{ opacity:1; }
+.anchor svg{ width:.72em; height:.72em; }
+
+/* ---------------------------------------------------------------------------
+   10.5 · THE RAIL — where the site replies
+   ---------------------------------------------------------------------------
+   Bottom left, above the fold of nothing, out of the way of the return dial on
+   the right. One line of type per reply, oldest at the bottom, and every one of
+   them takes itself away. Never an error somebody has to dismiss to carry on.
+   --------------------------------------------------------------------------- */
+
+.toasts{
+  position:fixed; z-index:calc(var(--z-console) - 20);
+  left:var(--gutter); bottom:1.1rem;
+  display:flex; flex-direction:column-reverse; gap:.45rem;
+  pointer-events:none;
+  max-width:min(24rem, calc(100vw - 2 * var(--gutter)));
+}
+.toasts:empty{ display:none; }
+
+.toast{
+  display:flex; align-items:center; gap:.6rem;
+  padding:.6rem .85rem;
+  background:var(--ink-card);
+  border:1px solid var(--line-firm);
+  border-left:2px solid var(--accent);
+  border-radius:var(--radius);
+  box-shadow:var(--lift);
+  font-family:var(--ui); font-size:.86rem; font-weight:500;
+  color:var(--text);
+}
+.on-paper .toast{ background:var(--paper); border-color:var(--p-line-firm); color:var(--p-text); }
+.toast__led{
+  width:.42rem; height:.42rem; border-radius:50%; flex:none;
+  background:var(--accent); box-shadow:0 0 0 3px var(--accent-soft);
+}
+.toast__note{
+  font-family:var(--mono); font-size:.68rem; color:var(--text-quiet);
+  margin-left:auto; padding-left:.6rem; white-space:nowrap;
+}
+.on-paper .toast__note{ color:var(--p-text-quiet); }
+
+@media (prefers-reduced-motion:no-preference){
+  html:not([data-motion="off"]) .toast{ animation:toast-in 260ms var(--ease-snap) both; }
+  html:not([data-motion="off"]) .toast.is-going{ animation:toast-out 220ms var(--ease) both; }
+}
+@keyframes toast-in{
+  from{ opacity:0; transform:translateY(8px) scale(.98); }
+  to  { opacity:1; transform:none; }
+}
+@keyframes toast-out{ from{ opacity:1; } to{ opacity:0; transform:translateY(4px); } }
+
+@media (max-width:640px){
+  .toasts{ left:.75rem; right:.75rem; bottom:.75rem; max-width:none; }
+}
+
+/* ---------------------------------------------------------------------------
+   10.6 · THE RETURN — a dial that reports, and a control that acts
+   ---------------------------------------------------------------------------
+   It is not on screen until there is something to return from, and the ring
+   around it is the same number the trace across the top of the page is drawing:
+   how much of this document is behind you.
+   --------------------------------------------------------------------------- */
+
+.totop{
+  position:fixed; z-index:calc(var(--z-console) - 20);
+  right:var(--gutter); bottom:1.1rem;
+  width:48px; height:48px; padding:0;
+  display:grid; place-items:center;
+  background:color-mix(in srgb, var(--ink) 86%, transparent);
+  backdrop-filter:blur(10px) saturate(140%);
+  -webkit-backdrop-filter:blur(10px) saturate(140%);
+  border:1px solid var(--line-firm); border-radius:50%;
+  color:var(--text-quiet); cursor:pointer;
+  transition:color 180ms var(--ease), border-color 180ms var(--ease), opacity 240ms var(--ease), transform 240ms var(--ease-snap);
+}
+.totop[hidden]{ display:none; }
+.on-paper .totop{ background:color-mix(in srgb, var(--paper) 86%, transparent); color:var(--p-text-quiet); border-color:var(--p-line-firm); }
+.totop:hover{ color:var(--text); border-color:var(--accent); }
+.on-paper .totop:hover{ color:var(--p-text); border-color:var(--p-text); }
+.totop:active{ transform:translateY(1px); }
+
+/* Present, but not yet arrived: the control is in the document a beat before
+   it is on screen, so its entrance is a transition rather than a repaint. */
+.totop{ opacity:0; transform:translateY(10px) scale(.94); pointer-events:none; }
+.totop.is-up{ opacity:1; transform:none; pointer-events:auto; }
+
+.totop__dial{ position:relative; display:grid; place-items:center; width:44px; height:44px; }
+.totop__dial svg{ position:absolute; inset:0; width:44px; height:44px; transform:rotate(-90deg); }
+.totop__track{ fill:none; stroke:var(--line); stroke-width:2; }
+.totop__read{
+  fill:none; stroke:var(--accent); stroke-width:2; stroke-linecap:round;
+  stroke-dasharray:100;
+  stroke-dashoffset:calc(100 - var(--read-pct, 0) * 1);
+  transition:stroke-dashoffset 120ms linear;
+}
+.on-paper .totop__track{ stroke:var(--p-line); }
+.on-paper .totop__read{ stroke:var(--p-text); }
+
+.totop__arrow{
+  width:9px; height:9px;
+  border-top:1.8px solid currentColor; border-left:1.8px solid currentColor;
+  transform:rotate(45deg) translate(1px,1px);
+}
+
+/* None of this is the document. A printed page has no clipboard, no scroll and
+   no pointer, so nothing in this section belongs on one. */
+@media print{
+  .totop,.toasts,.cons,.findbtn,.anchor,.chapters,.navmob__find{ display:none !important; }
+}
+
+/* ---------------------------------------------------------------------------
+   10.7 · THE CHAPTERS — the document's own contents, reporting position
+   ---------------------------------------------------------------------------
+   The same law the Projects rail is built on, applied to every long document
+   on the site: it reports which section you are in and how far through, and it
+   never converts the page into tabs, never hides an inactive section and never
+   competes with the scroll for authority.
+
+   Ticks by default, because a column of labels down the side of a document is
+   a second navigation nobody asked for. The label arrives on hover, on focus,
+   and for whichever section you are actually in.
+   --------------------------------------------------------------------------- */
+
+.chapters{
+  display:none;
+  position:fixed; z-index:60;
+  right:calc(var(--gutter) * .42); top:50%; transform:translateY(-50%);
+  padding:0; margin:0; list-style:none;
+}
+@media (min-width:1360px){ .js .chapters{ display:block; } }
+
+.chapters__list{ list-style:none; margin:0; padding:0; }
+.chapters__i{ display:block; }
+.chapters__a{
+  display:flex; align-items:center; justify-content:flex-end; gap:.6rem;
+  height:26px; padding-right:2px;
+  text-decoration:none; color:var(--text-quiet);
+}
+.chapters__tick{
+  display:block; flex:none;
+  width:14px; height:1px; background:currentColor;
+  transition:width 240ms var(--ease-snap), background 240ms var(--ease);
+}
+/* The label is asked for, never permanent. A column of section names standing
+   open down the side of a document is a second navigation nobody wanted, and
+   at 1360 px there is no room beside the measure for one anyway — so what
+   stands there is five hairlines, and the one you are in is the long one. */
+.chapters__label{
+  font-family:var(--mono); font-size:.64rem; letter-spacing:.06em;
+  white-space:nowrap;
+  max-width:0; overflow:hidden;
+  opacity:0;
+  padding:.2rem 0; border-radius:2px;
+  background:color-mix(in srgb, var(--ink) 92%, transparent);
+  box-shadow:0 0 0 .4rem color-mix(in srgb, var(--ink) 92%, transparent);
+  transition:opacity 200ms var(--ease), max-width 260ms var(--ease-snap);
+}
+.on-paper .chapters__label{
+  background:color-mix(in srgb, var(--paper) 92%, transparent);
+  box-shadow:0 0 0 .4rem color-mix(in srgb, var(--paper) 92%, transparent);
+}
+.chapters__a:hover .chapters__label,
+.chapters__a:focus-visible .chapters__label{ opacity:1; max-width:15rem; }
+.chapters__a:hover,
+.chapters__a:focus-visible{ color:var(--text); }
+.chapters__a[aria-current="true"]{ color:var(--accent); }
+.chapters__a[aria-current="true"] .chapters__tick{ width:26px; }
+.on-paper .chapters__a{ color:var(--p-text-quiet); }
+.on-paper .chapters__a:hover{ color:var(--p-text); }
+.on-paper .chapters__a[aria-current="true"]{ color:var(--p-text); }
+
+/* ---------------------------------------------------------------------------
+   10.8 · STILLNESS
+   ---------------------------------------------------------------------------
+   Under a reduced-motion preference, or with the site's own control turned
+   off, nothing in this section animates. Every one of these is a state change
+   that still happens — it simply happens at once, which is what stillness
+   means here and everywhere else on this site. Nothing is withheld.
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion:reduce){
+  .cons__scrim,.cons__box,.toast,.toast.is-going{ animation:none !important; }
+  .totop,.totop__read,.chapters__tick,.chapters__label,.cons__go,.anchor,
+  [data-magnet]{ transition:none !important; }
+  [data-magnet]{ translate:none !important; }
+}
+html[data-motion="off"] .cons__scrim,
+html[data-motion="off"] .cons__box,
+html[data-motion="off"] .toast,
+html[data-motion="off"] .toast.is-going{ animation:none !important; }
+html[data-motion="off"] .totop,
+html[data-motion="off"] .totop__read,
+html[data-motion="off"] .chapters__tick,
+html[data-motion="off"] .chapters__label,
+html[data-motion="off"] [data-magnet]{ transition:none !important; translate:none !important; }
