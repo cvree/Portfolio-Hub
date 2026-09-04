@@ -33,6 +33,7 @@ assets/site.css             The design system: tokens, layout, type, motion, pri
 assets/site.js              Progressive enhancement, ~330 lines, five jobs
 assets/fonts/               Self-hosted latin subsets (SIL OFL)
 assets/projects/            Real screenshots of the six products (WebP)
+assets/projects/also/       One capture of each smaller piece, for the tile grid
 assets/src/                 Sources for the two lazy bundles
 DESIGN.md                   The ONE SIGNAL design system: tokens, motion laws, anti-patterns
 assets/vendor/              Those bundles, built and committed — plus NOTICE.md
@@ -123,6 +124,35 @@ timeline collapses to one plain list in the same order, and the type is re-set i
 points. Browser → Print → *Save as PDF* produces a clean two-page résumé with no
 separate PDF to keep in sync. The six products are deliberately not on it: they
 are named once in the summary, with the URL that has the case studies.
+
+## The versions
+
+Every project on the site states the version it is actually at, and every one of
+those numbers is copied from the project's own repository rather than
+maintained here:
+
+| Project | Version | Where the number lives |
+| --- | --- | --- |
+| SpellBomb | 9.3.0 | `package.json` |
+| Health Journal | 1.37.0 | `package.json`, and the top of its `CHANGELOG.md` |
+| Phlebotomy Exam Prep | 0.1.0 | `package.json` |
+| Manifester | 1.0.0 | `package.json` |
+| OWCS Comp Tracker | 1.0.0 | `desktop/owcs_desktop/__init__.py` (`__version__`) |
+| PaperAnimator | 0.1.0 | `package.json` |
+| APEX | 1.4.0 | `package.json`, and the app's own boot screen |
+| Story Atlas · TwoDo · ReadLoud | 1.0.0 | `package.json` |
+| Tiny Vials | 0.1.0 | `package.json` |
+
+A version appears in three places per product and they have to agree: the chip
+in the case study's hero, the `Version` row in its at-a-glance list, and the
+chip on its card in the Projects section. `tests/glide.spec.ts` asserts the
+whole set in document order, so a half-done bump fails the suite rather than
+shipping a page that contradicts itself.
+
+None of these repositories publishes git tags, so `package.json` is the record.
+Where a project has never bumped that field off its scaffold default, the site
+prints the default — 0.1.0 on a live product is a fact about the repository,
+and the honest fix is a version bump there rather than a nicer number here.
 
 ## The screenshots
 
@@ -329,7 +359,7 @@ a plane that draws light on black has nothing to say on a printed sheet.
 Projects is a **place, not a page**. There used to be a `work.html` that
 restated the six products the home page already showed running, listed the
 smaller repositories, and then sent you back. Everything it held that the home
-page did not — the status key and the eight smaller pieces — now sits inside
+page did not — the status key and the smaller pieces — now sits inside
 the home page's own Projects section, and `work.html` is a one-hop redirect to
 `index.html#work` so an old bookmark still lands somewhere real. Every route
 labelled Projects — the masthead, the footer, the hero button, a case study's
@@ -380,6 +410,15 @@ a real description of what is in it, and no capture appears twice.
 
 **The Order of Draw appears here and nowhere earlier.** It is the payoff of
 project 03, not the site's opening image.
+
+**Below the six, the tile grid.** Everything else that runs is shown rather
+than described: one capture of each project actually running, its current
+version beside its name, a status chip, and a link to the source. The whole
+tile is one tap target through the title's `::after`, exactly as a case-study
+room is, and the source link keeps a thumb-sized box of its own. Repositories
+with nothing built in them yet are named in a line of prose underneath instead
+of being dressed up as tiles — a `Concept` chip over an empty repository is the
+kind of thing this site is supposed to refuse.
 
 The rail is six ordinary same-page anchors before anything enhances them.
 JavaScript only reports which room you are in — `aria-current` on the matching

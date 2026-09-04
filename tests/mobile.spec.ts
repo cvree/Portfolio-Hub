@@ -24,8 +24,9 @@ for (const p of PAGES) {
             getComputedStyle(e).display.startsWith('inline') &&
             !e.classList.contains('btn');
           // A project title's ::after covers the whole card, so the card is the
-          // target and the link's own box is not the hit area.
-          const card = !!e.closest('.wk__t');
+          // target and the link's own box is not the hit area. The tile grid
+          // works the same way: the name carries the link, the tile is the tap.
+          const card = !!e.closest('.wk__t, .tile__t');
           return { h: r.height, text: (e.textContent || '').trim().slice(0, 30), skip: e.classList.contains('skip'), inline, card };
         })
         .filter((x) => x.h > 0 && x.h < 44 && !x.skip && !x.inline && !x.card)

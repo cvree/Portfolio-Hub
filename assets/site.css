@@ -859,6 +859,69 @@ figure.shot + figure.shot{ margin-top:1.5rem; }
 .card__d{ color:var(--text-quiet); font-size:.98rem; line-height:1.5; }
 .card__f{ margin-top:auto; padding-top:.6rem; display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }
 
+/* --- the tile grid -------------------------------------------------------
+   The smaller pieces, shown rather than described: one capture of each thing
+   actually running, its current version beside its name, and the whole tile
+   clickable through to the thing itself. The capture is the reason this is a
+   grid and not a list — at this size a screenshot says in one glance what a
+   paragraph needs three lines for. */
+
+.tiles{
+  display:grid;
+  gap:clamp(.85rem,1.8vw,1.15rem);
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));
+}
+.tile{
+  position:relative;
+  display:flex; flex-direction:column; gap:.5rem;
+  padding-bottom:1.15rem;
+  background:var(--ink);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  transition:background 260ms var(--ease), border-color 260ms var(--ease);
+}
+.on-paper .tile{ background:var(--paper); }
+.tile:hover{ background:var(--ink-raised); border-color:var(--line-firm); }
+.on-paper .tile:hover{ background:var(--paper-sunk); }
+
+/* The capture. A fixed frame, so seven different aspect ratios still read as
+   one grid, and the image is never stretched to reach it. */
+.tile__shot{
+  display:block; aspect-ratio:16/10; overflow:hidden;
+  background:var(--ink-raised); border-bottom:1px solid var(--line);
+}
+.on-paper .tile__shot{ background:var(--paper-sunk); }
+.tile__shot img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.tile__t{
+  font-family:var(--ui); font-weight:700; font-size:1.02rem; line-height:1.25;
+  padding:.95rem 1.1rem 0;
+  display:flex; align-items:baseline; flex-wrap:wrap; gap:.25rem .55rem;
+}
+.tile__go{ text-decoration:none; }
+/* One target, the whole tile — and the name still carries the link, so the
+   accessible name is the name and not the paragraph under it. */
+.tile__go::after{ content:''; position:absolute; inset:0; border-radius:inherit; }
+.tile:has(.tile__go:focus-visible){ outline:2px solid var(--accent); outline-offset:3px; }
+.tile__go:focus-visible{ outline:none; }
+.tile__v{ font-size:.68rem; letter-spacing:.1em; color:var(--text-quiet); }
+.tile__d{ padding:0 1.1rem; color:var(--text-quiet); font-size:.9rem; line-height:1.5; }
+.tile__f{
+  margin-top:auto; padding:.35rem 1.1rem 0;
+  display:flex; flex-wrap:wrap; gap:.5rem; align-items:center;
+  position:relative; z-index:1;   /* stays clickable through the tile link */
+}
+/* The tile is one tap target through the name's ::after; the source link is a
+   second, so it carries a thumb-sized box of its own rather than a 25 px one. */
+.tile__f .link{ display:inline-flex; align-items:center; min-height:44px; }
+.tiles__note{ margin-top:clamp(1rem,2.5vw,1.5rem); max-width:44em; }
+
+@media (prefers-reduced-motion: no-preference){
+  .tile__shot img{ transition:transform 900ms var(--ease); }
+  .tile:hover .tile__shot img{ transform:scale(1.035); }
+}
+
 /* --- footer --------------------------------------------------------------- */
 
 .foot{ border-top:1px solid var(--line); padding-block:clamp(2.5rem,5vw,4rem) 2.5rem; position:relative; z-index:1; }
@@ -930,6 +993,8 @@ figure.shot + figure.shot{ margin-top:1.5rem; }
 .js [data-motion="sort"].is-in > *:nth-child(4){ transition-delay:140ms; }
 .js [data-motion="sort"].is-in > *:nth-child(5){ transition-delay:400ms; }
 .js [data-motion="sort"].is-in > *:nth-child(6){ transition-delay:280ms; }
+.js [data-motion="sort"].is-in > *:nth-child(7){ transition-delay:180ms; }
+.js [data-motion="sort"].is-in > *:nth-child(8){ transition-delay:380ms; }
 
 /* PaperAnimator — the page unfolds into a scene. */
 .js [data-motion="unfold"]{ opacity:0; clip-path:inset(0 0 100% 0); }

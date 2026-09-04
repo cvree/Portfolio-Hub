@@ -100,9 +100,26 @@ test('the smaller pieces came with it, and the status key that explains them', a
   await page.goto('index.html', { waitUntil: 'load' });
   const section = page.locator('#work');
   await expect(section.locator('.th__key dt')).toHaveCount(4);
-  await expect(section.locator('.cards .card')).toHaveCount(8);
+  await expect(section.locator('.tiles .tile')).toHaveCount(7);
+  /* Every tile carries a capture of the thing running and its current version;
+     a tile with neither is a repository card, which is what this replaced. */
+  await expect(section.locator('.tiles .tile__shot img')).toHaveCount(7);
+  await expect(section.locator('.tiles .tile__v')).toHaveCount(7);
   await expect(section.getByRole('link', { name: 'Story Atlas' })).toHaveAttribute(
     'href',
-    'https://github.com/cvree/Story-Atlas'
+    'https://cvree.github.io/Story-Atlas/'
   );
+});
+
+test('every project on the home page states the version it is at', async ({ page }) => {
+  await page.goto('index.html', { waitUntil: 'load' });
+  /* Six rooms, seven tiles, and one version on each — the number a visitor
+     needs to know whether what they are reading about is what is deployed. */
+  const versions = await page
+    .locator('#work .wk__meta .chip, #work .tile__v')
+    .evaluateAll((els) => els.map((e) => (e.textContent || '').trim()).filter((t) => /^v?\d+\.\d+/.test(t)));
+  expect(versions).toEqual([
+    'v9.3.0', 'v1.37.0', 'v0.1.0', 'v1.0.0', 'v1.0.0', 'v0.1.0',
+    'v1.4.0', 'v1.0.0', 'v0.1.0', 'v1.0.0', 'v1.0.0', 'v1.0.0',
+  ]);
 });
