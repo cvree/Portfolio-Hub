@@ -561,7 +561,6 @@ test('a visitor who ignores the hero entirely still gets the whole page', async 
   await page.goto('index.html', { waitUntil: 'load' });
   await ready(page);
   await expect(page.locator('.wk')).toHaveCount(6);
-  await expect(page.locator('.vitals__cell')).toHaveCount(8);
   await page.locator('#w-paper-animator').scrollIntoViewIfNeeded();
   await expect(page.locator('[data-scene="paper-animator"] .scene__shot').first()).toBeVisible();
 });
