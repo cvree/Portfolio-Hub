@@ -34,7 +34,7 @@ import sharp from 'sharp';
 
 /* The classes the copy on this site is actually set in. */
 const BODY =
-  '.wk__blurb, .prose p, .quiet, .proof__list li, .card__d, .sig__lede, ' +
+  '.wk__blurb, .prose p, .quiet, .proof__list li, .card__d, .tile__d, .sig__lede, ' +
   '.case-hero__lede, .sig__creed, .wk__proof .k, .eyebrow, .facts dd, .lede';
 const DISPLAY = '.h1, .h2, .h3, .display, .sig__title, .foot__sig';
 
