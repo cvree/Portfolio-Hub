@@ -106,7 +106,7 @@ test('the smaller pieces came with it, and the status key that explains them', a
   await expect(section.locator('.tiles .tile__shot img')).toHaveCount(9);
   await expect(section.locator('.tiles .tile--soon .soon__stamp')).toHaveCount(4);
   await expect(section.locator('.tiles .tile__v')).toHaveCount(13);
-  await expect(section.getByRole('link', { name: 'Story Atlas', exact: true })).toHaveAttribute(
+  await expect(section.getByRole('link', { name: /^Story Atlas \(opens/ })).toHaveAttribute(
     'href',
     'https://cvree.github.io/Story-Atlas/'
   );
@@ -114,15 +114,28 @@ test('the smaller pieces came with it, and the status key that explains them', a
 
 test('in progress wears the tape, and the tape is never the only word for it', async ({ page }) => {
   await page.goto('index.html', { waitUntil: 'load' });
-  const wip = page.locator('#work .tile[data-status~="building"], #work .wk:has(.tape)');
+  const wip = page.locator('#work .tile[data-status~="building"]');
   const n = await wip.count();
-  expect(n).toBe(5);
+  expect(n).toBe(3);
+  /* the six rooms are finished enough to go without it */
+  await expect(page.locator('#work .wk .tape')).toHaveCount(0);
+  await expect(page.locator('#work')).not.toContainText(/wet paint/i);
   for (let i = 0; i < n; i++) {
     const item = wip.nth(i);
     /* the tape is decoration: hidden from assistive technology ... */
     for (const t of await item.locator('.tape').all()) await expect(t).toHaveAttribute('aria-hidden', 'true');
     /* ... and the status is real text beside it */
     await expect(item.locator('.chip--dev')).toHaveText(/In progress/);
+  }
+});
+
+test('every running tile opens its live site in a new tab', async ({ page }) => {
+  await page.goto('index.html', { waitUntil: 'load' });
+  const go = page.locator('#work .tile .tile__go[href^="https://cvree.github.io/"]');
+  expect(await go.count()).toBe(8);
+  for (const a of await go.all()) {
+    await expect(a).toHaveAttribute('target', '_blank');
+    await expect(a).toHaveAccessibleName(/\(opens the live site in a new tab\)$/);
   }
 });
 

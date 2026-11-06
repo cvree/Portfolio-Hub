@@ -2805,7 +2805,7 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
     padding-block:clamp(2rem, 7vw, 3rem);
   }
   .wk__body{ padding-top:0; }
-  .scene{ position:static; top:auto; }
+  .scene{ position:relative; top:auto; }
 
   /* Interface captures stay legible: a screenshot shrunk until its text is
      texture is not evidence of anything. */
@@ -3612,7 +3612,8 @@ html:not(.js) .rail__head{ display:none; }
    Three states, and each one looks like what it is:
 
    - Live tiles are the tile grid as it always was.
-   - In progress wears two strips of caution tape across its capture. They
+   - In progress wears two strips of caution tape across its capture (on
+     the shelf only; the six rooms above it are finished enough to go bare). They
      crawl, slowly, in opposite directions; hover or focus the tile and they
      lift away so you can see what is underneath. The tape is aria-hidden: the
      "In progress" chip in the tile's footer is the fact, in text.
@@ -3662,15 +3663,6 @@ html:not(.js) .rail__head{ display:none; }
 .tile:focus-within .tape{ --tape-y:6%; --tape-r:-3deg; }
 .tile:hover .tape--b,
 .tile:focus-within .tape--b{ --tape-y:84%; --tape-r:2deg; }
-
-/* In the rooms the tape sits over the capture the room leads with. */
-.scene__plate .tape,
-.cmp__side--rev .tape{ --tape-y:30%; }
-.scene__plate .tape--b,
-.cmp__side--rev .tape--b{ --tape-y:62%; }
-.cmp__side--rev{ overflow:hidden; border-radius:var(--radius); }
-.wk:hover .tape, .wk:focus-within .tape{ --tape-y:4%; --tape-r:-3deg; }
-.wk:hover .tape--b, .wk:focus-within .tape--b{ --tape-y:86%; --tape-r:2deg; }
 
 /* An in-progress tile carries a hazard-yellow rule along its top edge. */
 .tile--wip{ border-color:color-mix(in srgb, #f4c534 30%, var(--line)); }
@@ -3757,10 +3749,8 @@ html:not(.js) .rail__head{ display:none; }
   html:not([data-motion="off"]) .tape__track{ animation:tape-crawl 26s linear infinite; }
   html:not([data-motion="off"]) .tape--b .tape__track{ animation-duration:34s; animation-direction:reverse; }
   /* hovering a tile makes the crew work faster */
-  html:not([data-motion="off"]) .tile:hover .tape__track,
-  html:not([data-motion="off"]) .wk:hover .tape__track{ animation-duration:9s; }
-  html:not([data-motion="off"]) .tile:hover .tape--b .tape__track,
-  html:not([data-motion="off"]) .wk:hover .tape--b .tape__track{ animation-duration:12s; }
+  html:not([data-motion="off"]) .tile:hover .tape__track{ animation-duration:9s; }
+  html:not([data-motion="off"]) .tile:hover .tape--b .tape__track{ animation-duration:12s; }
 
   /* the monitor sweeps the waiting trace, once every few seconds */
   html:not([data-motion="off"]) .soon__blip{
@@ -3800,4 +3790,74 @@ html:not(.js) .rail__head{ display:none; }
 
 @media print{
   .tape, .shelf__bar, .soon__ecg{ display:none !important; }
+}
+
+/* ===========================================================================
+   10. OPEN LIVE — the picture of a site is a way into the site
+   ---------------------------------------------------------------------------
+   Click a screenshot of anything that is deployed and the deployed thing opens
+   in a new tab. Everything else in a room — the name, the words, the numbers
+   — still opens the case study, so the two never compete for one click.
+
+   Each is a real link with its own name ("Open the live Manifester in a new
+   tab"), reachable from the keyboard, and a pill that says the same thing
+   appears on hover and on focus. On the shelf the whole tile was already one
+   link to the live site; it now opens in a new tab and says so.
+   =========================================================================== */
+
+.openpill{
+  position:absolute; top:.7rem; right:.7rem; z-index:5;
+  display:inline-flex; align-items:center; gap:.4rem;
+  padding:.45rem .75rem .42rem;
+  font:600 .74rem/1 var(--ui); letter-spacing:.04em;
+  color:#0b0c0e; background:#ece8df;
+  border-radius:999px;
+  box-shadow:0 8px 22px -8px rgba(0,0,0,.7), 0 0 0 1px rgba(0,0,0,.25);
+  opacity:0; transform:translateY(-4px) scale(.96);
+  transition:opacity 220ms var(--ease), transform 260ms var(--ease);
+  pointer-events:none;
+}
+.openpill__a{ font-size:.9rem; line-height:.8; transition:transform 260ms var(--ease); }
+
+/* shelf tiles: the pill rides the capture */
+.tile:hover .openpill,
+.tile:has(.tile__go:focus-visible) .openpill{ opacity:1; transform:none; }
+.tile:hover .openpill__a{ transform:translate(2px,-2px); }
+
+/* rooms: the scene is its own link, laid over the room's case-study link */
+.scene:has(.scene__live){ z-index:2; }
+.scene__live{
+  position:absolute; inset:0; z-index:6;
+  border-radius:calc(var(--radius) + 4px);
+  cursor:pointer;
+}
+.scene__live:hover .openpill,
+.scene__live:focus-visible .openpill{ opacity:1; transform:none; }
+.scene__live:hover .openpill__a{ transform:translate(2px,-2px); }
+.scene__live:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+/* case studies */
+figure.shot{ position:relative; }
+.shotlive{ position:absolute; inset:0; z-index:3; border-radius:var(--radius); }
+.shotlive:hover .openpill,
+.shotlive:focus-visible .openpill,
+.shotlink:hover .openpill,
+.shotlink:focus-visible .openpill{ opacity:1; transform:none; }
+.shotlive:focus-visible,
+.shotlink:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+.shotlink{ position:relative; display:block; }
+.shotlink img{ display:block; }
+
+@media (hover:none){
+  /* no hover on a phone, so the pill is simply there, quietly */
+  .tile .openpill, .scene__live .openpill, .shotlive .openpill, .shotlink .openpill{ opacity:.92; transform:none; }
+}
+@media (prefers-reduced-motion:reduce){
+  .openpill, .openpill__a{ transition:none; }
+}
+@media (forced-colors:active){
+  .openpill{ background:Canvas; color:LinkText; border:1px solid LinkText; }
+}
+@media print{
+  .openpill{ display:none !important; }
 }

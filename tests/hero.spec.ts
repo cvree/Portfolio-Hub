@@ -134,7 +134,9 @@ test.describe('with JavaScript disabled', () => {
 
   test('every scene is its composed final frame', async ({ page }) => {
     await page.goto('index.html');
-    const unfinished = await page.$$eval('.scene *', (els) =>
+    /* The "Open live" pill is a hover-and-focus affordance, not part of the
+       composed frame, so it is the one thing allowed to rest transparent. */
+    const unfinished = await page.$$eval('.scene *:not(.openpill):not(.openpill *)', (els) =>
       els
         .filter((e) => {
           const c = getComputedStyle(e);
@@ -484,9 +486,21 @@ test.describe('the six rooms', () => {
 
   test('every room keeps its case-study link one focusable step away', async ({ page }) => {
     for (const slug of ['spellbomb', 'bellwether', 'phlebotomy', 'manifester', 'owcs', 'paper-animator']) {
-      const links = page.locator(`[data-wk="${slug}"] a`);
+      const links = page.locator(`[data-wk="${slug}"] a:not(.scene__live)`);
       expect(await links.count(), `${slug} is one target, not three`).toBe(1);
     }
+  });
+
+  test('the picture of a deployed product opens the product, in a new tab, and says so', async ({ page }) => {
+    for (const slug of ['bellwether', 'phlebotomy', 'manifester', 'owcs', 'paper-animator']) {
+      const live = page.locator(`[data-wk="${slug}"] a.scene__live`);
+      await expect(live).toHaveCount(1);
+      await expect(live).toHaveAttribute('target', '_blank');
+      await expect(live).toHaveAttribute('rel', /noopener/);
+      await expect(live).toHaveAccessibleName(/^Open the live .+ in a new tab$/);
+    }
+    /* SpellBomb has no public deployment, so its picture is not a link */
+    await expect(page.locator('[data-wk="spellbomb"] a.scene__live')).toHaveCount(0);
   });
 
   test('the reconstructions are decorative; the article carries the facts', async ({ page }) => {

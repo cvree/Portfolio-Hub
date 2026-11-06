@@ -421,7 +421,7 @@ each tile looks like what it is:
 | State | What it looks like | Who is in it today |
 | --- | --- | --- |
 | **Live** | A capture of the thing running, its version, and a link that opens it | ReadLoud, Story Atlas, Tiny Vials, TwoDo, Remy Dee, this site — and APEX and Voice Stat, which are live *and* still being built |
-| **In progress** | Two strips of caution tape across the capture — *In progress ◆ Still cooking ◆ Wet paint* on one, a line written for that project on the other — crawling slowly in opposite directions. Hover or focus the tile and the tape peels back so you can see underneath | APEX, Ready Up, Voice Stat - OW; and in the rooms above, SpellBomb and OWCS Comp Tracker |
+| **In progress** | Two strips of caution tape across the capture — *In progress ◆ Still cooking* on one, a line written for that project on the other — crawling slowly in opposite directions. Hover or focus the tile and the tape peels back so you can see underneath | APEX, Ready Up, Voice Stat - OW. The six rooms above the shelf never wear it |
 | **Updates soon** | No capture, because there is nothing to capture: a monitor waiting for a signal, and a rubber stamp that lands once when the shelf scrolls in | EpiMap, Steady, Medical Terminology Trainer, manymini |
 
 "In progress" means the repository has been worked on in the last few weeks
@@ -438,6 +438,14 @@ progress · Updates soon**, each with its count — narrow the shelf. They are
 `aria-pressed` buttons, never tabs; they never move focus or scroll; and a
 polite status line says what happened (*"Showing 3 projects in progress."*).
 With no script the bar is never shown and the shelf is simply all of it.
+
+**The picture opens the product.** Click the screenshot of anything that is
+deployed and the deployed thing opens in a new tab: on a shelf tile the whole
+tile is that link; in a room the scene is, while the name and the words still
+open the case study; on a case study every screenshot is. Each is a real,
+named link ("Open the live Manifester in a new tab") with an *Open live ↗*
+pill on hover and focus. SpellBomb has no public deployment, so its picture
+is not a link.
 
 Bellwether was called Health Journal until August 2026. Its case study moved
 to `bellwether.html`, and `health-journal.html` is a one-hop redirect.
