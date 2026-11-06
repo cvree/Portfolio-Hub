@@ -54,6 +54,16 @@ REDIRECTS = {
         "index.html#work",
         "Projects — Connor Eppolito",
         "The projects have moved to the home page. This page forwards to index.html#work.",
+        "The projects live on the home page now.",
+        "Continue to the projects",
+    ),
+    # Health Journal was renamed Bellwether, and its case study moved with it.
+    "health-journal.html": (
+        "bellwether.html",
+        "Bellwether — Connor Eppolito",
+        "Health Journal is now called Bellwether. This page forwards to bellwether.html.",
+        "Health Journal is called Bellwether now.",
+        "Continue to the Bellwether case study",
     ),
 }
 
@@ -70,7 +80,7 @@ REDIRECT = """<!DOCTYPE html>
 </head>
 <body>
 <h1>{title}</h1>
-<p>The projects live on the home page now. <a href="{to}">Continue to the projects</a>.</p>
+<p>{lead} <a href="{to}">{label}</a>.</p>
 <script>location.replace("{to}");</script>
 </body>
 </html>
@@ -194,12 +204,12 @@ def build(check: bool = False) -> int:
             out.write_text(page, encoding="utf-8")
             print(f"wrote {path}  ({len(page) // 1024} KB)")
 
-    for path, (to, title, desc) in sorted(REDIRECTS.items()):
+    for path, (to, title, desc, lead, label) in sorted(REDIRECTS.items()):
         # A fragment is not part of a canonical URL — the page a search engine
         # should hold is the document, and the document is the home page.
         doc = to.split("#", 1)[0]
         canonical = SITE + ("" if doc == "index.html" else doc)
-        page = REDIRECT.format(title=title, desc=desc, to=to, canonical=canonical)
+        page = REDIRECT.format(title=title, desc=desc, to=to, canonical=canonical, lead=lead, label=label)
         out = ROOT / path
         if check:
             if not out.exists() or out.read_text(encoding="utf-8") != page:

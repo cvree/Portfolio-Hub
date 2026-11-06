@@ -1,0 +1,373 @@
+<!--meta
+path: bellwether.html
+title: Bellwether — Connor Eppolito
+ogtitle: Bellwether — the early sign, written down
+nav: work
+surface: ink
+physics: grow
+accent: bellwether
+ogtype: article
+image: assets/projects/bellwether/hero-bellwether-dashboard.webp
+desc: Bellwether (formerly Health Journal) is a private symptom journal that lives on your device. A living timeline, sunlight sessions computed from real solar arithmetic, personal experiments graded on evidence, lab results with your journal drawn underneath them, and an appointment pack you can print.
+-->
+
+<section class="case-hero" aria-labelledby="page-h">
+  <div class="shell">
+    <p class="case-hero__top" data-rise>
+      <span data-vt="accent-bellwether" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
+      <span class="chip">Health tooling</span>
+      <span class="chip">v1.39.0</span>
+      <span class="chip">Local-first PWA</span>
+    </p>
+
+    <h1 class="h1" id="page-h" data-vt="title-bellwether" data-rise style="--d:60ms">Bellwether</h1>
+    <p class="case-hero__sub" data-rise style="--d:110ms">The early sign, written down. A minute a day, and the pattern comes out over weeks.</p>
+
+    <p class="case-hero__lede" data-rise style="--d:160ms">
+      Build a check-in around your own situation — skin, gut, migraine, POTS,
+      fatigue, a diet experiment — answer it in about a minute, and watch the
+      trends come out. No account, no server: once loaded, it makes no network
+      requests at all.
+    </p>
+    <p class="quiet small mt-2" data-rise style="--d:180ms;max-width:36em">
+      Formerly <b>Health Journal</b>. Same app, same data on your device, a name
+      that says what it is for.
+    </p>
+
+    <div class="btn-row case-hero__actions" data-rise style="--d:210ms">
+      <a class="btn btn--primary" href="https://cvree.github.io/bellwether/" rel="noopener">
+        Open the live app <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="btn" href="https://github.com/cvree/bellwether" rel="noopener">
+        Source on GitHub <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+
+    <p class="quiet small mt-3" data-rise style="max-width:36em">
+      <b>Not medical advice.</b> The app says so too, in its README and inside the
+      product. It surfaces possible patterns in your own logs and never claims a
+      cause.
+    </p>
+  </div>
+</section>
+
+<!-- THE PULSE, tuned to one product. The same instrument the home page
+     carries, standing between this page's hero and its evidence: a slow circadian rise.
+     One waveform, drawn before any script runs, at this product's own rate. -->
+<div class="shell">
+  <div class="rail rail--solo" data-pulse aria-hidden="true">
+    <svg class="rail__svg" viewBox="0 430 1440 260" preserveAspectRatio="none" focusable="false" aria-hidden="true">
+      <g class="rail__wrap">
+        <path class="rail__ghost" d="M0 596 L1440 596" />
+        <path class="rail__path" data-sig="live" d="M0 580 L60 572 L120 555 L180 534 L240 513 L300 494 L360 480 L420 472 L480 470 L540 472 L600 477 L660 480 L720 482 L780 480 L840 477 L900 472 L960 470 L1020 472 L1080 480 L1140 494 L1200 513 L1260 534 L1320 555 L1380 572 L1440 580" />
+        <path class="rail__sweep" data-sig="sweep" d="M0 580 L60 572 L120 555 L180 534 L240 513 L300 494 L360 480 L420 472 L480 470 L540 472 L600 477 L660 480 L720 482 L780 480 L840 477 L900 472 L960 470 L1020 472 L1080 480 L1140 494 L1200 513 L1260 534 L1320 555 L1380 572 L1440 580" />
+        <circle class="rail__head" data-sig="head" r="4.5" />
+      </g>
+    </svg>
+  </div>
+</div>
+
+
+<section style="padding-top:0;border:0" aria-label="The running app">
+  <div class="shell">
+    <div style="display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))" data-motion="materialise">
+
+      <figure class="shot shotframe">
+        <img data-vt="shot-bellwether" src="assets/projects/bellwether/hero-bellwether-dashboard-720.webp"
+               srcset="assets/projects/bellwether/hero-bellwether-dashboard-720.webp 720w,
+               assets/projects/bellwether/hero-bellwether-dashboard.webp 920w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
+             width="920" height="2480" loading="eager" fetchpriority="high" decoding="async"
+             alt="Bellwether on a phone: the Today screen greeting Connor on Friday 6 November, a one-tap overall skin severity scale from 1 to 10 with today&rsquo;s thirty-three-question check-in under it, six quick-add tiles for check-in, photo, food, routine, measurement and flare, and the Again list for one-tap repeat logs like sleep and weight." />
+        <figcaption class="shotframe__cap">
+          The Today screen at the phone width the app is designed for, on the
+          product&rsquo;s own example data. One tap on the scale is a whole day logged.
+        </figcaption>
+      </figure>
+
+      <figure class="shot shotframe">
+        <img src="assets/projects/bellwether/bellwether-timeline-720.webp"
+               srcset="assets/projects/bellwether/bellwether-timeline-720.webp 720w,
+               assets/projects/bellwether/bellwether-timeline.webp 920w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
+             width="920" height="2480" loading="lazy" decoding="async"
+             alt="The Bellwether History screen: thirty-four days on the record, today&rsquo;s card rated 4 for overall skin severity with the rest of the check-in still to go, doors to Insights, Diary, About you, Sun, Labs, Experiments and Your week, and a November calendar marking each logged day with a coloured severity dot." />
+        <figcaption class="shotframe__cap">
+          History. Every day on one calendar, coloured by how it went, and the
+          doors into Insights, About you, Labs, Sun and your own experiments.
+        </figcaption>
+      </figure>
+
+      <figure class="shot shotframe">
+        <img src="assets/projects/bellwether/bellwether-trend-720.webp"
+               srcset="assets/projects/bellwether/bellwether-trend-720.webp 720w,
+               assets/projects/bellwether/bellwether-trend.webp 920w"
+               sizes="(max-width: 1360px) 92vw, 1200px"
+             width="920" height="2480" loading="lazy" decoding="async"
+             alt="The Insights screen: a metric selector across the top, a trend chart with a solid daily line and a dashed seven-day average, disclosures explaining how it is drawn and offering a week-by-week view, a Flares card explaining that nothing is detected for you, and a year grid with one row per month." />
+        <figcaption class="shotframe__cap">
+          Insights. Solid line is the day, dashed is the seven-day average, and the
+          caption says so — a chart that needs a legend to be honest should carry
+          one.
+        </figcaption>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:clamp(2rem,4vw,3rem)">
+  <div class="shell">
+    <div class="case-body">
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">01</span><h2>What it is</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            A private symptom journal that lives on your device. You design the
+            check-in — from a question pack for skin, diet or POTS, or your own
+            questions in your own words — answer it once a day, and it accumulates
+            into a timeline, trends, flares, experiments and a page you can hand to a
+            clinician.
+          </p>
+          <p>
+            Four things can reach a network, all opt-in, all off until you turn
+            them on, and every one names what it is sending before it sends it:
+            importing your own notes, AI observations with your own key, encrypted
+            sync, and daily weather context.
+          </p>
+          <dl class="facts" data-motion="materialise">
+            <div><dt>Stack</dt><dd>React, Vite, installable PWA</dd></div>
+            <div><dt>Storage</dt><dd>On-device; no account required</dd></div>
+            <div><dt>Native</dt><dd>iOS app + Home Screen widget via Capacitor</dd></div>
+            <div><dt>Exports</dt><dd>CSV, multi-sheet Excel, JSON, appointment pack</dd></div>
+            <div><dt>Version</dt><dd>1.39.0</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">02</span><h2>Why I built it</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            Every health app I tried asked the wrong questions — built around
+            somebody else&rsquo;s condition, or a subscription, or a server that
+            wanted my symptom history. I wanted a record I own, shaped by what I am
+            tracking, still legible a year later.
+          </p>
+          <p>
+            The clinical half of my training kept pointing at one moment. A
+            specialist appointment is ten minutes every few months, and it opens with
+            <em>&ldquo;so how have you been?&rdquo;</em> — the question memory answers
+            worst, because memory reaches for the last bad week and the last bad week
+            is not the year. The answer was already in the journal, in no form anybody
+            could hand over.
+          </p>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">03</span><h2>The most interesting interaction</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            <strong>Sun &amp; Outdoor Light.</strong> One tap starts a session, and
+            what opens is the sun&rsquo;s own arithmetic, not an illustration of it.
+            The curve is real solar elevation at your latitude today. The shaded band
+            is where there is enough UVB for synthesis to be plausible. The thicker
+            overlay is what you have spent outside. The disc is the sun, now.
+          </p>
+          <p>
+            So it is flat and bandless in December, because December <em>is</em> —
+            and at high latitude in midwinter it says the sun does not rise, rather
+            than printing a nonsense time.
+          </p>
+          <p>
+            Beside it: a stopwatch, live UV, the sun&rsquo;s height and bearing,
+            minutes outside, ambient dose, and an estimate labelled as what it is —
+            <b>&ldquo;estimated vitamin D: ~1,800&ndash;2,600&nbsp;IU, research-model
+            estimate&nbsp;· not a measurement.&rdquo;</b> Personalised on the UV over
+            your actual session, latitude, date, skin type, age, exposed area,
+            clothing, sunscreen and shade, and printed as a <em>range</em>, because
+            the honest width is wider than any single number implies.
+          </p>
+          <p>
+            The model plateaus rather than climbs. Past roughly one minimal erythemal
+            dose your skin stops making more, and a number that keeps rising is
+            quietly telling you a longer burn is a bigger benefit.
+          </p>
+          <p>
+            <strong>Then the seam.</strong> Tap any finding — a coincidence on
+            Insights, half an experiment, a lab period, a flare — and <em>those exact
+            days</em> light up across the whole app. History reorders to show them;
+            the temperature trace and the thirty-day sun history mark them. One set
+            of days, one banner naming what lit them, one Clear, surviving
+            navigation. That is what makes it one memory rather than five features.
+          </p>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">04</span><h2>The problem being solved</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            A sample of one with no control group is easy to lie to yourself with.
+            You start a cream, you have a good fortnight, the cream gets the credit.
+            The hard problem is not collecting the data — it is refusing to over-read
+            it.
+          </p>
+          <p>
+            So there is <strong>one evidence ladder for everything it claims</strong>.
+            <i>Useful</i> on an experiment and <i>Useful</i> on an insight are the same
+            claim: four rungs counted in paired days and how far apart those days sit.
+            Forty days from a single fortnight caps at <i>Emerging</i>, however clean
+            it looks. Below the bar nothing is reported — <i>Collecting</i> is a
+            progress bar and a count, not a hedged result, because a sentence with a
+            caveat on it is still a sentence you will remember.
+          </p>
+          <p>
+            There are <strong>no confidence percentages anywhere</strong>. A
+            percentage is a promise about a population, and this is a sample of one.
+            <em>Why am I seeing this?</em> opens the working instead: usable
+            observations, days missing one side, the comparison window, the split,
+            consistency, the lag used, and the three limitations true of every finding
+            this app can make.
+          </p>
+          <p>
+            Experiments split your days at <em>your own median</em> and grade on the
+            smaller half — fifty days with two above the line is two days of evidence
+            in fifty days&rsquo; clothing. Under the result, every paired day is a dot
+            placed by its own two values. Two clouds at different heights <em>is</em>
+            the finding; two overlapping clouds is the null result, drawn identically,
+            because the app is not more excited about a positive.
+          </p>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">05</span><h2>Current capabilities</h2></div>
+        <div class="chapter__body prose">
+          <ul class="bullets">
+            <li><b>A check-in you designed.</b> Question packs to start from, custom questions in your own words, each drawn with the control it will actually use — ten rungs, a yes beside a no, a keypad, three lines of text — and the cost printed above it: <i>14 questions, about 50 seconds a day</i>.</li>
+            <li><b>The living timeline.</b> Every day is a card; the day you just filled in flies into place as the first card and the rail draws downward into the days you have not lived yet.</li>
+            <li><b>Sun sessions</b> with real solar geometry, first outdoor light after waking kept separately as a circadian number, the best upcoming window, and the next vitamin-D-producing one — which correctly says <i>none in the next week</i> in a British January instead of inventing one.</li>
+            <li><b>Personal experiments</b> from a picker that can put anything against anything: a symptom against the pollen count, a meal against the next morning, a lab value against a season.</li>
+            <li><b>Labs &amp; measurements</b> that keep the reference range <em>your</em> laboratory printed. A result without one gets no band, no colour and no verdict — this app does not know what normal is for somebody else&rsquo;s assay. New values arrive with the delta counting up beside them and the gap filled in with what else the journal held.</li>
+            <li><b>Daily context, opt-in.</b> Temperature, humidity, pressure and its change, UV, daylight, air quality, pollen. Coordinates round to about a kilometre <em>before</em> anything is written or sent — the export column is <code>latitude_coarse</code> because that is all there ever was.</li>
+            <li><b>Flares you mark yourself.</b> Nothing is detected for you; a run of high scores is not always a flare, and you are the one who knows.</li>
+            <li><b>The appointment pack.</b> Pick a window — <i>since my last appointment</i> included — and get a page that prints in the order a consultation runs.</li>
+            <li><b>Encrypted sync, opt-in.</b> Encrypted on your device before it is uploaded, with a passphrase that never leaves it, derived at 600,000 PBKDF2-SHA256 iterations. Local saves never wait for the network.</li>
+            <li><b>Import your own notes.</b> Paste a notes file, a chat with yourself or three sentences of prose, or hand over a screenshot, and it becomes meals, doses, numbers and notes on the dates your own notes give &mdash; with every proposed row shown beside the words it came from before one is written.</li>
+            <li><b>About you.</b> Sixteen kinds of standing fact across Body, Mind and Life &mdash; conditions, allergies, operations, family history, what is weighing on you, how you live &mdash; printed at the top of every appointment pack. <i>Nothing to add</i> is a real answer, stored with the day you gave it.</li>
+            <li><b>Search.</b> One box over every note, meal, dose, flare, lab result and hour outside. It answers on the first keystroke, and <code>itch&gt;=8 -dairy</code> is a question you can actually ask.</li>
+            <li><b>Get your data out</b> as CSV, multi-sheet Excel or JSON with date-range filters, plus a read-only backup viewer.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">06</span><h2>Design &amp; technical decisions</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            <strong>Built for one thumb.</strong> Sheets rise from the bottom edge and
+            stay welded to it, so the action row is the nearest thing to the thumb
+            rather than the furthest. Sized in <code>dvh</code>, because <code>vh</code>
+            on iOS Safari means the viewport <em>without</em> the URL bar — which is
+            how a web form hides its own Save button. They clear the keyboard on both
+            engines, through two mechanisms feeding one CSS variable.
+          </p>
+          <p>
+            <strong>Months as rows, not weeks as columns.</strong> A phone gives the
+            card about 330&nbsp;px: 5&nbsp;px per day by week, 9&nbsp;px by
+            day-of-month. Squares that small are not a tap target, so a tap
+            <em>names</em> the day in a readout under the grid, beside the button that
+            opens it — landing on the 14th when you meant the 15th is something you
+            see rather than a screen you back out of.
+          </p>
+          <p>
+            <strong>Colour is never the only channel.</strong> The grid is one tab
+            stop with arrow-key movement, every square announces its date and score,
+            and a month-by-month table underneath states the same figures in words
+            for anyone who cannot use colour.
+          </p>
+          <p>
+            <strong>Soft Clinical.</strong> Graphite in the dark, warm off-white in
+            the light, muted blue with sage, lavender and clay, and a hint of
+            neobrutalism — borders a notch above a hairline, hard offset shadows,
+            buttons that press into them. Backdrops are CSS: no WebGL, no canvas, no
+            device test, nothing to fail.
+          </p>
+          <p>
+            <strong>The name is asked for, and refusable.</strong> A name and an age
+            are a doorway, not step one of a registration, and the screen argues by
+            consequence rather than nagging: the greeting quotes your name back as you
+            type, and an appointment pack header fills in beside it. Age is stored as
+            the year you were born, so it is still right in three years.
+          </p>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">07</span><h2>What changed across iterations</h2></div>
+        <div class="chapter__body">
+          <p class="prose quiet">
+            Thirty-nine releases, from the project&rsquo;s changelog. One direction:
+            less to answer, more to trust.
+          </p>
+          <div class="iterations">
+            <div class="iteration"><p class="when">1.15</p><p class="what"><b>Insights rebuilt around the questions people actually ask</b> — the spread of days, flares, and the long view, instead of nine charts in a row.</p></div>
+            <div class="iteration"><p class="when">1.16</p><p class="what"><b>The appointment pack.</b> The realisation that a file for a spreadsheet and a page for a person are not the same errand, and the second one is the one that changes an appointment.</p></div>
+            <div class="iteration"><p class="when">1.17</p><p class="what"><b>One tap is a whole day.</b> The Daily Pulse; detail moved behind the rating rather than in front of it; navigation cut to two destinations and one verb.</p></div>
+            <div class="iteration"><p class="when">1.18</p><p class="what"><b>How it&rsquo;s drawn is your choice, and every choice says what it costs.</b> Also: sheets stopped moving the page underneath them.</p></div>
+            <div class="iteration"><p class="when">1.19</p><p class="what"><b>Quick Add is shaped like your condition.</b> The dashboard assembles itself out of your own setup answers rather than filing them away to be discovered later.</p></div>
+            <div class="iteration"><p class="when">1.20</p><p class="what"><b>The first run knows who it is for</b> — and shows you the survey you are signing up for, printed exactly as it will be answered tomorrow morning.</p></div>
+            <div class="iteration"><p class="when">1.21</p><p class="what"><b>Four things a journal cannot get from asking questions</b> — weather context, sun sessions, personal experiments and lab results — <b>and the one seam that makes them a single product rather than four features:</b> tap a finding, and those exact days light up everywhere.</p></div>
+            <div class="iteration"><p class="when">1.23</p><p class="what"><b>One hand.</b> Every sheet welded to the bottom edge, every action within reach of the thumb holding the phone.</p></div>
+            <div class="iteration"><p class="when">1.29</p><p class="what"><b>A new name: Bellwether.</b> The name, the mark, and everything that carried the old one &mdash; for a journal whose whole job is the early sign.</p></div>
+            <div class="iteration"><p class="when">1.33</p><p class="what"><b>One box that finds anything, and an import that reads a paragraph.</b> Search across the whole journal, and months of shorthand turned into rows you approve one by one.</p></div>
+            <div class="iteration"><p class="when">1.35</p><p class="what"><b>Thirteen screens of saying no, answered once.</b> The day closes, and the stack of days behind it is visible.</p></div>
+            <div class="iteration"><p class="when">1.38</p><p class="what"><b>Your calendar, opt-in.</b> The only record most people keep of what they agreed to, read beside the days it shaped.</p></div>
+            <div class="iteration"><p class="when">1.39</p><p class="what"><b>The three questions an appointment opens with.</b> The standing record: who you are, not just how you have been, printed above all the arithmetic.</p></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">08</span><h2>What comes next</h2></div>
+        <div class="chapter__body prose">
+          <ul class="bullets">
+            <li><b>More of the ladder, applied harder.</b> It governs experiments and insights; the weather-context observations should be held to the same bar in the same module.</li>
+            <li><b>The iOS app to parity.</b> The native build and Home Screen widget exist; the widget currently shows less than the dashboard knows.</li>
+            <li><b>Wearable import, widened.</b> Google Fit and Fitbit takeout archives import today; sleep staging and resting heart rate should be first-class metrics rather than numbers you typed.</li>
+            <li><b>A second opinion on the vitamin&nbsp;D model.</b> A research-model estimate, labelled as one everywhere it appears, and due a review against the literature by somebody who is not me.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="chapter" data-rise>
+        <div class="chapter__label"><span class="n">09</span><h2>Where to find it</h2></div>
+        <div class="chapter__body prose">
+          <p>
+            The live app opens with <b>&ldquo;Look around with example data&rdquo;</b>
+            — about thirty-four days of an eczema-and-diet setup — so you can see the
+            whole product before typing an answer of your own. None of it leaves your
+            browser.
+          </p>
+          <div class="btn-row mt-3">
+            <a class="btn btn--primary" href="https://cvree.github.io/bellwether/" rel="noopener">Open the live app <span class="arrow" aria-hidden="true">&rarr;</span></a>
+            <a class="btn" href="https://github.com/cvree/bellwether" rel="noopener">Source on GitHub <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section aria-label="Continue">
+  <div class="shell">
+    <div class="nextup">
+      <a href="spellbomb.html"><span class="k">Previous</span><span class="v">SpellBomb</span></a>
+      <a href="phlebotomy-exam-prep.html"><span class="k">Next case study</span><span class="v">Phlebotomy Exam Prep</span></a>
+    </div>
+  </div>
+</section>

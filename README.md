@@ -18,7 +18,7 @@ The design system it answers to is written down in [`DESIGN.md`](DESIGN.md).
 ```
 index.html                  Home — one signal, and the projects, at #work
 spellbomb.html              ┐
-health-journal.html         │
+bellwether.html         │
 phlebotomy-exam-prep.html   │ six case studies, one per flagship product
 manifester.html             │
 owcs-comp-tracker.html      │
@@ -66,7 +66,8 @@ python3 -m http.server 8000     # then open http://localhost:8000/
 ## Editing it
 
 The eleven HTML files in the repository root are **generated** — along with
-`work.html`, the one-hop redirect that keeps the old projects URL alive — and
+`work.html` and `health-journal.html`, the one-hop redirects that keep old
+URLs alive — and
 they are what
 GitHub Pages serves — so a visitor never waits on a build and the site works
 opened straight off a disk. To change something:
@@ -134,13 +135,16 @@ maintained here:
 | Project | Version | Where the number lives |
 | --- | --- | --- |
 | SpellBomb | 9.3.0 | `package.json` |
-| Health Journal | 1.37.0 | `package.json`, and the top of its `CHANGELOG.md` |
+| Bellwether | 1.39.0 | `package.json`, and the top of its `CHANGELOG.md` |
 | Phlebotomy Exam Prep | 0.1.0 | `package.json` |
 | Manifester | 1.0.0 | `package.json` |
-| OWCS Comp Tracker | 1.0.0 | `desktop/owcs_desktop/__init__.py` (`__version__`) |
+| OWCS Comp Tracker | 1.0.1 | `desktop/owcs_desktop/__init__.py` (`__version__`) |
 | PaperAnimator | 0.1.0 | `package.json` |
-| APEX | 1.4.0 | `package.json`, and the app's own boot screen |
+| APEX | 2.31.0 | `package.json`, and the top of its `CHANGELOG.md` |
+| Ready Up | 0.2.0-preview | `package.json` |
+| Voice Stat - OW | 1.0.0 | `package.json` |
 | Story Atlas · TwoDo · ReadLoud | 1.0.0 | `package.json` |
+| This site | 1.1.0 | `package.json` |
 | Tiny Vials | 0.1.0 | `package.json` |
 
 A version appears in three places per product and they have to agree: the chip
@@ -162,14 +166,14 @@ None of them is a mockup, a logo, a landing page or an empty state.
 | Project | Hero capture | How it was taken |
 | --- | --- | --- |
 | SpellBomb | `hero-spellbomb-game.webp` | A real six-player match against a running `server.js` — six independent browser contexts joined one room over Socket.IO and played it, driven by Playwright. |
-| Health Journal | `hero-health-journal-dashboard.webp` | The production build with the app's own "Load example data" set (~34 days) plus a real check-in completed for the day, at the phone width the app is designed for. |
+| Bellwether | `hero-bellwether-dashboard.webp` | The 1.39.0 production build with the app's own "Look around with example data" set (~34 days), at the phone width the app is designed for. The History capture is the same session. |
 | Phlebotomy Exam Prep | `hero-phlebotomy-order-of-draw.webp` | The Order of Draw drill in the production static export, shuffled and waiting; the supporting shots are a graded attempt and a real progress screen after a ten-question session. |
 | Manifester | `hero-manifester-player.webp` | The expanded player, eight passes into a live ten-minute session built in the app's own editor. |
 | OWCS Comp Tracker | `hero-owcs-review.webp` | The Review screen served from the repository, on the committed Al Qadsiah vs Twisted Minds (Nepal) production dataset. |
 | PaperAnimator | `hero-paperanimator-thread.webp` | Two scenes marked on the app's own generated sample paper, with the source thread drawn back to the exact words. |
 
 Wide 16:10 captures scroll inside their own frame below 700 px rather than
-shrinking their interface text to nothing. The tall Health Journal captures are
+shrinking their interface text to nothing. The tall Bellwether captures are
 left at their natural width, because a single narrow column is what that app's
 layout actually is.
 
@@ -387,7 +391,7 @@ with its own copy, which is the mobile design rather than a fallback for it.
 | # | Project | Law | What actually moves |
 | --- | --- | --- | --- |
 | 01 | SpellBomb | **fuse** | a fuse burns once toward the bomb with a spark riding it; eleven real tray slots take the seven letters the capture holds |
-| 02 | Health Journal | **accumulate** | the stage opens from a wide slice to the full tall record; one real chart line draws; the solar arc the product computes runs once |
+| 02 | Bellwether | **accumulate** | the stage opens from a wide slice to the full tall record; one real chart line draws; the solar arc the product computes runs once |
 | 03 | Phlebotomy Exam Prep | **order** | six real tube cards, in the six CLSI positions with their real additives, arrive in the wrong seats and lock into the right ones |
 | 04 | Manifester | **fold** | builder and player fold together; the orb takes exactly one breath; one real line of interface text arrives |
 | 05 | OWCS Comp Tracker | **scan** | one scan line crosses the detected timeline; five detected rows snap into the reviewed one, the row under the confidence gate still marked |
@@ -411,14 +415,32 @@ a real description of what is in it, and no capture appears twice.
 **The Order of Draw appears here and nowhere earlier.** It is the payoff of
 project 03, not the site's opening image.
 
-**Below the six, the tile grid.** Everything else that runs is shown rather
-than described: one capture of each project actually running, its current
-version beside its name, a status chip, and a link to the source. The whole
-tile is one tap target through the title's `::after`, exactly as a case-study
-room is, and the source link keeps a thumb-sized box of its own. Repositories
-with nothing built in them yet are named in a line of prose underneath instead
-of being dressed up as tiles — a `Concept` chip over an empty repository is the
-kind of thing this site is supposed to refuse.
+**Below the six, the shelf.** Everything else, in one grid of thirteen, and
+each tile looks like what it is:
+
+| State | What it looks like | Who is in it today |
+| --- | --- | --- |
+| **Live** | A capture of the thing running, its version, and a link that opens it | ReadLoud, Story Atlas, Tiny Vials, TwoDo, Remy Dee, this site — and APEX and Voice Stat, which are live *and* still being built |
+| **In progress** | Two strips of caution tape across the capture — *In progress ◆ Still cooking ◆ Wet paint* on one, a line written for that project on the other — crawling slowly in opposite directions. Hover or focus the tile and the tape peels back so you can see underneath | APEX, Ready Up, Voice Stat - OW; and in the rooms above, SpellBomb and OWCS Comp Tracker |
+| **Updates soon** | No capture, because there is nothing to capture: a monitor waiting for a signal, and a rubber stamp that lands once when the shelf scrolls in | EpiMap, Steady, Medical Terminology Trainer, manymini |
+
+"In progress" means the repository has been worked on in the last few weeks
+or says itself that it is in development or testing. To move a project between
+states, change its `data-status` (a list: `live`, `building`, `soon`), its
+chips, and whether it carries the tape — in `pages/index.html`, then rebuild.
+
+The tape and the stamp are `aria-hidden`; the status is always also a chip in
+words. The crawl, the blip and the stamp all stop under reduced motion and
+under the masthead's Motion control, and print drops them.
+
+Above the grid, four ordinary toggle buttons — **Everything · Live · In
+progress · Updates soon**, each with its count — narrow the shelf. They are
+`aria-pressed` buttons, never tabs; they never move focus or scroll; and a
+polite status line says what happened (*"Showing 3 projects in progress."*).
+With no script the bar is never shown and the shelf is simply all of it.
+
+Bellwether was called Health Journal until August 2026. Its case study moved
+to `bellwether.html`, and `health-journal.html` is a one-hop redirect.
 
 The rail is six ordinary same-page anchors before anything enhances them.
 JavaScript only reports which room you are in — `aria-current` on the matching
@@ -497,7 +519,7 @@ means something about the thing it belongs to:
 | | Waveform | Rate |
 | --- | --- | --- |
 | SpellBomb | a fuse: three ramps, each steeper than the last, each ending in a drop | 1.45 s |
-| Health Journal | one slow circadian rise across the whole width | 5.2 s |
+| Bellwether | one slow circadian rise across the whole width | 5.2 s |
 | Phlebotomy Exam Prep | a clean clinical trace: isoelectric baseline, three PQRST complexes | 2.6 s |
 | Manifester | a breath — long, even, beginning and ending on the line | 6.4 s |
 | OWCS Comp Tracker | a square-wave swap timeline: compositions hold, then change | 2.0 s |
@@ -591,7 +613,7 @@ Six layers, and each one can fail without taking the one below it with it.
    | Project | Law | What it does |
    | --- | --- | --- |
    | SpellBomb | `fuse` | A fuse accumulates down the spine of the page and the reveal lands once, with weight. No flashing, no shaking, nothing covering the text. |
-   | Health Journal | `grow` | Days, ratings and lab values materialise into a record; the timeline physically grows between related evidence. Teal is living data, not a glow. |
+   | Bellwether | `grow` | Days, ratings and lab values materialise into a record; the timeline physically grows between related evidence. Teal is living data, not a glow. |
    | Phlebotomy Exam Prep | `sequence` | Clinical steps settle in the correct order and a hairline connects each to the next. Calm and exact, with no blood-related spectacle. |
    | Manifester | `breathe` | One finite inhale and exhale, then stillness — a session that ends, which is what the product is. Nothing pulses forever and nothing plays sound. |
    | OWCS Comp Tracker | `sort` | Rows arrive out of order and snap into a structure you can read down. Alignment is the reward. |
@@ -605,7 +627,7 @@ Six layers, and each one can fail without taking the one below it with it.
 5. **Native scroll-driven CSS.** `animation-timeline: view()` and
    `scroll()`, `animation-range`, `@property`, masks and clip paths do the
    cinematic work wherever they can — the fuse burning down SpellBomb's spine,
-   the growth spine on Health Journal, evidence settling into frame, the
+   the growth spine on Bellwether, evidence settling into frame, the
    masthead firming up past the first screen. Every one is written so its
    *unanimated* state is the readable one, and all of it sits inside
    `@supports`, so an unsupported browser is never handed content at

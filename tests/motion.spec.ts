@@ -74,7 +74,7 @@ test.describe('with prefers-reduced-motion: reduce', () => {
     expect(await page.locator('canvas').count()).toBe(0);
   });
 
-  for (const p of ['index.html', 'spellbomb.html', 'health-journal.html', 'manifester.html']) {
+  for (const p of ['index.html', 'spellbomb.html', 'bellwether.html', 'manifester.html']) {
     test(`${p}: every section is in its final state`, async ({ page }) => {
       await page.goto(p, { waitUntil: 'load' });
       await page.waitForTimeout(900);

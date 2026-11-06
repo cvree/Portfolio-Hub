@@ -881,6 +881,77 @@
     else setTimeout(go, 900);
   }
 
+
+  /* --- 6. the shelf filter ------------------------------------------------- */
+
+  /* Four ordinary toggle buttons over the tile grid: Everything, Live, In
+     progress, Updates soon. With no script the bar is never shown and the
+     shelf is simply all of it. A tile can be two things at once — live and
+     still being built — so a tile's status is a list of words, not one.
+
+     It never moves focus, never scrolls, and says what it did once, politely,
+     in words: "Showing 5 projects in progress." */
+  function shelf() {
+    var root_ = document.querySelector("[data-shelf]");
+    if (!root_) return;
+    var bar = root_.querySelector("[data-shelf-bar]");
+    var status = root_.querySelector("[data-shelf-status]");
+    var tiles = root_.querySelectorAll(".tile[data-status]");
+    var btns = root_.querySelectorAll("[data-filter]");
+    if (!bar || !tiles.length || !btns.length) return;
+
+    var NAMES = {
+      all: "every project on the shelf",
+      live: "projects that are live",
+      building: "projects in progress",
+      soon: "projects with updates coming soon",
+    };
+
+    function has(tile, key) {
+      if (key === "all") return true;
+      return (" " + tile.getAttribute("data-status") + " ").indexOf(" " + key + " ") !== -1;
+    }
+
+    function count(key) {
+      var n = 0;
+      for (var i = 0; i < tiles.length; i++) if (has(tiles[i], key)) n++;
+      return n;
+    }
+
+    var counts = root_.querySelectorAll("[data-count]");
+    for (var c = 0; c < counts.length; c++) {
+      counts[c].textContent = String(count(counts[c].getAttribute("data-count")));
+    }
+
+    function show(key, announce) {
+      var n = 0;
+      for (var i = 0; i < tiles.length; i++) {
+        var on = has(tiles[i], key);
+        if (on) {
+          tiles[i].removeAttribute("hidden");
+          n++;
+        } else {
+          tiles[i].setAttribute("hidden", "");
+        }
+      }
+      for (var b = 0; b < btns.length; b++) {
+        btns[b].setAttribute("aria-pressed", btns[b].getAttribute("data-filter") === key ? "true" : "false");
+      }
+      if (announce && status) {
+        status.textContent = "Showing " + n + " " + (n === 1 ? NAMES[key].replace("projects", "project").replace("are", "is") : NAMES[key]) + ".";
+      }
+    }
+
+    for (var b = 0; b < btns.length; b++) {
+      btns[b].addEventListener("click", function () {
+        show(this.getAttribute("data-filter"), true);
+      });
+    }
+
+    bar.removeAttribute("hidden");
+    show("all", false);
+  }
+
   /* --- start --------------------------------------------------------------- */
 
   function start() {
@@ -896,6 +967,7 @@
       arrival();
       theatre();
       card();
+      shelf();
     } catch (err) {
       /* A failure in any of the above must never leave content hidden. */
       revealAll();

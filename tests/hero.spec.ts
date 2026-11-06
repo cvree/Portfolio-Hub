@@ -121,13 +121,13 @@ test.describe('with JavaScript disabled', () => {
     await expect(page.locator('.wk')).toHaveCount(6);
     const hrefs = await page.$$eval('.wk__t a', (as) => as.map((a) => a.getAttribute('href')));
     expect(hrefs).toEqual([
-      'spellbomb.html', 'health-journal.html', 'phlebotomy-exam-prep.html',
+      'spellbomb.html', 'bellwether.html', 'phlebotomy-exam-prep.html',
       'manifester.html', 'owcs-comp-tracker.html', 'paper-animator.html',
     ]);
     /* And the rail is six same-page anchors, not a tab set. */
     const rail = await page.$$eval('[data-rail]', (as) => as.map((a) => a.getAttribute('href')));
     expect(rail).toEqual([
-      '#w-spellbomb', '#w-health-journal', '#w-phlebotomy',
+      '#w-spellbomb', '#w-bellwether', '#w-phlebotomy',
       '#w-manifester', '#w-owcs', '#w-paper-animator',
     ]);
   });
@@ -392,7 +392,7 @@ test.describe('the six rooms', () => {
        document while the atmosphere plane is being software-rasterised in
        every parallel worker. */
     test.setTimeout(120_000);
-    for (const [i, slug] of ['spellbomb', 'health-journal', 'phlebotomy', 'manifester', 'owcs', 'paper-animator'].entries()) {
+    for (const [i, slug] of ['spellbomb', 'bellwether', 'phlebotomy', 'manifester', 'owcs', 'paper-animator'].entries()) {
       await page.locator(`#w-${slug}`).scrollIntoViewIfNeeded();
       await page.mouse.wheel(0, 1);
       await expect(page.locator(`[data-rail="${slug}"]`)).toHaveAttribute('aria-current', 'true', { timeout: 6000 });
@@ -417,7 +417,7 @@ test.describe('the six rooms', () => {
         await new Promise((r) => setTimeout(r, 900));
       }
       return out;
-    }, ['#w-health-journal', '#w-manifester', '#w-owcs', '#w-paper-animator']);
+    }, ['#w-bellwether', '#w-manifester', '#w-owcs', '#w-paper-animator']);
 
     /* Several rooms, several colours, and every one of them a colour the site
        actually owns. Which colour lands on which frame is the scroll's
@@ -446,7 +446,7 @@ test.describe('the six rooms', () => {
       scan: document.querySelectorAll('[data-scene="owcs"] .rows__r').length,
       fold: document.querySelectorAll('[data-scene="manifester"] .fold__leaf').length,
       cite: document.querySelectorAll('[data-scene="paper-animator"] .cite__thread').length,
-      accumulate: document.querySelectorAll('[data-scene="health-journal"] .scene__line').length,
+      accumulate: document.querySelectorAll('[data-scene="bellwether"] .scene__line').length,
     }));
     expect(laws.order).toBe(6);
     expect(laws.fuse).toBe(11);
@@ -483,7 +483,7 @@ test.describe('the six rooms', () => {
   });
 
   test('every room keeps its case-study link one focusable step away', async ({ page }) => {
-    for (const slug of ['spellbomb', 'health-journal', 'phlebotomy', 'manifester', 'owcs', 'paper-animator']) {
+    for (const slug of ['spellbomb', 'bellwether', 'phlebotomy', 'manifester', 'owcs', 'paper-animator']) {
       const links = page.locator(`[data-wk="${slug}"] a`);
       expect(await links.count(), `${slug} is one target, not three`).toBe(1);
     }

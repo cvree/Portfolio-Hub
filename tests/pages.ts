@@ -4,7 +4,7 @@
 export const PAGES = [
   'index.html',
   'spellbomb.html',
-  'health-journal.html',
+  'bellwether.html',
   'phlebotomy-exam-prep.html',
   'manifester.html',
   'owcs-comp-tracker.html',

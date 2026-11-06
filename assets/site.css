@@ -94,7 +94,7 @@
 
 /* Project accents. Each is taken from the running product, not invented. */
 [data-accent="spellbomb"]      { --accent:#f0a23c; }
-[data-accent="health-journal"] { --accent:#7fa6f0; }
+[data-accent="bellwether"] { --accent:#7fa6f0; }
 [data-accent="phlebotomy"]     { --accent:#17a08f; }
 [data-accent="manifester"]     { --accent:#c99189; }
 [data-accent="owcs"]           { --accent:#b9e24d; }
@@ -967,7 +967,7 @@ figure.shot + figure.shot{ margin-top:1.5rem; }
 }
 .js [data-motion="fuse"].is-in::after{ width:100%; transition:width 1100ms cubic-bezier(.5,0,.2,1) 120ms; }
 
-/* Health Journal — growth. It materialises upward from its own baseline. */
+/* Bellwether — growth. It materialises upward from its own baseline. */
 .js [data-motion="grow"]{ opacity:0; transform:scaleY(.94) translateY(14px); transform-origin:bottom; }
 .js [data-motion="grow"].is-in{
   opacity:1; transform:none;
@@ -1212,21 +1212,21 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
    home page's aperture is the active project screenshot there, so the card
    below it deliberately does not claim the same name a second time. */
 [data-vt="shot-spellbomb"]      { view-transition-name:shot-spellbomb; }
-[data-vt="shot-health-journal"] { view-transition-name:shot-health-journal; }
+[data-vt="shot-bellwether"] { view-transition-name:shot-bellwether; }
 [data-vt="shot-phlebotomy"]     { view-transition-name:shot-phlebotomy; }
 [data-vt="shot-manifester"]     { view-transition-name:shot-manifester; }
 [data-vt="shot-owcs"]           { view-transition-name:shot-owcs; }
 [data-vt="shot-paper-animator"] { view-transition-name:shot-paper-animator; }
 
 [data-vt="title-spellbomb"]      { view-transition-name:title-spellbomb; }
-[data-vt="title-health-journal"] { view-transition-name:title-health-journal; }
+[data-vt="title-bellwether"] { view-transition-name:title-bellwether; }
 [data-vt="title-phlebotomy"]     { view-transition-name:title-phlebotomy; }
 [data-vt="title-manifester"]     { view-transition-name:title-manifester; }
 [data-vt="title-owcs"]           { view-transition-name:title-owcs; }
 [data-vt="title-paper-animator"] { view-transition-name:title-paper-animator; }
 
 [data-vt="accent-spellbomb"]      { view-transition-name:accent-spellbomb; }
-[data-vt="accent-health-journal"] { view-transition-name:accent-health-journal; }
+[data-vt="accent-bellwether"] { view-transition-name:accent-bellwether; }
 [data-vt="accent-phlebotomy"]     { view-transition-name:accent-phlebotomy; }
 [data-vt="accent-manifester"]     { view-transition-name:accent-manifester; }
 [data-vt="accent-owcs"]           { view-transition-name:accent-owcs; }
@@ -1235,7 +1235,7 @@ html[data-motion="off"] [data-motion]{ opacity:1 !important; transform:none !imp
 /* A screenshot that changes aspect between index and case study should cut
    through the crop rather than squash. */
 ::view-transition-old(shot-spellbomb), ::view-transition-new(shot-spellbomb),
-::view-transition-old(shot-health-journal), ::view-transition-new(shot-health-journal),
+::view-transition-old(shot-bellwether), ::view-transition-new(shot-bellwether),
 ::view-transition-old(shot-phlebotomy), ::view-transition-new(shot-phlebotomy),
 ::view-transition-old(shot-manifester), ::view-transition-new(shot-manifester),
 ::view-transition-old(shot-owcs), ::view-transition-new(shot-owcs),
@@ -1903,7 +1903,7 @@ html[data-motion="off"] ::view-transition-new(*){ animation-duration:1ms !import
   transition:transform 520ms cubic-bezier(.2,1.5,.4,1), opacity 300ms var(--ease);
 }
 
-/* --- Health Journal · growth and materialisation -------------------------- */
+/* --- Bellwether · growth and materialisation -------------------------- */
 /* A record that builds. The spine grows between related evidence rather than
    glowing at it; teal is living data here, not a light source. */
 [data-physics="grow"] .case-body{ position:relative; }
@@ -3348,7 +3348,7 @@ html[data-motion="off"] .vc__turnicon{ transition:none; }
    fact about the product, the same way the waveform's shape is. */
 :root{ --rate:2.6s; --sig-len:3000; }
 [data-accent="spellbomb"]      { --rate:1.45s; }
-[data-accent="health-journal"] { --rate:5.2s; }
+[data-accent="bellwether"] { --rate:5.2s; }
 [data-accent="phlebotomy"]     { --rate:2.6s; }
 [data-accent="manifester"]     { --rate:6.4s; }
 [data-accent="owcs"]           { --rate:2.0s; }
@@ -3400,7 +3400,7 @@ html[data-motion="off"] .vc__turnicon{ transition:none; }
   filter:drop-shadow(0 0 14px var(--accent));
 }
 [data-accent="spellbomb"] .rail__head{ offset-path:path("M0 560 L60 549 L120 535 L180 519 L220 505 L240 500 L252 587 L300 560 L480 560 L540 543 L600 520 L660 495 L700 472 L720 464 L732 603 L780 560 L960 560 L1020 533 L1080 497 L1140 458 L1180 422 L1200 410 L1212 628 L1260 560 L1440 560"); }
-[data-accent="health-journal"] .rail__head{ offset-path:path("M0 580 L60 572 L120 555 L180 534 L240 513 L300 494 L360 480 L420 472 L480 470 L540 472 L600 477 L660 480 L720 482 L780 480 L840 477 L900 472 L960 470 L1020 472 L1080 480 L1140 494 L1200 513 L1260 534 L1320 555 L1380 572 L1440 580"); }
+[data-accent="bellwether"] .rail__head{ offset-path:path("M0 580 L60 572 L120 555 L180 534 L240 513 L300 494 L360 480 L420 472 L480 470 L540 472 L600 477 L660 480 L720 482 L780 480 L840 477 L900 472 L960 470 L1020 472 L1080 480 L1140 494 L1200 513 L1260 534 L1320 555 L1380 572 L1440 580"); }
 [data-accent="phlebotomy"] .rail__head{ offset-path:path("M0 560 L206 547 L228 560 L250 578 L260 468 L272 620 L302 543 L338 560 L640 560 L666 547 L688 560 L710 578 L720 468 L732 620 L762 543 L798 560 L1100 560 L1126 547 L1148 560 L1170 578 L1180 468 L1192 620 L1222 543 L1258 560 L1440 560"); }
 [data-accent="manifester"] .rail__head{ offset-path:path("M0 560 L60 556 L120 537 L180 508 L240 494 L300 508 L360 537 L420 556 L480 560 L540 564 L600 583 L660 612 L720 626 L780 612 L840 583 L900 564 L960 560 L1020 556 L1080 537 L1140 508 L1200 494 L1260 508 L1320 537 L1380 556 L1440 560"); }
 [data-accent="owcs"] .rail__head{ offset-path:path("M0 560 L120 560 L120 486 L260 486 L260 608 L420 608 L420 520 L540 520 L540 470 L680 470 L680 600 L820 600 L820 530 L940 530 L940 644 L1060 644 L1060 486 L1180 486 L1180 572 L1300 572 L1300 500 L1380 500 L1380 560 L1420 560 L1440 560"); }
@@ -3605,3 +3605,199 @@ html:not(.js) .rail__head{ display:none; }
   .progress{ display:none !important; }
 }
 
+
+/* ===========================================================================
+   9. THE SHELF — caution tape, the stamp, and four buttons that narrow it
+   ---------------------------------------------------------------------------
+   Three states, and each one looks like what it is:
+
+   - Live tiles are the tile grid as it always was.
+   - In progress wears two strips of caution tape across its capture. They
+     crawl, slowly, in opposite directions; hover or focus the tile and they
+     lift away so you can see what is underneath. The tape is aria-hidden: the
+     "In progress" chip in the tile's footer is the fact, in text.
+   - Updates soon has no capture, because there is nothing to capture. It
+     gets a monitor that is waiting for a signal and a rubber stamp that lands
+     once, when the shelf scrolls in.
+
+   Every crawl, blip and landing is written inside
+   `prefers-reduced-motion:no-preference` and behind
+   `html:not([data-motion="off"])`, so the masthead's Motion control and the
+   operating system both stop all of it. The resting frame is the design.
+   =========================================================================== */
+
+.tiles{ list-style:none; padding:0; margin:0; }
+.tile[hidden]{ display:none; }
+.tile__shot{ position:relative; }
+
+/* --- the tape --------------------------------------------------------------- */
+
+.tape{
+  --tape-y:38%; --tape-r:-8deg;
+  --hazard:#f4c534; --hazard-ink:#121212;
+  position:absolute; left:-14%; right:-14%; top:var(--tape-y);
+  z-index:3; pointer-events:none; overflow:hidden;
+  transform:rotate(var(--tape-r));
+  background:var(--hazard); color:var(--hazard-ink);
+  border-block:5px solid transparent;
+  border-image:repeating-linear-gradient(135deg, var(--hazard-ink) 0 9px, var(--hazard) 9px 18px) 5;
+  box-shadow:0 10px 24px -6px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.25) inset;
+  transition:top 560ms var(--ease), transform 560ms var(--ease), opacity 560ms var(--ease);
+}
+.tape--b{
+  --tape-y:66%; --tape-r:5deg;
+  background:var(--hazard-ink); color:var(--hazard);
+  border-image:repeating-linear-gradient(135deg, var(--hazard) 0 9px, var(--hazard-ink) 9px 18px) 5;
+}
+.tape__track{ display:flex; width:max-content; }
+.tape__run{
+  font-family:var(--ui); font-weight:700; font-size:.74rem; line-height:1;
+  letter-spacing:.18em; text-transform:uppercase; white-space:nowrap;
+  padding:.42rem 0 .4rem;
+}
+
+/* Lift the tape to peek. It peels toward the edges rather than vanishing,
+   so the joke survives the hover. */
+.tile:hover .tape,
+.tile:focus-within .tape{ --tape-y:6%; --tape-r:-3deg; }
+.tile:hover .tape--b,
+.tile:focus-within .tape--b{ --tape-y:84%; --tape-r:2deg; }
+
+/* In the rooms the tape sits over the capture the room leads with. */
+.scene__plate .tape,
+.cmp__side--rev .tape{ --tape-y:30%; }
+.scene__plate .tape--b,
+.cmp__side--rev .tape--b{ --tape-y:62%; }
+.cmp__side--rev{ overflow:hidden; border-radius:var(--radius); }
+.wk:hover .tape, .wk:focus-within .tape{ --tape-y:4%; --tape-r:-3deg; }
+.wk:hover .tape--b, .wk:focus-within .tape--b{ --tape-y:86%; --tape-r:2deg; }
+
+/* An in-progress tile carries a hazard-yellow rule along its top edge. */
+.tile--wip{ border-color:color-mix(in srgb, #f4c534 30%, var(--line)); }
+.tile--wip::before{
+  content:''; position:absolute; inset:0 0 auto; height:3px; z-index:4;
+  background:repeating-linear-gradient(135deg, #121212 0 8px, #f4c534 8px 16px);
+}
+
+/* --- updates soon ------------------------------------------------------------- */
+
+.chip--soon{ color:#f2a194; border-color:color-mix(in srgb, #f2a194 45%, transparent); }
+
+.soon{
+  display:grid; place-items:center;
+  background:
+    linear-gradient(color-mix(in srgb, var(--text) 5%, transparent) 1px, transparent 1px) 0 0 / 100% 20px,
+    linear-gradient(90deg, color-mix(in srgb, var(--text) 5%, transparent) 1px, transparent 1px) 0 0 / 20px 100%,
+    radial-gradient(70% 90% at 50% 40%, #16191e, var(--ink-raised));
+}
+.soon__ecg{ position:absolute; inset:0; width:100%; height:100%; }
+.soon__base{ fill:none; stroke:color-mix(in srgb, #f2a194 22%, transparent); stroke-width:1.5; vector-effect:non-scaling-stroke; }
+.soon__blip{
+  fill:none; stroke:#f2a194; stroke-width:2; stroke-linejoin:round; stroke-linecap:round;
+  vector-effect:non-scaling-stroke;
+  filter:drop-shadow(0 0 6px color-mix(in srgb, #f2a194 60%, transparent));
+}
+.soon__stamp{
+  position:relative; z-index:2;
+  font-family:var(--ui); font-weight:700; text-transform:uppercase; text-align:center;
+  font-size:clamp(1.05rem, 2.4vw, 1.35rem); line-height:1.02; letter-spacing:.12em;
+  color:#f2a194;
+  padding:.55rem .9rem .5rem;
+  border:3px double currentColor; border-radius:6px;
+  transform:rotate(-9deg);
+  background:color-mix(in srgb, var(--ink) 72%, transparent);
+  /* a stamp is never quite evenly inked */
+  -webkit-mask-image:radial-gradient(circle at 30% 40%, #000 62%, rgba(0,0,0,.72) 63%, #000 78%);
+          mask-image:radial-gradient(circle at 30% 40%, #000 62%, rgba(0,0,0,.72) 63%, #000 78%);
+  transition:transform 420ms var(--ease);
+}
+.tile--soon:hover .soon__stamp,
+.tile--soon:focus-within .soon__stamp{ transform:rotate(-4deg) scale(1.06); }
+.soon__beat{
+  position:absolute; left:.85rem; bottom:.7rem; z-index:2;
+  font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-quiet);
+}
+
+/* --- the filter ------------------------------------------------------------- */
+
+.shelf__bar{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .55rem;
+  margin:0 0 clamp(1rem,2.4vw,1.5rem);
+}
+.shelf__bar[hidden]{ display:none; }
+.shelf__l{
+  font-family:var(--mono); font-size:.68rem; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--text-quiet); margin-right:.3rem;
+}
+.shelf__f{
+  appearance:none; -webkit-appearance:none; cursor:pointer;
+  display:inline-flex; align-items:center; gap:.5rem;
+  min-height:44px; padding:.5rem 1rem;
+  font:600 .9rem/1 var(--ui); color:var(--text);
+  background:transparent; border:1px solid var(--line-firm); border-radius:999px;
+  transition:background 200ms var(--ease), color 200ms var(--ease), border-color 200ms var(--ease), transform 160ms var(--ease);
+}
+.shelf__f .led{ width:.5rem; height:.5rem; border-radius:50%; flex:none; background:currentColor; }
+.shelf__f--live .led{ background:var(--teal); }
+.shelf__f--dev .led{ background:repeating-linear-gradient(135deg, #121212 0 2px, #f4c534 2px 4px); box-shadow:0 0 0 1px #f4c534; }
+.shelf__f--soon .led{ background:#f2a194; }
+.shelf__f:hover{ border-color:var(--text-quiet); background:color-mix(in srgb, var(--text) 6%, transparent); }
+.shelf__f:active{ transform:translateY(1px); }
+.shelf__f:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+.shelf__f[aria-pressed="true"]{ background:var(--text); color:var(--ink); border-color:var(--text); }
+.shelf__n{
+  font-family:var(--mono); font-weight:500; font-size:.72rem; letter-spacing:.06em;
+  opacity:.78; min-width:1.2em; text-align:center;
+}
+.shelf__n:empty{ display:none; }
+
+/* --- motion, only where it is wanted ----------------------------------------- */
+
+@media (prefers-reduced-motion:no-preference){
+  html:not([data-motion="off"]) .tape__track{ animation:tape-crawl 26s linear infinite; }
+  html:not([data-motion="off"]) .tape--b .tape__track{ animation-duration:34s; animation-direction:reverse; }
+  /* hovering a tile makes the crew work faster */
+  html:not([data-motion="off"]) .tile:hover .tape__track,
+  html:not([data-motion="off"]) .wk:hover .tape__track{ animation-duration:9s; }
+  html:not([data-motion="off"]) .tile:hover .tape--b .tape__track,
+  html:not([data-motion="off"]) .wk:hover .tape--b .tape__track{ animation-duration:12s; }
+
+  /* the monitor sweeps the waiting trace, once every few seconds */
+  html:not([data-motion="off"]) .soon__blip{
+    stroke-dasharray:180 1000; stroke-dashoffset:180;
+    animation:soon-sweep 3.6s cubic-bezier(.45,0,.55,1) infinite;
+  }
+  html:not([data-motion="off"]) .tile--soon:nth-child(odd) .soon__blip{ animation-delay:-1.4s; }
+
+  /* the stamp lands once, when the shelf arrives */
+  .js:not([data-motion="off"]) [data-motion="sort"].is-in .soon__stamp{
+    animation:stamp-thunk 620ms cubic-bezier(.2,1.6,.4,1) both;
+    animation-delay:calc(var(--i, 0) * 40ms + 500ms);
+  }
+  .js:not([data-motion="off"]) [data-motion="sort"].is-in .tile--soon .soon__stamp{ animation-delay:calc((var(--i, 0) - 9) * 140ms + 700ms); }
+}
+@keyframes tape-crawl{ to{ transform:translateX(-50%); } }
+@keyframes soon-sweep{
+  0%{ stroke-dashoffset:180; }
+  100%{ stroke-dashoffset:-1000; }
+}
+@keyframes stamp-thunk{
+  0%{ opacity:0; transform:rotate(-16deg) scale(1.9); }
+  60%{ opacity:1; transform:rotate(-8deg) scale(.94); }
+  100%{ opacity:1; transform:rotate(-9deg) scale(1); }
+}
+@media (prefers-reduced-motion:reduce){
+  .tape{ transition:none; }
+}
+
+/* High-contrast and forced-colour modes: the tape keeps its words and the
+   stamp keeps its border, both in system colours. */
+@media (forced-colors:active){
+  .tape, .tape--b{ background:Canvas; color:CanvasText; border:2px solid CanvasText; border-image:none; }
+  .soon__stamp{ color:CanvasText; border-color:CanvasText; }
+  .shelf__f[aria-pressed="true"]{ background:Highlight; color:HighlightText; border-color:Highlight; }
+}
+
+@media print{
+  .tape, .shelf__bar, .soon__ecg{ display:none !important; }
+}

@@ -99,27 +99,74 @@ test('the fragment works with no script at all', async ({ browser }) => {
 test('the smaller pieces came with it, and the status key that explains them', async ({ page }) => {
   await page.goto('index.html', { waitUntil: 'load' });
   const section = page.locator('#work');
-  await expect(section.locator('.th__key dt')).toHaveCount(4);
-  await expect(section.locator('.tiles .tile')).toHaveCount(7);
-  /* Every tile carries a capture of the thing running and its current version;
-     a tile with neither is a repository card, which is what this replaced. */
-  await expect(section.locator('.tiles .tile__shot img')).toHaveCount(7);
-  await expect(section.locator('.tiles .tile__v')).toHaveCount(7);
-  await expect(section.getByRole('link', { name: 'Story Atlas' })).toHaveAttribute(
+  await expect(section.locator('.th__key dt')).toHaveText(['Live', 'In progress', 'Experiment', 'Updates soon']);
+  await expect(section.locator('.tiles .tile')).toHaveCount(13);
+  /* Everything that runs carries a capture of itself running and its current
+     version. What has only a name gets a stamp, not a capture pretending. */
+  await expect(section.locator('.tiles .tile__shot img')).toHaveCount(9);
+  await expect(section.locator('.tiles .tile--soon .soon__stamp')).toHaveCount(4);
+  await expect(section.locator('.tiles .tile__v')).toHaveCount(13);
+  await expect(section.getByRole('link', { name: 'Story Atlas', exact: true })).toHaveAttribute(
     'href',
     'https://cvree.github.io/Story-Atlas/'
   );
 });
 
+test('in progress wears the tape, and the tape is never the only word for it', async ({ page }) => {
+  await page.goto('index.html', { waitUntil: 'load' });
+  const wip = page.locator('#work .tile[data-status~="building"], #work .wk:has(.tape)');
+  const n = await wip.count();
+  expect(n).toBe(5);
+  for (let i = 0; i < n; i++) {
+    const item = wip.nth(i);
+    /* the tape is decoration: hidden from assistive technology ... */
+    for (const t of await item.locator('.tape').all()) await expect(t).toHaveAttribute('aria-hidden', 'true');
+    /* ... and the status is real text beside it */
+    await expect(item.locator('.chip--dev')).toHaveText(/In progress/);
+  }
+});
+
+test('the shelf narrows with four toggle buttons and says what it did', async ({ page }) => {
+  await page.goto('index.html', { waitUntil: 'load' });
+  const bar = page.locator('[data-shelf-bar]');
+  await expect(bar).toBeVisible();
+  const all = bar.getByRole('button', { name: /Everything/ });
+  await expect(all).toHaveAttribute('aria-pressed', 'true');
+
+  await bar.getByRole('button', { name: /In progress/ }).click();
+  await expect(page.locator('.tiles .tile:visible')).toHaveCount(3);
+  await expect(page.locator('[data-shelf-status]')).toHaveText('Showing 3 projects in progress.');
+  await expect(bar.getByRole('button', { name: /In progress/ })).toHaveAttribute('aria-pressed', 'true');
+  await expect(all).toHaveAttribute('aria-pressed', 'false');
+
+  await bar.getByRole('button', { name: /Updates soon/ }).click();
+  await expect(page.locator('.tiles .tile:visible')).toHaveCount(4);
+
+  await bar.getByRole('button', { name: /Live/ }).click();
+  await expect(page.locator('.tiles .tile:visible')).toHaveCount(8);
+
+  await all.click();
+  await expect(page.locator('.tiles .tile:visible')).toHaveCount(13);
+});
+
+test('with no script, the shelf is simply all of it and offers no buttons that do nothing', async ({ browser }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false });
+  const page = await ctx.newPage();
+  await page.goto('index.html', { waitUntil: 'load' });
+  await expect(page.locator('[data-shelf-bar]')).toBeHidden();
+  await expect(page.locator('.tiles .tile:visible')).toHaveCount(13);
+  await ctx.close();
+});
+
 test('every project on the home page states the version it is at', async ({ page }) => {
   await page.goto('index.html', { waitUntil: 'load' });
-  /* Six rooms, seven tiles, and one version on each — the number a visitor
+  /* Six rooms, nine running tiles, and one version on each — the number a visitor
      needs to know whether what they are reading about is what is deployed. */
   const versions = await page
     .locator('#work .wk__meta .chip, #work .tile__v')
     .evaluateAll((els) => els.map((e) => (e.textContent || '').trim()).filter((t) => /^v?\d+\.\d+/.test(t)));
   expect(versions).toEqual([
-    'v9.3.0', 'v1.37.0', 'v0.1.0', 'v1.0.0', 'v1.0.0', 'v0.1.0',
-    'v1.4.0', 'v1.0.0', 'v0.1.0', 'v1.0.0', 'v1.0.0', 'v1.0.0',
+    'v9.3.0', 'v1.39.0', 'v0.1.0', 'v1.0.0', 'v1.0.1', 'v0.1.0',
+    'v2.31.0', 'v0.2.0-preview', 'v1.0.0', 'v1.0.0', 'v1.0.0', 'v0.1.0', 'v1.0.0', 'v1.1.0',
   ]);
 });

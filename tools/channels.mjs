@@ -13,7 +13,7 @@ const base = process.argv[3] || 'http://127.0.0.1:8123/';
 const exe = process.env.PW_CHROMIUM_PATH || undefined;
 mkdirSync(out, { recursive: true });
 
-const CH = ['spellbomb', 'health-journal', 'phlebotomy', 'manifester', 'owcs', 'paper-animator'];
+const CH = ['spellbomb', 'bellwether', 'phlebotomy', 'manifester', 'owcs', 'paper-animator'];
 const browser = await chromium.launch({ executablePath: exe });
 
 for (const vp of [{ w: 1440, h: 900, tag: 'desktop' }, { w: 390, h: 844, tag: 'mobile' }]) {

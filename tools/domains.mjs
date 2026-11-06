@@ -14,7 +14,7 @@ const exe = process.env.PW_CHROMIUM_PATH || undefined;
 mkdirSync(out, { recursive: true });
 
 const DOMAINS = ['care', 'build', 'compete'];
-const ROOMS = ['spellbomb', 'health-journal', 'phlebotomy', 'manifester', 'owcs', 'paper-animator'];
+const ROOMS = ['spellbomb', 'bellwether', 'phlebotomy', 'manifester', 'owcs', 'paper-animator'];
 const VPS = [
   ['desktop', { width: 1440, height: 900 }, false],
   ['mobile', { width: 390, height: 844 }, true],

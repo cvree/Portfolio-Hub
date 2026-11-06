@@ -129,7 +129,7 @@ Six project accents, taken from the running products:
 
 ```
 spellbomb       #f0a23c     manifester      #c99189
-health-journal  #7fa6f0     owcs            #b9e24d
+bellwether  #7fa6f0     owcs            #b9e24d
 phlebotomy      #17a08f     paper-animator  #ded7c6
 ```
 
@@ -548,7 +548,7 @@ mobile design, not a fallback for it.
 | # | Project | Law | What actually moves |
 | --- | --- | --- | --- |
 | 01 | SpellBomb | **fuse** | A fuse burns once toward the bomb with a spark riding it; eleven real tray slots take the seven letters the capture holds, snapping in with one firm handoff each. |
-| 02 | Health Journal | **accumulate** | The stage opens from a wide slice to the full tall record; one real chart line draws; the solar arc the product computes runs once behind it. |
+| 02 | Bellwether | **accumulate** | The stage opens from a wide slice to the full tall record; one real chart line draws; the solar arc the product computes runs once behind it. |
 | 03 | Phlebotomy Exam Prep | **order** | Six real tube cards, in the six CLSI positions with their real additives, arrive in the wrong seats, travel to the right ones and lock. The graded capture resolves only once the sequence is correct. |
 | 04 | Manifester | **fold** | Builder and player fold toward one another; the orb takes exactly one breath; one real line of interface text arrives; the scene goes still. |
 | 05 | OWCS Comp Tracker | **scan** | One scan line crosses the detected timeline; five detected rows arrive out of order and snap into the reviewed one, with the row under the confidence gate still marked. |

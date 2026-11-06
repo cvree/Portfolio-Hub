@@ -13,7 +13,7 @@ mkdirSync(out, { recursive: true });
 
 const PAGES = [
   ['spellbomb', 'a fuse'],
-  ['health-journal', 'a circadian rise'],
+  ['bellwether', 'a circadian rise'],
   ['phlebotomy-exam-prep', 'a clinical trace'],
   ['manifester', 'a breath'],
   ['owcs-comp-tracker', 'a swap timeline'],
