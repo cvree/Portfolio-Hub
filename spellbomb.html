@@ -197,7 +197,7 @@
 <section class="case-hero" aria-labelledby="page-h">
   <div class="shell">
     <p class="case-hero__top" data-rise>
-      <span data-vt="accent-spellbomb" class="chip"><span class="led" aria-hidden="true"></span>Private for now</span>
+      <span data-vt="accent-spellbomb" class="chip chip--live"><span class="led" aria-hidden="true"></span>Live</span>
       <span class="chip">Live multiplayer</span>
       <span class="chip">v9.3.0</span>
       <span class="chip">Private repository</span>
@@ -212,6 +212,16 @@
       outcome — browsers only send intent. Two modes share those rooms, that
       economy and that leaderboard, and the whole thing runs as a Discord Activity
       without becoming a second game.
+    </p>
+
+    <div class="btn-row case-hero__actions" data-rise style="--d:210ms">
+      <a class="btn btn--primary" href="https://spell-bob.onrender.com/" target="_blank" rel="noopener">
+        Play it live <span class="arrow" aria-hidden="true">&rarr;</span><span class="vh"> (opens in a new tab)</span>
+      </a>
+    </div>
+    <p class="quiet small mt-3" data-rise style="max-width:36em">
+      Hosted on Render&rsquo;s free tier, so the first visit after a quiet spell can
+      take a little under a minute while the server wakes up.
     </p>
   </div>
 </section>
@@ -244,6 +254,7 @@
                sizes="(max-width: 1360px) 92vw, 1200px"
            width="2400" height="1500" loading="eager" fetchpriority="high" decoding="async"
            alt="A live six-player SpellBomb round. The lit bomb hangs in the centre of the arena with a dashed arrow pointing at the player named sam, who has two hearts left; kit, maya, dev, ollie and juno are ringed around the arena with one heart each. Below, an eleven-letter word tray shows I, N, A, L, I, E, N filled and four slots empty, with the answer box reading inalien and a green GO button beside it." />
+        <a class="shotlive" href="https://spell-bob.onrender.com/" target="_blank" rel="noopener"><span class="vh">Open the live SpellBomb in a new tab</span><span class="openpill" aria-hidden="true">Open live <span class="openpill__a">&#8599;</span></span></a>
       <figcaption class="shotframe__cap">
         A real six-player match against a running <code>server.js</code>: six
         browser contexts in one room over Socket.IO. The bomb has just passed to
@@ -336,13 +347,13 @@
         <div class="chapter__label"><span class="n">&mdash;</span><h2>Waiting for the bomb</h2></div>
         <div class="chapter__body">
           <figure class="shot shotframe shotframe--wide" tabindex="0" aria-label="Screenshot — scroll sideways to see the full width">
-            <img src="assets/projects/spellbomb/spellbomb-fuse-1280.webp"
+            <a class="shotlink" href="https://spell-bob.onrender.com/" target="_blank" rel="noopener"><img src="assets/projects/spellbomb/spellbomb-fuse-1280.webp"
                srcset="assets/projects/spellbomb/spellbomb-fuse-720.webp 720w,
                assets/projects/spellbomb/spellbomb-fuse-1280.webp 1280w,
                assets/projects/spellbomb/spellbomb-fuse.webp 1600w"
                sizes="(max-width: 1360px) 92vw, 1200px"
                  width="1600" height="1000" loading="lazy" decoding="async"
-                 alt="The same arena from another player's seat. The bomb is held by ollie, the fuse bar beneath it has burned down to red, a taunt reading WHY ARE YOU STILL HOLDING IT sits above it, and this player's own answer box is greyed out and reads wait for your turn." />
+                 alt="The same arena from another player's seat. The bomb is held by ollie, the fuse bar beneath it has burned down to red, a taunt reading WHY ARE YOU STILL HOLDING IT sits above it, and this player's own answer box is greyed out and reads wait for your turn." /><span class="vh"> Opens the live SpellBomb in a new tab.</span><span class="openpill" aria-hidden="true">Open live <span class="openpill__a">&#8599;</span></span></a>
             <figcaption class="shotframe__cap">
               The same room, one seat over. The answer box is disabled and says so in
               words; the fuse has burned to red; the taunt is the room&rsquo;s, not
@@ -478,7 +489,7 @@
         <div class="chapter__body prose">
           <ul class="bullets">
             <li><b>Close the Everyone Spells hole properly.</b> Render dictation server-side and ship audio, not text. Until then the mode stays labelled a party mode among people who trust each other.</li>
-            <li><b>A stable public deployment.</b> The Render blueprint and the Postgres path are written and tested; what is missing is a permanent host.</li>
+            <li><b>A host that never sleeps.</b> It is deployed on Render from the repository&rsquo;s own blueprint; the free tier spins down when nobody is playing, and a paid instance would make the first join instant.</li>
             <li><b>More of the room&rsquo;s own voice.</b> Word Rush&rsquo;s announcer and awards are the most-liked part of a match, and Passed Bomb has not had that treatment yet.</li>
           </ul>
         </div>
@@ -489,13 +500,13 @@
         <div class="chapter__label"><span class="n">09</span><h2>Where to find it</h2></div>
         <div class="chapter__body prose">
           <p>
-            The one project here whose repository is <b>private</b>, and not publicly
-            deployed today — so this page says so rather than point at a link that
-            will not open. Ask and I will show you it running, or walk you through the
-            server.
+            Live at <b>spell-bob.onrender.com</b> &mdash; open it, host a room, and send
+            the four-letter code to whoever is nearby. The repository is
+            <b>private</b>; ask and I will walk you through the server.
           </p>
           <div class="btn-row mt-3">
-            <a class="btn btn--primary" href="mailto:connor.eppolito803@myci.csuci.edu?subject=SpellBomb">Ask for a walkthrough</a>
+            <a class="btn btn--primary" href="https://spell-bob.onrender.com/" target="_blank" rel="noopener">Play it live <span class="arrow" aria-hidden="true">&rarr;</span><span class="vh"> (opens in a new tab)</span></a>
+            <a class="btn" href="mailto:connor.eppolito803@myci.csuci.edu?subject=SpellBomb">Ask for a walkthrough</a>
             <a class="btn" href="index.html#work">Back to all work <span class="arrow" aria-hidden="true">&rarr;</span></a>
           </div>
         </div>

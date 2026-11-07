@@ -185,9 +185,9 @@ carries it. Facts were read in **August 2026**; if a project moves on, the copy
 should move with it.
 
 Live-project links point at each repository's own GitHub Pages deployment,
-taken from that repository's Pages configuration. SpellBomb is the exception: it
-is a private repository with no public deployment today, and its case study says
-exactly that rather than linking anywhere.
+taken from that repository's Pages configuration. SpellBomb is the exception:
+it needs a running Node server, so it is hosted on Render at
+<https://spell-bob.onrender.com/>, from a private repository.
 
 ## THE PROJECTION — the identity hero
 
@@ -444,8 +444,7 @@ deployed and the deployed thing opens in a new tab: on a shelf tile the whole
 tile is that link; in a room the scene is, while the name and the words still
 open the case study; on a case study every screenshot is. Each is a real,
 named link ("Open the live Manifester in a new tab") with an *Open live ↗*
-pill on hover and focus. SpellBomb has no public deployment, so its picture
-is not a link.
+pill on hover and focus.
 
 Bellwether was called Health Journal until August 2026. Its case study moved
 to `bellwether.html`, and `health-journal.html` is a one-hop redirect.

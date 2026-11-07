@@ -492,15 +492,13 @@ test.describe('the six rooms', () => {
   });
 
   test('the picture of a deployed product opens the product, in a new tab, and says so', async ({ page }) => {
-    for (const slug of ['bellwether', 'phlebotomy', 'manifester', 'owcs', 'paper-animator']) {
+    for (const slug of ['spellbomb', 'bellwether', 'phlebotomy', 'manifester', 'owcs', 'paper-animator']) {
       const live = page.locator(`[data-wk="${slug}"] a.scene__live`);
       await expect(live).toHaveCount(1);
       await expect(live).toHaveAttribute('target', '_blank');
       await expect(live).toHaveAttribute('rel', /noopener/);
       await expect(live).toHaveAccessibleName(/^Open the live .+ in a new tab$/);
     }
-    /* SpellBomb has no public deployment, so its picture is not a link */
-    await expect(page.locator('[data-wk="spellbomb"] a.scene__live')).toHaveCount(0);
   });
 
   test('the reconstructions are decorative; the article carries the facts', async ({ page }) => {
